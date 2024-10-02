@@ -15,68 +15,68 @@ $bg-color: #ECEEFE;
 $light-purple: #ADB0D9;
 
 // typography:
-@mixin fontStyle0() {
+@mixin fontStyle0 {
     font-size: 14px;
     font-weight: 400;
     line-height: 19.1px;    
 }
 
-@mixin fontStyle1() {
+@mixin fontStyle1 {
     font-size: 17px;
     font-weight: 400;
     line-height: 23.19px;
 }
 
 // default font style
-@mixin fontStyle2() {
+@mixin fontStyle2 {
     font-size: 18px;
     font-weight: 400;
     line-height: 24.55px;
 }
 
-@mixin fontStyle3() {
+@mixin fontStyle3 {
     font-size: 18px;
     font-weight: 700;
     line-height: 24.55px;
 }
 
-@mixin fontStyle4() {
+@mixin fontStyle4 {
     font-size: 18px;
     font-weight: 500;
     line-height: 21.6px;
 }
 
-@mixin fontStyle5() {
+@mixin fontStyle5 {
     font-size: 20px;
     font-weight: 500;
     line-height: 24px;
 }
 
-@mixin fontStyle6() {
+@mixin fontStyle6 {
     font-size: 20px;
     font-weight: 700;
     line-height: 24px;
 }
 
-@mixin fontStlye7() {
+@mixin fontStlye7 {
     font-size: 20px;
     font-weight: 400;
     line-height: 27.28px;
 }
 
-@mixin fontStyle8() {
+@mixin fontStyle8 {
     font-size: 20px;
     font-weight: 600;
     line-height: 27.28px;
 }
 
-@mixin fontStyle9() {
+@mixin fontStyle9 {
     font-size: 24px;
     font-weight: 700;
     line-height: 32.74px;
 }
 
-@mixin fontStyle10() {
+@mixin fontStyle10 {
     font-size: 32px;
     font-weight: 700;
     line-height: 43.65px;

@@ -5,7 +5,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Nunito, sans-serif;
-    @include fontStyle2();
+    @include fontStyle2;
     color: black;
 }
 
@@ -15,7 +15,7 @@ a {
 }
 
 button {
-    @include fontStyle3();
+    @include fontStyle3;
     border: unset;
     border-radius: 25px;
     padding: 12px 25px;
