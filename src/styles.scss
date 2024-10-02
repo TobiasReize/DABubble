@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+@import './styles/mixin.scss';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Nunito, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: black;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    border: unset;
+    border-radius: 25px;
+    padding: 12px 25px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 100ms ease-out;
+}
+
+.btn-prim {
+    background-color: $purple-1;
+
+    &:hover {
+        background-color: $purple-2;
+    }
+
+    &:active {
+        background-color: $purple-1;
+    }
+
+    &:disabled {
+        background-color: $disable-gray;
+    }
+}
+
+.btn-sec {
+    border: 1px solid $purple-2;
+    background-color: white;
+    color: $purple-1;
+
+    &:hover {
+        border: 1px solid $purple-3;
+        background-color: $purple-3;
+        color: white;
+    }
+
+    &:active {
+        border: 1px solid $purple-1;
+        background-color: $purple-1;
+        color: white;
+        transition: none;
+    }
+
+    &:disabled {
+        border: 1px solid $disable-gray;
+        background-color: white;
+        color: $disable-gray;
+    }
+}

@@ -1,0 +1,14 @@
+// functions:
+@mixin dFlex($fd:row, $jc:center, $ai:center) {
+    display: flex;
+    flex-direction: $fd;
+    justify-content: $jc;
+    align-items: $ai;
+}
+
+// variables:
+$purple-1: #444DF2;
+$purple-2: #797EF3;
+$purple-3: #535AF1;
+$disable-gray: #686868;
+$bg-hover: #ECEEFE;
