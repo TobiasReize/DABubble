@@ -5,8 +5,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Nunito, sans-serif;
-    font-size: 18px;
-    font-weight: 400;
+    @include fontStyle2();
     color: black;
 }
 
@@ -16,11 +15,11 @@ a {
 }
 
 button {
+    @include fontStyle3();
     border: unset;
     border-radius: 25px;
     padding: 12px 25px;
     color: white;
-    font-weight: 700;
     cursor: pointer;
     transition: all 100ms ease-out;
 }
