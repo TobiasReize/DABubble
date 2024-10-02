@@ -1,0 +1,23 @@
+@if (!introFinished) {
+    <app-intro (hideIntroScreen)="setIntroVariable($event)" [ngClass]="{'opacity': hideIntroScreen}"></app-intro>
+}
+
+<div class="login-content content-wrapper">
+    <header>
+        <div class="logo-container">
+            <img src="assets/img/logo.png" alt="logo">
+            <span>DABubble</span>
+        </div>
+        <div class="create-account-container">
+            <span>Neu bei DABubble?</span>
+            <span class="link-style">Konto erstellen</span>
+        </div>
+    </header>
+    <div class="login-window">
+
+    </div>
+    <div class="imprint-privacy-policy-container">
+        <span class="link-style">Impressum</span>
+        <span class="link-style">Datenschutz</span>
+    </div>
+</div>

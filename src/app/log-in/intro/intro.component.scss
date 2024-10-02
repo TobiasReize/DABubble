@@ -1,0 +1,16 @@
+@import '../../../styles/mixin.scss';
+
+.intro-content {
+    @include dFlex();
+    gap: 39px;
+
+    img {
+        height: 184px;
+    }
+
+    span {
+        font-size: 72px;
+        font-weight: 700;
+        color: white;
+    }
+}
