@@ -1,0 +1,27 @@
+@import '../../../styles/mixin.scss';
+
+.chat {
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+}
+
+.chat-header {
+    position: relative;
+    @include dFlex($jc: flex-start);
+    gap: 10px;
+    padding: 25px 45px;
+    background-color: white;
+    box-shadow: 0px 2px 10px 0px #00000014;
+    z-index: 999;
+    &:hover {
+        .channel-name {
+            color: $purple-3;
+        }
+        .material-symbols-rounded {
+            color: $purple-3;
+            font-variation-settings:
+            'GRAD' 200,
+        }
+    }
+}
