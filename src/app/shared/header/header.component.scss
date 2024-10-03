@@ -1,0 +1,21 @@
+@import '../../../styles/mixin.scss';
+
+header {
+    @include dFlex($jc: space-between);
+    width: 100%;
+}
+
+.logo-container {
+    @include dFlex();
+    gap: 16px;
+
+    img {
+        height: 70px;
+        width: 70px;
+    }
+
+    span {
+        font-size: 24px;
+        font-weight: 700;
+    }
+}

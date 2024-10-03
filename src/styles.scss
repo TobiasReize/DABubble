@@ -9,6 +9,10 @@
     color: black;
 }
 
+body {
+    background-color: $bg-color;
+}
+
 a {
     text-decoration: none;
     cursor: pointer;
@@ -63,6 +67,50 @@ button {
         background-color: white;
         color: $disable-gray;
     }
+}
+
+.material-symbols-rounded {
+    font-family: 'Material Symbols Rounded';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings:
+    'GRAD' 100,
+}
+
+.icon-btn {
+    height: 40px;
+    width: 40px;
+    border: unset;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 75ms;
+    background-color: unset;
+    &:hover {
+        background-color: $bg-color;
+        .material-symbols-rounded {
+            color: $purple-3;
+            font-variation-settings:
+            'GRAD' 200,
+        }
+    }
+}
+
+.icon-btn-small {
+    height: 34px;
+    width: 34px;
 }
 
 .content-wrapper {
