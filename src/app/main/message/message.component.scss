@@ -4,6 +4,7 @@
     @include dFlex($jc: flex-start, $ai: normal);
     padding-top: 10px;
     padding-left: 45px;
+    padding-right: 146px;
     padding-bottom: 10px;
     gap: 30px;
     background-color: white;
@@ -18,7 +19,7 @@
 
 .message-alternative {
     padding-top: 10px;
-    padding-left: 0;
+    padding-left: 146px;
     padding-right: 45px;
     padding-bottom: 10px;
     @include dFlex($fd: row-reverse, $jc: flex-start, $ai: normal);
@@ -69,4 +70,13 @@
 
 .number-of-replies {
     color: $purple-3;
+}
+
+@media (max-width: 1200px) {
+    .message {
+        padding-right: 50px;
+    }
+    .message-alternative {
+        padding-left: 50px;
+    }
 }

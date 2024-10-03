@@ -1,0 +1,8 @@
+@import '../../../styles/mixin.scss';
+
+:host {
+    background-color: white;
+    min-width: $side-nav-width;
+    height: 100%;
+    border-radius: 30px;
+}
