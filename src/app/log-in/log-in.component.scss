@@ -6,8 +6,16 @@
     width: 100%;
 }
 
+h1 {
+    @include fontStyle11;
+    color: $purple-1;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
 .link-style {
     color: $purple-2;
+    line-height: 21.6px;
     padding: 10px 15px;
     border-radius: 30px;
     border: 1px solid $bg-color;
@@ -16,6 +24,7 @@
     &:hover {
         border: 1px solid $light-purple;
         color: $purple-1;
+        font-weight: 500;
         cursor: pointer;
     }
 }
@@ -40,8 +49,9 @@ app-intro {
 }
 
 .login-content {
+    @include dFlex($fd: column, $jc: flex-start);
     height: 100%;
-    @include dFlex($fd: column);
+    padding: 75px 0 48px 0;
 }
 
 header {
@@ -59,8 +69,7 @@ header {
     }
 
     span {
-        font-size: 24px;
-        font-weight: 700;
+        @include fontStyle9;
     }
 }
 
@@ -70,14 +79,83 @@ header {
 }
 
 .login-window {
+    @include dFlex($fd: column);
+    width: 606px;
+    padding: 50px 53px;
     margin-top: 4px;
     margin-bottom: 65px;
-    width: 606px;
-    height: 769px;
     background-color: white;
     border-radius: 30px;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+
+    > * {
+        width: 100%;
+    }
 }
+
+.login-text {
+    @include fontStlye7;
+    text-align: center;
+    margin-bottom: 46px;
+}
+
+.input-style {
+    position: relative;
+    margin-bottom: 6px;
+
+    > span {
+        position: absolute;
+        left: 32px;
+        top: calc(50% - 12px);
+        height: 24px;
+        width: 24px;
+        color: $text-gray;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    > input {
+        padding: 18px 32px 18px 86px;
+        border-radius: 100px;
+        border: 1px solid $bg-color;
+        background-color: $bg-color;
+        width: 100%;
+        font-weight: 500;
+        transition: all 100ms ease-in;
+
+        &::placeholder {
+            color: $text-gray;
+        }
+
+        &:hover {
+            cursor: pointer;
+            border: 1px solid $text-gray;
+        }
+
+        &:focus {
+            outline: unset;
+            border: 1px solid $purple-3;
+
+            &::placeholder {
+                visibility: hidden;
+            }
+
+            + span {
+                color: black;
+            }
+        }
+    }
+}
+
+.error-text {
+    @include fontStyle0;
+    color: $error-rosa;
+    margin-bottom: 34px;
+}
+
+
 
 .imprint-privacy-policy-container {
     @include dFlex();

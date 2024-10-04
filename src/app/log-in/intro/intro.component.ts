@@ -20,7 +20,7 @@ export class IntroComponent implements OnInit {
 
 
   exitIntroScreen() {
-    // this.hideIntroScreen.emit(true);
+    this.hideIntroScreen.emit(true);
   }
 
 
