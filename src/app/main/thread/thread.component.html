@@ -1,1 +1,13 @@
-<p>thread works!</p>
+<div class="thread-header">
+    <div class="thread-header-left">
+        <span class="thread-heading">Thread</span>
+        <span class="material-symbols-rounded channel">tag</span>
+        <div class="channel-name channel">{{ channelName }}</div>
+    </div>
+    <button class="icon-btn">
+        <span (click)="emitClose()" class="material-symbols-rounded">close</span>
+    </button>
+</div>
+@for (message of messages; track message) {
+    <app-message [messageData]="message"></app-message>
+}

@@ -18,7 +18,7 @@ a {
     cursor: pointer;
 }
 
-button {
+.btn {
     @include fontStyle3;
     border: unset;
     border-radius: 25px;
@@ -97,6 +97,7 @@ button {
     align-items: center;
     transition: all 75ms;
     background-color: unset;
+    cursor: pointer;
     &:hover {
         background-color: $bg-color;
         .material-symbols-rounded {
@@ -143,6 +144,10 @@ button {
 .avatar-200 {
     height: 200px;
     width: 200px;
+}
+
+.d-none {
+    display: none;
 }
 
 .content-wrapper {
