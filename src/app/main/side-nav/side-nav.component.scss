@@ -1,0 +1,81 @@
+@import "../../../styles/mixin.scss";
+
+.dFlex {
+  @include dFlex(row, space-between, center);
+}
+
+.dFlex1 {
+  @include dFlex(row, space-between, center);
+  width: Hug (176px) px;
+  height: Hug (40px) px;
+  padding: 5px 10px 5px 0px;
+  gap: 15px;
+  border-radius: 15px 0px 0px 0px;
+  opacity: 0px;
+
+  div {
+    width: Hug (121px) px;
+    height: Hug (27px) px;
+    gap: 10px;
+    opacity: 0px;
+    @include dFlex(row, space-between, center);
+  }
+}
+
+.dFlex2 {
+    @include dFlex(row, center, center);
+}
+
+section {
+  width: 366px;
+  height: 940px;
+  padding: 32px 30px 32px 30px;
+  gap: 25px;
+  border-radius: 30px;
+  background-color: white;
+  @include fontStyle2;
+}
+
+.font-size1 {
+  @include fontStyle9;
+}
+
+.font-size2 {
+  @include fontStyle6;
+}
+
+.font-size3 {
+  @include fontStyle3;
+  color: #535af1;
+}
+
+.font-size4 {
+  @include fontStyle2;
+}
+
+.devSpace {
+  display: flex;
+  align-items: center;
+  width: 250px;
+  height: 60px;
+  padding-right: 20px;
+  gap: 15px;
+}
+
+.channels {
+  width: Fill (306px) px;
+  height: Hug (46px) px;
+  padding: 3px 0px 3px 0px;
+  gap: 0px;
+  justify-content: space-between;
+  opacity: 0px;
+}
+
+.entwicklerTeam {
+  @include dFlex(row, center, center);
+  background: rgba(236, 238, 254, 1);
+  width: 206px;
+  height: 33px;
+  gap: 10px;
+  border-radius: 20px;
+}
