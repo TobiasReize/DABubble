@@ -4,6 +4,7 @@
     @include dFlex($jc: flex-start, $ai: normal);
     padding-top: 10px;
     padding-left: 45px;
+    padding-right: 146px;
     padding-bottom: 10px;
     gap: 30px;
     background-color: white;
@@ -18,7 +19,7 @@
 
 .message-alternative {
     padding-top: 10px;
-    padding-left: 0;
+    padding-left: 146px;
     padding-right: 45px;
     padding-bottom: 10px;
     @include dFlex($fd: row-reverse, $jc: flex-start, $ai: normal);
@@ -27,6 +28,14 @@
             background-color: $purple-2;
         }
     }
+}
+
+.thread-message {
+    padding-right: 40px;
+}
+
+.thread-message-alternative {
+    padding-left: 40px;
 }
 
 .main-message-container {
@@ -52,10 +61,8 @@
     border-radius: 30px 0px 30px 30px;
 }
 
-.message-header {
-    h3 {
+.user-name {
         @include fontStyle3;
-    }
 }
 
 .message-header, .bottom-message-container {
@@ -69,4 +76,14 @@
 
 .number-of-replies {
     color: $purple-3;
+    cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+    .message {
+        padding-right: 50px;
+    }
+    .message-alternative {
+        padding-left: 50px;
+    }
 }

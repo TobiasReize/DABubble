@@ -79,3 +79,12 @@ section {
   gap: 10px;
   border-radius: 20px;
 }
+
+@import '../../../styles/mixin.scss';
+
+:host {
+    background-color: white;
+    min-width: $side-nav-width;
+    height: calc(100vh - $header-and-bottom-spacing);
+    border-radius: 30px;
+}

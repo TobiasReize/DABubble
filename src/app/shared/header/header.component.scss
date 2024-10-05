@@ -1,12 +1,23 @@
 @import '../../../styles/mixin.scss';
 
-header {
+:host {
     @include dFlex($jc: space-between);
     width: 100%;
+    padding-top: 25px;
+    padding-right: 34px;
+    padding-bottom: 20px;
+}
+
+.header-left-side {
+    width: 100%;
+    @include dFlex($jc: flex-start);
+    gap: 20px;
 }
 
 .logo-container {
-    @include dFlex();
+    width: $side-nav-width;
+    min-width: $side-nav-width;
+    @include dFlex($jc: flex-start);
     gap: 16px;
 
     img {
@@ -17,5 +28,49 @@ header {
     span {
         font-size: 24px;
         font-weight: 700;
+    }
+}
+
+.input-container {
+    width: 100%;
+    max-width: 989px;
+    position: relative;
+    @include dFlex();
+}
+
+.search-icon {
+    color: gray;
+    position: absolute;
+    right: 45px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 20px;
+    border-radius: 30px;
+    border: unset;
+}
+
+.header-profile-section {
+    min-width: $thread-width;
+    @include dFlex($jc: flex-end);
+    gap: 20px;
+}
+
+@media (max-width: 1440px) {
+    .header-profile-section {
+        min-width: $thread-width-small;
+    }
+    .header-profile-section h3 {
+        @include fontStyle9;
+    }
+}
+
+@media (max-width: 1200px) {
+    .input-container {
+        display: none;
+    }
+    .header-profile-section h2 {
+        display: none;
     }
 }

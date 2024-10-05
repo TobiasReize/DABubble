@@ -10,9 +10,16 @@
 $purple-1: #444DF2;
 $purple-2: #797EF3;
 $purple-3: #535AF1;
-$disable-gray: #686868;
+$text-gray: #686868;
 $bg-color: #ECEEFE;
 $light-purple: #ADB0D9;
+// a little lighter for the scrollbar:
+$light-purple-scrollbar: #c7c9e5;
+$error-rosa: #ED1E79;
+$side-nav-width: 366px;
+$thread-width: 485px;
+$thread-width-small: $side-nav-width;
+$header-and-bottom-spacing: 135px;
 
 // typography:
 @mixin fontStyle0 {
@@ -80,4 +87,10 @@ $light-purple: #ADB0D9;
     font-size: 32px;
     font-weight: 700;
     line-height: 43.65px;
+}
+
+@mixin fontStyle11 {
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 55.2px;
 }

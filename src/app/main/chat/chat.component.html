@@ -1,10 +1,11 @@
-<div class="chat">
-    <div class="chat-header">
-        <span class="material-symbols-rounded">tag</span>
-        <div class="channel-name">{{ channelName }}</div>
-        <span class="material-symbols-rounded">keyboard_arrow_down</span>
-    </div>
+<div class="chat-header">
+    <span class="material-symbols-rounded">tag</span>
+    <div class="channel-name">{{ channelName }}</div>
+    <span class="material-symbols-rounded">keyboard_arrow_down</span>
+</div>
+<div class="messages-container">
     @for (message of messages; track message) {
         <app-message [messageData]="message"></app-message>
     }
 </div>
+<app-message-textarea placeholder="Nachricht an #{{channelName}}"></app-message-textarea>
