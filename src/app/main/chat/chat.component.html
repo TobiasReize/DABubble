@@ -3,6 +3,9 @@
     <div class="channel-name">{{ channelName }}</div>
     <span class="material-symbols-rounded">keyboard_arrow_down</span>
 </div>
-@for (message of messages; track message) {
-    <app-message [messageData]="message"></app-message>
-}
+<div class="messages-container">
+    @for (message of messages; track message) {
+        <app-message [messageData]="message"></app-message>
+    }
+</div>
+<app-message-textarea placeholder="Nachricht an #{{channelName}}"></app-message-textarea>

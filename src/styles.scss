@@ -158,12 +158,28 @@ h2 {
 }
 
 .d-none {
-    display: none;
+    display: none !important;
 }
 
 .content-wrapper {
     max-width: 1920px;
     width: 100%;
+    min-height: 100vh;
+    @include dFlex($fd: column, $jc: flex-start);
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: $light-purple-scrollbar;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $purple-2;
+    border-radius: 6px;
 }
 
 .link-style {
@@ -235,4 +251,20 @@ h2 {
 .error-text {
     @include fontStyle0;
     color: $error-rosa;
+    min-height: 100vh;
+    @include dFlex($fd: column, $jc: flex-start);
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: $light-purple-scrollbar;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $purple-2;
+    border-radius: 6px;
 }

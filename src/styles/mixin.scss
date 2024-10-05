@@ -13,10 +13,12 @@ $purple-3: #535AF1;
 $text-gray: #686868;
 $bg-color: #ECEEFE;
 $light-purple: #ADB0D9;
+// a little lighter for the scrollbar:
+$light-purple-scrollbar: #c7c9e5;
 $error-rosa: #ED1E79;
 $side-nav-width: 366px;
 $thread-width: 485px;
-$thread-width-small: 320px;
+$thread-width-small: $side-nav-width;
 
 // typography:
 @mixin fontStyle0 {

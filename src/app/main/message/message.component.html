@@ -1,11 +1,11 @@
-<div class="message" [ngClass]="isMe ? 'message-alternative' : ''">
+<div class="message" [ngClass]="{ 'message-alternative' : isMe, 'thread-message' : isThreadMessage, 'thread-message-alternative' : isMe && isThreadMessage }">
     <img class="avatar avatar-70" src="assets/img/{{ messageData.imageName }}" alt="{{messageData.imageName}}">
     <div class="main-message-container" [ngClass]="isMe ? 'main-message-container-alternative' : ''">
         <div class="message-header">
             <h3>{{ messageData.userName }}</h3>
             <span class="message-posted-at">{{ messageData.postedAt }}</span>
         </div>
-        <div class="message-content" [ngClass]="isMe ? 'message-content-alternative' : ''">{{ messageData.content }}</div>
+        <div class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{ messageData.content }}</div>
         @if (messageData.numberOfReplies > 0) {
             <div class="bottom-message-container">
                 <div (click)="openThread()" class="number-of-replies">{{ messageData.numberOfReplies }} Antworten</div>
