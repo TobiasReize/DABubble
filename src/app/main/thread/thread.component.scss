@@ -4,7 +4,7 @@
     background-color: white;
     min-width: $thread-width;
     width: $thread-width;
-    height: calc(100vh - 115px);
+    height: calc(100vh - $header-and-bottom-spacing);
     border-radius: 30px;
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     overflow: hidden;
