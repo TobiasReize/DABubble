@@ -8,6 +8,7 @@
     height: calc(100vh - 115px);
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     background-color: white;
+    padding-bottom: 40px;
 }
 
 .chat-header {

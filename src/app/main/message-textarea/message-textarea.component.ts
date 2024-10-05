@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-message-textarea',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './message-textarea.component.scss'
 })
 export class MessageTextareaComponent {
-
+  @Input() placeholder: string = 'Nachricht an #';
 }

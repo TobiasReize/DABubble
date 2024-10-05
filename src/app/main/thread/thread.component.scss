@@ -9,6 +9,7 @@
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     overflow: hidden;
     position: relative;
+    padding-bottom: 40px;
 }
 
 .thread-header {
