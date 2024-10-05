@@ -3,6 +3,6 @@
 :host {
     background-color: white;
     min-width: $side-nav-width;
-    height: 100%;
+    height: calc(100vh - $header-and-bottom-spacing);
     border-radius: 30px;
 }

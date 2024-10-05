@@ -5,7 +5,7 @@
     overflow: hidden;
     position: relative;
     width: 100%;
-    height: calc(100vh - 115px);
+    height: calc(100vh - $header-and-bottom-spacing);
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     background-color: white;
     padding-bottom: 40px;
