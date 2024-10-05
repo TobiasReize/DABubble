@@ -8,7 +8,7 @@
         <div class="message-content" [ngClass]="isMe ? 'message-content-alternative' : ''">{{ messageData.content }}</div>
         @if (messageData.numberOfReplies > 0) {
             <div class="bottom-message-container">
-                <div class="number-of-replies">{{ messageData.numberOfReplies }} Antworten</div>
+                <div (click)="openThread()" class="number-of-replies">{{ messageData.numberOfReplies }} Antworten</div>
                 <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt }}</div>
             </div>
         }

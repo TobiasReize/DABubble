@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { CommonModule } from '@angular/common';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-message',
@@ -14,7 +15,13 @@ export class MessageComponent {
   userName: string = 'Maria Musterfrau';
   isMe: boolean = false;
 
+  constructor(private chatService: ChatService) {}
+
   ngOnInit() {
     this.isMe = this.messageData.userName == this.userName;
+  }
+
+  openThread() {
+    this.chatService.changeThreadVisibility(true);
   }
 }
