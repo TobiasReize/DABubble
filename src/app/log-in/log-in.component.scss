@@ -152,10 +152,82 @@ header {
 .error-text {
     @include fontStyle0;
     color: $error-rosa;
-    margin-bottom: 34px;
+    margin-bottom: 14px;
 }
 
+.login-window {
+    > .forgot-password {
+        text-align: center;
+        color: $purple-2;
+        line-height: 21.6px;
+        padding: 5px 15px;
+        border-radius: 30px;
+        width: fit-content;
+        margin-bottom: 33px;
+    
+        &:hover {
+            color: $purple-1;
+            background-color: $bg-color;
+            font-weight: 500;
+            cursor: pointer;
+        }
+    }
+}
 
+.or-separator {
+    @include dFlex();
+    gap: 15px;
+    margin-bottom: 43px;
+}
+
+.line {
+    height: 1px;
+    background-color: $light-purple;
+    flex: 1;
+}
+
+.google-btn {
+    @include dFlex();
+    gap: 20px;
+    background-color: $bg-color;
+    padding: 11px 32px;
+    border-radius: 100px;
+    border: 1px solid $bg-color;
+    margin-bottom: 43px;
+    transition: all 100ms ease-out;
+
+    &:hover {
+        border: 1px solid $purple-1;
+        cursor: pointer;
+
+        > span {
+            font-weight: 700;
+        }
+    }
+
+    &:active {
+        border: 1px solid $text-gray;
+
+        > span {
+            font-weight: 500;
+        }
+    }
+
+    > img {
+        height: 38px;
+        width: 38px;
+    }
+
+    > span {
+        color: $purple-1;
+        line-height: 21.6px;
+    }
+}
+
+.btn-container {
+    @include dFlex();
+    gap: 30px;
+}
 
 .imprint-privacy-policy-container {
     @include dFlex();
