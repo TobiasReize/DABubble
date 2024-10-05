@@ -4,11 +4,12 @@ import { MessageComponent } from '../message/message.component';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../services/chat.service';
 import { Subscription } from 'rxjs';
+import { MessageTextareaComponent } from '../message-textarea/message-textarea.component';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [MessageComponent, CommonModule],
+  imports: [MessageComponent, MessageTextareaComponent, CommonModule],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
@@ -34,5 +35,6 @@ export class ThreadComponent {
 
   closeThread() {
     this.chatService.changeThreadVisibility(false);
+    console.log('test');
   }
 }

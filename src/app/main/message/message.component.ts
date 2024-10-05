@@ -12,6 +12,7 @@ import { ChatService } from '../services/chat.service';
 })
 export class MessageComponent {
   @Input() messageData: Message = new Message();
+  @Input() isThreadMessage: boolean = false;
   userName: string = 'Maria Musterfrau';
   isMe: boolean = false;
 

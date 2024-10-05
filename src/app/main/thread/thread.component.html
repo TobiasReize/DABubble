@@ -8,6 +8,9 @@
         <span class="material-symbols-rounded">close</span>
     </button>
 </div>
-@for (message of messages; track message) {
-    <app-message [messageData]="message"></app-message>
-}
+<div class="messages-container">
+    @for (message of messages; track message) {
+        <app-message [messageData]="message" [isThreadMessage]="true"></app-message>
+    }
+</div>
+<app-message-textarea></app-message-textarea>

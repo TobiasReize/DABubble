@@ -3,11 +3,12 @@ import { MessageComponent } from '../message/message.component';
 import { Message } from '../../models/message.class';
 import { ChatService } from '../services/chat.service';
 import { Subscription } from 'rxjs';
+import { MessageTextareaComponent } from '../message-textarea/message-textarea.component';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [MessageComponent],
+  imports: [MessageComponent, MessageTextareaComponent],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })

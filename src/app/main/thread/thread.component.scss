@@ -3,8 +3,10 @@
 :host {
     background-color: white;
     min-width: $thread-width;
-    height: 100%;
+    width: $thread-width;
+    height: calc(100vh - 115px);
     border-radius: 30px;
+    @include dFlex($fd: column, $jc: normal, $ai: normal);
     overflow: hidden;
     position: relative;
 }
@@ -25,14 +27,23 @@
     @include fontStyle6;
 }
 
+.messages-container {
+    overflow-y: auto;
+}
+
 .channel {
     @include fontStyle0;
     color: $purple-2;
 }
 
+app-message-textarea {
+    width: 100%;
+}
+
 @media (max-width: 1440px) {
     :host {
         min-width: $thread-width-small;
+        width: $thread-width-small;
     }
 }
 

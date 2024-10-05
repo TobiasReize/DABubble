@@ -11,6 +11,8 @@ export class ChatService {
     new Message('avatar4.svg', 'Maria Musterfrau', 1, '00:00', '00:00', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.'),
     new Message(),
     new Message(),
+    new Message(),
+    new Message(),
     new Message()
   ];
 
@@ -31,6 +33,7 @@ export class ChatService {
 
   changeThreadVisibility(bool: boolean) {
     this.openThreadEvent.next(bool);
+    console.log(bool);
   }
 
   threadVisibilityListener() {

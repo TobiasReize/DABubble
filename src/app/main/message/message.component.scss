@@ -30,6 +30,14 @@
     }
 }
 
+.thread-message {
+    padding-right: 40px;
+}
+
+.thread-message-alternative {
+    padding-left: 40px;
+}
+
 .main-message-container {
     @include dFlex($fd: column, $jc: flex-start, $ai: normal);
     gap: 8px;
