@@ -7,26 +7,8 @@
 }
 
 h1 {
-    @include fontStyle11;
-    color: $purple-1;
     text-align: center;
     margin-bottom: 30px;
-}
-
-.link-style {
-    color: $purple-2;
-    line-height: 21.6px;
-    padding: 10px 15px;
-    border-radius: 30px;
-    border: 1px solid $bg-color;
-    transition: all 100ms ease-in;
-
-    &:hover {
-        border: 1px solid $light-purple;
-        color: $purple-1;
-        font-weight: 500;
-        cursor: pointer;
-    }
 }
 
 app-intro {
@@ -54,30 +36,6 @@ app-intro {
     padding: 75px 0 48px 0;
 }
 
-header {
-    @include dFlex($jc: space-between);
-    width: 100%;
-}
-
-.logo-container {
-    @include dFlex();
-    gap: 16px;
-
-    img {
-        height: 70px;
-        width: 70px;
-    }
-
-    span {
-        @include fontStyle9;
-    }
-}
-
-.create-account-container {
-    @include dFlex($fd: column, $ai: flex-end);
-    gap: 10px;
-}
-
 .login-window {
     @include dFlex($fd: column);
     width: 606px;
@@ -95,63 +53,12 @@ header {
 
 .login-text {
     @include fontStlye7;
+    line-height: 24px;
     text-align: center;
     margin-bottom: 46px;
 }
 
-.input-style {
-    position: relative;
-    margin-bottom: 6px;
-
-    > span {
-        position: absolute;
-        left: 32px;
-        top: calc(50% - 12px);
-        height: 24px;
-        width: 24px;
-        color: $text-gray;
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
-
-    > input {
-        padding: 18px 32px 18px 86px;
-        border-radius: 100px;
-        border: 1px solid $bg-color;
-        background-color: $bg-color;
-        width: 100%;
-        font-weight: 500;
-        transition: all 100ms ease-in;
-
-        &::placeholder {
-            color: $text-gray;
-        }
-
-        &:hover {
-            cursor: pointer;
-            border: 1px solid $text-gray;
-        }
-
-        &:focus {
-            outline: unset;
-            border: 1px solid $purple-3;
-
-            &::placeholder {
-                visibility: hidden;
-            }
-
-            + span {
-                color: black;
-            }
-        }
-    }
-}
-
 .error-text {
-    @include fontStyle0;
-    color: $error-rosa;
     margin-bottom: 14px;
 }
 
@@ -227,9 +134,4 @@ header {
 .btn-container {
     @include dFlex();
     gap: 30px;
-}
-
-.imprint-privacy-policy-container {
-    @include dFlex();
-    gap: 16px;
 }

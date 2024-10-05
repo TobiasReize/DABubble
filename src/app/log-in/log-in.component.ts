@@ -3,11 +3,13 @@ import { IntroComponent } from './intro/intro.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginHeaderComponent } from '../shared/login-header/login-header.component';
+import { FooterComponent } from '../shared/footer/footer.component';
 
 @Component({
   selector: 'app-log-in',
   standalone: true,
-  imports: [CommonModule, FormsModule, IntroComponent],
+  imports: [CommonModule, FormsModule, IntroComponent, LoginHeaderComponent, FooterComponent],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss'
 })
@@ -41,11 +43,6 @@ export class LogInComponent {
       console.log('Test-Login!:', this.loginData);
       ngForm.resetForm();
     }
-  }
-
-
-  goTo(path: string) {
-    this.router.navigateByUrl(path);
   }
 
 

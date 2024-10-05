@@ -1,0 +1,30 @@
+@import '../../../styles/mixin.scss';
+
+:host {
+    @include dFlex();
+    width: 100%;
+}
+
+header {
+    @include dFlex($jc: space-between);
+    width: 100%;
+}
+
+.logo-container {
+    @include dFlex();
+    gap: 16px;
+
+    img {
+        height: 70px;
+        width: 70px;
+    }
+
+    span {
+        @include fontStyle9;
+    }
+}
+
+.create-account-container {
+    @include dFlex($fd: column, $ai: flex-end);
+    gap: 10px;
+}

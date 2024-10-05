@@ -18,6 +18,17 @@ a {
     cursor: pointer;
 }
 
+h1 {
+    @include fontStyle11;
+    color: $purple-1;
+}
+
+h2 {
+    @include fontStyle10;
+    line-height: 38.4px;
+    color: $purple-1;
+}
+
 .btn {
     @include fontStyle3;
     border: unset;
@@ -153,4 +164,75 @@ a {
 .content-wrapper {
     max-width: 1920px;
     width: 100%;
+}
+
+.link-style {
+    color: $purple-2;
+    line-height: 21.6px;
+    padding: 10px 15px;
+    border-radius: 30px;
+    border: 1px solid $bg-color;
+    transition: all 100ms ease-in;
+
+    &:hover {
+        border: 1px solid $light-purple;
+        color: $purple-1;
+        font-weight: 500;
+        cursor: pointer;
+    }
+}
+
+.input-style {
+    position: relative;
+    margin-bottom: 6px;
+
+    > span {
+        position: absolute;
+        left: 32px;
+        top: calc(50% - 12px);
+        height: 24px;
+        width: 24px;
+        color: $text-gray;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    > input {
+        padding: 18px 32px 18px 86px;
+        border-radius: 100px;
+        border: 1px solid $bg-color;
+        background-color: $bg-color;
+        width: 100%;
+        font-weight: 500;
+        transition: all 100ms ease-in;
+
+        &::placeholder {
+            color: $text-gray;
+        }
+
+        &:hover {
+            cursor: pointer;
+            border: 1px solid $text-gray;
+        }
+
+        &:focus {
+            outline: unset;
+            border: 1px solid $purple-3;
+
+            &::placeholder {
+                visibility: hidden;
+            }
+
+            + span {
+                color: black;
+            }
+        }
+    }
+}
+
+.error-text {
+    @include fontStyle0;
+    color: $error-rosa;
 }

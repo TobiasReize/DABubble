@@ -1,0 +1,13 @@
+<header>
+    <div class="logo-container">
+        <img src="assets/img/logo.svg" alt="logo">
+        <span>DABubble</span>
+    </div>
+
+    @if (loginSite) {
+        <div class="create-account-container">
+            <span>Neu bei DABubble?</span>
+            <span (click)="goToRegister()" class="link-style">Konto erstellen</span>
+        </div>
+    }
+</header>
