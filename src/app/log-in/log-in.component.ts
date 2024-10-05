@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IntroComponent } from './intro/intro.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -22,6 +23,9 @@ export class LogInComponent {
   }
 
 
+  constructor(private router: Router) { }
+
+
   setIntroVariable(event: boolean) {
     this.hideIntroScreen = event;
     setTimeout(() => {
@@ -37,6 +41,11 @@ export class LogInComponent {
       console.log('Test-Login!:', this.loginData);
       ngForm.resetForm();
     }
+  }
+
+
+  goTo(path: string) {
+    this.router.navigateByUrl(path);
   }
 
 

@@ -1,0 +1,86 @@
+@import '../../styles/mixin.scss';
+
+:host {
+    @include dFlex();
+    height: 100vh;
+    width: 100%;
+}
+
+.privacy-policy-content {
+    @include dFlex($fd: column, $jc: flex-start);
+    height: 100%;
+    padding: 25px 0;
+}
+
+header {
+    @include dFlex($jc: flex-start);
+    width: 100%;
+    margin-bottom: 20vh;
+}
+
+.logo-container {
+    @include dFlex();
+    gap: 29px;
+
+    img {
+        height: 70px;
+        width: 70px;
+    }
+
+    span {
+        @include fontStyle9;
+    }
+}
+
+.privacy-policy-text-container {
+    @include dFlex($fd: column, $ai: flex-start);
+    padding: 48px 56px;
+    background-color: white;
+    border-radius: 30px;
+}
+
+.material-symbols-rounded {
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $bg-color;
+        color: $purple-3;
+        font-variation-settings: "GRAD" 200;
+    }
+}
+
+h1 {
+    @include fontStyle11;
+    color: $purple-1;
+    margin-bottom: 16px;
+}
+
+h2 {
+    @include fontStyle10;
+    line-height: 38.4px;
+    color: $purple-1;
+    margin-bottom: 16px;
+}
+
+p, a {
+    @include fontStlye7;
+    line-height: 24px;
+}
+
+.m-btm-32 {
+    margin-bottom: 32px;
+}
+
+.source {
+    font-size: 16px;
+
+    > a {
+        font-size: 16px;
+    }
+}
+
+a:hover {
+    text-decoration: underline;
+}
