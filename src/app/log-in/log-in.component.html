@@ -3,48 +3,42 @@
 }
 
 <div class="login-content content-wrapper">
-    <header>
-        <div class="logo-container">
-            <img src="assets/img/logo.svg" alt="logo">
-            <span>DABubble</span>
-        </div>
-        <div class="create-account-container">
-            <span>Neu bei DABubble?</span>
-            <span class="link-style">Konto erstellen</span>
-        </div>
-    </header>
+    <app-login-header></app-login-header>
 
     <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm" class="login-window">
         <h1>Anmeldung</h1>
         <p class="login-text">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</p>
+        
         <div class="input-style">
             <input #email="ngModel" [(ngModel)]="loginData.email" type="email" name="email" id="email" placeholder="beispielname@email.com" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required>
             <span class="material-symbols-rounded">mail</span>
         </div>
         <span class="error-text" [ngStyle]="{'visibility': (!email.valid && email.touched) ? 'visible' : 'hidden'}">*Diese E-Mail-Adresse ist leider ungültig.</span>
+        
         <div class="input-style">
             <input #password="ngModel" [(ngModel)]="loginData.password" minlength="5" type="password" name="password" id="password" placeholder="Passwort" required>
             <span class="material-symbols-rounded">lock</span>
         </div>
         <span class="error-text" [ngStyle]="{'visibility': (!password.valid && password.touched) ? 'visible' : 'hidden'}">Falsches Passwort oder E-Mail... Bitte noch einmal versuchen.</span>
+        
         <span class="forgot-password">Passwort vergessen?</span>
+
         <div class="or-separator">
             <div class="line"></div>
             <span>ODER</span>
             <div class="line"></div>
         </div>
+
         <div class="google-btn">
             <img src="assets/img/google.svg" alt="google">
             <span>Anmelden mit Google</span>
         </div>
+        
         <div class="btn-container">
             <input class="btn btn-prim" type="submit" name="submit" id="submit" value="Anmelden">
             <button class="btn btn-sec">Gäste-Login</button>
         </div>
     </form>
 
-    <div class="imprint-privacy-policy-container">
-        <span (click)="goTo('imprint')" class="link-style">Impressum</span>
-        <span (click)="goTo('privacy-policy')" class="link-style">Datenschutz</span>
-    </div>
+    <app-footer></app-footer>
 </div>

@@ -1,0 +1,11 @@
+@import '../../../styles/mixin.scss';
+
+:host {
+    @include dFlex();
+    width: 100%;
+}
+
+.imprint-privacy-policy-container {
+    @include dFlex();
+    gap: 16px;
+}

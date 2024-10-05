@@ -1,0 +1,41 @@
+<div class="register-content content-wrapper">
+    <app-login-header [loginSite]="false"></app-login-header>
+
+    <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm" class="register-window">
+        <div class="headline-container">
+            <div class="flex1"><span class="material-symbols-rounded arrow-back">arrow_back</span></div>
+            <h1>Konto erstellen</h1>
+            <div class="flex1"></div>
+        </div>
+        <p class="register-text">Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
+
+        <div class="input-style">
+            <input #name="ngModel" [(ngModel)]="registerData.name" type="text" name="name" id="name" placeholder="Vor- und Nachname" required>
+            <span class="material-symbols-rounded">person</span>
+        </div>
+        <span class="error-text" [ngStyle]="{'visibility': (!name.valid && name.touched) ? 'visible' : 'hidden'}">Bitte schreiben Sie einen Namen.</span>
+
+        <div class="input-style">
+            <input #email="ngModel" [(ngModel)]="registerData.email" type="email" name="email" id="email" placeholder="beispielname@email.com" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required>
+            <span class="material-symbols-rounded">mail</span>
+        </div>
+        <span class="error-text" [ngStyle]="{'visibility': (!email.valid && email.touched) ? 'visible' : 'hidden'}">*Diese E-Mail-Adresse ist leider ungültig.</span>
+        
+        <div class="input-style">
+            <input #password="ngModel" [(ngModel)]="registerData.password" minlength="5" type="password" name="password" id="password" placeholder="Passwort" required>
+            <span class="material-symbols-rounded">lock</span>
+        </div>
+        <span class="error-text" [ngStyle]="{'visibility': (!password.valid && password.touched) ? 'visible' : 'hidden'}">Bitte geben Sie ein Passwort ein.</span>
+        
+        <div class="privacy-policy-container">
+            <span class="material-symbols-rounded">check_box</span>
+            <p>Ich stimme der<span (click)="goToPrivacyPolicy()">Datenschutzerklärung</span>zu.</p>
+        </div>
+
+        <div class="btn-container">
+            <input [disabled]="!name.valid || !email.valid || !password.valid || !(agreedPrivacyPolicy === true)"  class="btn btn-prim" type="submit" name="submit" id="submit" value="Weiter">
+        </div>
+    </form>
+
+    <app-footer></app-footer>
+</div>
