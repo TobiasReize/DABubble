@@ -55,16 +55,13 @@
     min-width: $thread-width;
     @include dFlex($jc: flex-end);
     gap: 20px;
-    h2 {
-        @include fontStyle10;
-    }
 }
 
 @media (max-width: 1440px) {
     .header-profile-section {
         min-width: $thread-width-small;
     }
-    .header-profile-section h2 {
+    .header-profile-section h3 {
         @include fontStyle9;
     }
 }

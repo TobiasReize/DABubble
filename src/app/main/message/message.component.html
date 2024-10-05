@@ -2,7 +2,7 @@
     <img class="avatar avatar-70" src="assets/img/{{ messageData.imageName }}" alt="{{messageData.imageName}}">
     <div class="main-message-container" [ngClass]="isMe ? 'main-message-container-alternative' : ''">
         <div class="message-header">
-            <h3>{{ messageData.userName }}</h3>
+            <span class="user-name">{{ messageData.userName }}</span>
             <span class="message-posted-at">{{ messageData.postedAt }}</span>
         </div>
         <div class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{ messageData.content }}</div>

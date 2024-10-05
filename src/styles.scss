@@ -29,6 +29,10 @@ h2 {
     color: $purple-1;
 }
 
+h3 {
+    @include fontStyle10;
+}
+
 .btn {
     @include fontStyle3;
     border: unset;
