@@ -3,7 +3,7 @@
 
     <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm" class="register-window">
         <div class="headline-container">
-            <div class="flex1"><span class="material-symbols-rounded arrow-back">arrow_back</span></div>
+            <div class="flex1"><span (click)="goTo('')" class="material-symbols-rounded arrow-back">arrow_back</span></div>
             <h1>Konto erstellen</h1>
             <div class="flex1"></div>
         </div>
@@ -29,7 +29,7 @@
         
         <div class="privacy-policy-container">
             <span class="material-symbols-rounded">check_box</span>
-            <p>Ich stimme der<span (click)="goToPrivacyPolicy()">Datenschutzerklärung</span>zu.</p>
+            <p>Ich stimme der<span (click)="goTo('privacy-policy')">Datenschutzerklärung</span>zu.</p>
         </div>
 
         <div class="btn-container">

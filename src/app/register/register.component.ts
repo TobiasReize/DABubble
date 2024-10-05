@@ -27,8 +27,8 @@ export class RegisterComponent {
   constructor(private router: Router) { }
 
 
-  goToPrivacyPolicy() {
-    this.router.navigateByUrl('privacy-policy');    
+  goTo(path: string) {
+    this.router.navigateByUrl(path);    
   }
 
 
