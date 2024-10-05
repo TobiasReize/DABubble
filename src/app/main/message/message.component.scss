@@ -79,6 +79,28 @@
     cursor: pointer;
 }
 
+.reactions-container {
+    @include dFlex($jc: normal, $ai: center);
+    gap: 12px;
+}
+
+.reaction {
+    @include dFlex($jc: normal, $ai: normal);
+    background-color: white;
+    padding: 5px 10px;
+    gap: 10px;
+    border-radius: 20px;
+    border: 1px solid $light-purple;
+    img {
+        height: 24px;
+        width: 24px;
+    }
+}
+
+.material-symbols-rounded {
+    padding: 0 4px;
+}
+
 @media (max-width: 1200px) {
     .message {
         padding-right: 50px;
