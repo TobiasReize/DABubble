@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   
   registerTest: boolean = true;
-  agreedPrivacyPolicy: boolean | 'empty' = 'empty';
+  agreedPrivacyPolicy: boolean = false;
 
   registerData = {
     name: '',
@@ -32,12 +32,18 @@ export class RegisterComponent {
   }
 
 
+  toggleCheckbox() {
+    this.agreedPrivacyPolicy = !this.agreedPrivacyPolicy;
+  }
+
+
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid && !this.registerTest) {
       
     } else if (ngForm.submitted && ngForm.form.valid && this.registerTest) {  // Test-Bereich!
       console.log('Test-Registrierung!:', this.registerData);
       ngForm.resetForm();
+      this.agreedPrivacyPolicy = false;
     }
   }
 
