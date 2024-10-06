@@ -3,13 +3,13 @@
     <div class="main-message-container" [ngClass]="isMe ? 'main-message-container-alternative' : ''">
         <div class="message-header">
             <span class="user-name">{{ messageData.userName }}</span>
-            <span class="message-posted-at">{{ messageData.postedAt }}</span>
+            <span class="message-posted-at">{{ postedAtAsTimeString }}</span>
         </div>
         <div class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{ messageData.content }}</div>
         @if (messageData.numberOfReplies > 0) {
             <div class="bottom-message-container">
                 <div (click)="openThread()" class="number-of-replies">{{ messageData.numberOfReplies }} Antworten</div>
-                <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt }}</div>
+                <div class="last-reply-at">Letzte Antwort {{ lastReplyAtAsTimeString }}</div>
             </div>
         }
         <div class="reactions-container">

@@ -14,12 +14,16 @@ export class MessageComponent {
   @Input() messageData: Message = new Message();
   @Input() isThreadMessage: boolean = false;
   userName: string = 'Maria Musterfrau';
+  postedAtAsTimeString: string = '';
+  lastReplyAtAsTimeString: string = '';
   isMe: boolean = false;
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.isMe = this.messageData.userName == this.userName;
+    this.postedAtAsTimeString = new Date(+this.messageData.lastReplyAt).toLocaleTimeString().slice(0, -3);
+    this.lastReplyAtAsTimeString = new Date(+this.messageData.lastReplyAt).toLocaleTimeString().slice(0, -3);
   }
 
   openThread() {
