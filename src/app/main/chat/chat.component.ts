@@ -34,4 +34,14 @@ export class ChatComponent {
   sendMessage(message: Message) {
     this.chatService.addChatMessage(message);
   }
+
+  isAnotherDay(messageA: Message, messageB: Message) {
+    const firstDate = messageA.postedAt;
+    const secondDate = messageB.postedAt;
+    if (firstDate.getFullYear() == secondDate.getFullYear() && firstDate.getMonth() == secondDate.getMonth() && firstDate.getDate() == secondDate.getDate()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

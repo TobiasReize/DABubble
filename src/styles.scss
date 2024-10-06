@@ -33,6 +33,12 @@ h3 {
     @include fontStyle10;
 }
 
+hr {
+    border: none;
+    background-color: $light-purple;
+    height: 1px;
+}
+
 .btn {
     @include fontStyle3;
     border: unset;

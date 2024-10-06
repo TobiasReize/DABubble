@@ -6,6 +6,9 @@
 <div class="messages-container">
     @for (message of messages; track message) {
         <app-message [messageData]="message"></app-message>
+        @if (messages[$index + 1] && isAnotherDay(message, messages[$index + 1])) {
+            <hr>
+        }
     }
 </div>
 <app-message-textarea placeholder="Nachricht an #{{channelName}}"></app-message-textarea>

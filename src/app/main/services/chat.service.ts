@@ -8,7 +8,7 @@ import { Message } from '../../models/message.class';
 export class ChatService {
 
   private dummyChatMessages: Message[] = [
-    new Message('avatar4.svg', 'Maria Musterfrau', 1, '1728206583002', '1728206583002', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.'),
+    new Message('avatar4.svg', 'Maria Musterfrau', 1, new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.'),
     new Message(),
     new Message(),
     new Message(),
@@ -17,7 +17,7 @@ export class ChatService {
   ];
 
   private dummyThreadMessages: Message[] = [
-    new Message('avatar4.svg', 'Maria Musterfrau', 1, '1728206583002', '1728206540532', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.'),
+    new Message('avatar4.svg', 'Maria Musterfrau', 1, new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.'),
     new Message(),
     new Message(),
     new Message()
