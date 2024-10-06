@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Message } from '../../models/message.class';
+import { Reaction } from '../../models/reaction.class';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +9,9 @@ import { Message } from '../../models/message.class';
 export class ChatService {
 
   private dummyChatMessages: Message[] = [
-    new Message('avatar4.svg', 'Maria Musterfrau', 1, new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.'),
+    new Message('avatar4.svg', 'Maria Musterfrau', new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', [new Reaction()], [new Message()]),
     new Message(),
     new Message(),
-    new Message(),
-    new Message(),
-    new Message()
-  ];
-
-  private dummyThreadMessages: Message[] = [
-    new Message('avatar4.svg', 'Maria Musterfrau', 1, new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.'),
     new Message(),
     new Message(),
     new Message()
@@ -25,7 +19,7 @@ export class ChatService {
 
   private chatMessages = new BehaviorSubject<Message[]>(this.dummyChatMessages);
 
-  private threadMessages = new BehaviorSubject<Message[]>(this.dummyThreadMessages);
+  private threadMessage = new BehaviorSubject<Message>(new Message());
 
   private openThreadEvent = new BehaviorSubject<boolean>(false);
 
@@ -33,7 +27,10 @@ export class ChatService {
 
   changeThreadVisibility(bool: boolean) {
     this.openThreadEvent.next(bool);
-    console.log(bool);
+  }
+
+  changeThread(message: Message) {
+    this.threadMessage.next(message);
   }
 
   threadVisibilityListener() {
@@ -45,7 +42,7 @@ export class ChatService {
   }
 
   threadMessagesListener() {
-    return this.threadMessages.asObservable();
+    return this.threadMessage.asObservable();
   }
 
   addChatMessage(message: Message) {

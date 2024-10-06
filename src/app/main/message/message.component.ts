@@ -24,5 +24,6 @@ export class MessageComponent {
 
   openThread() {
     this.chatService.changeThreadVisibility(true);
+    this.chatService.changeThread(this.messageData);
   }
 }

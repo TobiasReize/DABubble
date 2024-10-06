@@ -19,13 +19,13 @@ export class ThreadComponent {
   
   constructor(private chatService: ChatService) { }
 
-  messages: Message[] = [];
+  message!: Message;
 
   messagesSubscription!: Subscription;
 
   ngOnInit() {
-    this.messagesSubscription = this.chatService.chatMessagesListener().subscribe((messages) => {
-      this.messages = messages;
+    this.messagesSubscription = this.chatService.threadMessagesListener().subscribe((message) => {
+      this.message = message;
     });
   }
 
@@ -35,6 +35,5 @@ export class ThreadComponent {
 
   closeThread() {
     this.chatService.changeThreadVisibility(false);
-    console.log('test');
   }
 }
