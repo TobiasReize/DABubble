@@ -94,3 +94,10 @@ $header-and-bottom-spacing: 135px;
     font-weight: 700;
     line-height: 55.2px;
 }
+
+@mixin flex-gap($gap-size) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap-size;
+  }

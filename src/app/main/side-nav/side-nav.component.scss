@@ -2,38 +2,36 @@
 
 .dFlex {
   @include dFlex(row, space-between, center);
+  width: 100%;
 }
 
 .dFlex1 {
   @include dFlex(row, space-between, center);
-  width: Hug (176px) px;
-  height: Hug (40px) px;
+  width: 176px;
+  height: 40px;
   padding: 5px 10px 5px 0px;
   gap: 15px;
   border-radius: 15px 0px 0px 0px;
-  opacity: 0px;
 
   div {
-    width: Hug (121px) px;
-    height: Hug (27px) px;
+    width: 121px;
+    height: 27px;
     gap: 10px;
-    opacity: 0px;
     @include dFlex(row, space-between, center);
   }
 }
 
 .dFlex2 {
-    @include dFlex(row, center, center);
+  @include dFlex(row, center, center);
 }
 
 section {
-  width: 366px;
-  height: 940px;
   padding: 32px 30px 32px 30px;
   gap: 25px;
   border-radius: 30px;
   background-color: white;
   @include fontStyle2;
+  @include dFlex(column, center, center);
 }
 
 .font-size1 {
@@ -56,19 +54,15 @@ section {
 .devSpace {
   display: flex;
   align-items: center;
-  width: 250px;
+  width: 100%;
   height: 60px;
   padding-right: 20px;
   gap: 15px;
 }
 
 .channels {
-  width: Fill (306px) px;
-  height: Hug (46px) px;
+  width: 100%;
   padding: 3px 0px 3px 0px;
-  gap: 0px;
-  justify-content: space-between;
-  opacity: 0px;
 }
 
 .entwicklerTeam {
@@ -80,11 +74,56 @@ section {
   border-radius: 20px;
 }
 
-@import '../../../styles/mixin.scss';
-
 :host {
-    background-color: white;
-    min-width: $side-nav-width;
-    height: calc(100vh - $header-and-bottom-spacing);
-    border-radius: 30px;
+  background-color: white;
+  min-width: $side-nav-width;
+  height: calc(100vh - $header-and-bottom-spacing);
+  border-radius: 30px;
+}
+
+.contactsDiv {
+  width: 261px;
+  height: 58px;
+  padding: 4px 20px 4px 20px;
+  gap: 15px;
+  border-radius: 35px 0px 0px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.gap25 {
+  @include flex-gap(25px);
+}
+
+.gap13 {
+  @include flex-gap(13px);
+}
+
+.divWidth {
+  width: 100%;
+}
+
+.icon-btn {
+  width: unset;
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding-left: 35px;
+}
+
+.directMessages {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  gap: 25px;
+  justify-content: flex-start;
+
+  div {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+  }
 }
