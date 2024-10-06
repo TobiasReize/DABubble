@@ -1,5 +1,5 @@
 <section>
-  <!-- Header -->
+  <!-- 1 Section - Devspace Section -->
   <div class="dFlex">
     <div class="devSpace">
       <img src="../../../assets/img/main/Workspace logo.svg" />
@@ -11,53 +11,70 @@
     </button>
   </div>
 
-  <div class="dFlex channels">
-    <div class="dFlex1">
-      <button class="icon-btn">
-        <span class="material-symbols-rounded">arrow_drop_down</span>
-      </button>
-      <div>
-        <img src="../../../assets/img/main/workspaces.svg" />
-        <span class="font-size2">Channels</span>
+  <!-- 2 Section -->
+  <div class="gap25">
+    <!-- Channels, Entwicklerteam, Channel hinzufügen -->
+    <div class="gap25 dFlex">
+      <div class="dFlex channels">
+        <div class="dFlex1">
+          <button class="icon-btn">
+            <span class="material-symbols-rounded">arrow_drop_down</span>
+          </button>
+          <div>
+            <img src="../../../assets/img/main/workspaces.svg" />
+            <span class="font-size2">Channels</span>
+          </div>
+        </div>
+
+        <button class="icon-btn">
+          <span class="material-symbols-rounded">add</span>
+        </button>
+      </div>
+
+      <div class="divWidth dFlex2">
+        <div class="entwicklerTeam">
+          <img src="../../../assets/img/main/tag.svg" />
+          <span class="font-size3">Entwicklerteam</span>
+        </div>
+      </div>
+
+      <div class="divWidth channel">
+        <button class="icon-btn">
+          <span class="material-symbols-rounded">add_circle</span>
+        </button>
+        <span>Channel hinzufügen</span>
       </div>
     </div>
 
-    <button class="icon-btn">
-      <span class="material-symbols-rounded">add</span>
-    </button>
-  </div>
+    <!-- Direktnachrichten, Kontakte  -->
+    <div id="contacts" class="contactDiv divWidth gap25">
+      <!-- Direktnachrichten -->
+      <div class="dFlex2 divWidth directMessages">
+        <button class="icon-btn">
+          <span class="material-symbols-rounded">arrow_drop_down</span>
+        </button>
 
-  <div>
-    <div class="entwicklerTeam">
-      <img src="../../../assets/img/main/tag.svg" />
-      <span class="font-size3">Entwicklerteam</span>
-    </div>
-  </div>
+        <div>
+          <button class="icon-btn">
+            <span class="material-symbols-rounded">account_circle</span>
+          </button>
+          <span class="font-size2">Direktnachrichten</span>
+        </div>
+      </div>
 
-  <div>
-    <div class="dFlex2">
-      <button class="icon-btn">
-        <span class="material-symbols-rounded">add_circle</span>
-      </button>
-      <span>Channel hinzufügen</span>
-    </div>
-  </div>
-
-  <div class="dFlex2">
-    <button class="icon-btn">
-      <span class="material-symbols-rounded">arrow_drop_down</span>
-    </button>
-
-    <button class="icon-btn">
-      <span class="material-symbols-rounded">account_circle</span>
-    </button>
-    <span class="font-size2">Direktnachrichten</span>
-  </div>
-
-  <div>
-    <div>
-      <img src="">
-      
+      <!-- contacts -->
+      <div class="gap13">
+        <div
+          *ngFor="let contact of contacts; let i = index"
+          class="contactsDiv"
+        >
+          <img
+            class="avatar avatar-50"
+            [src]="'../../../assets/img/avatar' + this.i + '.svg'"
+          />
+          <span>{{ names[i] }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>

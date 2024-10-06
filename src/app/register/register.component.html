@@ -10,7 +10,7 @@
         <p class="register-text">Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
 
         <div class="input-style">
-            <input #name="ngModel" [(ngModel)]="registerData.name" type="text" name="name" id="name" placeholder="Vor- und Nachname" required>
+            <input #name="ngModel" [(ngModel)]="registerData.name" minlength="4" type="text" name="name" id="name" placeholder="Vor- und Nachname" required>
             <span class="material-symbols-rounded">person</span>
         </div>
         <span class="error-text" [ngStyle]="{'visibility': (!name.valid && name.touched) ? 'visible' : 'hidden'}">Bitte schreiben Sie einen Namen.</span>
@@ -28,12 +28,16 @@
         <span class="error-text" [ngStyle]="{'visibility': (!password.valid && password.touched) ? 'visible' : 'hidden'}">Bitte geben Sie ein Passwort ein.</span>
         
         <div class="privacy-policy-container">
-            <span class="material-symbols-rounded">check_box</span>
+            @if (agreedPrivacyPolicy) {
+                <span (click)="toggleCheckbox()" class="material-symbols-rounded">check_box</span>
+            } @else {
+                <span (click)="toggleCheckbox()" class="material-symbols-rounded">check_box_outline_blank</span>
+            }
             <p>Ich stimme der<span (click)="goTo('privacy-policy')">Datenschutzerklärung</span>zu.</p>
         </div>
 
         <div class="btn-container">
-            <input [disabled]="!name.valid || !email.valid || !password.valid || !(agreedPrivacyPolicy === true)"  class="btn btn-prim" type="submit" name="submit" id="submit" value="Weiter">
+            <input [disabled]="!name.valid || !email.valid || !password.valid || !agreedPrivacyPolicy"  class="btn btn-prim" type="submit" name="submit" id="submit" value="Weiter">
         </div>
     </form>
 

@@ -1,0 +1,32 @@
+<div class="avatar-content content-wrapper">
+    <app-login-header [loginSite]="false"></app-login-header>
+
+    <div class="avatar-window">
+        <div class="headline-container">
+            <div class="flex1"><span (click)="goToRegister()" class="material-symbols-rounded arrow-back">arrow_back</span></div>
+            <h1>Wähle deinen Avatar</h1>
+            <div class="flex1"></div>
+        </div>
+
+        <img class="profile" src="{{selectedProfileImg}}" alt="profil">
+        <h3>Max Mustermann</h3>
+        <p class="m-btm-16">Aus der Liste wählen</p>
+
+        <div class="avatar-container">
+            @for (avatar of [0, 1, 2, 3, 4, 5]; track avatar; let i = $index) {
+                <img (click)="changeProfileImg(i)" class="avatar-64" src="assets/img/avatar{{i}}.svg" alt="avatar{{i}}">
+            }
+        </div>
+
+        <div class="upload-img-container">
+            <p>eigenes Bild verwenden</p>
+            <button class="btn btn-sec">Datei hochladen</button>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn btn-prim">Weiter</button>
+        </div>
+    </div>
+
+    <app-footer></app-footer>
+</div>
