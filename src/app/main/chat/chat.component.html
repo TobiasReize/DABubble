@@ -4,10 +4,17 @@
     <span class="material-symbols-rounded">keyboard_arrow_down</span>
 </div>
 <div class="messages-container">
+    <div class="hr-container">
+        <hr>
+        <div class="date-info">{{ getDateInfo(messages[0]) }}</div>
+    </div>
     @for (message of messages; track message) {
         <app-message [messageData]="message"></app-message>
         @if (messages[$index + 1] && isAnotherDay(message, messages[$index + 1])) {
-            <hr>
+            <div class="hr-container">
+                <hr>
+                <div class="date-info">{{ getDateInfo(messages[$index + 1]) }}</div>
+            </div>
         }
     }
 </div>

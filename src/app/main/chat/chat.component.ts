@@ -35,13 +35,34 @@ export class ChatComponent {
     this.chatService.addChatMessage(message);
   }
 
+  isSameDay(firstDate: Date, secondDate: Date) {
+    return firstDate.getFullYear() == secondDate.getFullYear() && firstDate.getMonth() == secondDate.getMonth() && firstDate.getDate() == secondDate.getDate();
+  }
+
   isAnotherDay(messageA: Message, messageB: Message) {
     const firstDate = messageA.postedAt;
     const secondDate = messageB.postedAt;
-    if (firstDate.getFullYear() == secondDate.getFullYear() && firstDate.getMonth() == secondDate.getMonth() && firstDate.getDate() == secondDate.getDate()) {
+    if (this.isSameDay(firstDate, secondDate)) {
       return false;
     } else {
       return true;
+    }
+  }
+
+  getLongGermanDate(date: Date) {
+    return date.toLocaleDateString("de-DE", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+  }
+
+  getDateInfo(message: Message) {
+    const today = new Date();
+    if (this.isSameDay(message.postedAt, today)) {
+      return 'Heute';
+    } else {
+      return this.getLongGermanDate(message.postedAt);
     }
   }
 }

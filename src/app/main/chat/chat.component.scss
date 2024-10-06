@@ -29,6 +29,27 @@
     }
 }
 
+.hr-container {
+    @include dFlex();
+    padding: 0 45px;
+    position: relative;
+    &:first-child {
+        padding-top: 150px;
+    }
+}
+
+hr {
+    width: 100%;
+}
+
+.date-info {
+    padding: 5px 15px;
+    border: 1px solid $light-purple;
+    border-radius: 30px;
+    position: absolute;
+    background-color: white;
+}
+
 .messages-container {
     overflow-y: auto;
 }
