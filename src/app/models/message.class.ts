@@ -8,6 +8,6 @@ export class Message {
         public postedAt: string = '00:00',
         public lastReplyAt: string = '00:00',
         public content: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.',
-        public reactions: Reaction[] = [new Reaction('avatar2.svg', ['Maria Mustermann']), new Reaction]
+        public reactions: Reaction[] = [new Reaction('2705.svg', ['Maria Mustermann']), new Reaction]
     ) {}
 }

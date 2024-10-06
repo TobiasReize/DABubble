@@ -1,0 +1,4 @@
+The emojis used for reactions were taken as a resource from iconduck - Emojitwo Emoji Set (not included in this repository).
+Link: https://iconduck.com/sets/emoji-two-emoji-set
+
+License: https://choosealicense.com/licenses/cc-by-4.0/

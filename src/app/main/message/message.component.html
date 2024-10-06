@@ -16,7 +16,7 @@
             @if (messageData.reactions) {
                 @for (reaction of messageData.reactions; track reaction) {
                     <button class="reaction">
-                        <img src="assets/img/{{reaction.emoji}}" alt=""><span>{{ reaction.userNames.length }}</span>
+                        <img src="assets/img/emojis/{{reaction.emoji}}" alt=""><span>{{ reaction.userNames.length }}</span>
                     </button>
                 }
                 <span class="material-symbols-rounded">add_reaction</span>
