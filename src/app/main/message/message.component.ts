@@ -18,7 +18,7 @@ export class MessageComponent {
 
   constructor(private chatService: ChatService) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.isMe = this.messageData.userName == this.userName;
   }
 
