@@ -37,6 +37,19 @@
     color: $purple-2;
 }
 
+.thread-hr-container {
+    @include dFlex($jc: normal);
+    padding: 0 32px 0 33px;
+}
+
+hr {
+    width: 100%;
+}
+
+.replies {
+    padding-right: 20px;
+}
+
 app-message-textarea {
     width: 100%;
 }

@@ -11,6 +11,12 @@
 <div class="messages-container">
     @for (message of messages; track message) {
         <app-message [messageData]="message" [isThreadMessage]="true"></app-message>
+        @if ($index === 0) {
+            <div class="thread-hr-container">
+                <span class="replies">{{ message.replies.length }}&nbsp;Antworten</span>
+                <hr>
+            </div>
+        }
     }
 </div>
 <app-message-textarea placeholder="Antworten..."></app-message-textarea>
