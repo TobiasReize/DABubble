@@ -1,4 +1,5 @@
-The emojis used for reactions were taken as a resource from iconduck - Emojitwo Emoji Set (not included in this repository).
-Link: https://iconduck.com/sets/emoji-two-emoji-set
-
-License: https://choosealicense.com/licenses/cc-by-4.0/
+Emoji artwork is provided by Emojitwo, originally released as Emojione 2.2 by Ranks.com with contributions from the Emojitwo community and is licensed under CC-BY 4.0.
+https://emojitwo.github.io/
+https://www.emojione.com/
+http://www.ranks.com/
+https://creativecommons.org/licenses/by/4.0/legalcode
