@@ -39,11 +39,15 @@ export class RegisterComponent {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid && !this.registerTest) {
-      
+      ngForm.resetForm();
+      this.agreedPrivacyPolicy = false;
+      this.router.navigateByUrl('choose-avatar');
+
     } else if (ngForm.submitted && ngForm.form.valid && this.registerTest) {  // Test-Bereich!
       console.log('Test-Registrierung!:', this.registerData);
       ngForm.resetForm();
       this.agreedPrivacyPolicy = false;
+      this.router.navigateByUrl('choose-avatar');
     }
   }
 

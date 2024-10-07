@@ -8,13 +8,13 @@
             <div class="flex1"></div>
         </div>
 
-        <img class="profile" src="{{selectedProfileImg}}" alt="profil">
+        <img class="profile" src="{{currentProfileImg}}" alt="profil">
         <h3>Max Mustermann</h3>
-        <p class="m-btm-16">Aus der Liste wählen</p>
+        <p class="m-btm-16 width-100">Aus der Liste wählen</p>
 
         <div class="avatar-container">
-            @for (avatar of [0, 1, 2, 3, 4, 5]; track avatar; let i = $index) {
-                <img (click)="changeProfileImg(i)" class="avatar-64" src="assets/img/avatar{{i}}.svg" alt="avatar{{i}}">
+            @for (profileImg of profileImages; track profileImg; let i = $index) {
+                <img (click)="changeProfileImg(i)" [ngClass]="{'avatar-selected': profileImg == currentProfileImg}" class="avatar-img" src="{{profileImg}}" alt="avatar{{i}}">
             }
         </div>
 
