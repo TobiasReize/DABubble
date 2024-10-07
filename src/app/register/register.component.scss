@@ -21,22 +21,17 @@
     background-color: white;
     border-radius: 30px;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-
-    > * {
-        width: 100%;
-    }
+    position: relative;
 }
 
-.headline-container {
-    @include dFlex();
+h1 {
     margin-bottom: 32px;
 }
 
-.flex1 {
-    flex: 1;
-}
-
 .arrow-back {
+    position: absolute;
+    top: 45px;
+    left: 32px;
     padding: 8px;
     border-radius: 50%;
 
@@ -77,7 +72,7 @@
         cursor: pointer;
     }
 
-    p > span {
+    a {
         color: $purple-2;
         line-height: 21.6px;
         padding: 5px;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { LoginHeaderComponent } from '../shared/login-header/login-header.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-privacy-policy',
@@ -11,11 +11,11 @@ import { LoginHeaderComponent } from '../shared/login-header/login-header.compon
 })
 export class PrivacyPolicyComponent {
 
-  constructor(private router: Router) { }
+  constructor(private location: Location) { }
 
 
-  home() {
-    this.router.navigateByUrl('');    
+  goBack() {
+    this.location.back();    
   }
 
 

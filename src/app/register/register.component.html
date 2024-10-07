@@ -2,11 +2,8 @@
     <app-login-header [loginSite]="false"></app-login-header>
 
     <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm" class="register-window">
-        <div class="headline-container">
-            <div class="flex1"><span (click)="goTo('')" class="material-symbols-rounded arrow-back">arrow_back</span></div>
-            <h1>Konto erstellen</h1>
-            <div class="flex1"></div>
-        </div>
+        <span (click)="goBack()" class="material-symbols-rounded arrow-back">arrow_back</span>
+        <h1>Konto erstellen</h1>
         <p class="register-text">Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
 
         <div class="input-style">
@@ -33,7 +30,7 @@
             } @else {
                 <span (click)="toggleCheckbox()" class="material-symbols-rounded">check_box_outline_blank</span>
             }
-            <p>Ich stimme der<span (click)="goTo('privacy-policy')">Datenschutzerklärung</span>zu.</p>
+            <p>Ich stimme der<a routerLink="/privacy-policy">Datenschutzerklärung</a>zu.</p>
         </div>
 
         <div class="btn-container">

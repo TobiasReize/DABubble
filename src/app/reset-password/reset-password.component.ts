@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { LoginHeaderComponent } from '../shared/login-header/login-header.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { FormsModule, NgForm } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-reset-password',
@@ -17,11 +16,11 @@ export class ResetPasswordComponent {
   resetEmail: string = '';
 
 
-  constructor(private router: Router) { }
+  constructor(private location: Location) { }
 
 
-  home() {
-    this.router.navigateByUrl('');
+  goBack() {
+    this.location.back();    
   }
 
 

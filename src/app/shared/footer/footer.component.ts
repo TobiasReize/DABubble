@@ -1,21 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-
-  constructor(private router: Router) { }
-
-
-  goTo(path: string) {
-    this.router.navigateByUrl(path);
-  }
   
 
 }

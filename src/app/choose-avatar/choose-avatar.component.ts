@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginHeaderComponent } from '../shared/login-header/login-header.component';
 import { FooterComponent } from '../shared/footer/footer.component';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -24,11 +23,11 @@ export class ChooseAvatarComponent {
   ];
 
 
-  constructor(private router: Router) { }
+  constructor(private location: Location) { }
 
 
-  goToRegister() {
-    this.router.navigateByUrl('register');    
+  goBack() {
+    this.location.back();    
   }
 
 

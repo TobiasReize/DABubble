@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IntroComponent } from './intro/intro.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { LoginHeaderComponent } from '../shared/login-header/login-header.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 
@@ -23,9 +23,6 @@ export class LogInComponent {
     email: '',
     password: ''
   }
-
-
-  constructor(private router: Router) { }
 
 
   setIntroVariable(event: boolean) {

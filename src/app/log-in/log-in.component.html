@@ -21,7 +21,7 @@
         </div>
         <span class="error-text" [ngStyle]="{'visibility': (!password.valid && password.touched) ? 'visible' : 'hidden'}">Falsches Passwort oder E-Mail... Bitte noch einmal versuchen.</span>
         
-        <span class="forgot-password">Passwort vergessen?</span>
+        <span routerLink="/reset-password" class="forgot-password">Passwort vergessen?</span>
 
         <div class="or-separator">
             <div class="line"></div>

@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { LoginHeaderComponent } from '../shared/login-header/login-header.component';
 import { FooterComponent } from '../shared/footer/footer.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoginHeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, LoginHeaderComponent, FooterComponent, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -24,11 +24,11 @@ export class RegisterComponent {
   }
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location: Location) { }
 
 
-  goTo(path: string) {
-    this.router.navigateByUrl(path);    
+  goBack() {
+    this.location.back();    
   }
 
 
