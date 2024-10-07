@@ -1,0 +1,50 @@
+@import '../../../../styles/mixin.scss';
+
+.intro-content {
+    @include dFlex();
+    height: 100%;
+    overflow: hidden;
+    transform: translateX(200px);
+    animation: moveLeft 300ms ease-out 500ms forwards;
+
+    div {
+        @include dFlex();
+        height: 100%;
+        padding-right: 39px;
+        background-image: linear-gradient(#797EF3, #313AE5);
+        z-index: 5;
+    }
+
+    img {
+        height: 184px;
+    }
+
+    span {
+        font-size: 72px;
+        font-weight: 700;
+        line-height: 1;
+        color: white;
+        transform: translateX(-400px);
+        animation: moveRight 500ms ease-out 800ms forwards;
+    }
+}
+
+@keyframes moveLeft {
+    from {
+        transform: translateX(200px);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveRight {
+    from {
+        transform: translateX(-400px);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}

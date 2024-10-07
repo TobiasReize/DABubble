@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { LogInComponent } from './log-in/log-in.component';
-import { MainComponent } from './main/main.component';
-import { ImprintComponent } from './imprint/imprint.component';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import { RegisterComponent } from './register/register.component';
-import { ChooseAvatarComponent } from './choose-avatar/choose-avatar.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { NewPasswordComponent } from './new-password/new-password.component';
+import { ChooseAvatarComponent } from './features/choose-avatar/choose-avatar.component';
+import { ImprintComponent } from './features/imprint/imprint.component';
+import { LogInComponent } from './features/log-in/log-in.component';
+import { MainComponent } from './features/main/main.component';
+import { NewPasswordComponent } from './features/new-password/new-password.component';
+import { PrivacyPolicyComponent } from './features/privacy-policy/privacy-policy.component';
+import { RegisterComponent } from './features/register/register.component';
+import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
 
 export const routes: Routes = [
     { path: '', component: LogInComponent },
