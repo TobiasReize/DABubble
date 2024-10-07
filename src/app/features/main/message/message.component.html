@@ -15,9 +15,18 @@
         <div class="reactions-container">
             @if (messageData.reactions) {
                 @for (reaction of messageData.reactions; track reaction) {
-                    <button class="reaction">
-                        <img src="assets/img/emojis/{{reaction.emoji}}" alt=""><span>{{ reaction.userNames.length }}</span>
-                    </button>
+                    <div class="reaction-container">
+                        <button class="reaction">
+                            <img src="assets/img/emojis/{{reaction.emoji}}" alt=""><span>{{ reaction.userNames.length }}</span>
+                        </button>
+                        <div class="reaction-bubble">
+                            <img src="assets/img/emojis/{{reaction.emoji}}" alt="">
+                            <div>
+                                <span class="reaction-bubble-username">{{ messageData.userName }}</span><br>
+                                <span class="has-reacted">hat reagiert</span>
+                            </div>
+                        </div>
+                    </div>
                 }
                 <span class="material-symbols-rounded">add_reaction</span>
             }
