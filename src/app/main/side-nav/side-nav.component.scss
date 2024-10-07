@@ -89,6 +89,12 @@ section {
   border-radius: 35px 0px 0px 0px;
   display: flex;
   align-items: center;
+  border-radius: 30px;
+
+  &:hover {
+    background: rgba(236, 238, 254, 1);
+    cursor: pointer;
+  }
 }
 
 .gap25 {
@@ -101,10 +107,6 @@ section {
 
 .divWidth {
   width: 100%;
-}
-
-.icon-btn {
-  width: unset;
 }
 
 .channel {
@@ -126,4 +128,48 @@ section {
     display: flex;
     align-items: center;
   }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.purpleHover:hover svg path {
+  fill: $purple-3;
+  transition: 0.2s ease;
+}
+
+.purpleHover:hover span {
+  color: $purple-3;
+  transition: 0.2s ease;
+}
+
+.purpleHover:hover span.material-symbols-rounded {
+  color: $purple-3;
+  scale: 1.1;
+  transition: 0.2s ease;
+}
+
+.closeMenu {
+  background: rgb(255, 255, 255);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 347px;
+  border-radius: 0px 30px 30px 0px;
+  padding: 23px 14px 23px 14px;
+  gap: 10px;
+  top: 581px;
+  @include dFlex($fd:row-reverse, $jc:flex-start);
+  span {
+    position: absolute;
+    left: 0;
+    rotate: -90deg;
+    @include fontStyle5;
+  }
+}
+
+.rotate {
+  rotate: +90deg;
 }
