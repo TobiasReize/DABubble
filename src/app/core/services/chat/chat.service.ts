@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reaction.class';
@@ -17,38 +17,25 @@ export class ChatService {
     new Message()
   ];
 
-  private chatMessages = new BehaviorSubject<Message[]>(this.dummyChatMessages);
+  private chatMessagesSignal = signal<Message[]>(this.dummyChatMessages);
+  readonly chatMessages = this.chatMessagesSignal.asReadonly();
 
-  private threadMessage = new BehaviorSubject<Message>(new Message());
+  private threadMessageSignal = signal<Message>(new Message());
+  readonly threadMessage = this.threadMessageSignal.asReadonly();
 
-  private openThreadEvent = new BehaviorSubject<boolean>(false);
-
-  constructor() { }
+  private openThreadSignal = signal<boolean>(false);
+  readonly openThread = this.openThreadSignal.asReadonly();
 
   changeThreadVisibility(bool: boolean) {
-    console.log('bool', bool);
-    this.openThreadEvent.next(bool);
+    this.openThreadSignal.set(bool);
   }
 
   changeThread(message: Message) {
-    this.threadMessage.next(message);
-  }
-
-  threadVisibilityListener() {
-    return this.openThreadEvent.asObservable();
-  }
-
-  chatMessagesListener() {
-    return this.chatMessages.asObservable();
-  }
-
-  threadMessagesListener() {
-    return this.threadMessage.asObservable();
+    this.threadMessageSignal.set(message);
   }
 
   addChatMessage(message: Message) {
-    const newMessages = [...this.chatMessages.value, message];
-    this.chatMessages.next(newMessages);
+    this.chatMessagesSignal.update(values => [...values, message]);
   }
 
 }
