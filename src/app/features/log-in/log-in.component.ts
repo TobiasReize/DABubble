@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { IntroComponent } from './intro/intro.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
+import { UserService } from '../../core/services/user/user.service';
 
 @Component({
   selector: 'app-log-in',
@@ -16,8 +17,8 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 export class LogInComponent {
 
   hideIntroScreen: boolean = false;
-  introFinished: boolean = false;
   loginTest: boolean = true;
+  userService = inject(UserService);
   
   loginData = {
     email: '',
@@ -25,10 +26,13 @@ export class LogInComponent {
   }
 
 
+  constructor(private router: Router) { }
+
+
   setIntroVariable(event: boolean) {
     this.hideIntroScreen = event;
     setTimeout(() => {
-      this.introFinished = true;
+      this.userService.introDone = true;
     }, 500);
   }
 
@@ -37,8 +41,10 @@ export class LogInComponent {
     if (ngForm.submitted && ngForm.form.valid && !this.loginTest) {
       
     } else if (ngForm.submitted && ngForm.form.valid && this.loginTest) {  // Test-Bereich!
-      console.log('Test-Login!:', this.loginData);
+      this.userService.currentOnlineUser = this.loginData;
+      console.log('Test-Login!:', this.userService.currentOnlineUser);
       ngForm.resetForm();
+      this.router.navigateByUrl('main');
     }
   }
 
