@@ -22,8 +22,26 @@
                         <div class="reaction-bubble">
                             <img src="assets/img/emojis/{{reaction.emoji}}" alt="">
                             <div>
-                                <span class="reaction-bubble-username">{{ reaction.userNames[0] }}</span><br>
-                                <span class="has-reacted">hat reagiert</span>
+                                @for (user of reaction.userNames | slice:0:3; track user) {
+                                    @if (user !== userName) {
+                                        <span class="reaction-bubble-username">{{ user }}</span><br>
+                                    }
+                                }
+                                @if (didIReact(reaction)) {
+                                    <span class="reaction-bubble-username">Du</span><br>
+                                }
+                                @if (reaction.userNames.length > 3) {
+                                    <span class="has-reacted">und weitere</span><br>
+                                    <span class="has-reacted">haben reagiert</span>
+                                } @else if (reaction.userNames.length > 1) {
+                                    <span class="has-reacted">haben reagiert</span>
+                                } @else {
+                                    @if (didIReact(reaction)) {
+                                        <span class="has-reacted">hast reagiert</span>
+                                    } @else {
+                                        <span class="has-reacted">hat reagiert</span>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>

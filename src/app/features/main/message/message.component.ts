@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
+import { Reaction } from '../../../core/models/reaction.class';
 
 @Component({
   selector: 'app-message',
@@ -25,5 +26,9 @@ export class MessageComponent {
   openThread() {
     this.chatService.changeThreadVisibility(true);
     this.chatService.changeThread(this.messageData);
+  }
+
+  didIReact(reaction: Reaction) {
+    return reaction.userNames.find(userName => userName === this.userName) !== undefined;
   }
 }
