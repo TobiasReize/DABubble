@@ -35,8 +35,8 @@
         </div>
         
         <div class="login-btn-container">
-            <input class="btn btn-prim" type="submit" name="submit" id="submit" value="Anmelden">
-            <button class="btn btn-sec" routerLink="main">Gäste-Login</button>
+            <input [disabled]="!email.valid || !password.valid"  class="btn btn-prim" type="submit" name="submit" id="submit" value="Anmelden">
+            <a class="btn btn-sec" routerLink="/main">Gäste-Login</a>
         </div>
     </form>
 

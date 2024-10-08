@@ -21,9 +21,13 @@
         </div>
 
         <div class="btn-container">
-            <button class="btn btn-prim">Weiter</button>
+            <button (click)="goToLogin()" class="btn btn-prim">Weiter</button>
         </div>
     </div>
 
     <app-footer></app-footer>
+</div>
+
+<div [ngClass]="{'translateX-0': inputFinished}" class="overlay">
+    <div class="overlay-content">Konto erfolgreich erstellt!</div>
 </div>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { CommonModule, Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -12,6 +13,7 @@ import { CommonModule, Location } from '@angular/common';
 })
 export class ChooseAvatarComponent {
 
+  inputFinished: boolean = false;
   currentProfileImg = 'assets/img/profile.svg';
   profileImages = [
     'assets/img/avatar0.svg',
@@ -23,7 +25,7 @@ export class ChooseAvatarComponent {
   ];
 
 
-  constructor(private location: Location) { }
+  constructor(private location: Location, private router: Router) { }
 
 
   goBack() {
@@ -33,6 +35,14 @@ export class ChooseAvatarComponent {
 
   changeProfileImg(index: number) {
     this.currentProfileImg = this.profileImages[index];
+  }
+
+
+  goToLogin() {
+    this.inputFinished = true;
+    setTimeout(() => {
+      this.router.navigateByUrl('');
+    }, 1300);
   }
 
 

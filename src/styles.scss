@@ -11,6 +11,7 @@
 
 body {
     background-color: $bg-color;
+    overflow: hidden;
 }
 
 a {
@@ -323,4 +324,34 @@ app-footer {
 
 .width-100 {
     width: 100%;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100%;
+    padding-bottom: 64px;
+    padding-right: 64px;
+    background-color: rgba(236, 238, 254, 0.3);
+    z-index: 5;
+    transition: all 200ms ease-out;
+    transform: translateX(100vw);
+    @include dFlex($jc: flex-end, $ai: flex-end);
+}
+
+.overlay-content {
+    @include fontStyle13;
+    color: white;
+    padding: 50px;
+    border-radius: 30px 30px 0 30px;
+    background-color: $purple-1;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.translateX-0 {
+    transform: translateX(0);
 }
