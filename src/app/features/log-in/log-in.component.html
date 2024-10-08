@@ -2,11 +2,11 @@
     <app-intro (hideIntroScreen)="setIntroVariable($event)" [ngClass]="{'opacity': hideIntroScreen}"></app-intro>
 }
 
-<div class="login-content content-wrapper">
+<div class="content-wrapper">
     <app-login-header></app-login-header>
 
-    <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm" class="login-window">
-        <h1>Anmeldung</h1>
+    <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm" class="content-window">
+        <h1 class="m-btm-32">Anmeldung</h1>
         <p class="login-text">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</p>
         
         <div class="input-style">
@@ -34,7 +34,7 @@
             <span>Anmelden mit Google</span>
         </div>
         
-        <div class="btn-container">
+        <div class="login-btn-container">
             <input class="btn btn-prim" type="submit" name="submit" id="submit" value="Anmelden">
             <button class="btn btn-sec" routerLink="main">Gäste-Login</button>
         </div>

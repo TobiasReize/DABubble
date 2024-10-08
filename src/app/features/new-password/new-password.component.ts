@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 
@@ -17,8 +17,11 @@ export class NewPasswordComponent {
   newPasswordRepeat: string = '';
 
 
-  home() {
+  constructor(private location: Location) { }
 
+
+  goBack() {
+    this.location.back();    
   }
 
 

@@ -6,10 +6,9 @@
     width: 100%;
 }
 
-.privacy-policy-content {
-    @include dFlex($fd: column, $jc: flex-start);
-    height: 100%;
-    padding: 25px 0;
+.content-wrapper {
+    justify-content: center;
+    position: relative;
 }
 
 .privacy-policy-text-container {
@@ -31,21 +30,9 @@
     }
 }
 
-h1 {
-    margin-bottom: 16px;
-}
-
-h2 {
-    margin-bottom: 16px;
-}
-
 p, a {
     @include fontStlye7;
     line-height: 24px;
-}
-
-.m-btm-32 {
-    margin-bottom: 32px;
 }
 
 .source {
