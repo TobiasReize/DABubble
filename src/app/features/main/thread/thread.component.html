@@ -9,12 +9,12 @@
     </button>
 </div>
 <div class="messages-container">
-    <app-message [messageData]="message" [isThreadMessage]="true"></app-message>
+    <app-message [messageData]="message()" [isThreadMessage]="true"></app-message>
     <div class="thread-hr-container">
-        <span class="replies">{{ message.replies.length }}&nbsp;Antworten</span>
+        <span class="replies">{{ message().replies.length }}&nbsp;Antworten</span>
         <hr>
     </div>
-    @for (reply of message.replies; track message) {
+    @for (reply of message().replies; track reply) {
         <app-message [messageData]="reply" [isThreadMessage]="true"></app-message>
     }
 </div>

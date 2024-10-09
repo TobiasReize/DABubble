@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, Signal } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { MessageTextareaComponent } from '../message-textarea/message-textarea.component';
 import { Message } from '../../../core/models/message.class';
@@ -17,19 +16,8 @@ export class ChatComponent {
 
   constructor(private chatService: ChatService) { }
 
-  messages: Message[] = [];
+  messages: Signal<Message[]> = this.chatService.chatMessages;
 
-  messagesSubscription!: Subscription;
-
-  ngOnInit() {
-    this.messagesSubscription = this.chatService.chatMessagesListener().subscribe((messages) => {
-      this.messages = messages;
-    });
-  }
-
-  ngOnDestroy() {
-    this.messagesSubscription.unsubscribe();
-  }
 
   sendMessage(message: Message) {
     this.chatService.addChatMessage(message);

@@ -8,7 +8,6 @@
 
 h1 {
     text-align: center;
-    margin-bottom: 30px;
 }
 
 app-intro {
@@ -30,25 +29,9 @@ app-intro {
     opacity: 0;
 }
 
-.login-content {
-    @include dFlex($fd: column, $jc: flex-start);
-    height: 100%;
-    padding: 75px 0 48px 0;
-}
-
-.login-window {
-    @include dFlex($fd: column);
-    width: 606px;
-    padding: 50px 53px;
-    margin-top: 4px;
-    margin-bottom: 65px;
-    background-color: white;
-    border-radius: 30px;
-    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-
-    > * {
-        width: 100%;
-    }
+.content-wrapper {
+    justify-content: center;
+    position: relative;
 }
 
 .login-text {
@@ -58,32 +41,27 @@ app-intro {
     margin-bottom: 46px;
 }
 
-.error-text {
-    margin-bottom: 14px;
-}
+.forgot-password {
+    text-align: center;
+    color: $purple-2;
+    line-height: 21.6px;
+    padding: 5px 15px;
+    border-radius: 30px;
+    width: fit-content;
+    margin-bottom: 33px;
 
-.login-window {
-    > .forgot-password {
-        text-align: center;
-        color: $purple-2;
-        line-height: 21.6px;
-        padding: 5px 15px;
-        border-radius: 30px;
-        width: fit-content;
-        margin-bottom: 33px;
-    
-        &:hover {
-            color: $purple-1;
-            background-color: $bg-color;
-            font-weight: 500;
-            cursor: pointer;
-        }
+    &:hover {
+        color: $purple-1;
+        background-color: $bg-color;
+        font-weight: 500;
+        cursor: pointer;
     }
 }
 
 .or-separator {
     @include dFlex();
     gap: 15px;
+    width: 100%;
     margin-bottom: 43px;
 }
 
@@ -96,6 +74,7 @@ app-intro {
 .google-btn {
     @include dFlex();
     gap: 20px;
+    width: 100%;
     background-color: $bg-color;
     padding: 11px 32px;
     border-radius: 100px;
@@ -131,7 +110,7 @@ app-intro {
     }
 }
 
-.btn-container {
+.login-btn-container {
     @include dFlex();
     gap: 30px;
 }

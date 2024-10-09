@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-password',
@@ -15,10 +16,14 @@ export class NewPasswordComponent {
 
   newPassword: string = '';
   newPasswordRepeat: string = '';
+  inputFinished: boolean = false;
 
 
-  home() {
+  constructor(private location: Location, private router: Router) { }
 
+
+  goBack() {
+    this.location.back();    
   }
 
 
@@ -26,6 +31,14 @@ export class NewPasswordComponent {
     if (ngForm.submitted && ngForm.form.valid) {
       ngForm.resetForm();
     }
+  }
+
+
+  goToLogin() {
+    this.inputFinished = true;
+    setTimeout(() => {
+      this.router.navigateByUrl('');
+    }, 1300);
   }
 
 

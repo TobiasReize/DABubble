@@ -15,9 +15,36 @@
         <div class="reactions-container">
             @if (messageData.reactions) {
                 @for (reaction of messageData.reactions; track reaction) {
-                    <button class="reaction">
-                        <img src="assets/img/emojis/{{reaction.emoji}}" alt=""><span>{{ reaction.userNames.length }}</span>
-                    </button>
+                    <div class="reaction-container">
+                        <button class="reaction">
+                            <img src="assets/img/emojis/{{reaction.emoji}}" alt=""><span>{{ reaction.userNames.length }}</span>
+                        </button>
+                        <div class="reaction-bubble">
+                            <img src="assets/img/emojis/{{reaction.emoji}}" alt="">
+                            <div>
+                                @for (user of reaction.userNames | slice:0:3; track user) {
+                                    @if (user !== userName) {
+                                        <span class="reaction-bubble-username">{{ user }}</span><br>
+                                    }
+                                }
+                                @if (didIReact(reaction)) {
+                                    <span class="reaction-bubble-username">Du</span><br>
+                                }
+                                @if (reaction.userNames.length > 3) {
+                                    <span class="has-reacted">und weitere</span><br>
+                                    <span class="has-reacted">haben reagiert</span>
+                                } @else if (reaction.userNames.length > 1) {
+                                    <span class="has-reacted">haben reagiert</span>
+                                } @else {
+                                    @if (didIReact(reaction)) {
+                                        <span class="has-reacted">hast reagiert</span>
+                                    } @else {
+                                        <span class="has-reacted">hat reagiert</span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
                 }
                 <span class="material-symbols-rounded">add_reaction</span>
             }

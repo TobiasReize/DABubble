@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ChatService } from '../../core/services/chat/chat.service';
@@ -22,24 +22,11 @@ import { ThreadComponent } from './thread/thread.component';
   styleUrl: './main.component.scss',
   
 })
-
-export class MainComponent implements OnInit, OnDestroy {
-  isThreadVisible: boolean = false;
+export class MainComponent {
+  isThreadVisible: Signal<boolean> = this.chatService.openThread;
   threadVisibilitySubscription!: Subscription;
   constructor(private chatService: ChatService) {}
   sectionIsVisible: boolean = true;
-
-  ngOnInit() {
-    this.threadVisibilitySubscription = this.chatService
-      .threadVisibilityListener()
-      .subscribe((bool: boolean) => {
-        this.isThreadVisible = bool;
-      });
-  }
-
-  ngOnDestroy() {
-    this.threadVisibilitySubscription.unsubscribe();
-  }
 
   closeSection() {
     let section: HTMLElement | null = document.getElementById('section');
