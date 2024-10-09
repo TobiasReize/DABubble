@@ -33,6 +33,7 @@
     @include dFlex();
     padding: 0 45px;
     position: relative;
+    z-index: 1;
     &:first-child {
         padding-top: 150px;
     }
