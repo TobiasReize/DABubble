@@ -1,264 +1,276 @@
-@import './styles/mixin.scss';
+@import "./styles/mixin.scss";
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Nunito, sans-serif;
-    @include fontStyle2;
-    color: black;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Nunito, sans-serif;
+  @include fontStyle2;
+  color: black;
 }
 
 body {
-    background-color: $bg-color;
+  background-color: $bg-color;
 }
 
 a {
-    text-decoration: none;
-    cursor: pointer;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 h1 {
-    @include fontStyle11;
-    color: $purple-1;
+  @include fontStyle11;
+  color: $purple-1;
 }
 
 h2 {
-    @include fontStyle10;
-    line-height: 38.4px;
-    color: $purple-1;
+  @include fontStyle10;
+  line-height: 38.4px;
+  color: $purple-1;
 }
 
 h3 {
-    @include fontStyle10;
+  @include fontStyle10;
 }
 
 hr {
-    border: none;
-    background-color: $light-purple;
-    height: 1px;
+  border: none;
+  background-color: $light-purple;
+  height: 1px;
 }
 
 .btn {
-    @include fontStyle3;
-    border: unset;
-    border-radius: 25px;
-    padding: 12px 25px;
-    color: white;
-    cursor: pointer;
-    transition: all 100ms ease-out;
+  @include fontStyle3;
+  border: unset;
+  border-radius: 25px;
+  padding: 12px 25px;
+  color: white;
+  cursor: pointer;
+  transition: all 100ms ease-out;
 }
 
 .btn-prim {
+  background-color: $purple-1;
+
+  &:hover {
+    background-color: $purple-2;
+  }
+
+  &:active {
     background-color: $purple-1;
+  }
 
-    &:hover {
-        background-color: $purple-2;
-    }
-
-    &:active {
-        background-color: $purple-1;
-    }
-
-    &:disabled {
-        background-color: $text-gray;
-    }
+  &:disabled {
+    background-color: $text-gray;
+  }
 }
 
 .btn-sec {
-    border: 1px solid $purple-2;
+  border: 1px solid $purple-2;
+  background-color: white;
+  color: $purple-1;
+
+  &:hover {
+    border: 1px solid $purple-3;
+    background-color: $purple-3;
+    color: white;
+  }
+
+  &:active {
+    border: 1px solid $purple-1;
+    background-color: $purple-1;
+    color: white;
+    transition: none;
+  }
+
+  &:disabled {
+    border: 1px solid $text-gray;
     background-color: white;
-    color: $purple-1;
-
-    &:hover {
-        border: 1px solid $purple-3;
-        background-color: $purple-3;
-        color: white;
-    }
-
-    &:active {
-        border: 1px solid $purple-1;
-        background-color: $purple-1;
-        color: white;
-        transition: none;
-    }
-
-    &:disabled {
-        border: 1px solid $text-gray;
-        background-color: white;
-        color: $text-gray;
-    }
+    color: $text-gray;
+  }
 }
 
 .material-symbols-rounded {
-    font-family: 'Material Symbols Rounded';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    font-feature-settings: 'liga';
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-    font-variation-settings: 'GRAD' 100,
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: "GRAD" 100;
 }
 
 .icon-btn {
-    height: 40px;
-    width: 40px;
-    border: unset;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 75ms;
-    background-color: unset;
-    cursor: pointer;
-    &:hover {
-        background-color: $bg-color;
-        .material-symbols-rounded {
-            color: $purple-3;
-            font-variation-settings: 'GRAD' 200,
-        }
+  height: 40px;
+  width: 40px;
+  border: unset;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 75ms;
+  background-color: unset;
+  cursor: pointer;
+  &:hover {
+    background-color: $bg-color;
+    .material-symbols-rounded {
+      color: $purple-3;
+      font-variation-settings: "GRAD" 200;
     }
+  }
 }
 
 .icon-btn-small {
-    height: 34px;
-    width: 34px;
+  height: 34px;
+  width: 34px;
 }
 
 .avatar {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 .avatar-50 {
-    height: 50px;
-    width: 50px;
+  height: 50px;
+  width: 50px;
 }
 
 .avatar-64 {
-    height: 64px;
-    width: 64px;
+  height: 64px;
+  width: 64px;
 }
 
 .avatar-70 {
-    height: 70px;
-    width: 70px;
+  height: 70px;
+  width: 70px;
 }
 
 .avatar-120 {
-    height: 120px;
-    width: 120px;
+  height: 120px;
+  width: 120px;
 }
 
 .avatar-168 {
-    height: 168px;
-    width: 168px;
+  height: 168px;
+  width: 168px;
 }
 
 .avatar-200 {
-    height: 200px;
-    width: 200px;
+  height: 200px;
+  width: 200px;
 }
 
 .d-none {
-    display: none !important;
+  display: none !important;
 }
 
 .content-wrapper {
-    max-width: 1920px;
-    width: 100%;
-    min-height: 100vh;
-    @include dFlex($fd: column, $jc: flex-start);
+  max-width: 1920px;
+  width: 100%;
+  min-height: 100vh;
+  @include dFlex($fd: column, $jc: flex-start);
 }
 
 ::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 6px;
-    background-color: $light-purple-scrollbar;
+  border-radius: 6px;
+  background-color: $light-purple-scrollbar;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: $purple-2;
-    border-radius: 6px;
+  background: $purple-2;
+  border-radius: 6px;
 }
 
 .link-style {
-    color: $purple-2;
-    line-height: 21.6px;
-    padding: 10px 15px;
-    border-radius: 30px;
-    border: 1px solid $bg-color;
-    transition: all 100ms ease-in;
+  color: $purple-2;
+  line-height: 21.6px;
+  padding: 10px 15px;
+  border-radius: 30px;
+  border: 1px solid $bg-color;
+  transition: all 100ms ease-in;
 
-    &:hover {
-        border: 1px solid $light-purple;
-        color: $purple-1;
-        font-weight: 500;
-        cursor: pointer;
-    }
+  &:hover {
+    border: 1px solid $light-purple;
+    color: $purple-1;
+    font-weight: 500;
+    cursor: pointer;
+  }
 }
 
 .input-style {
-    position: relative;
-    margin-bottom: 6px;
+  position: relative;
+  margin-bottom: 6px;
 
-    > span {
-        position: absolute;
-        left: 32px;
-        top: calc(50% - 12px);
-        height: 24px;
-        width: 24px;
-        color: $text-gray;
+  > span {
+    position: absolute;
+    left: 32px;
+    top: calc(50% - 12px);
+    height: 24px;
+    width: 24px;
+    color: $text-gray;
 
-        &:hover {
-            cursor: pointer;
-        }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  > input {
+    padding: 18px 32px 18px 86px;
+    border-radius: 100px;
+    border: 1px solid $bg-color;
+    background-color: $bg-color;
+    width: 100%;
+    font-weight: 500;
+    transition: all 100ms ease-in;
+
+    &::placeholder {
+      color: $text-gray;
     }
 
-    > input {
-        padding: 18px 32px 18px 86px;
-        border-radius: 100px;
-        border: 1px solid $bg-color;
-        background-color: $bg-color;
-        width: 100%;
-        font-weight: 500;
-        transition: all 100ms ease-in;
-
-        &::placeholder {
-            color: $text-gray;
-        }
-
-        &:hover {
-            cursor: pointer;
-            border: 1px solid $text-gray;
-        }
-
-        &:focus {
-            outline: unset;
-            border: 1px solid $purple-3;
-
-            &::placeholder {
-                visibility: hidden;
-            }
-
-            + span {
-                color: black;
-            }
-        }
+    &:hover {
+      cursor: pointer;
+      border: 1px solid $text-gray;
     }
+
+    &:focus {
+      outline: unset;
+      border: 1px solid $purple-3;
+
+      &::placeholder {
+        visibility: hidden;
+      }
+
+      + span {
+        color: black;
+      }
+    }
+  }
 }
 
 .error-text {
-    @include fontStyle0;
-    color: $error-rosa;
+  @include fontStyle0;
+  color: $error-rosa;
+}
+
+.rotate-180deg {
+  rotate: -180deg;
+}
+
+.sectionHidden {
+  transform: translateX(-200%);
+}
+
+.sectionDisplayed {
+  transform: translateX(0%);
 }

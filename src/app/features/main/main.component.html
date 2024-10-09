@@ -1,8 +1,18 @@
 <div class="content-wrapper">
-    <app-header></app-header>
-    <div class="main">
-        <app-side-nav></app-side-nav>
-        <app-chat></app-chat>
-        <app-thread [ngClass]="isThreadVisible ? '' : 'd-none'"></app-thread>
-    </div>
+  <app-header></app-header>
+  <div class="main">
+    <app-side-nav></app-side-nav>
+    <app-chat></app-chat>
+    <app-thread [ngClass]="isThreadVisible ? '' : 'd-none'"></app-thread>
+  </div>
+  <div class="closeMenu purpleHover" (click)="closeSection()" >
+    <span *ngIf="sectionIsVisible">Workspace-Menü schließen</span>
+    <span *ngIf="!sectionIsVisible">Workspace-Menü öffnen</span>
+    <img
+      id="menuButton"
+      class="rotate-180deg changeMenuImg"
+      src="../../../../assets/img/main/blackMenu.png"
+      [class.changeMenuImgBlue]="!sectionIsVisible"
+    />
+  </div>
 </div>

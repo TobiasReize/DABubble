@@ -1,14 +1,62 @@
-@import '../../../styles/mixin.scss';
+@import "../../../styles/mixin.scss";
 
 :host {
-    @include dFlex($fd: column, $jc: flex-start, $ai: center);
-    height: 100vh;
-    padding: 0 20px;
+  @include dFlex($fd: column, $jc: flex-start, $ai: center);
+  height: 100vh;
+  padding: 0 20px;
 }
 
 .main {
-    @include dFlex($jc: flex-start, $ai: flex-start);
-    gap: 20px;
-    height: 100%;
-    width: 100%;
+  @include dFlex($jc: flex-start, $ai: flex-start);
+  gap: 20px;
+  height: 100%;
+  width: 100%;
 }
+
+.content-wrapper {
+  position: relative;
+}
+
+.closeMenu {
+  background: rgb(255, 255, 255);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  max-height: 347px;
+  border-radius: 30px 0px 0px 30px;
+  padding: 23px 14px;
+  gap: 10px;
+  top: 581px;
+  rotate: -180deg;
+  cursor: pointer;
+  @include dFlex($fd: column, $jc: center, $ai: center);
+  box-shadow: 4px 4px 7px 0px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    @include fontStyle5;
+  }
+}
+
+.purpleHover:hover {
+  span {
+    scale: 1.01;
+    font-weight: 700;
+    color: $purple-3;
+  }
+
+  img {
+    scale: 1.01;
+  }
+
+  .changeMenuImg {
+    @include changeImgElement("../../../assets/img/main/blueMenu.png");
+  }
+
+  .changeMenuImgBlue {
+    @include changeImgElement("../../../assets/img/main/displayMenuBlue.png");
+  }
+}
+
+

@@ -101,3 +101,7 @@ $header-and-bottom-spacing: 135px;
     align-items: center;
     gap: $gap-size;
   }
+
+@mixin changeImgElement($imgSrc) {
+    content: url($imgSrc);
+}
