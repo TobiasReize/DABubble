@@ -3,7 +3,7 @@
   <div class="main">
     <app-side-nav></app-side-nav>
     <app-chat></app-chat>
-    <app-thread></app-thread>
+    <app-thread [ngClass]="isThreadVisible() ? '' : 'd-none'"></app-thread>
   </div>
   <div class="closeMenu purpleHover" (click)="closeSection()" >
     <span *ngIf="sectionIsVisible">Workspace-Menü schließen</span>

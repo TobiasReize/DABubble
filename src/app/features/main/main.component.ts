@@ -1,6 +1,5 @@
 import { Component, Signal } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
-import { Subscription } from 'rxjs';
 import { ChatService } from '../../core/services/chat/chat.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { ChatComponent } from './chat/chat.component';
@@ -24,7 +23,6 @@ import { ThreadComponent } from './thread/thread.component';
 })
 export class MainComponent {
   isThreadVisible: Signal<boolean> = this.chatService.openThread;
-  threadVisibilitySubscription!: Subscription;
   constructor(private chatService: ChatService) {}
   sectionIsVisible: boolean = true;
 
