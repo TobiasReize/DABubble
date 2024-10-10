@@ -42,19 +42,25 @@ export class RegisterComponent {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid && !this.registerTest) {
+      this.setNewUser();
       ngForm.resetForm();
       this.agreedPrivacyPolicy = false;
       this.router.navigateByUrl('choose-avatar');
-
+      
     } else if (ngForm.submitted && ngForm.form.valid && this.registerTest) {  // Test-Bereich!
-      this.userService.newUser.name = this.registerData.name;
-      this.userService.newUser.email = this.registerData.email;
-      this.userService.newUser.password = this.registerData.password;
+      this.setNewUser();
       console.log('Test-Registrierung!:', this.userService.newUser);
       ngForm.resetForm();
       this.agreedPrivacyPolicy = false;
       this.router.navigateByUrl('choose-avatar');
     }
+  }
+
+
+  setNewUser() {
+    this.userService.newUser.name = this.registerData.name;
+    this.userService.newUser.email = this.registerData.email;
+    this.userService.newUser.password = this.registerData.password;
   }
 
 
