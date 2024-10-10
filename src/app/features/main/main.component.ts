@@ -52,16 +52,20 @@ export class MainComponent {
     div.classList.remove('sectionDisplayed');
     div.classList.add('sectionHidden');
     this.sectionIsVisible = false;
+    console.log('false');
   }
 
   addSectionDisplayedClass(div: any) {
     div.classList.remove('sectionHidden');
     div.classList.add('sectionDisplayed');
     this.sectionIsVisible = true;
+    console.log('true');
   }
 
   changeImage(imgId: any, newImgSrc: any) {
     const currentImg: any = document.getElementById(`${imgId}`);
     currentImg.src = `${newImgSrc}`;
   }
+
+  
 }

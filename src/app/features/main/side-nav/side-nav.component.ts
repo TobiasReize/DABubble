@@ -18,4 +18,10 @@ export class SideNavComponent {
     'Elias Neumann',
     'Steffen Hoffmann',
   ];
+
+  channelsOpened: boolean = false;
+
+  openChannels() {
+    this.channelsOpened = !this.channelsOpened;
+  }
 }

@@ -1,0 +1,36 @@
+@import "../../../../../styles/mixin.scss";
+
+* {
+    @include fontStyle2;
+}
+
+#input1 {
+  padding: 18px 20px 18px 20px;
+  gap: 20px;
+  border-radius: 40px 0px 0px 0px;
+  border: 1px 0px 0px 0px;
+}
+
+section {
+  width: 872px;
+  height: 514px;
+  padding: 40px;
+  gap: 20px;
+  border-radius: 30px;
+  background-color: white;
+  @include dFlex($fd: column, $jc: center, $ai: center);
+
+  div {
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+.fontStyle9 {
+    @include fontStyle9;
+}
+
+

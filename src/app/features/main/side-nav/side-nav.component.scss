@@ -31,7 +31,7 @@ section {
   border-radius: 30px;
   background-color: white;
   @include fontStyle2;
-  @include dFlex($fd:column, $jc:unset, $ai:center);
+  @include dFlex($fd: column, $jc: unset, $ai: center);
   transition: 0.5s ease;
   background-color: white;
   min-width: $side-nav-width;
@@ -148,5 +148,9 @@ section {
   transition: 0.2s ease;
 }
 
-
+.purpleHover:hover {
+  .changeArrowRightBlue {
+    @include changeImgElement("../../../../assets/img/main/arrow_right_blue.png");
+  }
+}
 

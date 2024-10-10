@@ -16,8 +16,15 @@
     <!-- Channels, Entwicklerteam, Channel hinzufügen -->
     <div class="gap25 dFlex">
       <div class="dFlex channels">
-        <div class="dFlex1 cursor-pointer purpleHover">
-          <span class="material-symbols-rounded">arrow_drop_down</span>
+        <div class="dFlex1 cursor-pointer purpleHover" (click)="openChannels()">
+          <span *ngIf="channelsOpened" class="material-symbols-rounded"
+            >arrow_drop_down</span
+          >
+          <img
+            *ngIf="!channelsOpened"
+            class="changeArrowRightBlue"
+            src="../../../../assets/img/main/arrow_right.png"
+          />
 
           <div>
             <svg
@@ -53,21 +60,26 @@
           <span class="material-symbols-rounded">add</span>
         </button>
       </div>
-
-      <div class="divWidth dFlex2">
-        <div class="entwicklerTeam">
-          <img src="../../../assets/img/main/tag.svg" />
-          <span class="font-size3">Entwicklerteam</span>
+      <div *ngIf="channelsOpened" class="dFlexColumn gap13 slideIn_Out">
+        <div class="divWidth dFlex2">
+          <div class="entwicklerTeam">
+            <span class="material-symbols-rounded cursor-pointer purpleHover"
+            >tag</span
+          >
+            <span class="font-size3">Entwicklerteam</span>
+          </div>
+        </div>
+  
+        <div class="purpleHover cursor-pointer channel">
+          <span class="material-symbols-rounded cursor-pointer purpleHover"
+            >add_circle</span
+          >
+  
+          <span class="cursor-pointer purpleHover">Channel hinzufügen</span>
         </div>
       </div>
 
-      <div class="purpleHover cursor-pointer channel">
-        <span class="material-symbols-rounded cursor-pointer purpleHover"
-          >add_circle</span
-        >
-
-        <span class="cursor-pointer purpleHover">Channel hinzufügen</span>
-      </div>
+      
     </div>
 
     <!-- Direktnachrichten, Kontakte  -->

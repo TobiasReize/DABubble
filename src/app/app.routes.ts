@@ -7,6 +7,7 @@ import { NewPasswordComponent } from './features/new-password/new-password.compo
 import { PrivacyPolicyComponent } from './features/privacy-policy/privacy-policy.component';
 import { RegisterComponent } from './features/register/register.component';
 import { ResetPasswordComponent } from './features/reset-password/reset-password.component';
+import { CreateChannelComponent } from './features/main/side-nav/create-channel/create-channel.component';
 
 export const routes: Routes = [
     { path: '', component: LogInComponent },
@@ -17,4 +18,5 @@ export const routes: Routes = [
     { path: 'new-password', component: NewPasswordComponent },
     { path: 'imprint', component: ImprintComponent },
     { path: 'privacy-policy', component: PrivacyPolicyComponent },
+    { path: 'createChannel', component: CreateChannelComponent },
 ];
