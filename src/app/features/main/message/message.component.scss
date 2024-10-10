@@ -2,7 +2,6 @@
 
 .message {
     position: relative;
-    z-index: 0;
     @include dFlex($jc: flex-start, $ai: normal);
     padding-top: 10px;
     padding-left: 45px;
@@ -120,6 +119,7 @@
 
 .reaction-bubble {
     position: absolute;
+    z-index: 9999;
     background-color: $purple-1;
     @include dFlex($fd: column);
     display: none;
