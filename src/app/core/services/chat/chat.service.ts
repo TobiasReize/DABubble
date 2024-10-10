@@ -16,6 +16,8 @@ export class ChatService {
     new Message()
   ];
 
+  private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
+
   private chatMessagesSignal = signal<Message[]>(this.dummyChatMessages);
   readonly chatMessages = this.chatMessagesSignal.asReadonly();
 
@@ -24,6 +26,9 @@ export class ChatService {
 
   private openThreadSignal = signal<boolean>(false);
   readonly openThread = this.openThreadSignal.asReadonly();
+
+  private lastEmojisSignal = signal<string[]>(this.defaultEmojis);
+  readonly lastEmojis = this.lastEmojisSignal.asReadonly();
 
   changeThreadVisibility(bool: boolean) {
     this.openThreadSignal.set(bool);
@@ -35,6 +40,10 @@ export class ChatService {
 
   addChatMessage(message: Message) {
     this.chatMessagesSignal.update(values => [...values, message]);
+  }
+
+  saveLastEmoji(emoji: string) {
+    this.lastEmojisSignal.update(values => [values[1], emoji]);
   }
 
 }
