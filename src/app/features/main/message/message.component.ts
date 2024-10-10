@@ -43,4 +43,8 @@ export class MessageComponent {
       reaction.userNames.push(this.userName);
     }
   }
+
+  filterReactionUserNames(userNames: string[]) {
+    return userNames.filter(el => el !== this.userName);
+  }
 }
