@@ -1,6 +1,8 @@
 @import '../../../../styles/mixin.scss';
 
 .message {
+    position: relative;
+    z-index: 0;
     @include dFlex($jc: flex-start, $ai: normal);
     padding-top: 10px;
     padding-left: 45px;
@@ -13,6 +15,16 @@
         background-color: $bg-color;
         .message-content {
             background-color: white;
+        }
+        .message-menu {
+            opacity: 1;
+        }
+        .chat-message-menu {
+            right: 63px;
+        }
+        .chat-message-menu-alternative {
+            right: unset;
+            left: 63px;
         }
     }
 }
@@ -137,6 +149,27 @@
 
 .material-symbols-rounded {
     padding: 0 4px;
+}
+
+.message-menu {
+    position: absolute;
+    @include dFlex($jc: normal, $ai: normal);
+    opacity: 0;
+    padding: 3px 15px 3px 20px;
+    gap: 5px;
+    border-radius: 25px 25px 0px 25px;
+    border: 1px solid $light-purple;
+    background-color: white;
+    transition: all 125ms;
+}
+
+.chat-message-menu {
+    right: 43px;
+}
+
+.chat-message-menu-alternative {
+    right: unset;
+    left: 83px;
 }
 
 @media (max-width: 1200px) {

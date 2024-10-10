@@ -43,7 +43,7 @@ export class ChooseAvatarComponent {
   goToLogin() {
     this.inputFinished = true;
     this.userService.newUser.avatar = this.currentProfileImg;
-    console.log(this.userService.newUser);
+    console.log('Neuer User:', this.userService.newUser);
     setTimeout(() => {
       this.router.navigateByUrl('');
     }, 1300);

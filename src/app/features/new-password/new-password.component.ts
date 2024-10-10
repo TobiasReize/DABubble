@@ -30,6 +30,7 @@ export class NewPasswordComponent {
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
       ngForm.resetForm();
+      this.goToLogin();
     }
   }
 

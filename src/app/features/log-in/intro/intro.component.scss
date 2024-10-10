@@ -1,11 +1,16 @@
 @import '../../../../styles/mixin.scss';
 
+// variables:
+$logo-height: 78px; //korrigierter Wert!
+$intro-content-width: 202px;
+$animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 1300ms + 700ms)
+
 .intro-content {
     @include dFlex();
     height: 100%;
     overflow: hidden;
     transform: translateX(200px);
-    animation: moveLeft 300ms ease-out 500ms forwards;
+    animation: moveLeft 300ms ease-out 500ms forwards, moveTopLeft $animation-config;
 
     div {
         @include dFlex();
@@ -13,10 +18,12 @@
         padding-right: 39px;
         background-image: linear-gradient(#797EF3, #313AE5);
         z-index: 5;
+        animation: reducePadding $animation-config;
     }
 
     img {
         height: 184px;
+        animation: shrinkLogo $animation-config;
     }
 
     span {
@@ -25,11 +32,21 @@
         line-height: 1;
         color: white;
         transform: translateX(-400px);
-        animation: moveRight 500ms ease-out 800ms forwards;
+        animation: moveRight 500ms ease-out 800ms forwards, shrinkTitle $animation-config;
+    }
+
+    .bg-img-unset {
+        background-image: unset;
     }
 }
 
-@keyframes moveLeft {
+.height-unset {
+    height: unset;
+}
+
+// Keyframes:
+// 1. Animationsreihe: Dauer 1300ms
+@keyframes moveLeft {   //für den intro-content-Container
     from {
         transform: translateX(200px);
     }
@@ -39,12 +56,73 @@
     }
 }
 
-@keyframes moveRight {
+@keyframes moveRight {  //für den Titel (DABubble)
     from {
         transform: translateX(-400px);
     }
 
     to {
         transform: translateX(0);
+    }
+}
+
+// 2. Animationsreihe: Dauer 2500ms - 1300ms = 1200ms max.
+@media(min-width: 1920px) { //nur für Bildschirmbreite > 1920px!
+    @keyframes moveTopLeft {    //für den intro-content-Container
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + 75px + $logo-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
+            //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und Abstand durch Content-Begrenzung
+        }
+    }
+}
+
+@media(max-width: 1920px) { //nur für Bildschirmbreite < 1920px!
+    @keyframes moveTopLeft {    //für den intro-content-Container
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + 75px + $logo-height / 2)) translateX(calc(-50vw + $intro-content-width / 2));
+            //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und evtl. Abstand nach links?! (tbd.)
+        }
+    }
+}
+
+@keyframes shrinkLogo {  //für das Logo
+    from {
+        height: 184px;
+    }
+
+    to {
+        height: 70px;
+    }
+}
+
+@keyframes shrinkTitle {  //für den Titel (DABubble)
+    from {
+        font-size: 72px;
+        line-height: 1;
+        color: white;
+    }
+
+    to {
+        font-size: 24px;
+        line-height: 32.74px;
+        color: black;
+    }
+}
+
+@keyframes reducePadding {  //für den Logo-Container
+    from {
+        padding-right: 39px;
+    }
+
+    to {
+        padding-right: 16px;
     }
 }
