@@ -1,5 +1,4 @@
 import { Injectable, signal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reaction.class';
 

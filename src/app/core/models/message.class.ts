@@ -7,7 +7,7 @@ export class Message {
         public postedAt: Date = new Date(),
         public lastReplyAt: Date = new Date(),
         public content: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.',
-        public reactions: Reaction[] = [new Reaction('2705.svg', ['Marina Mustermann']), new Reaction],
+        public reactions: Reaction[] = [new Reaction('2705.svg', ['Marina Mustermann']), new Reaction()],
         public replies: Message[] = []
     ) {}
 
