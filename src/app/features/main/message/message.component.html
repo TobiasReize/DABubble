@@ -16,7 +16,7 @@
             @if (messageData.reactions) {
                 @for (reaction of messageData.reactions; track reaction) {
                     <div class="reaction-container">
-                        <button class="reaction" (click)="addReaction(reaction)">
+                        <button class="reaction" (click)="toggleReaction(reaction)">
                             <img class="reaction-img" src="assets/img/emojis/{{reaction.emoji}}" alt="reaction emoji"><span>{{ reaction.userNames.length }}</span>
                         </button>
                         <div class="reaction-bubble">
@@ -52,10 +52,10 @@
         </div>
     </div>
     <div class="message-menu chat-message-menu" [ngClass]="{ 'chat-message-menu-alternative': isMe }">
-        <div class="icon-btn">
+        <div class="icon-btn" (click)="addNewReaction(menuEmojis()[0])">
             <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[0]}}" alt="menu emoji 1">
         </div>
-        <div class="icon-btn">
+        <div class="icon-btn" (click)="addNewReaction(menuEmojis()[1])">
             <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[1]}}" alt="menu emoji 2">
         </div>
         <div class="icon-btn">

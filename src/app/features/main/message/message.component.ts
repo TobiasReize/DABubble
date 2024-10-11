@@ -34,14 +34,31 @@ export class MessageComponent {
     return reaction.userNames.find(userName => userName === this.userName) !== undefined;
   }
 
-  addReaction(reaction: Reaction) {
-    if (reaction.userNames.includes(this.userName)) {
-      const i = reaction.userNames.findIndex(el => el === this.userName);
-      if (i) {
-        reaction.userNames.splice(i, 1);
+  removeReaction(reaction: Reaction) {
+    const i = reaction.userNames.findIndex(el => el === this.userName);
+    if (i !== -1) {
+      reaction.userNames.splice(i, 1);
+      if (reaction.userNames.length === 0) {
+        const index = this.messageData.reactions.findIndex(r => r == reaction);
+        this.messageData.reactions.splice(index, 1);
       }
+    }
+  }
+
+  toggleReaction(reaction: Reaction) {
+    if (reaction.userNames.includes(this.userName)) {
+      this.removeReaction(reaction);
     } else {
       reaction.userNames.push(this.userName);
+    }
+  }
+
+  addNewReaction(reactionName: string) {
+    const index = this.messageData.reactions.findIndex(reaction => reaction.emoji === reactionName);
+    if (index === -1) {
+      this.messageData.reactions.push(new Reaction(reactionName, [this.userName]));
+    } else {
+      this.toggleReaction(this.messageData.reactions[index]);
     }
   }
 
