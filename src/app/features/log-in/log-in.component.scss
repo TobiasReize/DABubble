@@ -114,3 +114,77 @@ app-intro {
     @include dFlex();
     gap: 30px;
 }
+
+.create-account-container {
+    @include dFlex($fd: column);
+    gap: 20px;
+    display: none;
+
+    > a {
+        padding: 7px 18px;
+        background-color: unset;
+
+        &:hover {
+            border: 1px solid $purple-3;
+            background-color: $purple-3;
+            color: white;
+        }
+        
+        &:active {
+            border: 1px solid $purple-1;
+            background-color: $purple-1;
+            color: white;
+            transition: none;
+        }
+    }
+}
+
+// Responsive Design:
+@media(max-width: 654px) {
+    .login-text {
+        font-size: 17px;
+        line-height: 20.4px;
+        margin-bottom: 20px;
+    }
+
+    .forgot-password {
+        font-size: 17px;
+        line-height: 20.4px;
+        margin-bottom: 20px;
+    }
+
+    .or-separator {
+        margin-bottom: 20px;
+
+        span {
+            font-size: 17px;
+            line-height: 23.2px;
+        }
+    }
+
+    .google-btn {
+        padding: 6px 32px;
+        margin-bottom: 20px;
+
+        > span {
+            font-size: 17px;
+            line-height: 20.4px;
+        }
+    }
+
+    .create-account-container {
+        display: flex;
+    }
+}
+
+@media(max-width: 450px) {
+    .google-btn {
+        padding: 6px 16px;
+    }
+
+    .login-btn-container {
+        width: 100%;
+        gap: unset;
+        justify-content: space-between;
+    }
+}

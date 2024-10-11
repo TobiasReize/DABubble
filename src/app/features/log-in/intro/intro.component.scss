@@ -1,7 +1,7 @@
 @import '../../../../styles/mixin.scss';
 
 // variables:
-$logo-height: 78px; //korrigierter Wert!
+$header-height: 80px;
 $intro-content-width: 202px;
 $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 1300ms + 700ms)
 
@@ -74,7 +74,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
         }
     
         to {
-            transform: translateY(calc(-50vh + 75px + $logo-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
+            transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
             //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und Abstand durch Content-Begrenzung
         }
     }
@@ -87,7 +87,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
         }
     
         to {
-            transform: translateY(calc(-50vh + 75px + $logo-height / 2)) translateX(calc(-50vw + $intro-content-width / 2));
+            transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2));
             //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und evtl. Abstand nach links?! (tbd.)
         }
     }
