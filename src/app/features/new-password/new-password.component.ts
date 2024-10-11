@@ -10,7 +10,10 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, LoginHeaderComponent, FooterComponent],
   templateUrl: './new-password.component.html',
-  styleUrl: './new-password.component.scss'
+  styleUrls: [
+    './new-password.component.scss',
+    '../../../styles/login.scss'
+  ]
 })
 export class NewPasswordComponent {
 

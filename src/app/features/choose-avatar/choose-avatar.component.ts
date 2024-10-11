@@ -10,7 +10,10 @@ import { UserService } from '../../core/services/user/user.service';
   standalone: true,
   imports: [CommonModule, LoginHeaderComponent, FooterComponent],
   templateUrl: './choose-avatar.component.html',
-  styleUrl: './choose-avatar.component.scss'
+  styleUrls: [
+    './choose-avatar.component.scss',
+    '../../../styles/login.scss'
+  ]
 })
 export class ChooseAvatarComponent {
 

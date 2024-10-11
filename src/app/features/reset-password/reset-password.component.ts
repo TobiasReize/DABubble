@@ -10,7 +10,10 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [FormsModule, CommonModule, LoginHeaderComponent, FooterComponent],
   templateUrl: './reset-password.component.html',
-  styleUrl: './reset-password.component.scss'
+  styleUrls: [
+    './reset-password.component.scss',
+    '../../../styles/login.scss'
+  ]
 })
 export class ResetPasswordComponent {
 

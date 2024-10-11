@@ -7,7 +7,10 @@ import { Location } from "@angular/common";
   standalone: true,
   imports: [LoginHeaderComponent],
   templateUrl: './privacy-policy.component.html',
-  styleUrl: './privacy-policy.component.scss'
+  styleUrls: [
+    './privacy-policy.component.scss',
+    '../../../styles/login.scss'
+  ]
 })
 export class PrivacyPolicyComponent {
 

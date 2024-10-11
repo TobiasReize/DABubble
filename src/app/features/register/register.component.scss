@@ -6,11 +6,6 @@
     width: 100%;
 }
 
-.content-wrapper {
-    justify-content: center;
-    position: relative;
-}
-
 .register-text {
     @include fontStlye7;
     width: 486px;
@@ -55,5 +50,28 @@
 
 // Responsive Design:
 @media(max-width: 654px) {
-    
+    .register-text {
+        font-size: 17px;
+        line-height: 20.4px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media(max-width: 450px) {
+    .privacy-policy-container {
+        margin-bottom: 30px;
+
+        > p {
+            font-size: 17px;
+            line-height: 22px
+        }
+
+        a {
+            font-size: 17px;
+            line-height: 20.4px;
+            padding: 2px;
+            display: inline-block;
+        }
+    }
 }

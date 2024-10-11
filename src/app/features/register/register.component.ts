@@ -12,7 +12,10 @@ import { UserService } from "../../core/services/user/user.service";
   standalone: true,
   imports: [CommonModule, FormsModule, LoginHeaderComponent, FooterComponent, RouterLink],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrls: [
+    './register.component.scss',
+    '../../../styles/login.scss'
+  ]
 })
 export class RegisterComponent {
   

@@ -6,11 +6,6 @@
     width: 100%;
 }
 
-.content-wrapper {
-    justify-content: center;
-    position: relative;
-}
-
 .imprint-text-container {
     @include dFlex($fd: column, $ai: flex-start);
     padding: 48px 56px;

@@ -29,11 +29,6 @@ app-intro {
     opacity: 0;
 }
 
-.content-wrapper {
-    justify-content: center;
-    position: relative;
-}
-
 .login-text {
     @include fontStlye7;
     line-height: 24px;
