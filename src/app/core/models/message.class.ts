@@ -2,6 +2,7 @@ import { Reaction } from "./reaction.class";
 
 export class Message {
     constructor(
+        public id: string = '',
         public imageName: string = 'avatar1.svg',
         public userName: string = 'Max Mustermann',
         public postedAt: Date = new Date(),

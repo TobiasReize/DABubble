@@ -8,10 +8,10 @@ import { Reaction } from '../../models/reaction.class';
 export class ChatService {
 
   private dummyChatMessages: Message[] = [
-    new Message('avatar4.svg', 'Maria Musterfrau', new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', [new Reaction()], [new Message()]),
+    new Message('', 'avatar4.svg', 'Maria Musterfrau', new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', [new Reaction()], [new Message()]),
     new Message(),
     new Message(),
-    new Message('avatar4.svg', 'Maria Musterfrau', new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', [new Reaction('2705.svg', ['Max Mustermann'])], [new Message(), new Message]),
+    new Message('', 'avatar4.svg', 'Maria Musterfrau', new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', [new Reaction('2705.svg', ['Max Mustermann'])], [new Message(), new Message]),
     new Message(),
     new Message()
   ];
