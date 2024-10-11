@@ -1,6 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reaction.class';
+import { FirebaseService } from '../firebase/firebase.service';
+import { MessageInterface } from '../../models/message.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,9 @@ export class ChatService {
     new Message()
   ];
 
+  private userName: string = 'Maria Musterfrau';
+  private userAvatar: string = 'avatar4.svg';
+
   private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
   private chatMessagesSignal = signal<Message[]>(this.dummyChatMessages);
@@ -30,6 +35,8 @@ export class ChatService {
   private lastEmojisSignal = signal<string[]>(this.defaultEmojis);
   readonly lastEmojis = this.lastEmojisSignal.asReadonly();
 
+  constructor(private firebaseService: FirebaseService) {}
+
   changeThreadVisibility(bool: boolean) {
     this.openThreadSignal.set(bool);
   }
@@ -38,8 +45,11 @@ export class ChatService {
     this.threadMessageSignal.set(message);
   }
 
-  addChatMessage(message: Message) {
-    this.chatMessagesSignal.update(values => [...values, message]);
+  addChatMessage(messageContent: string) {
+    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [], []);
+    const messageAsJson: MessageInterface = message.toJson();
+    // this.chatMessagesSignal.update(values => [...values, message]);
+    this.firebaseService.addMessage(messageAsJson);
   }
 
   saveLastEmoji(emoji: string) {
