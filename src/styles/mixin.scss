@@ -107,6 +107,12 @@ $header-and-bottom-spacing: 135px;
     line-height: 49.1px;
 }
 
+@mixin fontStyle14 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32.75px;
+}
+
 @mixin flex-gap($gap-size) {
     display: flex;
     flex-direction: column;

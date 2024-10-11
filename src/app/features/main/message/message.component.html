@@ -65,8 +65,13 @@
             <span class="material-symbols-rounded">comment</span>
         </div>
         @if (isMe) {
-            <div class="icon-btn">
+            <div class="icon-btn" (click)="toggleMoreMenu()">
                 <span class="material-symbols-rounded">more_vert</span>
+            </div>
+        }
+        @if (isMoreMenuOpen) {
+            <div class="more-menu">
+                <div class="edit-message">Nachricht&nbsp;bearbeiten</div>
             </div>
         }
     </div>

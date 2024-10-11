@@ -17,6 +17,7 @@ export class MessageComponent {
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis; 
   userName: string = 'Maria Musterfrau';
   isMe: boolean = false;
+  isMoreMenuOpen: boolean = false;
 
   constructor(private chatService: ChatService) {}
 
@@ -46,5 +47,9 @@ export class MessageComponent {
 
   filterReactionUserNames(userNames: string[]) {
     return userNames.filter(el => el !== this.userName);
+  }
+
+  toggleMoreMenu() {
+    this.isMoreMenuOpen = !this.isMoreMenuOpen;
   }
 }
