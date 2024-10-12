@@ -41,3 +41,36 @@ p, a {
 a:hover {
     text-decoration: underline;
 }
+
+// Responsive Design:
+@media(max-width: 654px) {
+    .imprint-text-container {
+        width: auto;
+        padding: 35px 20px;
+    }
+}
+
+@media(max-width: 450px) {
+    p, a {
+        font-size: 17px;
+        line-height: 22px
+    }
+    
+    .imprint-text-container {
+        width: 100%;
+        padding: 24px 16px;
+    }
+
+    .material-symbols-rounded {
+        padding: 4px;
+        font-size: 20px;
+    }
+
+    .source {
+        font-size: 15px;
+    
+        > a {
+            font-size: 15px;
+        }
+    }
+}

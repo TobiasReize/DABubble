@@ -67,32 +67,6 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
 }
 
 // 2. Animationsreihe: Dauer 2500ms - 1300ms = 1200ms max.
-@media(min-width: 1920px) { //nur für Bildschirmbreite > 1920px!
-    @keyframes moveTopLeft {    //für den intro-content-Container
-        from {
-            transform: translateY(0) translateX(0);
-        }
-    
-        to {
-            transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
-            //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und Abstand durch Content-Begrenzung
-        }
-    }
-}
-
-@media(max-width: 1920px) { //nur für Bildschirmbreite < 1920px!
-    @keyframes moveTopLeft {    //für den intro-content-Container
-        from {
-            transform: translateY(0) translateX(0);
-        }
-    
-        to {
-            transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2));
-            //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und evtl. Abstand nach links?! (tbd.)
-        }
-    }
-}
-
 @keyframes shrinkLogo {  //für das Logo
     from {
         height: 184px;
@@ -124,5 +98,55 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
 
     to {
         padding-right: 16px;
+    }
+}
+
+@media(min-width: 1920px) and (min-height: 1100px) { //nur für Bildschirmbreite > 1920px und -höhe > 1100px!
+    @keyframes moveTopLeft {    //für den intro-content-Container
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
+            //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und Abstand durch Content-Begrenzung
+        }
+    }
+}
+
+@media(min-width: 1920px) and (max-height: 1100px) { //nur für Bildschirmbreite > 1920px und -höhe <= 1100px!
+    @keyframes moveTopLeft {
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + 4px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
+        }
+    }
+}
+
+@media(max-width: 1920px) and (min-height: 1100px) { //nur für Bildschirmbreite < 1920px und -höhe > 1100px!
+    @keyframes moveTopLeft {    //für den intro-content-Container
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + 24px));
+            //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und Abstand nach links
+        }
+    }
+}
+
+@media(max-width: 1920px) and (max-height: 1100px) { //nur für Bildschirmbreite < 1920px und -höhe <= 1100px!
+    @keyframes moveTopLeft {
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + 4px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + 24px));
+        }
     }
 }
