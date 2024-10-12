@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { MessageInterface } from '../../models/message.interface';
-import { addDoc, collection, doc, Firestore, onSnapshot, QueryDocumentSnapshot, Unsubscribe } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, onSnapshot, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { Message } from '../../models/message.class';
 import { Channel } from '../../models/channel.class';
 
@@ -12,7 +12,8 @@ export class FirebaseService {
   firestore: Firestore = inject(Firestore);
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
-  messages: Message[] = [];
+  private messagesSignal = signal<Message[]>([]);
+  readonly messages = this.messagesSignal.asReadonly();
   channels: Channel[] = [];
 
   constructor() { 
@@ -32,7 +33,7 @@ export class FirebaseService {
     const postedAt = new Date(+data['postedAtAsString']);
     const lastReplyAt = new Date(+data['lastReplyAtAsString']);
     const message = new Message(doc.id, data['imageName'], data['userName'], postedAt, lastReplyAt, data['content'], reactions, replyIds);
-    console.log(message);
+    return message;
   }
 
   getDocRef(docId: string, collectionName: string) {
@@ -44,18 +45,26 @@ export class FirebaseService {
   }
 
   async addMessage(messageObj: MessageInterface) {
-    addDoc(this.getCollectionRef('messages'), messageObj);
+    await addDoc(this.getCollectionRef('messages'), messageObj);
+  }
+
+  async updateMessage(docId: string, messageObj: MessageInterface) {
+    // {...messageObj} must be used due to a bug concerning the database
+    await updateDoc(this.getDocRef(docId, 'messages'), {...messageObj});
   }
 
   subMessages() {
     return onSnapshot(this.getCollectionRef('messages'), (collection) => {
+      const tempMessages: Message[] = [];
       collection.forEach(doc => {
-        this.createMessage(doc);
-        collection.docChanges().forEach(change => {
-          const data = change.doc.data()
-          console.log(data);
-        })
+        const message = this.createMessage(doc);
+        if (message) {
+          console.log(message);
+          tempMessages.push(message);
+        }
       })
+      this.messagesSignal.set(tempMessages);
+      console.log('messagesSignal', this.messagesSignal());
     });
   }
 
