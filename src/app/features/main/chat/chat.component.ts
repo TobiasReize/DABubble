@@ -41,11 +41,15 @@ export class ChatComponent {
   }
 
   getDateInfo(message: Message) {
-    const today = new Date();
-    if (this.isSameDay(message.postedAt, today)) {
-      return 'Heute';
+    if (message) {
+      const today = new Date();
+      if (this.isSameDay(message.postedAt, today)) {
+        return 'Heute';
+      } else {
+        return this.getLongGermanDate(message.postedAt);
+      }
     } else {
-      return this.getLongGermanDate(message.postedAt);
+      return '';
     }
   }
 }

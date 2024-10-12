@@ -3,6 +3,7 @@ import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { Reaction } from '../../../core/models/reaction.class';
+import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-message',
@@ -19,7 +20,7 @@ export class MessageComponent {
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private firebaseService: FirebaseService) {}
 
   ngOnChanges() {
     this.isMe = this.messageData.userName == this.userName;
@@ -51,6 +52,7 @@ export class MessageComponent {
     } else {
       reaction.userNames.push(this.userName);
     }
+    this.firebaseService.updateMessage(this.messageData.id, this.messageData.toJson());
   }
 
   addNewReaction(reactionName: string) {

@@ -23,8 +23,7 @@ export class ChatService {
 
   private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
-  private chatMessagesSignal = signal<Message[]>(this.dummyChatMessages);
-  readonly chatMessages = this.chatMessagesSignal.asReadonly();
+  readonly chatMessages = this.firebaseService.messages;
 
   private threadMessageSignal = signal<Message>(new Message());
   readonly threadMessage = this.threadMessageSignal.asReadonly();
@@ -46,9 +45,8 @@ export class ChatService {
   }
 
   addChatMessage(messageContent: string) {
-    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [], []);
+    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction()], []);
     const messageAsJson: MessageInterface = message.toJson();
-    // this.chatMessagesSignal.update(values => [...values, message]);
     this.firebaseService.addMessage(messageAsJson);
   }
 
