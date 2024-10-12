@@ -99,8 +99,7 @@ export class FirebaseService {
       collection.forEach(doc => {
         const data = doc.data();
         const userIds = JSON.parse(data['userIds']);
-        const messageIds = JSON.parse(data['messageIds']);
-        const channel = new Channel(doc.id, data['name'], data['description'], userIds, messageIds);
+        const channel = new Channel(doc.id, data['name'], data['description'], userIds);
       })
     })
   }
