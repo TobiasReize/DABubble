@@ -54,12 +54,8 @@ export class FirebaseService {
     return collection(this.getDocRef(docId, collectionName), subcollectionName);
   }
 
-  async addMessage(messageObj: MessageInterface) {
-    await addDoc(this.getCollectionRef('messages'), messageObj);
-  }
-
-  async addMessageToChannel(channelId: string, messageObj: MessageInterface) {
-    await addDoc(this.getSubcollectionRef(channelId, 'channels', 'messages'), messageObj);
+  async addMessage(docId: string, collectionName: string, messageObj: MessageInterface) {
+    await addDoc(this.getSubcollectionRef(docId, collectionName, 'messages'), messageObj);
   }
 
   async updateMessage(docId: string, messageObj: MessageInterface) {
@@ -84,7 +80,7 @@ export class FirebaseService {
   }
 
   subThread() {
-    const q = query(this.getSubcollectionRef(environment.testThreadId, 'channels', 'messages'), orderBy('postedAt'));
+    const q = query(this.getSubcollectionRef(environment.testThreadId, 'threads', 'messages'), orderBy('postedAt'));
     return onSnapshot(q, (snapshot) => {
       const tempMessages: Message[] = [];
       snapshot.forEach(doc => {

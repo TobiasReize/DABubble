@@ -45,9 +45,9 @@ export class ChatService {
     const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction()], '');
     const messageAsJson: MessageInterface = message.toJson();
     if (type === 'chat') {
-      this.firebaseService.addMessageToChannel(this.currentChannel, messageAsJson);
+      this.firebaseService.addMessage(this.currentChannel, 'channels', messageAsJson);
     } else {
-      this.firebaseService.addMessageToChannel(this.currentThread, messageAsJson);
+      this.firebaseService.addMessage(this.currentThread, 'threads', messageAsJson);
     }
   }
 
