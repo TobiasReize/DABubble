@@ -46,7 +46,7 @@ export class ChatService {
   }
 
   addChatMessage(messageContent: string) {
-    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [], []);
+    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction()], []);
     const messageAsJson: MessageInterface = message.toJson();
     // this.chatMessagesSignal.update(values => [...values, message]);
     this.firebaseService.addMessage(messageAsJson);
