@@ -26,6 +26,10 @@ export class MessageComponent {
     this.isMe = this.messageData.userName == this.userName;
   }
 
+  updateMessage() {
+    this.firebaseService.updateMessage(this.messageData.id, this.messageData.toJson());
+  }
+
   openThread() {
     this.chatService.changeThreadVisibility(true);
     this.chatService.changeThread(this.messageData);
@@ -52,13 +56,14 @@ export class MessageComponent {
     } else {
       reaction.userNames.push(this.userName);
     }
-    this.firebaseService.updateMessage(this.messageData.id, this.messageData.toJson());
+    this.updateMessage();
   }
 
   addNewReaction(reactionName: string) {
     const index = this.messageData.reactions.findIndex(reaction => reaction.emoji === reactionName);
     if (index === -1) {
       this.messageData.reactions.push(new Reaction(reactionName, [this.userName]));
+      this.updateMessage();
     } else {
       this.toggleReaction(this.messageData.reactions[index]);
     }
