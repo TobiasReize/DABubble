@@ -18,5 +18,4 @@ export const routes: Routes = [
     { path: 'new-password', component: NewPasswordComponent },
     { path: 'imprint', component: ImprintComponent },
     { path: 'privacy-policy', component: PrivacyPolicyComponent },
-    { path: 'createChannel', component: CreateChannelComponent },
 ];

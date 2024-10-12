@@ -5,6 +5,8 @@ import { HeaderComponent } from '../../shared/header/header.component';
 import { ChatComponent } from './chat/chat.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { ThreadComponent } from './thread/thread.component';
+import { SideNavService } from '../../core/services/sideNav/side-nav.service';
+import { CreateChannelComponent } from "./side-nav/create-channel/create-channel.component";
 
 @Component({
   selector: 'app-main',
@@ -15,15 +17,16 @@ import { ThreadComponent } from './thread/thread.component';
     ChatComponent,
     CommonModule,
     ThreadComponent,
-    NgIf
-  ],
+    NgIf,
+    CreateChannelComponent
+],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   
 })
 export class MainComponent {
   isThreadVisible: Signal<boolean> = this.chatService.openThread;
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, public sideNavService: SideNavService) {}
   sectionIsVisible: boolean = true;
 
   closeSection() {

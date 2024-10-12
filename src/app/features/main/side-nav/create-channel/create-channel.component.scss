@@ -1,14 +1,20 @@
 @import "../../../../../styles/mixin.scss";
-
+@import "../../../../../styles/styles2.scss";
 * {
-    @include fontStyle2;
+  @include fontStyle2;
 }
 
-#input1 {
-  padding: 18px 20px 18px 20px;
-  gap: 20px;
-  border-radius: 40px 0px 0px 0px;
-  border: 1px 0px 0px 0px;
+.overlayComponent {
+  width: 100vw;
+  height: 100vh;
+  @include dFlex($fd: row, $jc: center, $ai: center);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(153, 153, 153, 0.6);
+  z-index: 999;
 }
 
 section {
@@ -19,9 +25,11 @@ section {
   border-radius: 30px;
   background-color: white;
   @include dFlex($fd: column, $jc: center, $ai: center);
+  box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
 
   div {
     width: 100%;
+    gap: 20px;
   }
 
   input {
@@ -30,7 +38,16 @@ section {
 }
 
 .fontStyle9 {
-    @include fontStyle9;
+  @include fontStyle9;
 }
 
+.fontStyle3 {
+  @include fontStyle3;
+}
 
+.icon {
+  position: absolute;
+  padding-left: 20px;
+  padding-top: 18px;
+  color: rgba(104, 104, 104, 1);
+}

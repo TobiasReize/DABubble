@@ -56,41 +56,47 @@
           </div>
         </div>
 
-        <button class="icon-btn">
+        <button class="icon-btn" (click)="openCreateChannels()">
           <span class="material-symbols-rounded">add</span>
         </button>
       </div>
-      <div *ngIf="channelsOpened" class="dFlexColumn gap13 slideIn_Out">
+      <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out">
         <div class="divWidth dFlex2">
           <div class="entwicklerTeam">
             <span class="material-symbols-rounded cursor-pointer purpleHover"
-            >tag</span
-          >
+              >tag</span
+            >
             <span class="font-size3">Entwicklerteam</span>
           </div>
         </div>
-  
-        <div class="purpleHover cursor-pointer channel">
+
+        <div
+          class="purpleHover cursor-pointer channel"
+          (click)="openCreateChannels()"
+        >
           <span class="material-symbols-rounded cursor-pointer purpleHover"
             >add_circle</span
           >
-  
+
           <span class="cursor-pointer purpleHover">Channel hinzufügen</span>
         </div>
       </div>
-
-      
     </div>
 
     <!-- Direktnachrichten, Kontakte  -->
     <div id="contacts" class="contactDiv divWidth gap25">
       <!-- Direktnachrichten -->
       <div class="dFlex2 divWidth directMessages purpleHover">
-        <span class="material-symbols-rounded cursor-pointer"
+        <span *ngIf="sideNavService.contactsOpened" class="material-symbols-rounded cursor-pointer"
           >arrow_drop_down</span
         >
+        <img
+          *ngIf="!sideNavService.contactsOpened"
+          class="changeArrowRightBlue"
+          src="../../../../assets/img/main/arrow_right.png"
+        />
 
-        <div>
+        <div (click)="closeContactDiv()">
           <span class="material-symbols-rounded cursor-pointer"
             >account_circle</span
           >
@@ -100,7 +106,7 @@
       </div>
 
       <!-- contacts -->
-      <div class="gap13">
+      <div class="gap13" *ngIf="sideNavService.contactsOpened">
         <div
           *ngFor="let contact of contacts; let i = index"
           class="contactsDiv"

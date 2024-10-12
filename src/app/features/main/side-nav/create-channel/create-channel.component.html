@@ -1,22 +1,50 @@
-<section class="sectionDflex">
-  <div class="dFlexRowSpaceBetweenCenter">
-    <span class="fontStyle9">Channel erstellen</span>
-    <img src="../../../../../assets/img/main/close (2).png" />
-  </div>
-  <span
-    >Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
-    themenbezogen sein #marketing zum Beispiel.</span
+<div id="overlay" class="overlayComponent" (click)="onDiv1Click()">
+  <section
+    id="createChannel"
+    class="sectionDflex"
+    (click)="onDiv2Click($event)"
   >
-  <div class="dFlexColumnCenterFlexStart">
-    <span>Channel-Name</span>
-    <input type="text" id="input1" />
-  </div>
-  <div>
-    <span>Beschreibung</span> 
-    <span>(optional)</span>
-    <input type="text" id="input2" />
-  </div>
-  <div class="dFlexRowFlexEndCenter">
-    <button>Erstellen</button>
-  </div>
-</section>
+    <div class="dFlexRowSpaceBetweenCenter">
+      <span class="fontStyle9">Channel erstellen</span>
+      <img
+        class="icon-btn"
+        src="../../../../../assets/img/main/close (2).png"
+        (click)="onDiv1Click()"
+      />
+    </div>
+    <span
+      >Channels dienen deinem Team zur Kommunikation. Am besten sollten sie
+      themenbezogen sein #marketing zum Beispiel.</span
+    >
+    <div class="dFlexColumnCenterFlexStart">
+      <span class="fontStyle3">Channel-Name</span>
+      <div class="inputDiv">
+        <span class="icon">#</span>
+        <input
+          class="inputElement"
+          type="text"
+          id="input1"
+          placeholder="z.B. Kooperationsprojekte"
+          required
+        />
+      </div>
+    </div>
+    <div class="dFlexColumnCenterFlexStart">
+      <div class="fontStyle3">
+        Beschreibung
+        <span style="color: rgba(104, 104, 104, 1)">(optional)</span>
+      </div>
+
+      <input
+        class="inputElement"
+        type="text"
+        id="input2"
+        placeholder="Dein Text hier"
+        required
+      />
+    </div>
+    <div class="dFlexRowFlexEndCenter">
+      <button disabled class="btn btn-prim" (click)="createChannel()">Erstellen</button>
+    </div>
+  </section>
+</div>

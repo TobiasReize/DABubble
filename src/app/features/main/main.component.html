@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<div>
   <app-header></app-header>
   <div class="main">
     <app-side-nav></app-side-nav>
@@ -15,4 +15,5 @@
       [class.changeMenuImgBlue]="!sectionIsVisible"
     />
   </div>
+  <app-create-channel *ngIf="sideNavService.createChannelsDivOpened"></app-create-channel>
 </div>
