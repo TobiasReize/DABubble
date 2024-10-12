@@ -16,6 +16,7 @@ export class MessageComponent {
   @Input() messageData: Message = new Message();
   @Input() isThreadMessage: boolean = false;
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis; 
+  replies: Signal<Message[]> = this.chatService.threadReplies;
   userName: string = 'Maria Musterfrau';
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;

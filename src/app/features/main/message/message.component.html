@@ -6,9 +6,9 @@
             <span class="message-posted-at">{{ messageData.postedAt.toLocaleTimeString().slice(0, -3) }}</span>
         </div>
         <div class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{ messageData.content }}</div>
-        @if (messageData.replies.length > 0 && !isThreadMessage) {
+        @if (replies.length > 0 && !isThreadMessage) {
             <div class="bottom-message-container">
-                <div (click)="openThread()" class="number-of-replies">{{ messageData.replies.length }} Antworten</div>
+                <div (click)="openThread()" class="number-of-replies">{{ replies().length }} Antworten</div>
                 @if (messageData.lastReplyAt) {
                     <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt.toLocaleTimeString().slice(0, -3) }}</div>
                 }
@@ -63,7 +63,7 @@
         <div class="icon-btn">
             <span class="material-symbols-rounded">add_reaction</span>
         </div>
-        <div class="icon-btn">
+        <div class="icon-btn" (click)="openThread()">
             <span class="material-symbols-rounded">comment</span>
         </div>
         @if (isMe) {
