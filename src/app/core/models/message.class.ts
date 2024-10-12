@@ -23,8 +23,8 @@ export class Message {
         return {
             imageName: this.imageName,
             userName: this.userName,
-            postedAtAsString: `${this.postedAt.getTime()}`,
-            lastReplyAtAsString: `${this.lastReplyAt ? this.lastReplyAt.getTime() : ''}`,
+            postedAt: this.postedAt.getTime(),
+            lastReplyAt: this.lastReplyAt ? this.lastReplyAt.getTime() : 0,
             content: this.content,
             reactions: JSON.stringify(this.reactions),
             replyIds: JSON.stringify(replyIdsForJson)

@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { MessageInterface } from '../../models/message.interface';
-import { addDoc, collection, doc, Firestore, onSnapshot, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, onSnapshot, orderBy, query, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { Message } from '../../models/message.class';
 import { Channel } from '../../models/channel.class';
 
@@ -30,8 +30,8 @@ export class FirebaseService {
     const data = doc.data();
     const reactions = JSON.parse(data['reactions']);
     const replyIds = JSON.parse(data['replyIds']);
-    const postedAt = new Date(+data['postedAtAsString']);
-    const lastReplyAt = new Date(+data['lastReplyAtAsString']);
+    const postedAt = new Date(data['postedAt']);
+    const lastReplyAt = new Date(data['lastReplyAt']);
     const message = new Message(doc.id, data['imageName'], data['userName'], postedAt, lastReplyAt, data['content'], reactions, replyIds);
     return message;
   }
@@ -54,9 +54,10 @@ export class FirebaseService {
   }
 
   subMessages() {
-    return onSnapshot(this.getCollectionRef('messages'), (collection) => {
+    const q = query(this.getCollectionRef('messages'), orderBy('postedAt'));
+    return onSnapshot(q, (snapshot) => {
       const tempMessages: Message[] = [];
-      collection.forEach(doc => {
+      snapshot.forEach(doc => {
         const message = this.createMessage(doc);
         if (message) {
           console.log(message);

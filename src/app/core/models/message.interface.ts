@@ -1,8 +1,8 @@
 export interface MessageInterface {
     imageName: string;
     userName: string;
-    postedAtAsString: string;
-    lastReplyAtAsString: string;
+    postedAt: number;
+    lastReplyAt: number;
     content: string;
     reactions: string;
     replyIds: string;
