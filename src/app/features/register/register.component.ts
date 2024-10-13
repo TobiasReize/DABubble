@@ -52,7 +52,7 @@ export class RegisterComponent {
       
     } else if (ngForm.submitted && ngForm.form.valid && this.registerTest) {  // Test-Bereich!
       this.setNewUser();
-      console.log('Test-Registrierung!:', this.userService.newUser);
+      // console.log('Test-Registrierung!:', this.userService.newUser);
       ngForm.resetForm();
       this.agreedPrivacyPolicy = false;
       this.router.navigateByUrl('choose-avatar');
