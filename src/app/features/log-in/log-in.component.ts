@@ -7,7 +7,7 @@ import { LoginHeaderComponent } from '../../shared/login-header/login-header.com
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
-import { Auth, User, user } from '@angular/fire/auth';
+import { Auth, getAuth, signInWithEmailAndPassword, User, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -38,9 +38,9 @@ export class LogInComponent implements OnDestroy {
 
 
   constructor(private router: Router) {
-    this.userSubscription = this.user$.subscribe((aUser: User | null) => {
+    this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
       //handle user state changes here. Note, that user will be null if there is no currently logged in user.
-      console.log('User subscription:', aUser);
+      console.log('User subscription:', currentUser);
     })
   }
 
@@ -57,13 +57,30 @@ export class LogInComponent implements OnDestroy {
     if (ngForm.submitted && ngForm.form.valid && !this.loginTest) {
       
     } else if (ngForm.submitted && ngForm.form.valid && this.loginTest) {  // Test-Bereich!
+      this.signInUser();
       this.userService.currentOnlineUser = this.loginData;
-      console.log('Test-Login!:', this.userService.currentOnlineUser);
+      // console.log('Test-Login!:', this.userService.currentOnlineUser);
       ngForm.resetForm();
-      this.router.navigateByUrl('main');
     }
   }
 
+
+  signInUser() {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, this.loginData.email, this.loginData.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Login erfolgreich!', user);
+        this.router.navigateByUrl('main');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('Login fehlgeschlagen, Error-Code:', errorCode);
+        console.log('Login fehlgeschlagen, Error-Message:', errorMessage);
+      });
+  }
+ 
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();

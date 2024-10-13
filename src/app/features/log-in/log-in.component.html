@@ -16,7 +16,7 @@
         <span class="error-text" [ngStyle]="{'visibility': (!email.valid && email.touched) ? 'visible' : 'hidden'}">*Diese E-Mail-Adresse ist leider ungültig.</span>
         
         <div class="input-style">
-            <input #password="ngModel" [(ngModel)]="loginData.password" minlength="5" type="password" name="password" id="password" placeholder="Passwort" required>
+            <input #password="ngModel" [(ngModel)]="loginData.password" minlength="6" type="password" name="password" id="password" placeholder="Passwort" required>
             <span class="material-symbols-rounded">lock</span>
         </div>
         <span class="error-text" [ngStyle]="{'visibility': (!password.valid && password.touched) ? 'visible' : 'hidden'}">Falsches Passwort oder E-Mail... Bitte noch einmal versuchen.</span>

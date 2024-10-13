@@ -58,6 +58,14 @@ export class FirebaseService {
     await addDoc(this.getSubcollectionRef(docId, collectionName, 'messages'), messageObj);
   }
 
+  async addUser(data: any) {  //User-Interface wird noch erstellt!
+    await addDoc(this.getCollectionRef('users'), data)
+    .then(
+      (result) => {console.log('User hinzugefügt:', result)}
+    ).catch(
+      (err) => {console.error('User hinzufügen error:', err)});
+  }
+
   async updateMessage(docId: string, messageObj: MessageInterface) {
     // {...messageObj} must be used due to a bug concerning the database
     await updateDoc(this.getDocRef(docId, 'messages'), {...messageObj});
