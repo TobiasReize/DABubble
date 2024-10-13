@@ -11,11 +11,16 @@ import { FormsModule } from '@angular/forms';
 })
 export class MessageTextareaComponent {
   @Input() placeholder: string = 'Nachricht an #';
+  @Input() type: string = 'chat';
   messageText = '';
 
   constructor(private chatService: ChatService) { }
 
   addMessage() {
-    this.chatService.addChatMessage(this.messageText);
+    if (this.type === 'chat') {
+      this.chatService.addMessage(this.messageText, 'chat');
+    } else if (this.type === 'thread') {
+      this.chatService.addMessage(this.messageText, 'thread');
+    }
   }
 }

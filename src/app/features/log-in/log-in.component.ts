@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -6,6 +6,9 @@ import { IntroComponent } from './intro/intro.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
+import { FirebaseService } from '../../core/services/firebase/firebase.service';
+import { Auth, getAuth, signInWithEmailAndPassword, User, user } from '@angular/fire/auth';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-log-in',
@@ -17,11 +20,16 @@ import { UserService } from '../../core/services/user/user.service';
     '../../../styles/login.scss'
   ]
 })
-export class LogInComponent {
+export class LogInComponent implements OnDestroy {
 
   hideIntroScreen: boolean = false;
   loginTest: boolean = true;
   userService = inject(UserService);
+  firebaseService = inject(FirebaseService);
+  private auth = inject(Auth);
+
+  user$ = user(this.auth);
+  userSubscription: Subscription;
   
   loginData = {
     email: '',
@@ -29,7 +37,12 @@ export class LogInComponent {
   }
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
+      //handle user state changes here. Note, that user will be null if there is no currently logged in user.
+      console.log('User subscription:', currentUser);
+    })
+  }
 
 
   setIntroVariable(event: boolean) {
@@ -44,11 +57,33 @@ export class LogInComponent {
     if (ngForm.submitted && ngForm.form.valid && !this.loginTest) {
       
     } else if (ngForm.submitted && ngForm.form.valid && this.loginTest) {  // Test-Bereich!
+      this.signInUser();
       this.userService.currentOnlineUser = this.loginData;
-      console.log('Test-Login!:', this.userService.currentOnlineUser);
+      // console.log('Test-Login!:', this.userService.currentOnlineUser);
       ngForm.resetForm();
-      this.router.navigateByUrl('main');
     }
+  }
+
+
+  signInUser() {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, this.loginData.email, this.loginData.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Login erfolgreich!', user);
+        this.router.navigateByUrl('main');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('Login fehlgeschlagen, Error-Code:', errorCode);
+        console.log('Login fehlgeschlagen, Error-Message:', errorMessage);
+      });
+  }
+ 
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
 

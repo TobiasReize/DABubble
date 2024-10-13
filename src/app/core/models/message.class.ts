@@ -10,24 +10,18 @@ export class Message {
         public lastReplyAt: Date | undefined = undefined,
         public content: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.',
         public reactions: Reaction[] = [new Reaction('2705.svg', ['Marina Mustermann']), new Reaction()],
-        public replies: Message[] = []
+        public threadId: string = ''
     ) {}
 
     toJson(): MessageInterface {
-        const replyIdsForJson: any[]  = [];
-        if (this.replies.length > 0) {
-            this.replies.forEach(reply => {
-                replyIdsForJson.push(reply.id);
-            })
-        }
         return {
             imageName: this.imageName,
             userName: this.userName,
-            postedAtAsString: `${this.postedAt.getTime()}`,
-            lastReplyAtAsString: `${this.lastReplyAt ? this.lastReplyAt.getTime() : ''}`,
+            postedAt: this.postedAt.getTime(),
+            lastReplyAt: this.lastReplyAt ? this.lastReplyAt.getTime() : 0,
             content: this.content,
             reactions: JSON.stringify(this.reactions),
-            replyIds: JSON.stringify(replyIdsForJson)
+            threadId: this.threadId
         }
     }
 }

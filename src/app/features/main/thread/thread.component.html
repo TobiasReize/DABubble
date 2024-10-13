@@ -11,11 +11,11 @@
 <div class="messages-container">
     <app-message [messageData]="message()" [isThreadMessage]="true"></app-message>
     <div class="thread-hr-container">
-        <span class="replies">{{ message().replies.length }}&nbsp;Antworten</span>
+        <span class="replies">{{ replies().length }}&nbsp;Antworten</span>
         <hr>
     </div>
-    @for (reply of message().replies; track reply) {
+    @for (reply of replies(); track reply.id) {
         <app-message [messageData]="reply" [isThreadMessage]="true"></app-message>
     }
 </div>
-<app-message-textarea placeholder="Antworten..."></app-message-textarea>
+<app-message-textarea placeholder="Antworten..." type="thread"></app-message-textarea>

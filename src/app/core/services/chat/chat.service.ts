@@ -3,27 +3,22 @@ import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reaction.class';
 import { FirebaseService } from '../firebase/firebase.service';
 import { MessageInterface } from '../../models/message.interface';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private dummyChatMessages: Message[] = [
-    new Message('', 'avatar4.svg', 'Maria Musterfrau', new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', [new Reaction()], [new Message()]),
-    new Message(),
-    new Message(),
-    new Message('', 'avatar4.svg', 'Maria Musterfrau', new Date('2024-10-03'), new Date('2024-10-03'), 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', [new Reaction('2705.svg', ['Max Mustermann'])], [new Message(), new Message]),
-    new Message(),
-    new Message()
-  ];
-
   private userName: string = 'Maria Musterfrau';
   private userAvatar: string = 'avatar4.svg';
+  private currentChannel: string = environment.testChannelId;
+  private currentThread: string = environment.testThreadId;
 
   private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
   readonly chatMessages = this.firebaseService.messages;
+  readonly threadReplies = this.firebaseService.thread;
 
   private threadMessageSignal = signal<Message>(new Message());
   readonly threadMessage = this.threadMessageSignal.asReadonly();
@@ -41,13 +36,19 @@ export class ChatService {
   }
 
   changeThread(message: Message) {
+    const threadId = message.threadId;
+    const replies: Message[] = [];
     this.threadMessageSignal.set(message);
   }
 
-  addChatMessage(messageContent: string) {
-    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction()], []);
+  addMessage(messageContent: string, type: 'thread' | 'chat') {
+    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction()], '');
     const messageAsJson: MessageInterface = message.toJson();
-    this.firebaseService.addMessage(messageAsJson);
+    if (type === 'chat') {
+      this.firebaseService.addMessage(this.currentChannel, 'channels', messageAsJson);
+    } else {
+      this.firebaseService.addMessage(this.currentThread, 'threads', messageAsJson);
+    }
   }
 
   saveLastEmoji(emoji: string) {
