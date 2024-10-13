@@ -30,9 +30,9 @@ export class MessageComponent {
 
   updateMessage() {
     if (this.isThreadMessage && !this.isTopMessage) {
-      this.firebaseService.updateMessage(this.firebaseService.threadId, 'threads', this.messageData.id, this.messageData.toJson());
+      this.chatService.updateMessage(this.chatService.currentThreadId, 'threads', this.messageData.id, this.messageData.toJson());
     } else {
-      this.firebaseService.updateMessage(this.firebaseService.channelId, 'channels', this.messageData.id, this.messageData.toJson());
+      this.chatService.updateMessage(this.chatService.currentChannelId, 'channels', this.messageData.id, this.messageData.toJson());
     }
   }
 

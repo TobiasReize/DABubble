@@ -16,7 +16,7 @@ export class ChatComponent {
 
   constructor(private chatService: ChatService) { }
 
-  messages: Signal<Message[]> = this.chatService.chatMessages;
+  messages: Signal<Message[]> = this.chatService.messages;
 
   isSameDay(firstDate: Date, secondDate: Date) {
     return firstDate.getFullYear() == secondDate.getFullYear() && firstDate.getMonth() == secondDate.getMonth() && firstDate.getDate() == secondDate.getDate();
