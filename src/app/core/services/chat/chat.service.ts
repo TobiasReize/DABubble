@@ -2,7 +2,6 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reaction.class';
 import { MessageInterface } from '../../models/message.interface';
-import { environment } from '../../../../environments/environment.development';
 import { addDoc, Firestore, onSnapshot, orderBy, query, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
