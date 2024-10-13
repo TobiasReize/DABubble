@@ -12,25 +12,31 @@ export class FirebaseService {
 
   firestore: Firestore = inject(Firestore);
   unsubMessages!: Unsubscribe;
-  unsubChannels!: Unsubscribe;
+  // unsubChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
   private messagesSignal = signal<Message[]>([]);
   readonly messages = this.messagesSignal.asReadonly();
   private threadSignal = signal<Message[]>([]);
   readonly thread = this.threadSignal.asReadonly();
+  public channelId = environment.testChannelId;
+  public threadId: string = '';
 
-  channels: Channel[] = [];
+  // channels: Channel[] = [];
 
   constructor() { 
-    this.unsubMessages = this.subMessages();
-    this.unsubChannels = this.subChannels();
-    this.unsubThread = this.subThread();
+    this.unsubMessages = this.subMessages(this.channelId);
+    // this.unsubChannels = this.subChannels();
+    if (this.threadId !== '') {
+      this.unsubThread = this.subThread(this.threadId);
+    }
   }
 
   ngOnDestroy() {
     this.unsubMessages();
-    this.unsubChannels();
-    this.unsubThread();
+    // this.unsubChannels();
+    if (this.unsubThread) {
+      this.unsubThread();
+    }
   }
 
   createMessage(doc: QueryDocumentSnapshot) {
@@ -46,6 +52,10 @@ export class FirebaseService {
     return doc(this.getCollectionRef(collectionName), docId);
   }
 
+  getDocRefInSubcollection(docId1: string, collectionName: string, subcollectionName: string, docId2: string) {
+    return doc(this.firestore, collectionName, docId1, subcollectionName, docId2);
+  }
+
   getCollectionRef(collectionName: string) {
     return collection(this.firestore, collectionName);
   }
@@ -58,13 +68,44 @@ export class FirebaseService {
     await addDoc(this.getSubcollectionRef(docId, collectionName, 'messages'), messageObj);
   }
 
-  async updateMessage(docId: string, messageObj: MessageInterface) {
-    // {...messageObj} must be used due to a bug concerning the database
-    await updateDoc(this.getDocRef(docId, 'messages'), {...messageObj});
+  async addThread() {
+    let threadId: string = '';
+    await addDoc(this.getCollectionRef('threads'), {}).catch(err => {
+      console.log(err);
+    }).then((docRef) => {
+      if (docRef) {
+        threadId = docRef.id;
+      }
+    })
+    return threadId;
   }
 
-  subMessages() {
-    const q = query(this.getCollectionRef('messages'), orderBy('postedAt'));
+  clearThread() {
+    this.threadSignal.set([]);
+  }
+
+  async addThreadMessage(docId: string, collectionName: string, messageObj: MessageInterface) {
+    if (docId !== '') {
+      console.log('adding message to thread ', docId);
+      await this.addMessage(docId, collectionName, messageObj);
+      return '';
+    } else {
+      const threadId = await this.addThread();
+      console.log('threadId from firebaseService.addThread()', threadId);
+      if (threadId) {
+        await this.addMessage(threadId, collectionName, messageObj);
+      }
+      return threadId;
+    }
+  }
+
+  async updateMessage(channelOrThreadId: string, collectionName: string, messageId: string, messageObj: any) {
+    // {...messageObj} must be used due to a bug concerning the database
+    await updateDoc(this.getDocRefInSubcollection(channelOrThreadId, collectionName, 'messages', messageId), {...messageObj});
+  }
+
+  subMessages(channelId: string) {
+    const q = query(this.getSubcollectionRef(channelId, 'channels', 'messages'), orderBy('postedAt'));
     return onSnapshot(q, (snapshot) => {
       const tempMessages: Message[] = [];
       snapshot.forEach(doc => {
@@ -75,12 +116,11 @@ export class FirebaseService {
         }
       })
       this.messagesSignal.set(tempMessages);
-      console.log('messagesSignal', this.messagesSignal());
     });
   }
 
-  subThread() {
-    const q = query(this.getSubcollectionRef(environment.testThreadId, 'threads', 'messages'), orderBy('postedAt'));
+  subThread(threadId: string) {
+    const q = query(this.getSubcollectionRef(threadId, 'threads', 'messages'), orderBy('postedAt'));
     return onSnapshot(q, (snapshot) => {
       const tempMessages: Message[] = [];
       snapshot.forEach(doc => {
@@ -94,13 +134,21 @@ export class FirebaseService {
     });
   }
 
-  subChannels() {
-    return onSnapshot(this.getCollectionRef('channels'), (collection) => {
-      collection.forEach(doc => {
-        const data = doc.data();
-        const userIds = JSON.parse(data['userIds']);
-        const channel = new Channel(doc.id, data['name'], data['description'], userIds);
-      })
-    })
+  // subChannels() {
+  //   return onSnapshot(this.getCollectionRef('channels'), (collection) => {
+  //     collection.forEach(doc => {
+  //       const data = doc.data();
+  //       const userIds = JSON.parse(data['userIds']);
+  //       const channel = new Channel(doc.id, data['name'], data['description'], userIds);
+  //     })
+  //   })
+  // }
+
+  changeThread(threadId: string) {
+    if (this.unsubThread) {
+      this.unsubThread();
+    }
+    this.threadId = threadId;
+    this.unsubThread = this.subThread(threadId);
   }
 }

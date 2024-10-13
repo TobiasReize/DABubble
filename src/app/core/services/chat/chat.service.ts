@@ -12,11 +12,11 @@ export class ChatService {
 
   private userName: string = 'Maria Musterfrau';
   private userAvatar: string = 'avatar4.svg';
-  private currentChannel: string = environment.testChannelId;
-  private currentThread: string = environment.testThreadId;
-
   private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
+  private currentChannel: string = this.firebaseService.channelId;
+  private currentThread: string = this.firebaseService.threadId;
+  
   readonly chatMessages = this.firebaseService.messages;
   readonly threadReplies = this.firebaseService.thread;
 
@@ -37,17 +37,26 @@ export class ChatService {
 
   changeThread(message: Message) {
     const threadId = message.threadId;
-    const replies: Message[] = [];
     this.threadMessageSignal.set(message);
+    if (threadId !== '') {
+      this.currentThread = threadId;
+      this.firebaseService.changeThread(threadId);
+    }
   }
 
-  addMessage(messageContent: string, type: 'thread' | 'chat') {
+  async addMessage(messageContent: string, type: 'thread' | 'chat') {
     const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction()], '');
     const messageAsJson: MessageInterface = message.toJson();
     if (type === 'chat') {
-      this.firebaseService.addMessage(this.currentChannel, 'channels', messageAsJson);
+      await this.firebaseService.addMessage(this.currentChannel, 'channels', messageAsJson);
     } else {
-      this.firebaseService.addMessage(this.currentThread, 'threads', messageAsJson);
+      const threadId = await this.firebaseService.addThreadMessage(this.currentThread, 'threads', messageAsJson);
+      console.log('returned threadId', threadId);
+      if (threadId) {
+        await this.firebaseService.updateMessage(this.firebaseService.channelId, 'channels', this.threadMessage().id, {
+          threadId: threadId
+        });
+      }
     }
   }
 
