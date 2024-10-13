@@ -5,6 +5,7 @@ import { MessageInterface } from '../../models/message.interface';
 import { environment } from '../../../../environments/environment.development';
 import { addDoc, Firestore, onSnapshot, orderBy, query, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
+import { Channel } from '../../models/channel.class';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ChatService {
 
   firestore: Firestore = inject(Firestore);
   unsubMessages!: Unsubscribe;
-  // unsubChannels!: Unsubscribe;
+  unsubChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
 
   private userName: string = 'Maria Musterfrau';
@@ -35,14 +36,14 @@ export class ChatService {
   private lastEmojisSignal = signal<string[]>(this.defaultEmojis);
   readonly lastEmojis = this.lastEmojisSignal.asReadonly();
   
-  public currentChannelId = environment.testChannelId;
+  public currentChannelId: string = '';
   public currentThreadId: string = '';
 
-  // channels: Channel[] = [];
+  private channelsSignal = signal<Channel[]>([]);
+  readonly channels = this.channelsSignal.asReadonly();
 
   constructor(private firebaseService: FirebaseService) { 
-    this.unsubMessages = this.subMessages(this.currentChannelId);
-    // this.unsubChannels = this.subChannels();
+    this.unsubChannels = this.subChannels();
     if (this.currentThreadId !== '') {
       this.unsubThread = this.subThread(this.currentThreadId);
     }
@@ -50,7 +51,7 @@ export class ChatService {
 
   ngOnDestroy() {
     this.unsubMessages();
-    // this.unsubChannels();
+    this.unsubChannels();
     if (this.unsubThread) {
       this.unsubThread();
     }
@@ -106,7 +107,6 @@ export class ChatService {
       snapshot.forEach(doc => {
         const message = this.createMessage(doc);
         if (message) {
-          console.log(message);
           tempMessages.push(message);
         }
       })
@@ -128,15 +128,22 @@ export class ChatService {
     });
   }
 
-  // subChannels() {
-  //   return onSnapshot(this.getCollectionRef('channels'), (collection) => {
-  //     collection.forEach(doc => {
-  //       const data = doc.data();
-  //       const userIds = JSON.parse(data['userIds']);
-  //       const channel = new Channel(doc.id, data['name'], data['description'], userIds);
-  //     })
-  //   })
-  // }
+  subChannels() {
+    return onSnapshot(this.firebaseService.getCollectionRef('channels'), (collection) => {
+      const channels: Channel[] = [];
+      collection.forEach(doc => {
+        const data = doc.data();
+        const userIds = JSON.parse(data['userIds']);
+        const channel = new Channel(doc.id, data['name'], data['description'], userIds);
+        channels.push(channel);
+      })
+      this.channelsSignal.set(channels);
+      if (!this.unsubMessages) {
+        this.currentChannelId = this.channels()[0].id;
+        this.unsubMessages = this.subMessages(this.currentChannelId);
+      }
+    })
+  }
 
   changeThreadVisibility(bool: boolean) {
     this.openThreadSignal.set(bool);
