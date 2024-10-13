@@ -151,10 +151,12 @@ export class ChatService {
 
   changeThread(message: Message) {
     const threadId = message.threadId;
+    this.currentThreadId = threadId;
     this.threadMessageSignal.set(message);
     if (threadId !== '') {
-      this.currentThreadId = threadId;
       this.resubThread(threadId);
+    } else if (threadId === '') {
+      this.clearThread();
     }
   }
 
@@ -169,6 +171,7 @@ export class ChatService {
         await this.updateMessage(this.currentChannelId, 'channels', this.threadMessage().id, {
           threadId: threadId
         });
+        this.currentThreadId = threadId;
         this.resubThread(threadId);
       }
     }
