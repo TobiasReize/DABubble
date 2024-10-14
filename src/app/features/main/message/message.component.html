@@ -62,7 +62,7 @@
                 <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[1]}}" alt="menu emoji 2">
             </div>
         }
-        <div class="icon-btn">
+        <div class="icon-btn" (click)="toggleReactionOptionMenu()">
             <span class="material-symbols-rounded">add_reaction</span>
         </div>
         @if (!isThreadMessage) {
@@ -78,6 +78,15 @@
         @if (isMoreMenuOpen) {
             <div class="more-menu">
                 <div class="edit-message">Nachricht&nbsp;bearbeiten</div>
+            </div>
+        }
+        @if (areReactionOptionsOpen) {
+            <div class="reaction-options">
+                @for (reaction of reactionOptions(); track reaction) {
+                    <div class="icon-btn" (click)="addNewReaction(reaction)">
+                        <img class="reaction-img" src="assets/img/emojis/{{reaction}}" alt="menu emoji 2">
+                    </div>
+                }
             </div>
         }
     </div>

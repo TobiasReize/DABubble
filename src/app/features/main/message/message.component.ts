@@ -1,4 +1,4 @@
-import { Component, Input, Signal } from '@angular/core';
+import { Component, computed, Input, Signal } from '@angular/core';
 import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
@@ -16,11 +16,13 @@ export class MessageComponent {
   @Input() messageData: Message = new Message();
   @Input() isThreadMessage: boolean = false;
   @Input() isTopMessage: boolean = false;
-  menuEmojis: Signal<string[]> = this.chatService.lastEmojis; 
+  menuEmojis: Signal<string[]> = this.chatService.lastEmojis;
+  reactionOptions: Signal<string[]> = computed(() => ['1f64c.svg', '1f642.svg', '1f680.svg', '1f913.svg', '2705.svg'].filter(emoji => !this.menuEmojis().includes(emoji)));
   replies: Signal<Message[]> = this.chatService.threadReplies;
   userName: string = 'Maria Musterfrau';
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;
+  areReactionOptionsOpen: boolean = false;
 
   constructor(private chatService: ChatService, private firebaseService: FirebaseService) {}
 
@@ -84,5 +86,11 @@ export class MessageComponent {
 
   toggleMoreMenu() {
     this.isMoreMenuOpen = !this.isMoreMenuOpen;
+    this.areReactionOptionsOpen = false;
+  }
+
+  toggleReactionOptionMenu() {
+    this.areReactionOptionsOpen = !this.areReactionOptionsOpen;
+    this.isMoreMenuOpen = false;
   }
 }
