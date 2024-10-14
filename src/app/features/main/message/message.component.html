@@ -54,18 +54,22 @@
         </div>
     </div>
     <div class="message-menu chat-message-menu" [ngClass]="{ 'chat-message-menu-alternative': isMe }">
-        <div class="icon-btn" (click)="addNewReaction(menuEmojis()[0])">
-            <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[0]}}" alt="menu emoji 1">
-        </div>
-        <div class="icon-btn" (click)="addNewReaction(menuEmojis()[1])">
-            <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[1]}}" alt="menu emoji 2">
-        </div>
+        @if (!isThreadMessage) {
+            <div class="icon-btn" (click)="addNewReaction(menuEmojis()[0])">
+                <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[0]}}" alt="menu emoji 1">
+            </div>
+            <div class="icon-btn" (click)="addNewReaction(menuEmojis()[1])">
+                <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[1]}}" alt="menu emoji 2">
+            </div>
+        }
         <div class="icon-btn">
             <span class="material-symbols-rounded">add_reaction</span>
         </div>
-        <div class="icon-btn" (click)="openThread()">
-            <span class="material-symbols-rounded">comment</span>
-        </div>
+        @if (!isThreadMessage) {
+            <div class="icon-btn" (click)="openThread()">
+                <span class="material-symbols-rounded">comment</span>
+            </div>
+        }
         @if (isMe) {
             <div class="icon-btn" (click)="toggleMoreMenu()">
                 <span class="material-symbols-rounded">more_vert</span>
