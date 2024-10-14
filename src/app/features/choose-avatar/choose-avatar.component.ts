@@ -49,7 +49,7 @@ export class ChooseAvatarComponent {
     createUserWithEmailAndPassword(auth, this.userService.user.email, this.userService.user.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('Registrierung erfolgreich!', user);
+        console.log('Registrierung erfolgreich!');
         this.userService.user.userUID = user.uid;
         this.userService.user.avatar = this.currentProfileImg;
         this.userService.addUser(this.userService.user.toJSON());
@@ -66,7 +66,7 @@ export class ChooseAvatarComponent {
 
   goToLogin() {
     this.inputFinished = true;
-    console.log('Neuer User:', this.userService.user);
+    // console.log('Neuer User:', this.userService.user);
     setTimeout(() => {
       this.router.navigateByUrl('');
     }, 1300);

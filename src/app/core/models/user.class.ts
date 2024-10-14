@@ -4,14 +4,14 @@ export class User {
     password: string;
     avatar: string;
     userUID: string;
-    
-    
-    constructor() {
-        this.name = '';
-        this.email = '';
-        this.password = '';
-        this.avatar = '';
-        this.userUID = '';
+
+
+    constructor(obj?: any) {
+        this.name = obj ? obj.name : '';
+        this.email = obj ? obj.email : '';
+        this.password = obj ? obj.password : '';
+        this.avatar = obj ? obj.avatar : '';
+        this.userUID = obj ? obj.userUID : '';
     }
 
 

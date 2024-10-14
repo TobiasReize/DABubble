@@ -38,7 +38,7 @@ export class LogInComponent implements OnDestroy {
   constructor(private router: Router) {
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
       //handle user state changes here. Note, that user will be null if there is no currently logged in user.
-      console.log('User subscription:', currentUser);
+      // console.log('User subscription:', currentUser);
     })
   }
 
@@ -56,7 +56,6 @@ export class LogInComponent implements OnDestroy {
       
     } else if (ngForm.submitted && ngForm.form.valid && this.loginTest) {  // Test-Bereich!
       this.signInUser();
-      this.userService.currentOnlineUser = this.loginData;
       // console.log('Test-Login!:', this.userService.currentOnlineUser);
       ngForm.resetForm();
     }
@@ -68,7 +67,9 @@ export class LogInComponent implements OnDestroy {
     signInWithEmailAndPassword(auth, this.loginData.email, this.loginData.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('Login erfolgreich!', user);
+        this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndex(user.uid)];
+        // console.log('Login erfolgreich!', user);
+        console.log('Aktueller User:', this.userService.currentOnlineUser);
         this.router.navigateByUrl('main');
       })
       .catch((error) => {
