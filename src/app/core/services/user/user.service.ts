@@ -1,27 +1,54 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
+import { addDoc, onSnapshot, Unsubscribe } from '@angular/fire/firestore';
+import { FirebaseService } from '../firebase/firebase.service';
+import { User } from '../../models/user.class';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService implements OnDestroy {
 
   introDone: boolean = false;
-
-  currentOnlineUser = {
-    email: '',
-    password: ''
-  };
-
-  newUser = {
-    name: '',
-    email: '',
-    password: '',
-    avatar: '',
-    userUID: ''
-  };
+  firebaseService = inject(FirebaseService);
+  user = new User();
+  allUsers: User[] = [];
+  unsubUserCol!: Unsubscribe;
+  currentOnlineUser = new User();
 
 
-  constructor() { }
+  constructor() {
+    this.unsubUserCol = this.subUserCol();
+  }
+
+
+  async addUser(data: object) {
+    await addDoc(this.firebaseService.getCollectionRef('users'), data)
+    .then(
+      (result) => {console.log('User erfolgreich hinzugefügt!')}
+    ).catch(
+      (err) => {console.error('User hinzufügen error:', err)});
+  }
+
+
+  subUserCol() {
+    return onSnapshot(this.firebaseService.getCollectionRef('users'), usersCollection => {
+      this.allUsers = [];
+      usersCollection.forEach(user => {
+        this.allUsers.push(new User(user.data()));
+      });
+      console.log('Alle User:', this.allUsers);
+    });
+  }
+
+
+  getUserIndex(userUID: string) {
+    return this.allUsers.findIndex(element => element.userUID == userUID);
+  }
+
+
+  ngOnDestroy(): void {
+    this.unsubUserCol();
+  }
 
 
 }

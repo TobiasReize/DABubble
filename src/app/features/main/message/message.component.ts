@@ -15,6 +15,7 @@ import { FirebaseService } from '../../../core/services/firebase/firebase.servic
 export class MessageComponent {
   @Input() messageData: Message = new Message();
   @Input() isThreadMessage: boolean = false;
+  @Input() isTopMessage: boolean = false;
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis; 
   replies: Signal<Message[]> = this.chatService.threadReplies;
   userName: string = 'Maria Musterfrau';
@@ -28,7 +29,11 @@ export class MessageComponent {
   }
 
   updateMessage() {
-    this.firebaseService.updateMessage(this.messageData.id, this.messageData.toJson());
+    if (this.isThreadMessage && !this.isTopMessage) {
+      this.chatService.updateMessage(this.chatService.currentThreadId, 'threads', this.messageData.id, this.messageData.toJson());
+    } else {
+      this.chatService.updateMessage(this.chatService.currentChannelId, 'channels', this.messageData.id, this.messageData.toJson());
+    }
   }
 
   openThread() {
