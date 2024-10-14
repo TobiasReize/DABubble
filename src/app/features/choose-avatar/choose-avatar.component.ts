@@ -5,7 +5,6 @@ import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
 import { createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
-import { FirebaseService } from '../../core/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -21,7 +20,6 @@ export class ChooseAvatarComponent {
 
   inputFinished: boolean = false;
   userService = inject(UserService);
-  firebaseService = inject(FirebaseService);
   currentProfileImg = 'profile.svg';
   profileImages = [
     'avatar0.svg',
@@ -37,24 +35,24 @@ export class ChooseAvatarComponent {
 
 
   goBack() {
-    this.location.back();    
+    this.location.back();
   }
 
 
   changeProfileImg(index: number) {
     this.currentProfileImg = this.profileImages[index];
-    this.userService.newUser.avatar = this.currentProfileImg;
   }
 
 
   registerNewUser() {   //User wird auch direkt in Firebase eingeloggt!
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, this.userService.newUser.email, this.userService.newUser.password)
+    createUserWithEmailAndPassword(auth, this.userService.user.email, this.userService.user.password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('Registrierung erfolgreich!', user);
-        this.userService.newUser.userUID = user.uid;
-        this.firebaseService.addUser(this.setUserObject());
+        this.userService.user.userUID = user.uid;
+        this.userService.user.avatar = this.currentProfileImg;
+        this.userService.addUser(this.userService.user.toJSON());
         this.goToLogin();
       })
       .catch((error) => {
@@ -66,20 +64,9 @@ export class ChooseAvatarComponent {
   }
 
 
-  setUserObject() {
-    return {
-      name: this.userService.newUser.name,
-      email: this.userService.newUser.email,
-      password: this.userService.newUser.password,
-      avatar: this.userService.newUser.avatar,
-      userUID: this.userService.newUser.userUID
-    }
-  }
-
-
   goToLogin() {
     this.inputFinished = true;
-    console.log('Neuer User:', this.userService.newUser);
+    console.log('Neuer User:', this.userService.user);
     setTimeout(() => {
       this.router.navigateByUrl('');
     }, 1300);

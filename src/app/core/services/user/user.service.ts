@@ -1,4 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { addDoc } from '@angular/fire/firestore';
+import { FirebaseService } from '../firebase/firebase.service';
+import { User } from '../../models/user.class';
 
 @Injectable({
   providedIn: 'root'
@@ -6,22 +9,22 @@ import { Injectable } from '@angular/core';
 export class UserService {
 
   introDone: boolean = false;
+  firebaseService = inject(FirebaseService);
+  user = new User();
 
   currentOnlineUser = {
     email: '',
     password: ''
   };
 
-  newUser = {
-    name: '',
-    email: '',
-    password: '',
-    avatar: '',
-    userUID: ''
-  };
 
-
-  constructor() { }
+  async addUser(data: object) {
+    await addDoc(this.firebaseService.getCollectionRef('users'), data)
+    .then(
+      (result) => {console.log('User hinzugefügt:', result)}
+    ).catch(
+      (err) => {console.error('User hinzufügen error:', err)});
+  }
 
 
 }

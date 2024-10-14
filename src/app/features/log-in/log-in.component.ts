@@ -6,7 +6,6 @@ import { IntroComponent } from './intro/intro.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
-import { FirebaseService } from '../../core/services/firebase/firebase.service';
 import { Auth, getAuth, signInWithEmailAndPassword, User, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
@@ -25,7 +24,6 @@ export class LogInComponent implements OnDestroy {
   hideIntroScreen: boolean = false;
   loginTest: boolean = true;
   userService = inject(UserService);
-  firebaseService = inject(FirebaseService);
   private auth = inject(Auth);
 
   user$ = user(this.auth);

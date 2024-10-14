@@ -24,12 +24,5 @@ export class FirebaseService {
     return collection(this.getDocRef(docId, collectionName), subcollectionName);
   }
 
-  async addUser(data: any) {  //User-Interface wird noch erstellt!
-    await addDoc(this.getCollectionRef('users'), data)
-    .then(
-      (result) => {console.log('User hinzugefügt:', result)}
-    ).catch(
-      (err) => {console.error('User hinzufügen error:', err)});
-  }
 
 }
