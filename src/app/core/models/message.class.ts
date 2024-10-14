@@ -11,6 +11,7 @@ export class Message {
         public content: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.',
         public reactions: Reaction[] = [new Reaction('2705.svg', ['Marina Mustermann']), new Reaction()],
         public threadId: string = '',
+        public numberOfReplies: number = 0
     ) {}
 
     toJson(): MessageInterface {
@@ -21,7 +22,8 @@ export class Message {
             lastReplyAt: this.lastReplyAt ? this.lastReplyAt.getTime() : 0,
             content: this.content,
             reactions: JSON.stringify(this.reactions),
-            threadId: this.threadId
+            threadId: this.threadId,
+            numberOfReplies: this.numberOfReplies
         }
     }
 }

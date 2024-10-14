@@ -6,4 +6,5 @@ export interface MessageInterface {
     content: string;
     reactions: string;
     threadId: string;
+    numberOfReplies: number;
 }

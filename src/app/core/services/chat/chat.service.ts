@@ -60,7 +60,7 @@ export class ChatService {
     const reactions = JSON.parse(data['reactions']);
     const postedAt = new Date(data['postedAt']);
     const lastReplyAt = new Date(data['lastReplyAt']);
-    const message = new Message(doc.id, data['imageName'], data['userName'], postedAt, lastReplyAt, data['content'], reactions, data['threadId']);
+    const message = new Message(doc.id, data['imageName'], data['userName'], postedAt, lastReplyAt, data['content'], reactions, data['threadId'], data['numberOfReplies']);
     return message;
   }
 
@@ -96,6 +96,10 @@ export class ChatService {
   async updateMessage(channelOrThreadId: string, collectionName: string, messageId: string, messageObj: any) {
     // {...messageObj} must be used due to a bug concerning the database
     await updateDoc(this.firebaseService.getDocRefInSubcollection(channelOrThreadId, collectionName, 'messages', messageId), {...messageObj});
+  }
+
+  async updateThreadMessage() {
+    await this.updateMessage(this.currentChannelId, 'channels', this.threadMessage().id, this.threadMessage().toJson());
   }
 
   subMessages(channelId: string) {
@@ -165,13 +169,20 @@ export class ChatService {
     }
   }
 
+  async increaseNumberOfReplies() {
+    this.threadMessage().numberOfReplies++;
+    this.threadMessage().lastReplyAt = new Date();
+    await this.updateThreadMessage();
+  }
+
   async addMessage(messageContent: string, type: 'thread' | 'chat') {
-    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction('2705.svg', ['Marina Mustermann'])], '');
+    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction('2705.svg', ['Marina Mustermann'])], '', 0);
     const messageAsJson: MessageInterface = message.toJson();
     if (type === 'chat') {
       await addDoc(this.firebaseService.getSubcollectionRef(this.currentChannelId, 'channels', 'messages'), messageAsJson);
     } else {
       const threadId = await this.addThreadMessage(this.currentThreadId, 'threads', messageAsJson);
+      await this.increaseNumberOfReplies();
       if (threadId !== '') {
         await this.updateMessage(this.currentChannelId, 'channels', this.threadMessage().id, {
           threadId: threadId
