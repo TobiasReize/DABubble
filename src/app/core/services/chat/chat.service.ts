@@ -194,7 +194,10 @@ export class ChatService {
   }
 
   saveLastEmoji(emoji: string) {
-    this.lastEmojisSignal.update(values => [values[1], emoji]);
+    const emojis = this.lastEmojis();
+    if (!emojis.includes(emoji)) {
+      this.lastEmojisSignal.update(values => [emoji, values[0]]);
+    }
   }
 
 }

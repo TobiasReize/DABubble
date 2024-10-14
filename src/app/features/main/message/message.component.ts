@@ -61,6 +61,7 @@ export class MessageComponent {
       this.removeReaction(reaction);
     } else {
       reaction.userNames.push(this.userName);
+      this.chatService.saveLastEmoji(reaction.emoji);
     }
     this.updateMessage();
   }
@@ -68,7 +69,9 @@ export class MessageComponent {
   addNewReaction(reactionName: string) {
     const index = this.messageData.reactions.findIndex(reaction => reaction.emoji === reactionName);
     if (index === -1) {
-      this.messageData.reactions.push(new Reaction(reactionName, [this.userName]));
+      const reaction = new Reaction(reactionName, [this.userName]);
+      this.messageData.reactions.push(reaction);
+      this.chatService.saveLastEmoji(reaction.emoji);
       this.updateMessage();
     } else {
       this.toggleReaction(this.messageData.reactions[index]);
