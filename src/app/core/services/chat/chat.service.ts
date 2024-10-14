@@ -1,8 +1,8 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reaction.class';
 import { MessageInterface } from '../../models/message.interface';
-import { addDoc, Firestore, onSnapshot, orderBy, query, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import { addDoc, onSnapshot, orderBy, query, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
 
@@ -11,7 +11,6 @@ import { Channel } from '../../models/channel.class';
 })
 export class ChatService {
 
-  firestore: Firestore = inject(Firestore);
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
@@ -167,7 +166,7 @@ export class ChatService {
   }
 
   async addMessage(messageContent: string, type: 'thread' | 'chat') {
-    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction()], '');
+    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction('2705.svg', ['Marina Mustermann'])], '');
     const messageAsJson: MessageInterface = message.toJson();
     if (type === 'chat') {
       await addDoc(this.firebaseService.getSubcollectionRef(this.currentChannelId, 'channels', 'messages'), messageAsJson);

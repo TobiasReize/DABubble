@@ -10,7 +10,7 @@ export class Message {
         public lastReplyAt: Date | undefined = undefined,
         public content: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.',
         public reactions: Reaction[] = [new Reaction('2705.svg', ['Marina Mustermann']), new Reaction()],
-        public threadId: string = ''
+        public threadId: string = '',
     ) {}
 
     toJson(): MessageInterface {

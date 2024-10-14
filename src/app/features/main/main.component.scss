@@ -1,7 +1,7 @@
 @import "../../../styles/mixin.scss";
 
 :host {
-  @include dFlex($fd: column, $jc: flex-start, $ai: center);
+  @include dFlex($fd: column, $jc: flex-start, $ai: normal);
   height: 100vh;
   padding: 0 20px;
 }
