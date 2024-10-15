@@ -11,6 +11,8 @@ import { Channel } from '../../models/channel.class';
 })
 export class ChatService {
 
+  newMessage: boolean = false;
+
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;

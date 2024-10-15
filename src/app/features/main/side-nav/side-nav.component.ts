@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
+import { ChatService } from '../../../core/services/chat/chat.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -22,7 +23,7 @@ export class SideNavComponent {
 
   channelsOpened: boolean = false;
 
-  constructor(public sideNavService: SideNavService) {}
+  constructor(public sideNavService: SideNavService, public chatService: ChatService) {}
 
   openChannels(): void {
     this.channelsOpened = !this.channelsOpened;
@@ -35,5 +36,9 @@ export class SideNavComponent {
 
   closeContactDiv(): void {
     this.sideNavService.contactsOpened = !this.sideNavService.contactsOpened;
+  }
+
+  newMessage(): void {
+    this.chatService.newMessage = !this.chatService.newMessage;
   }
 }
