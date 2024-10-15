@@ -9,7 +9,7 @@ export class User {
     constructor(obj?: any) {
         this.name = obj ? obj.name : '';
         this.email = obj ? obj.email : '';
-        this.password = obj ? obj.password : '';
+        this.password = '';
         this.avatar = obj ? obj.avatar : '';
         this.userUID = obj ? obj.userUID : '';
     }
@@ -19,7 +19,6 @@ export class User {
         return {
           name: this.name,
           email: this.email,
-          password: this.password,
           avatar: this.avatar,
           userUID: this.userUID,
         }
