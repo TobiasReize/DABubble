@@ -4,6 +4,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { Router } from '@angular/router';
+import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-reset-password',
@@ -31,9 +32,25 @@ export class ResetPasswordComponent {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
+      this.sendEmail();
       ngForm.resetForm();
       this.goToLogin();
     }
+  }
+
+
+  sendEmail() {
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, this.resetEmail)
+      .then(() => {
+        console.log('Passwort zurücksetzen Email versendet!');
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('Passwort zurücksetzen fehlgeschlagen, Error-Code:', errorCode);
+        console.log('Passwort zurücksetzen fehlgeschlagen, Error-Message:', errorMessage);
+      });
   }
 
 

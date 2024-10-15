@@ -10,7 +10,7 @@ export class UserService implements OnDestroy {
 
   introDone: boolean = false;
   firebaseService = inject(FirebaseService);
-  user = new User();
+  newUser = new User();
   allUsers: User[] = [];
   unsubUserCol!: Unsubscribe;
   currentOnlineUser = new User();

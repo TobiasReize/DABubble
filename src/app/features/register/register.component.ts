@@ -61,9 +61,9 @@ export class RegisterComponent {
 
 
   setNewUser() {
-    this.userService.user.name = this.registerData.name;
-    this.userService.user.email = this.registerData.email;
-    this.userService.user.password = this.registerData.password;
+    this.userService.newUser.name = this.registerData.name;
+    this.userService.newUser.email = this.registerData.email;
+    this.userService.newUser.password = this.registerData.password;
   }
 
 
