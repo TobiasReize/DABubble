@@ -176,6 +176,7 @@
 
 .more-menu, .reaction-options {
     position: absolute;
+    z-index: 1;
     top: 20px;
     left: 90%;
     padding: 10px 20px 10px 20px;
