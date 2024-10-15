@@ -6,9 +6,9 @@
             <span class="message-posted-at">{{ messageData.postedAt.toLocaleTimeString().slice(0, -3) }}</span>
         </div>
         <div class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{ messageData.content }}</div>
-        @if (replies.length > 0 && !isThreadMessage) {
+        @if (messageData.numberOfReplies > 0 && !isThreadMessage) {
             <div class="bottom-message-container">
-                <div (click)="openThread()" class="number-of-replies">{{ replies().length }} Antworten</div>
+                <div (click)="openThread()" class="number-of-replies">{{ messageData.numberOfReplies }} Antworten</div>
                 @if (messageData.lastReplyAt) {
                     <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt.toLocaleTimeString().slice(0, -3) }}</div>
                 }
@@ -54,18 +54,22 @@
         </div>
     </div>
     <div class="message-menu chat-message-menu" [ngClass]="{ 'chat-message-menu-alternative': isMe }">
-        <div class="icon-btn" (click)="addNewReaction(menuEmojis()[0])">
-            <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[0]}}" alt="menu emoji 1">
-        </div>
-        <div class="icon-btn" (click)="addNewReaction(menuEmojis()[1])">
-            <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[1]}}" alt="menu emoji 2">
-        </div>
-        <div class="icon-btn">
+        @if (!isThreadMessage) {
+            <div class="icon-btn" (click)="addNewReaction(menuEmojis()[0])">
+                <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[0]}}" alt="menu emoji 1">
+            </div>
+            <div class="icon-btn" (click)="addNewReaction(menuEmojis()[1])">
+                <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[1]}}" alt="menu emoji 2">
+            </div>
+        }
+        <div class="icon-btn" (click)="toggleReactionOptionMenu()">
             <span class="material-symbols-rounded">add_reaction</span>
         </div>
-        <div class="icon-btn" (click)="openThread()">
-            <span class="material-symbols-rounded">comment</span>
-        </div>
+        @if (!isThreadMessage) {
+            <div class="icon-btn" (click)="openThread()">
+                <span class="material-symbols-rounded">comment</span>
+            </div>
+        }
         @if (isMe) {
             <div class="icon-btn" (click)="toggleMoreMenu()">
                 <span class="material-symbols-rounded">more_vert</span>
@@ -74,6 +78,15 @@
         @if (isMoreMenuOpen) {
             <div class="more-menu">
                 <div class="edit-message">Nachricht&nbsp;bearbeiten</div>
+            </div>
+        }
+        @if (areReactionOptionsOpen) {
+            <div class="reaction-options">
+                @for (reaction of reactionOptions(); track reaction) {
+                    <div class="icon-btn" (click)="addNewReaction(reaction)">
+                        <img class="reaction-img" src="assets/img/emojis/{{reaction}}" alt="menu emoji 2">
+                    </div>
+                }
             </div>
         }
     </div>
