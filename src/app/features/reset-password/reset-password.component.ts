@@ -41,15 +41,19 @@ export class ResetPasswordComponent {
 
   sendEmail() {
     const auth = getAuth();
-    sendPasswordResetEmail(auth, this.resetEmail)
+    const actionCodeSettings = {
+      url: 'http://dabubble-374.developerakademie.net/angular-projects/dabubble/?email=' + this.resetEmail,
+    };
+
+    sendPasswordResetEmail(auth, this.resetEmail, actionCodeSettings)
       .then(() => {
         console.log('Passwort zurücksetzen Email versendet!');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log('Passwort zurücksetzen fehlgeschlagen, Error-Code:', errorCode);
-        console.log('Passwort zurücksetzen fehlgeschlagen, Error-Message:', errorMessage);
+        console.log('Passwort zurücksetzen Error-Code:', errorCode);
+        console.log('Passwort zurücksetzen Error-Message:', errorMessage);
       });
   }
 
