@@ -14,8 +14,8 @@
                 }
             </div>
         }
+        @if (messageData.reactions && !isTopMessage) {
         <div class="reactions-container">
-            @if (messageData.reactions) {
                 @for (reaction of messageData.reactions; track reaction) {
                     <div class="reaction-container">
                         <button class="reaction" (click)="toggleReaction(reaction)">
@@ -50,8 +50,8 @@
                     </div>
                 }
                 <span class="material-symbols-rounded">add_reaction</span>
-            }
         </div>
+        }
     </div>
     <div class="message-menu chat-message-menu" [ngClass]="{ 'chat-message-menu-alternative': isMe }">
         @if (!isThreadMessage) {
