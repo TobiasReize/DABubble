@@ -20,6 +20,7 @@ export class ResetPasswordComponent {
 
   resetEmail: string = '';
   inputFinished: boolean = false;
+  emailFalse: boolean = false;
 
 
   constructor(private location: Location, private router: Router) { }
@@ -32,26 +33,24 @@ export class ResetPasswordComponent {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      this.sendEmail();
-      ngForm.resetForm();
-      this.goToLogin();
+      this.emailFalse = false;
+      this.sendEmail(ngForm);
     }
   }
 
 
-  sendEmail() {
+  sendEmail(ngForm: NgForm) {
     const auth = getAuth();
-    const actionCodeSettings = {
-      url: 'http://dabubble-374.developerakademie.net/angular-projects/dabubble/?email=' + this.resetEmail,
-    };
-
-    sendPasswordResetEmail(auth, this.resetEmail, actionCodeSettings)
+    sendPasswordResetEmail(auth, this.resetEmail)
       .then(() => {
         console.log('Passwort zurücksetzen Email versendet!');
+        ngForm.resetForm();
+        this.goToLogin();
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        this.emailFalse = true;
         console.log('Passwort zurücksetzen Error-Code:', errorCode);
         console.log('Passwort zurücksetzen Error-Message:', errorMessage);
       });
