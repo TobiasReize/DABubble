@@ -1,7 +1,22 @@
 <div class="chat-header">
-    <span class="material-symbols-rounded">tag</span>
-    <div class="channel-name">{{ channelName }}</div>
-    <span class="material-symbols-rounded">keyboard_arrow_down</span>
+    <div class="chat-header-left">
+        <span class="material-symbols-rounded">tag</span>
+        <div class="channel-name">{{ channelName }}</div>
+        <span class="material-symbols-rounded">keyboard_arrow_down</span>
+    </div>
+    <div class="chat-header-right">
+        <div class="chat-header-avatars">
+            @for (userAvatar of userAvatars | slice:0:3; track userAvatar) {
+                <img class="avatar avatar-40" src="assets/img/{{userAvatar}}" alt="user avatar">
+            }
+        </div>
+        @if (userAvatars.length - 3 > 0) {
+            <span class="chat-header-right-span">{{ userAvatars.length - 3 }}</span>
+        }
+        <div class="icon-btn">
+            <span class="material-symbols-rounded">person_add</span>
+        </div>
+    </div>
 </div>
 <div class="messages-container">
     <div class="hr-container">

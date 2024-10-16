@@ -13,10 +13,13 @@
 
 .chat-header {
     position: relative;
-    @include dFlex($jc: flex-start);
-    gap: 10px;
+    @include dFlex($jc: space-between);
     padding: 25px 45px;
     box-shadow: 0px 2px 10px 0px #00000014;
+}
+
+.chat-header-left {
+    cursor: pointer;
     &:hover {
         .channel-name {
             color: $purple-3;
@@ -27,6 +30,15 @@
             'GRAD' 200,
         }
     }
+}
+
+.chat-header-left, .chat-header-right {
+    @include dFlex($jc: flex-start);
+    gap: 10px;
+}
+
+.chat-header-right-span {
+    @include fontStyle8;
 }
 
 .hr-container {
