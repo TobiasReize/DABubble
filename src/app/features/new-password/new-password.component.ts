@@ -3,7 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
-import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Auth, confirmPasswordReset, verifyPasswordResetCode } from "@angular/fire/auth";
 
 @Component({
@@ -46,7 +46,7 @@ export class NewPasswordComponent implements OnInit {
 
 
   goBack() {
-    this.location.back();    
+    this.location.back();
   }
 
 
@@ -54,7 +54,7 @@ export class NewPasswordComponent implements OnInit {
     if (ngForm.submitted && ngForm.form.valid) {
       this.handleResetPassword(this.auth, this.actionCode, this.continueUrl);
       ngForm.resetForm();
-      this.goToLogin(this.continueUrl);
+      this.goToLogin();
     }
   }
 
@@ -77,10 +77,10 @@ export class NewPasswordComponent implements OnInit {
   }
 
 
-  goToLogin(url: string) {
+  goToLogin() {
     this.inputFinished = true;
     setTimeout(() => {
-      this.router.navigateByUrl(url);
+      this.router.navigateByUrl('');
     }, 1300);
   }
 
