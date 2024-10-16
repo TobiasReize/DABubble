@@ -7,6 +7,7 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { ThreadComponent } from './thread/thread.component';
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
 import { CreateChannelComponent } from "./side-nav/create-channel/create-channel.component";
+import { EditChannelComponent } from './chat/edit-channel/edit-channel.component';
 
 @Component({
   selector: 'app-main',
@@ -18,7 +19,8 @@ import { CreateChannelComponent } from "./side-nav/create-channel/create-channel
     CommonModule,
     ThreadComponent,
     NgIf,
-    CreateChannelComponent
+    CreateChannelComponent,
+    EditChannelComponent
 ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
@@ -26,6 +28,7 @@ import { CreateChannelComponent } from "./side-nav/create-channel/create-channel
 })
 export class MainComponent {
   isThreadVisible: Signal<boolean> = this.chatService.openThread;
+  isEditChannelVisible: Signal<boolean> = this.chatService.openEditChannel;
   constructor(private chatService: ChatService, public sideNavService: SideNavService) {}
   sectionIsVisible: boolean = true;
 

@@ -16,4 +16,7 @@
     />
   </div>
   <app-create-channel *ngIf="sideNavService.createChannelsDivOpened"></app-create-channel>
+  @if (isEditChannelVisible()) {
+    <app-edit-channel></app-edit-channel>
+  }
 </div>
