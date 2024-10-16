@@ -169,6 +169,14 @@ export class ChatService {
     }
   }
 
+  changeChannel(id: string) {
+    this.currentChannelId = id;
+    if (this.unsubMessages) {
+      this.unsubMessages();
+    }
+    this.unsubMessages = this.subMessages(this.currentChannelId);
+  }
+
   async increaseNumberOfReplies() {
     this.threadMessage().numberOfReplies++;
     this.threadMessage().lastReplyAt = new Date();
