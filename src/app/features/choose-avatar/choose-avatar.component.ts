@@ -66,7 +66,6 @@ export class ChooseAvatarComponent {
 
   goToLogin() {
     this.inputFinished = true;
-    // console.log('Neuer User:', this.userService.user);
     setTimeout(() => {
       this.router.navigateByUrl('');
     }, 1300);

@@ -2,6 +2,7 @@ import { inject, Injectable, OnDestroy } from '@angular/core';
 import { addDoc, onSnapshot, Unsubscribe } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { User } from '../../models/user.class';
+import { getAuth, signOut } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,17 @@ export class UserService implements OnDestroy {
 
   getUserIndex(userUID: string) {
     return this.allUsers.findIndex(element => element.userUID == userUID);
+  }
+
+
+  signOutUser() {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        console.log('Sign-out successful');
+      }).catch((error) => {
+        console.log('Error:', error);
+      })
   }
 
 

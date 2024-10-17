@@ -19,7 +19,6 @@ import { UserService } from "../../core/services/user/user.service";
 })
 export class RegisterComponent {
   
-  registerTest: boolean = true;
   agreedPrivacyPolicy: boolean = false;
   userService = inject(UserService);
 
@@ -44,15 +43,8 @@ export class RegisterComponent {
 
 
   onSubmit(ngForm: NgForm) {
-    if (ngForm.submitted && ngForm.form.valid && !this.registerTest) {
+    if (ngForm.submitted && ngForm.form.valid) {
       this.setNewUser();
-      ngForm.resetForm();
-      this.agreedPrivacyPolicy = false;
-      this.router.navigateByUrl('choose-avatar');
-      
-    } else if (ngForm.submitted && ngForm.form.valid && this.registerTest) {  // Test-Bereich!
-      this.setNewUser();
-      // console.log('Test-Registrierung!:', this.userService.newUser);
       ngForm.resetForm();
       this.agreedPrivacyPolicy = false;
       this.router.navigateByUrl('choose-avatar');

@@ -43,31 +43,30 @@ export class NewPasswordComponent implements OnInit {
   }
 
 
-  onSubmit(ngForm: NgForm) {
+  async onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      this.handleResetPassword(this.auth, this.actionCode, ngForm);
+      await this.handleResetPassword(this.auth, this.actionCode);
+      ngForm.resetForm();
     }
   }
 
 
-  handleResetPassword(auth: Auth, actionCode: string, ngForm: NgForm) {
-    verifyPasswordResetCode(auth, actionCode).then((email) => {
-      console.log('Action code is valid! From:', email);
-      this.userEmail = email;
-      
-      confirmPasswordReset(auth, actionCode, this.newPassword).then((resp) => {
-        console.log('Neues Passwort:', this.newPassword);
-        console.log('New password accepted!', resp);
-        ngForm.resetForm();
+  async handleResetPassword(auth: Auth, actionCode: string) {
+    try {
+      this.userEmail = await verifyPasswordResetCode(auth, actionCode);
+      console.log('Action code is valid! From:', this.userEmail);
+      try {
+        await confirmPasswordReset(auth, actionCode, this.newPassword);
+        console.log('New password accepted!', this.newPassword);
         this.goToLogin();
-      }).catch((error) => {
-        console.log('New password rejected!', error);
+      } catch (error) {
         // Error occurred during confirmation. The code might have expired or the password is too weak.
-      });
-    }).catch((error) => {
+        console.log('New password rejected!', error);
+      }
+    } catch (error) {
       // Invalid or expired action code. Ask user to try to reset the password again.
-      console.log('Action code invalid!', error);
-    });
+      console.log('Action code invalid or expired!', error);
+    }
   }
 
 

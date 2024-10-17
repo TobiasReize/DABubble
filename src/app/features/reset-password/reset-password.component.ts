@@ -31,28 +31,26 @@ export class ResetPasswordComponent {
   }
 
 
-  onSubmit(ngForm: NgForm) {
+   async onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
       this.emailFalse = false;
-      this.sendEmail(ngForm);
+      await this.sendEmail();
+      ngForm.resetForm();
     }
   }
 
 
-  sendEmail(ngForm: NgForm) {
+  async sendEmail() {
     const auth = getAuth();
-    sendPasswordResetEmail(auth, this.resetEmail)
+    await sendPasswordResetEmail(auth, this.resetEmail)
       .then(() => {
-        console.log('Passwort zurücksetzen Email versendet!');
-        ngForm.resetForm();
+        console.log('Passwort zurücksetzen Email versendet!', this.resetEmail);
         this.goToLogin();
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         this.emailFalse = true;
-        console.log('Passwort zurücksetzen Error-Code:', errorCode);
-        console.log('Passwort zurücksetzen Error-Message:', errorMessage);
+        console.log('Passwort zurücksetzen Error-Code:', error.code);
+        console.log('Passwort zurücksetzen Error-Message:', error.message);
       });
   }
 
