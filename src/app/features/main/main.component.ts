@@ -8,6 +8,7 @@ import { ThreadComponent } from './thread/thread.component';
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
 import { CreateChannelComponent } from "./side-nav/create-channel/create-channel.component";
 import { NewMessageComponent } from './side-nav/new-message/new-message.component';
+import { DirectMessageComponent } from './side-nav/direct-message/direct-message.component';
 
 @Component({
   selector: 'app-main',
@@ -20,7 +21,8 @@ import { NewMessageComponent } from './side-nav/new-message/new-message.componen
     ThreadComponent,
     NgIf,
     CreateChannelComponent,
-    NewMessageComponent
+    NewMessageComponent,
+    DirectMessageComponent
 ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',

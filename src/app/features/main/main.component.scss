@@ -41,8 +41,7 @@
 
 .purpleHover:hover {
   span {
-    scale: 1.01;
-    font-weight: 700;
+    scale: 1.05;
     color: $purple-3;
   }
 
@@ -57,6 +56,10 @@
   .changeMenuImgBlue {
     @include changeImgElement("../../../assets/img/main/displayMenuBlue.png");
   }
+}
+
+app-direct-message {
+  width: 100%;
 }
 
 

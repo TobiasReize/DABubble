@@ -11,19 +11,12 @@ import { ChatService } from '../../../core/services/chat/chat.service';
   styleUrl: './side-nav.component.scss',
 })
 export class SideNavComponent {
-  contacts = [0, 1, 2, 3, 4, 5];
-  names = [
-    'Frederik Beck (Du)',
-    'Sofia Müller',
-    'Noah Braun',
-    'Elise Roth',
-    'Elias Neumann',
-    'Steffen Hoffmann',
-  ];
-
   channelsOpened: boolean = false;
 
-  constructor(public sideNavService: SideNavService, public chatService: ChatService) {}
+  constructor(
+    public sideNavService: SideNavService,
+    public chatService: ChatService
+  ) {}
 
   openChannels(): void {
     this.channelsOpened = !this.channelsOpened;
@@ -40,5 +33,6 @@ export class SideNavComponent {
 
   newMessage(): void {
     this.chatService.newMessage = !this.chatService.newMessage;
+    this.chatService.chat = false;
   }
 }

@@ -2,7 +2,7 @@
   <!-- 1 Section - Devspace Section -->
   <div class="dFlex">
     <div class="devSpace">
-      <img src="../../../assets/img/main/Workspace logo.svg" />
+      <img src="assets/img/main/Workspace logo.svg" />
       <span class="font-size1">Devspace</span>
     </div>
 
@@ -23,7 +23,7 @@
           <img
             *ngIf="!channelsOpened"
             class="changeArrowRightBlue"
-            src="../../../../assets/img/main/arrow_right.png"
+            src="assets/img/main/arrow_right.png"
           />
 
           <div>
@@ -93,7 +93,7 @@
         <img
           *ngIf="!sideNavService.contactsOpened"
           class="changeArrowRightBlue"
-          src="../../../../assets/img/main/arrow_right.png"
+          src="assets/img/main/arrow_right.png"
         />
 
         <div (click)="closeContactDiv()">
@@ -107,15 +107,9 @@
 
       <!-- contacts -->
       <div class="gap13" *ngIf="sideNavService.contactsOpened">
-        <div
-          *ngFor="let contact of contacts; let i = index"
-          class="contactsDiv"
-        >
-          <img
-            class="avatar avatar-50"
-            [src]="'../../../assets/img/avatar' + this.i + '.svg'"
-          />
-          <span>{{ names[i] }}</span>
+        <div *ngFor="let contact of chatService.contacts; let i = index" class="contactsDiv" (click)="chatService.openChat(chatService.contacts[i])">
+          <img class="avatar avatar-50" [src]="'assets/img/avatar' + i + '.svg'"/>
+          <span id="{{ chatService.contacts[i] }}">{{ chatService.names[i] }}</span>
         </div>
       </div>
     </div>

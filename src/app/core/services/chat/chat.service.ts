@@ -10,8 +10,20 @@ import { Channel } from '../../models/channel.class';
   providedIn: 'root'
 })
 export class ChatService {
+  chat: boolean = true;
+  contacts = [0, 1, 2, 3, 4, 5];
+  names = [
+    'Frederik Beck (Du)',
+    'Sofia Müller',
+    'Noah Braun',
+    'Elise Roth',
+    'Elias Neumann',
+    'Steffen Hoffmann',
+  ];
+  contactIndex: any = null;
 
   newMessage: boolean = false;
+  directMessage: boolean = false;
 
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
@@ -202,4 +214,9 @@ export class ChatService {
     }
   }
 
+  openChat(index: number): void {
+    this.directMessage = true;
+    this.chat = false;
+    this.contactIndex = index;
+  }
 }

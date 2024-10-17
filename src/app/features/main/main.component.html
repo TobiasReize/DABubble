@@ -3,7 +3,8 @@
   <div class="main">
     <app-side-nav></app-side-nav>
     <app-new-message *ngIf="chatService.newMessage"></app-new-message>
-    <app-chat *ngIf="!chatService.newMessage"></app-chat>
+    <app-direct-message *ngIf="chatService.directMessage"></app-direct-message>
+    <app-chat *ngIf="chatService.chat"></app-chat>
     <app-thread [ngClass]="isThreadVisible() ? '' : 'd-none'"></app-thread>
   </div>
   <div class="closeMenu purpleHover" (click)="closeSection()" >
