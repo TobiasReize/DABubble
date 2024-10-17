@@ -32,7 +32,8 @@ export class SideNavComponent {
   }
 
   newMessage(): void {
-    this.chatService.newMessage = !this.chatService.newMessage;
+    this.chatService.newMessage = true;
     this.chatService.chat = false;
+    this.chatService.directMessage = false;
   }
 }

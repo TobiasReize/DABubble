@@ -1,16 +1,18 @@
 <section>
     <div class="div-header">
-        <div>
+        <div (click)="openViewProfile()">
             <img class="avatar" [src]="'assets/img/avatar' + chatService.contactIndex + '.svg'">
             <span>{{chatService.names[chatService.contactIndex]}}</span>
         </div>
     </div>
-    <div class="div-parent-notice">
-        <div class="div-notice cursor-pointer">
-            <img class="avatar avatar-notice" [src]="'assets/img/avatar' + chatService.contactIndex + '.svg'">
-            <span class="hover-message-name-chat">{{chatService.names[chatService.contactIndex]}}</span>
+    <div class="dFlex-height100-aIFE-padding60px">
+        <div class="div-parent-notice">
+            <div class="div-notice cursor-pointer" (click)="openViewProfile()">
+                <img class="avatar avatar-notice" [src]="'assets/img/avatar' + chatService.contactIndex + '.svg'">
+                <span class="hover-message-name-chat">{{chatService.names[chatService.contactIndex]}}</span>
+            </div>
+            <span class="private-message-notice">Diese Unterhaltung findet nur zwischen <span class="link-to-profile cursor-pointer name-contact-link" (click)="openViewProfile()">{{"@" + chatService.names[chatService.contactIndex]}}</span> und dir statt.</span>
         </div>
-        <span class="private-message-notice">Diese Unterhaltung findet nur zwischen <span class="link-to-profile cursor-pointer name-contact-link">{{"@" + chatService.names[chatService.contactIndex]}}</span> und dir statt.</span>
     </div>
     <app-message-textarea></app-message-textarea>
 </section>

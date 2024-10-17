@@ -13,4 +13,7 @@ export class DirectMessageComponent {
 
   constructor(public chatService: ChatService) {}
 
+  openViewProfile() {
+    this.chatService.profileViewUsersActive = true;
+  }
 }

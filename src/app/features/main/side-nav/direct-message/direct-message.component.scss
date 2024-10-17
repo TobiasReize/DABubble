@@ -74,13 +74,18 @@ section {
 
 .div-parent-notice {
   @include dFlex($fd: column, $jc: flex-start, $ai: flex-start);
-  padding: 544px 0 20px 45px;
   gap: 24px;
 }
 
 .hover-message-name-chat:hover {
   color: rgba(68, 77, 242, 1);
   transition: 0.2s ease;
+}
+
+.dFlex-height100-aIFE-padding60px {
+  height: 100%;
+  padding: 60px;
+  @include dFlex($fd: row, $jc:undefined, $ai: flex-end);
 }
 
 

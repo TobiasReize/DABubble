@@ -21,9 +21,9 @@ export class ChatService {
     'Steffen Hoffmann',
   ];
   contactIndex: any = null;
-
   newMessage: boolean = false;
   directMessage: boolean = false;
+  profileViewUsersActive: boolean = false;
 
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
@@ -233,8 +233,9 @@ export class ChatService {
   }
 
   openChat(index: number): void {
-    this.directMessage = true;
+    this.newMessage = false;
     this.chat = false;
+    this.directMessage = true;
     this.contactIndex = index;
   }
 }

@@ -1,3 +1,5 @@
+@import "../styles/mixin.scss";
+
 .inputElement {
   width: 792px;
   height: 60px;
@@ -14,4 +16,17 @@
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.overlayComponent {
+  width: 100vw;
+  height: 100vh;
+  @include dFlex($fd: row, $jc: center, $ai: center);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(153, 153, 153, 0.6);
+  z-index: 999;
 }
