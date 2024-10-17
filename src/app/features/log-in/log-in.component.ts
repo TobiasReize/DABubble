@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IntroComponent } from './intro/intro.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
@@ -22,9 +22,10 @@ import { Subscription } from 'rxjs';
 export class LogInComponent implements OnDestroy {
 
   hideIntroScreen: boolean = false;
-  loginTest: boolean = true;
+  passwordFalse: boolean = false;
   userService = inject(UserService);
   private auth = inject(Auth);
+  forwardedEmail: string | null = null;
 
   user$ = user(this.auth);
   userSubscription: Subscription;
@@ -35,11 +36,19 @@ export class LogInComponent implements OnDestroy {
   }
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private activeRoute: ActivatedRoute) {
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
       //handle user state changes here. Note, that user will be null if there is no currently logged in user.
       // console.log('User subscription:', currentUser);
-    })
+    });
+  }
+
+
+  ngOnInit(): void {
+    this.forwardedEmail = this.activeRoute.snapshot.queryParamMap.get('email')!;
+    if (this.forwardedEmail) {
+      this.loginData.email = this.forwardedEmail;
+    }
   }
 
 
@@ -52,17 +61,15 @@ export class LogInComponent implements OnDestroy {
 
 
   onSubmit(ngForm: NgForm) {
-    if (ngForm.submitted && ngForm.form.valid && !this.loginTest) {
-      
-    } else if (ngForm.submitted && ngForm.form.valid && this.loginTest) {  // Test-Bereich!
-      this.signInUser();
+    if (ngForm.submitted && ngForm.form.valid) {
+      this.passwordFalse = false;
+      this.signInUser(ngForm);
       // console.log('Test-Login!:', this.userService.currentOnlineUser);
-      ngForm.resetForm();
     }
   }
 
 
-  signInUser() {
+  signInUser(ngForm: NgForm) {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, this.loginData.email, this.loginData.password)
       .then((userCredential) => {
@@ -70,11 +77,13 @@ export class LogInComponent implements OnDestroy {
         this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndex(user.uid)];
         // console.log('Login erfolgreich!', user);
         console.log('Aktueller User:', this.userService.currentOnlineUser);
+        ngForm.resetForm();
         this.router.navigateByUrl('main');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        this.passwordFalse = true;
         console.log('Login fehlgeschlagen, Error-Code:', errorCode);
         console.log('Login fehlgeschlagen, Error-Message:', errorMessage);
       });

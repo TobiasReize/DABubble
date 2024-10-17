@@ -18,6 +18,22 @@
     box-shadow: 0px 2px 10px 0px #00000014;
 }
 
+.chat-header-avatars {
+    @include dFlex();
+    padding: 3px 10px 3px 10px;
+    gap: 10px;
+    border-radius: 100px;
+    cursor: pointer;
+    &:hover {
+        background-color: $bg-color;
+    }
+    .avatar-40 {
+        &:nth-child(2), &:nth-child(3)  {
+            margin-left: -20px;
+        }
+    }
+}
+
 .chat-header-left {
     cursor: pointer;
     &:hover {

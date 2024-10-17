@@ -7,6 +7,7 @@ import { SideNavComponent } from './side-nav/side-nav.component';
 import { ThreadComponent } from './thread/thread.component';
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
 import { CreateChannelComponent } from "./side-nav/create-channel/create-channel.component";
+import { EditChannelComponent } from './chat/edit-channel/edit-channel.component';
 import { NewMessageComponent } from './side-nav/new-message/new-message.component';
 import { DirectMessageComponent } from './side-nav/direct-message/direct-message.component';
 
@@ -21,6 +22,7 @@ import { DirectMessageComponent } from './side-nav/direct-message/direct-message
     ThreadComponent,
     NgIf,
     CreateChannelComponent,
+    EditChannelComponent,
     NewMessageComponent,
     DirectMessageComponent
 ],
@@ -30,9 +32,9 @@ import { DirectMessageComponent } from './side-nav/direct-message/direct-message
 })
 export class MainComponent {
   isThreadVisible: Signal<boolean> = this.chatService.openThread;
+  isEditChannelVisible: Signal<boolean> = this.chatService.openEditChannel;
   constructor(public chatService: ChatService, public sideNavService: SideNavService) {}
   sectionIsVisible: boolean = true;
-  
 
   closeSection() {
     let section: HTMLElement | null = document.getElementById('section');
@@ -75,3 +77,4 @@ export class MainComponent {
 
   
 }
+

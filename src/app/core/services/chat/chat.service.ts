@@ -47,6 +47,12 @@ export class ChatService {
 
   private lastEmojisSignal = signal<string[]>(this.defaultEmojis);
   readonly lastEmojis = this.lastEmojisSignal.asReadonly();
+
+  private currentChannelSignal = signal<Channel>(new Channel());
+  readonly currentChannel = this.currentChannelSignal.asReadonly();
+
+  private openEditChannelSignal = signal<boolean>(false);
+  readonly openEditChannel = this.openEditChannelSignal.asReadonly();
   
   public currentChannelId: string = '';
   public currentThreadId: string = '';
@@ -165,6 +171,10 @@ export class ChatService {
     this.openThreadSignal.set(bool);
   }
 
+  toggleEditChannelVisibility() {
+    this.openEditChannelSignal.set(!this.openEditChannelSignal());
+  }
+
   resubThread(threadId: string) {
     if (this.unsubThread) {
       this.unsubThread();
@@ -181,6 +191,14 @@ export class ChatService {
     } else if (threadId === '') {
       this.clearThread();
     }
+  }
+
+  changeChannel(id: string) {
+    this.currentChannelId = id;
+    if (this.unsubMessages) {
+      this.unsubMessages();
+    }
+    this.unsubMessages = this.subMessages(this.currentChannelId);
   }
 
   async increaseNumberOfReplies() {

@@ -1,0 +1,22 @@
+@import '../../../../../styles/mixin.scss';
+
+:host {
+    position: absolute;
+    @include dFlex();
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.edit-channel {
+    background-color: white;
+    width: 872px;
+    height: 616px;
+    gap: 20px;
+    border-radius: 0px 30px 30px 30px;
+}

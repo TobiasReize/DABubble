@@ -24,7 +24,6 @@ export class NewPasswordComponent implements OnInit {
   private auth = inject(Auth);
   private mode!: string;
   private actionCode!: string;
-  private continueUrl!: string;
   userEmail = '';
 
 
@@ -32,16 +31,10 @@ export class NewPasswordComponent implements OnInit {
 
 
   ngOnInit(): void {
-    try {
-      this.actionCode = this.activeRoute.snapshot.queryParamMap.get('oobCode')!;
-      this.mode = this.activeRoute.snapshot.queryParamMap.get('mode')!;
-      this.continueUrl = this.activeRoute.snapshot.queryParamMap.get('continueUrl')!;
-      console.log('oobCode:', this.actionCode);
-      console.log('mode:', this.mode);
-      console.log('continueUrl:', this.continueUrl);
-    } catch (error) {
-      console.log('Fehler get action code:', error);
-    }
+    this.actionCode = this.activeRoute.snapshot.queryParamMap.get('oobCode')!;
+    this.mode = this.activeRoute.snapshot.queryParamMap.get('mode')!;
+    console.log('oobCode:', this.actionCode);
+    console.log('mode:', this.mode);
   }
 
 
@@ -52,20 +45,21 @@ export class NewPasswordComponent implements OnInit {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      this.handleResetPassword(this.auth, this.actionCode, this.continueUrl);
-      ngForm.resetForm();
-      this.goToLogin();
+      this.handleResetPassword(this.auth, this.actionCode, ngForm);
     }
   }
 
 
-  handleResetPassword(auth: Auth, actionCode: string, continueUrl: string) {
+  handleResetPassword(auth: Auth, actionCode: string, ngForm: NgForm) {
     verifyPasswordResetCode(auth, actionCode).then((email) => {
       console.log('Action code is valid! From:', email);
       this.userEmail = email;
       
       confirmPasswordReset(auth, actionCode, this.newPassword).then((resp) => {
+        console.log('Neues Passwort:', this.newPassword);
         console.log('New password accepted!', resp);
+        ngForm.resetForm();
+        this.goToLogin();
       }).catch((error) => {
         console.log('New password rejected!', error);
         // Error occurred during confirmation. The code might have expired or the password is too weak.
@@ -80,7 +74,7 @@ export class NewPasswordComponent implements OnInit {
   goToLogin() {
     this.inputFinished = true;
     setTimeout(() => {
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('' + '?email=' + this.userEmail);
     }, 1300);
   }
 
