@@ -161,6 +161,7 @@ export class ChatService {
       })
       this.channelsSignal.set(channels);
       if (!this.unsubMessages) {
+        this.currentChannelSignal.set(this.channels()[0])
         this.currentChannelId = this.channels()[0].id;
         this.unsubMessages = this.subMessages(this.currentChannelId);
       }
