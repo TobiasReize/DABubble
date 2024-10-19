@@ -5,7 +5,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
 import { createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
-import { getDownloadURL, getStorage, ref, uploadBytes, uploadBytesResumable } from '@angular/fire/storage';
+import { getDownloadURL, getStorage, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -21,6 +21,7 @@ export class ChooseAvatarComponent {
 
   inputFinished: boolean = false;
   userService = inject(UserService);
+  private readonly storage: Storage = inject(Storage);
   currentProfileImg = 'profile.svg';
   profileImages = [
     'avatar0.svg',
@@ -45,57 +46,60 @@ export class ChooseAvatarComponent {
   }
 
 
-  uploadImg() {
-    const storage = getStorage();
-    const user1Ref = ref(storage, 'user1');
-    const user1Img = ref(storage, 'user1/pizza.jpg');
-    const fileRef = ref(storage, 'user1/pasta.jpg');
-    console.log('Referenz:', user1Img);
+  uploadImg(input: HTMLInputElement) {
+    if (input.files) {
+      console.log('input.files', input.files);
+      
+      const files: FileList = input.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files.item(i);
+        console.log('file', file);
+        if (file) {
+            const storageRef = ref(this.storage, file.name);
+            const uploadTask = uploadBytesResumable(storageRef, file);
 
-    const uploadTask = uploadBytesResumable(fileRef, new Blob);
-      // .then((snapshot) => {
-      //   console.log('Uploaded a blob or file!', snapshot);
-      // });
-
-    uploadTask.on('state_changed', 
-      (snapshot) => {
-        // Observe state change events such as progress, pause, and resume
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-        }
-      },
-      (error) => {
-        // Handle unsuccessful uploads
-        switch (error.code) {
-          case 'storage/unauthorized':
-            console.log('User doesn\'t have permission to access the object', error);
-            break;
-          case 'storage/canceled':
-            console.log('User canceled the upload', error);
-            break;
-          case 'storage/unknown':
-            console.log('Unknown error occurred, inspect error.serverResponse', error);
-            break;
-          default:
-            console.log('Error:', error);
-        }
-      },
-      () => {
-        // Handle successful uploads on complete
-        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-        });
+            uploadTask.on('state_changed', 
+              (snapshot) => {
+                // Observe state change events such as progress, pause, and resume
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                  case 'paused':
+                    console.log('Upload is paused');
+                    break;
+                  case 'running':
+                    console.log('Upload is running');
+                    break;
+                }
+              },
+              (error) => {
+                // Handle unsuccessful uploads
+                switch (error.code) {
+                  case 'storage/unauthorized':
+                    console.log('User doesn\'t have permission to access the object', error);
+                    break;
+                  case 'storage/canceled':
+                    console.log('User canceled the upload', error);
+                    break;
+                  case 'storage/unknown':
+                    console.log('Unknown error occurred, inspect error.serverResponse', error);
+                    break;
+                  default:
+                    console.log('Error:', error);
+                }
+              },
+              () => {
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                  console.log('File available at', downloadURL);
+                })
+              }
+            )
+        } else {console.log('Fehler:', file);}
       }
-    );
+    } else {console.log('Fehler:', input.files);}
   }
 
 
