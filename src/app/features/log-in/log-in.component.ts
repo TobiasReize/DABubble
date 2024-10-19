@@ -6,7 +6,7 @@ import { IntroComponent } from './intro/intro.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
-import { Auth, getAdditionalUserInfo, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User, user } from '@angular/fire/auth';
+import { Auth, browserSessionPersistence, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -45,10 +45,24 @@ export class LogInComponent implements OnDestroy {
 
 
   ngOnInit(): void {
+    this.setAuthStatePersistence();
     this.forwardedEmail = this.activeRoute.snapshot.queryParamMap.get('email')!;
     if (this.forwardedEmail) {
       this.loginData.email = this.forwardedEmail;
     }
+  }
+
+
+  setAuthStatePersistence() {
+    const auth = getAuth();
+    auth.setPersistence(browserSessionPersistence)
+      .then(() => {
+        console.log('Persistence geändert!');
+      })
+      .catch((error) => {
+        console.log('Error-Code:', error.code);
+        console.log('Error-Message:', error.message);
+      });
   }
 
 
@@ -79,11 +93,9 @@ export class LogInComponent implements OnDestroy {
         this.router.navigateByUrl('main');
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         this.passwordFalse = true;
-        console.log('Login fehlgeschlagen, Error-Code:', errorCode);
-        console.log('Login fehlgeschlagen, Error-Message:', errorMessage);
+        console.log('Login fehlgeschlagen, Error-Code:', error.code);
+        console.log('Login fehlgeschlagen, Error-Message:', error.message);
       });
   }
 
@@ -93,13 +105,7 @@ export class LogInComponent implements OnDestroy {
     const auth = getAuth();
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
-        const additionalUserInfo = getAdditionalUserInfo(result);
-        // console.log('Google-Login erfolgreich!', result);
-        // console.log('Credential', credential);
-        // console.log('User', user);
-        // console.log('Additional user info', additionalUserInfo);
         await this.saveGoogleUser(user);  //await, damit der neue User gefunden werden kann und als currentOnlineUser übergeben werden kann!
         this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndex(user.uid)];
         console.log('Aktueller User:', this.userService.currentOnlineUser);
