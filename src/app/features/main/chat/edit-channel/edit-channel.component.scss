@@ -31,6 +31,7 @@
 .edit-channel-name {
     @include dFlex($jc: normal, $ai: center);
     gap: 4.5px;
+    position: relative;
 }
 
 .edit-channel-name-container {
@@ -38,7 +39,7 @@
     padding: 20px;
     gap: 20px;
     border-radius: 20px;
-    border: 1px solid #ADB0D9;
+    border: 1px solid $light-purple;
 }
 
 .edit-channel-name-header, .edit-channel-description-header {
@@ -50,7 +51,7 @@
     padding: 20px;
     gap: 30px;
     border-radius: 20px;
-    border: 1px solid #ADB0D9;
+    border: 1px solid $light-purple;
 }
 
 .edit-channel-description-container {
@@ -75,4 +76,48 @@
     @include fontStyle16;
     color: $purple-3;
     cursor: pointer;
+}
+
+input {
+    width: 100%;
+}
+
+input:disabled {
+    border: unset;
+    background-color: transparent;
+}
+
+.channel-name-input {
+    border: unset;
+    padding-left: 34px;
+}
+
+.channel-tag {
+    position: absolute;
+}
+
+.editable-channel-tag {
+    left: 20px;
+}
+
+.editable-section {
+    padding-top: 0;
+    padding-left: 0;
+    border: unset;
+}
+
+.editable-field {
+    padding: 20px;
+    border-radius: 30px;
+    border: 1px solid $light-purple;
+}
+
+.editable-channel-name-input {
+    padding: 20px 20px 20px 58px;
+    border-radius: 30px;
+    border: 1px solid $light-purple;
+}
+
+.editable-hr {
+    margin: 0 26.5px;
 }

@@ -4,30 +4,30 @@
             <span class="material-symbols-rounded">tag</span>
             <span>{{ currentChannel().name }}</span>
         </div>
-        <div class="edit-channel-name-container">
+        <div class="edit-channel-name-container" [ngClass]="{'editable-section': isChannelNameEditable}">
             <div class="edit-channel-name-header">
                 <span>Channel-Name</span>
-                <button class="edit-btn">Bearbeiten</button>
+                <button class="edit-btn" (click)="toggleChannelNameEdit(channelNameInput.value)">{{ isChannelNameEditable ? 'Speichern' : 'Bearbeiten' }}</button>
             </div>
             <div class="edit-channel-name">
-                <span class="material-symbols-rounded">tag</span>
-                <span>{{ currentChannel().name }}</span>
+                <span class="material-symbols-rounded channel-tag" [ngClass]="{'editable-channel-tag': isChannelNameEditable}">tag</span>
+                <input #channelNameInput class="channel-name-input" value="{{ currentChannel().name }}" [ngClass]="{'editable-channel-name-input': isChannelNameEditable}" [disabled]="!isChannelNameEditable">
             </div>
         </div>
-        <div class="edit-channel-lower-container">
+        <div class="edit-channel-lower-container" [ngClass]="{'editable-section': isChannelDescriptionEditable}">
             <div class="edit-channel-description-container">
                 <div class="edit-channel-description-header">
                     <span>Beschreibung</span>
-                    <button class="edit-btn">Bearbeiten</button>
+                    <button class="edit-btn" (click)="toggleChannelDescriptionEdit(channelDescriptionInput.value)">{{ isChannelDescriptionEditable ? 'Speichern' : 'Bearbeiten' }}</button>
                 </div>
                 <div class="edit-channel-description">
-                    <p>{{ currentChannel().description }}</p>
+                    <input #channelDescriptionInput [ngClass]="{'editable-field': isChannelDescriptionEditable}" value="{{ currentChannel().description }}" [disabled]="!isChannelDescriptionEditable">
                 </div>
             </div>
-            <hr>
+            <hr [ngClass]="{'editable-hr': isChannelDescriptionEditable}">
             <div class="edit-channel-created-by">
                 <span>Erstellt von</span>
-                <span class="edit-channel-created-by-name">Max Muster</span>
+                <span class="edit-channel-created-by-name"> {{ currentChannel().createdBy }}</span>
             </div>
         </div>
     </div>

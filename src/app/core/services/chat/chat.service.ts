@@ -5,6 +5,8 @@ import { MessageInterface } from '../../models/message.interface';
 import { addDoc, onSnapshot, orderBy, query, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
+import { ChannelName } from '../../models/channel-name.interface';
+import { ChannelDescription } from '../../models/channel-description.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -114,8 +116,9 @@ export class ChatService {
     }
   }
 
-  async updateChannel(channelObj: any) {
-    await updateDoc(this.firebaseService.getDocRef(this.currentChannel().id, 'channels'), channelObj);
+  async updateChannel(channelObj: ChannelName | ChannelDescription) {
+    // {...channelObj} must be used due to a bug concerning the database
+    await updateDoc(this.firebaseService.getDocRef(this.currentChannel().id, 'channels'), {...channelObj});
   }
 
   async updateMessage(channelOrThreadId: string, collectionName: string, messageId: string, messageObj: any) {
