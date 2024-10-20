@@ -113,6 +113,13 @@ $header-and-bottom-spacing: 135px;
     line-height: 32.75px;
 }
 
+@mixin fontStyle15 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24.55px;
+    color: rgba(83, 90, 241, 1);
+}
+
 @mixin flex-gap($gap-size) {
     display: flex;
     flex-direction: column;
@@ -123,3 +130,4 @@ $header-and-bottom-spacing: 135px;
 @mixin changeImgElement($imgSrc) {
     content: url($imgSrc);
 }
+

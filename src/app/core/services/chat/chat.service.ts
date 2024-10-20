@@ -24,6 +24,8 @@ export class ChatService {
   newMessage: boolean = false;
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
+  profileActive: string = "Aktiv";
+  profileOffline: string = "abwesend";
 
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;

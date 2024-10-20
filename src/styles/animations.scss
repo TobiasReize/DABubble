@@ -1,0 +1,56 @@
+.fade-in {
+  animation-name: fadeIn;
+  animation-timing-function: ease-in-out;
+  animation-duration: 100ms;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeInFromOpacity0 {
+  animation-name: fadeInFromOpacity0;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.2s;
+}
+
+@keyframes fadeInFromOpacity0 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.closeIcon {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  &:hover {
+    animation-name: scale;
+    animation-timing-function: ease-out;
+    animation-duration: 100ms;
+    background-color: rgba(236, 238, 254, 1);
+    scale: 1.1;
+    color: rgba(83, 90, 241, 1);
+  }
+}
+
+@keyframes scale {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 1.1;
+  }
+}

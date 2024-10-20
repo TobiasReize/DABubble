@@ -226,8 +226,20 @@ hr {
   align-items: center;
 }
 
+.dFlexRowFlex-StartCenter {
+  @include dFlex($fd: row, $jc: flex-start, $ai: center);
+}
+
+.dFlexRowFlex-EndCenter {
+  @include dFlex($fd: row, $jc: flex-end, $ai: center);
+}
+
 .dFlexRowSpaceBetweenCenter {
   @include dFlex($fd: row, $jc: space-between, $ai: center);
+}
+
+.dFlexColumn {
+  @include dFlex($fd: column, $jc: center, $ai: center);
 }
 
 .dFlexColumnCenterFlexStart {
@@ -238,6 +250,10 @@ hr {
   @include dFlex($fd: row, $jc: flex-end, $ai: center);
 }
 
+.dFlexRowCenterCenter {
+  @include dFlex($fd: row, $jc: center, $ai: center);
+}
+
 .sectionHidden {
   transform: translateX(-200%);
 }
@@ -246,26 +262,22 @@ hr {
   transform: translateX(0%);
 }
 
-.dFlexColumn {
-  @include dFlex($fd: column, $jc: center, $ai: center);
-}
-
 .slideIn_Out {
   transition: 0.5s ease;
 }
 
 // Responsive Design:
-@media(max-width: 1968px) {
+@media (max-width: 1968px) {
   .content-wrapper {
     max-width: unset;
   }
 }
 
-@media(max-width: 654px) {
+@media (max-width: 654px) {
   .content-wrapper {
     padding: 0 8px;
   }
-  
+
   h1 {
     font-size: 32px;
     line-height: 38.4px;
@@ -277,7 +289,7 @@ hr {
   }
 }
 
-@media(max-width: 450px) {
+@media (max-width: 450px) {
   .btn {
     padding: 12px 16px;
   }

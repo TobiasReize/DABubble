@@ -6,11 +6,10 @@ import { ChatService } from '../../../core/services/chat/chat.service';
   standalone: true,
   imports: [],
   templateUrl: './profile-view-users.component.html',
-  styleUrl: './profile-view-users.component.scss'
+  styleUrl: './profile-view-users.component.scss',
 })
 export class ProfileViewUsersComponent {
-
-  constructor(private chatService: ChatService) {}
+  constructor(public chatService: ChatService) {}
 
   onDiv1Click(): void {
     this.chatService.profileViewUsersActive = false;

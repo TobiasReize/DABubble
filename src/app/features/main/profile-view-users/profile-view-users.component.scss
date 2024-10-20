@@ -1,5 +1,8 @@
 @import "../../../../styles/styles2.scss";
 @import "../../../../styles/mixin.scss";
+@import "../../../../styles/fontStyles.scss";
+@import "../../../../styles/gap.scss";
+@import "../../../../styles/animations.scss";
 
 .card {
   width: 500px;
@@ -10,4 +13,64 @@
   background-color: white;
 }
 
+.profil {
+  @include fontStyle9;
+}
 
+section {
+  box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.nameCard {
+  @include fontStyle10;
+}
+
+.edit {
+  @include fontStyle15;
+  cursor: pointer;
+  &:hover {
+    color: $purple-1;
+    font-weight: 700;
+  }
+}
+
+.email {
+  @include fontStyle6;
+}
+
+.emailLink {
+  @include fontStyle2;
+  color: rgba(19, 129, 255, 1);
+  padding: 0 10px 0 50px;
+}
+
+.messageButton {
+  position: relative;
+  width: 164px;
+  height: 49px;
+  gap: 10px;
+  padding: 12px 25px 12px 25px;
+  border-radius: 50px;
+  background: rgba(68, 77, 242, 1);
+  border: 0;
+  cursor: pointer;
+
+  span {
+    font-weight: 700;
+    color: rgba(255, 255, 255, 1);
+  }
+
+  img {
+    position: absolute;
+    left: 24px;
+  }
+
+  
+
+  &:hover {
+    background: rgba(121, 126, 243, 1);
+    div {
+      padding: 1px;
+    }
+  }
+}

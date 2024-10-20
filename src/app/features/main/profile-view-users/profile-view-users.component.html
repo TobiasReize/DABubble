@@ -1,46 +1,49 @@
-<div class="overlayComponent" (click)="onDiv1Click()">
-    <section class="card" (click)="onDiv2Click($event)">
+<div class="overlayComponent fadeInFromOpacity0" (click)="onDiv1Click()">
+  <section class="card dFlexColumn" (click)="onDiv2Click($event)">
+    <!-- Profile -->
+    <div class="dFlexRowSpaceBetweenCenter width-100">
+      <span class="profil">Profil</span>
+      <!-- <img src="assets/img/main/close (2).png"> -->
+      <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()">close</span>
+    </div>
 
-        <!-- Profile -->
-      <div>
-        <span class="profil">Profil</span>
-        <img src="assets/img/main/close (2).png">
-      </div>
+    <!-- avatar -->
+    <div class="dFlexRowCenterCenter">
+      <!-- <img src="assets/img/avatar{{chatService.contactIndex}}.svg"> -->
+      <img class="avatar avatar-200" src="assets/img/avatar0.svg" />
+    </div>
 
-      <!-- avatar -->
-      <div>
-        <img src="">
+    <!-- Bearbeiten -->
+    <div class="dFlexColumnCenterFlexStart gap15 width-100">
+      <div class="dFlexRowSpaceBetweenCenter width-100">
+        <!-- <span>{{chatService.contacts[chatService.contactIndex]}}</span> -->
+        <span class="nameCard">Elise Roth</span>
+        <span class="edit">Bearbeiten</span>
       </div>
+      <div class="gap15 dFlexRowCenterCenter">
+        <img src="assets/img/main/online.png" />
+        <span class="f400w-20px-gray">Aktiv</span>
+        <!-- <span>{{chatService.userActive}}</span> -->
+      </div>
+    </div>
 
-      <!-- Bearbeiten -->
-      <div>
-        <div>
-            <span></span>
-            <img src="" alt="">
-            <span>Bearbeiten</span>
-        </div>
-        <div>
-            <img src="" alt="">
-            <!-- <span>{{chatService.userActive}}</span> -->
-        </div>
+    <!-- Email Adresse -->
+    <div class="width-100 gap15 dFlexColumn">
+      <div class="dFlexRowFlex-StartCenter gap20 width-100">
+        <img src="assets/img/main/mail.png" />
+        <span class="email">E-Mail-Adresse</span>
       </div>
+      <div class="width-100">
+        <span class="emailLink">beispiel.bsp&#64;beispiel.com</span>
+      </div>
+    </div>
 
-      <!-- Email Adresse -->
-      <div>
-        <div>
-            <img src="" alt="">
-            <span>E-Mail-Adresse</span>
-        </div>
-        <div>
-            <!-- <span>{{chatService.email}}</span> -->
-        </div>
+    <!-- Nachricht Button -->
+    <div class="messageButton">
+      <div class="dFlexRowFlex-EndCenter">
+        <img src="assets/img/main/message-img.png" />
+        <span>Nachricht</span>
       </div>
-
-      <!-- Nachricht Button -->
-      <div>
-        <img src="" alt="">
-        <button>Nachricht</button>
-      </div>
-    </section>
+    </div>
+  </section>
 </div>
-  
