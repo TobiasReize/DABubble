@@ -17,7 +17,8 @@
 
         <div class="upload-img-container">
             <p>eigenes Bild verwenden</p>
-            <button class="btn btn-sec">Datei hochladen</button>
+            <label class="btn btn-sec" for="file_upload">Datei hochladen</label>
+            <input (click)="uploadImg(upload)" #upload style="display: none;" id="file_upload" accept="image/png, image/jpeg" type="file">
         </div>
 
         <div class="btn-container">

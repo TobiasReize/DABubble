@@ -1,6 +1,34 @@
 <div class="overlay">
     <div class="edit-channel">
-        <span class="material-symbols-rounded">tag</span>
-        <span>{{ currentChannel().name }}</span>
+        <div class="edit-channel-header">
+            <span class="material-symbols-rounded">tag</span>
+            <span>{{ currentChannel().name }}</span>
+        </div>
+        <div class="edit-channel-name-container">
+            <div class="edit-channel-name-header">
+                <span>Channel-Name</span>
+                <button class="edit-btn">Bearbeiten</button>
+            </div>
+            <div class="edit-channel-name">
+                <span class="material-symbols-rounded">tag</span>
+                <span>{{ currentChannel().name }}</span>
+            </div>
+        </div>
+        <div class="edit-channel-lower-container">
+            <div class="edit-channel-description-container">
+                <div class="edit-channel-description-header">
+                    <span>Beschreibung</span>
+                    <button class="edit-btn">Bearbeiten</button>
+                </div>
+                <div class="edit-channel-description">
+                    <p>{{ currentChannel().description }}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="edit-channel-created-by">
+                <span>Erstellt von</span>
+                <span class="edit-channel-created-by-name">Max Muster</span>
+            </div>
+        </div>
     </div>
 </div>
