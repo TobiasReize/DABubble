@@ -2,12 +2,20 @@ import { Injectable, signal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reaction.class';
 import { MessageInterface } from '../../models/message.interface';
-import { addDoc, onSnapshot, orderBy, query, QueryDocumentSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import {
+  addDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  Unsubscribe,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChatService {
   chat: boolean = true;
@@ -24,8 +32,8 @@ export class ChatService {
   newMessage: boolean = false;
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
-  profileActive: string = "Aktiv";
-  profileOffline: string = "abwesend";
+  profileActive: string = 'Aktiv';
+  profileOffline: string = 'abwesend';
 
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
@@ -55,13 +63,13 @@ export class ChatService {
 
   private openEditChannelSignal = signal<boolean>(false);
   readonly openEditChannel = this.openEditChannelSignal.asReadonly();
-  
+
   public currentThreadId: string = '';
 
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
 
-  constructor(private firebaseService: FirebaseService) { 
+  constructor(private firebaseService: FirebaseService) {
     this.unsubChannels = this.subChannels();
     if (this.currentThreadId !== '') {
       this.unsubThread = this.subThread(this.currentThreadId);
@@ -81,19 +89,31 @@ export class ChatService {
     const reactions = JSON.parse(data['reactions']);
     const postedAt = new Date(data['postedAt']);
     const lastReplyAt = new Date(data['lastReplyAt']);
-    const message = new Message(doc.id, data['imageName'], data['userName'], postedAt, lastReplyAt, data['content'], reactions, data['threadId'], data['numberOfReplies']);
+    const message = new Message(
+      doc.id,
+      data['imageName'],
+      data['userName'],
+      postedAt,
+      lastReplyAt,
+      data['content'],
+      reactions,
+      data['threadId'],
+      data['numberOfReplies']
+    );
     return message;
   }
 
   async addThread() {
     let threadId: string = '';
-    await addDoc(this.firebaseService.getCollectionRef('threads'), {}).catch(err => {
-      console.log(err);
-    }).then((docRef) => {
-      if (docRef) {
-        threadId = docRef.id;
-      }
-    })
+    await addDoc(this.firebaseService.getCollectionRef('threads'), {})
+      .catch((err) => {
+        console.log(err);
+      })
+      .then((docRef) => {
+        if (docRef) {
+          threadId = docRef.id;
+        }
+      });
     return threadId;
   }
 
@@ -101,56 +121,105 @@ export class ChatService {
     this.threadRepliesSignal.set([]);
   }
 
-  async addThreadMessage(docId: string, collectionName: string, messageObj: MessageInterface) {
+  async addThreadMessage(
+    docId: string,
+    collectionName: string,
+    messageObj: MessageInterface
+  ) {
     if (docId !== '') {
-      await addDoc(this.firebaseService.getSubcollectionRef(docId, collectionName, 'messages'), messageObj);
+      await addDoc(
+        this.firebaseService.getSubcollectionRef(
+          docId,
+          collectionName,
+          'messages'
+        ),
+        messageObj
+      );
       return '';
     } else {
       const threadId = await this.addThread();
       if (threadId) {
-        await addDoc(this.firebaseService.getSubcollectionRef(threadId, collectionName, 'messages'), messageObj);
+        await addDoc(
+          this.firebaseService.getSubcollectionRef(
+            threadId,
+            collectionName,
+            'messages'
+          ),
+          messageObj
+        );
       }
       return threadId;
     }
   }
 
   async updateChannel(channelObj: any) {
-    await updateDoc(this.firebaseService.getDocRef(this.currentChannel().id, 'channels'), channelObj);
+    await updateDoc(
+      this.firebaseService.getDocRef(this.currentChannel().id, 'channels'),
+      channelObj
+    );
   }
 
-  async updateMessage(channelOrThreadId: string, collectionName: string, messageId: string, messageObj: any) {
+  async updateMessage(
+    channelOrThreadId: string,
+    collectionName: string,
+    messageId: string,
+    messageObj: any
+  ) {
     // {...messageObj} must be used due to a bug concerning the database
-    await updateDoc(this.firebaseService.getDocRefInSubcollection(channelOrThreadId, collectionName, 'messages', messageId), {...messageObj});
+    await updateDoc(
+      this.firebaseService.getDocRefInSubcollection(
+        channelOrThreadId,
+        collectionName,
+        'messages',
+        messageId
+      ),
+      { ...messageObj }
+    );
   }
 
   async updateThreadMessage() {
-    await this.updateMessage(this.currentChannel().id, 'channels', this.threadMessage().id, this.threadMessage().toJson());
+    await this.updateMessage(
+      this.currentChannel().id,
+      'channels',
+      this.threadMessage().id,
+      this.threadMessage().toJson()
+    );
   }
 
   subMessages(channelId: string) {
-    const q = query(this.firebaseService.getSubcollectionRef(channelId, 'channels', 'messages'), orderBy('postedAt'));
+    const q = query(
+      this.firebaseService.getSubcollectionRef(
+        channelId,
+        'channels',
+        'messages'
+      ),
+      orderBy('postedAt')
+    );
     return onSnapshot(q, (snapshot) => {
       const tempMessages: Message[] = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         const message = this.createMessage(doc);
         if (message) {
           tempMessages.push(message);
         }
-      })
+      });
       this.messagesSignal.set(tempMessages);
     });
   }
 
   subThread(threadId: string) {
-    const q = query(this.firebaseService.getSubcollectionRef(threadId, 'threads', 'messages'), orderBy('postedAt'));
+    const q = query(
+      this.firebaseService.getSubcollectionRef(threadId, 'threads', 'messages'),
+      orderBy('postedAt')
+    );
     return onSnapshot(q, (snapshot) => {
       const tempMessages: Message[] = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         const message = this.createMessage(doc);
         if (message) {
           tempMessages.push(message);
         }
-      })
+      });
       this.threadRepliesSignal.set(tempMessages);
     });
   }
@@ -158,23 +227,32 @@ export class ChatService {
   createChannel(doc: QueryDocumentSnapshot) {
     const data = doc.data();
     const userIds = JSON.parse(data['userIds']);
-    const channel = new Channel(doc.id, data['name'], data['description'], userIds, data['createdBy']);
+    const channel = new Channel(
+      doc.id,
+      data['name'],
+      data['description'],
+      userIds,
+      data['createdBy']
+    );
     return channel;
   }
 
   subChannels() {
-    return onSnapshot(this.firebaseService.getCollectionRef('channels'), (collection) => {
-      const channels: Channel[] = [];
-      collection.forEach(doc => {
-        const channel = this.createChannel(doc);
-        channels.push(channel);
-      })
-      this.channelsSignal.set(channels);
-      if (!this.unsubMessages) {
-        this.currentChannelSignal.set(this.channels()[0])
-        this.unsubMessages = this.subMessages(this.currentChannel().id);
+    return onSnapshot(
+      this.firebaseService.getCollectionRef('channels'),
+      (collection) => {
+        const channels: Channel[] = [];
+        collection.forEach((doc) => {
+          const channel = this.createChannel(doc);
+          channels.push(channel);
+        });
+        this.channelsSignal.set(channels);
+        if (!this.unsubMessages) {
+          this.currentChannelSignal.set(this.channels()[0]);
+          this.unsubMessages = this.subMessages(this.currentChannel().id);
+        }
       }
-    })
+    );
   }
 
   changeThreadVisibility(bool: boolean) {
@@ -211,7 +289,7 @@ export class ChatService {
   }
 
   changeChannel(id: string) {
-    const index = this.channels().findIndex(channel => channel.id === id);
+    const index = this.channels().findIndex((channel) => channel.id === id);
     if (index !== -1) {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
@@ -225,17 +303,43 @@ export class ChatService {
   }
 
   async addMessage(messageContent: string, type: 'thread' | 'chat') {
-    const message = new Message('', this.userAvatar, this.userName, new Date(), new Date(), messageContent, [new Reaction(), new Reaction('2705.svg', ['Marina Mustermann'])], '', 0);
+    const message = new Message(
+      '',
+      this.userAvatar,
+      this.userName,
+      new Date(),
+      new Date(),
+      messageContent,
+      [new Reaction(), new Reaction('2705.svg', ['Marina Mustermann'])],
+      '',
+      0
+    );
     const messageAsJson: MessageInterface = message.toJson();
     if (type === 'chat') {
-      await addDoc(this.firebaseService.getSubcollectionRef(this.currentChannel().id, 'channels', 'messages'), messageAsJson);
+      await addDoc(
+        this.firebaseService.getSubcollectionRef(
+          this.currentChannel().id,
+          'channels',
+          'messages'
+        ),
+        messageAsJson
+      );
     } else {
-      const threadId = await this.addThreadMessage(this.currentThreadId, 'threads', messageAsJson);
+      const threadId = await this.addThreadMessage(
+        this.currentThreadId,
+        'threads',
+        messageAsJson
+      );
       await this.increaseNumberOfReplies();
       if (threadId !== '') {
-        await this.updateMessage(this.currentChannel().id, 'channels', this.threadMessage().id, {
-          threadId: threadId
-        });
+        await this.updateMessage(
+          this.currentChannel().id,
+          'channels',
+          this.threadMessage().id,
+          {
+            threadId: threadId,
+          }
+        );
         this.currentThreadId = threadId;
         this.resubThread(threadId);
       }
@@ -245,7 +349,7 @@ export class ChatService {
   saveLastEmoji(emoji: string) {
     const emojis = this.lastEmojis();
     if (!emojis.includes(emoji)) {
-      this.lastEmojisSignal.update(values => [emoji, values[0]]);
+      this.lastEmojisSignal.update((values) => [emoji, values[0]]);
     }
   }
 
