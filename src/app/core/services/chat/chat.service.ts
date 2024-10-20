@@ -203,13 +203,19 @@ export class ChatService {
     }
   }
 
-  changeChannel(id: string) {
-    // Channel-Index in allen Channels über id finden und dann this.currentChannelSignal.set(this.channels()[index])
-    this.currentChannelSignal.update(obj => ({...obj, id: id}));
+  resubChannel() {
     if (this.unsubMessages) {
       this.unsubMessages();
     }
     this.unsubMessages = this.subMessages(this.currentChannel().id);
+  }
+
+  changeChannel(id: string) {
+    const index = this.channels().findIndex(channel => channel.id === id);
+    if (index !== -1) {
+      this.currentChannelSignal.set(this.channels()[index]);
+      this.resubChannel();
+    }
   }
 
   async increaseNumberOfReplies() {
