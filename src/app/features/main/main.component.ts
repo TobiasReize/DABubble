@@ -11,6 +11,7 @@ import { EditChannelComponent } from './chat/edit-channel/edit-channel.component
 import { NewMessageComponent } from './side-nav/new-message/new-message.component';
 import { DirectMessageComponent } from './side-nav/direct-message/direct-message.component';
 import { ProfileViewUsersComponent } from "./profile-view-users/profile-view-users.component";
+import { ProfileViewLoggedUserComponent } from './profile-view-logged-user/profile-view-logged-user.component';
 
 @Component({
   selector: 'app-main',
@@ -26,7 +27,8 @@ import { ProfileViewUsersComponent } from "./profile-view-users/profile-view-use
     EditChannelComponent,
     NewMessageComponent,
     DirectMessageComponent,
-    ProfileViewUsersComponent
+    ProfileViewUsersComponent,
+    ProfileViewLoggedUserComponent
 ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
