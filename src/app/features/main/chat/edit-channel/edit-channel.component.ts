@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, computed, Signal } from '@angular/core';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { Channel } from '../../../../core/models/channel.class';
 import { CommonModule } from '@angular/common';
@@ -34,5 +34,13 @@ export class EditChannelComponent {
       })
     }
     this.isChannelDescriptionEditable = !this.isChannelDescriptionEditable;
+  }
+
+  closeEditChannel() {
+    this.chatService.toggleEditChannelVisibility();
+  }
+
+  leaveChannel() {
+    this.chatService.leaveChannel();
   }
 }
