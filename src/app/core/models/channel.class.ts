@@ -3,6 +3,7 @@ export class Channel {
         public id: string = '',
         public name: string = '',
         public description: string = '',
-        public userIds: string[] = ['']
+        public userIds: string[] = [''],
+        public createdBy: string = ''
     ) {}
 }

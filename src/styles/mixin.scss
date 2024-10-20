@@ -114,14 +114,6 @@ $header-and-bottom-spacing: 135px;
 }
 
 @mixin fontStyle15 {
-<<<<<<< HEAD
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 24.55px;
-    color: rgba(83, 90, 241, 1);
-}
-
-=======
     font-size: 24px;
     font-weight: 400;
     line-height: 32.74px;
@@ -133,8 +125,13 @@ $header-and-bottom-spacing: 135px;
     line-height: 21.6px;
 }
 
+@mixin fontStyle17 {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32.74px;
+}
 
->>>>>>> 25744e239c5015a9d32010d8451959d27bb25b01
+
 @mixin flex-gap($gap-size) {
     display: flex;
     flex-direction: column;

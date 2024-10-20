@@ -155,13 +155,18 @@ export class ChatService {
     });
   }
 
+  createChannel(doc: QueryDocumentSnapshot) {
+    const data = doc.data();
+    const userIds = JSON.parse(data['userIds']);
+    const channel = new Channel(doc.id, data['name'], data['description'], userIds, data['createdBy']);
+    return channel;
+  }
+
   subChannels() {
     return onSnapshot(this.firebaseService.getCollectionRef('channels'), (collection) => {
       const channels: Channel[] = [];
       collection.forEach(doc => {
-        const data = doc.data();
-        const userIds = JSON.parse(data['userIds']);
-        const channel = new Channel(doc.id, data['name'], data['description'], userIds);
+        const channel = this.createChannel(doc);
         channels.push(channel);
       })
       this.channelsSignal.set(channels);
@@ -199,6 +204,7 @@ export class ChatService {
   }
 
   changeChannel(id: string) {
+    // Channel-Index in allen Channels über id finden und dann this.currentChannelSignal.set(this.channels()[index])
     this.currentChannelSignal.update(obj => ({...obj, id: id}));
     if (this.unsubMessages) {
       this.unsubMessages();
