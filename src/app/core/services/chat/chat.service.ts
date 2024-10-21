@@ -44,8 +44,6 @@ export class ChatService {
   unsubChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
 
-  private userName: string = 'Maria Musterfrau';
-  private userAvatar: string = 'avatar4.svg';
   private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
   private messagesSignal = signal<Message[]>([]);
@@ -365,12 +363,12 @@ export class ChatService {
   async addMessage(messageContent: string, type: 'thread' | 'chat') {
     const message = new Message(
       '',
-      this.userAvatar,
-      this.userName,
+      this.userService.currentOnlineUser.avatar,
+      this.userService.currentOnlineUser.name,
       new Date(),
       new Date(),
       messageContent,
-      [new Reaction(), new Reaction('2705.svg', ['Marina Mustermann'])],
+      [],
       '',
       0
     );
