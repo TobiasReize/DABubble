@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
 import { createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
-import { getDownloadURL, getStorage, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
+import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -22,14 +22,20 @@ export class ChooseAvatarComponent {
   inputFinished: boolean = false;
   userService = inject(UserService);
   private readonly storage: Storage = inject(Storage);
-  currentProfileImg = 'profile.svg';
+  uploadInfo: string = '';
+  uploadProgress: string = '';
+  uploadFile: null | 'inProgress' | 'done' = null;
+  uploadError: boolean = false;
+  @ViewChild('profile') profileHTML!: ElementRef;
+  private profileImgPathSignal = signal<string>('assets/img/profile.svg');
+  readonly profileImgPath = this.profileImgPathSignal.asReadonly();
   profileImages = [
-    'avatar0.svg',
-    'avatar1.svg',
-    'avatar2.svg',
-    'avatar3.svg',
-    'avatar4.svg',
-    'avatar5.svg',
+    'assets/img/avatar0.svg',
+    'assets/img/avatar1.svg',
+    'assets/img/avatar2.svg',
+    'assets/img/avatar3.svg',
+    'assets/img/avatar4.svg',
+    'assets/img/avatar5.svg',
   ];
 
 
@@ -42,64 +48,51 @@ export class ChooseAvatarComponent {
 
 
   changeProfileImg(index: number) {
-    this.currentProfileImg = this.profileImages[index];
+    this.profileImgPathSignal.set(this.profileImages[index]);
+    this.uploadFile = null;
   }
 
 
-  uploadImg(input: HTMLInputElement) {
+  uploadImgToStorage(input: HTMLInputElement) {
+    this.uploadFile = 'inProgress';
+    this.uploadError = false;
+    this.uploadInfo = '';
+    this.uploadProgress = '';
     if (input.files) {
-      console.log('input.files', input.files);
-      
-      const files: FileList = input.files;
-      for (let i = 0; i < files.length; i++) {
-        const file = files.item(i);
-        console.log('file', file);
-        if (file) {
-            const storageRef = ref(this.storage, file.name);
-            const uploadTask = uploadBytesResumable(storageRef, file);
+      const file = input.files.item(0);
+      console.log('file', file);
+      if (file && (file.type == 'image/jpeg' || file.type == 'image/png' || file.type == 'image/svg+xml' || file.type == 'image/webp')) {
+          const storageRef = ref(this.storage, this.userService.newUser.email + '/' + file.name);
+          const uploadTask = uploadBytesResumable(storageRef, file);
+          this.uploadInfo = file.name;
 
-            uploadTask.on('state_changed', 
-              (snapshot) => {
-                // Observe state change events such as progress, pause, and resume
-                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-                  case 'paused':
-                    console.log('Upload is paused');
-                    break;
-                  case 'running':
-                    console.log('Upload is running');
-                    break;
-                }
-              },
-              (error) => {
-                // Handle unsuccessful uploads
-                switch (error.code) {
-                  case 'storage/unauthorized':
-                    console.log('User doesn\'t have permission to access the object', error);
-                    break;
-                  case 'storage/canceled':
-                    console.log('User canceled the upload', error);
-                    break;
-                  case 'storage/unknown':
-                    console.log('Unknown error occurred, inspect error.serverResponse', error);
-                    break;
-                  default:
-                    console.log('Error:', error);
-                }
-              },
-              () => {
-                // Handle successful uploads on complete
-                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                  console.log('File available at', downloadURL);
-                })
-              }
-            )
-        } else {console.log('Fehler:', file);}
-      }
-    } else {console.log('Fehler:', input.files);}
+          uploadTask.on('state_changed', (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              this.uploadProgress = progress + '% (' + Math.round((snapshot.totalBytes / 1000)) + 'KB)';
+            }, (error) => {
+              this.uploadError = true;
+              this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
+              this.uploadFile = 'done';
+              console.log('Error:', error);
+            }, () => {
+              this.uploadFile = 'done';
+              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                this.profileImgPathSignal.set(downloadURL);
+                this.profileHTML.nativeElement.src = this.profileImgPath();
+                // console.log('Current profil img:', this.profileImgPath());
+              })
+            }
+          )
+        } else {
+          this.uploadError = true;
+          this.uploadInfo = 'Keine Datei vorhanden oder Dateityp fehlerhaft!';
+          this.uploadFile = 'done';
+        }
+    } else {
+      this.uploadError = true;
+      this.uploadInfo = 'Keine Datei vorhanden!';
+      this.uploadFile = 'done';
+    }
   }
 
 
@@ -110,7 +103,7 @@ export class ChooseAvatarComponent {
         const user = userCredential.user;
         console.log('Registrierung erfolgreich!');
         this.userService.newUser.userUID = user.uid;
-        this.userService.newUser.avatar = this.currentProfileImg;
+        this.userService.newUser.avatar = this.profileImgPath();
         this.userService.addUser(this.userService.newUser.toJSON());
         this.goToLogin();
       })
