@@ -1,0 +1,18 @@
+<div class="members-header">
+    <span class="members-heading">Mitglieder</span>
+    <button class="icon-btn">
+        <span class="material-symbols-rounded" (click)="closeDialog()">close</span>
+    </button>
+</div>
+@for (member of members(); track $index) {
+    <div class="person">
+        <img class="avatar avatar-50" src="assets/img/{{member.avatar}}" alt="{{member.name}}">
+        <span class="user-name">{{ member.name }}</span>
+    </div>
+}
+<div class="add-members-container">
+    <button class="add-members-button" (click)="openAddPeople()">
+        <span class="material-symbols-rounded">person_add</span>
+        <span>Mitglieder hinzufügen</span>
+    </button>
+</div>

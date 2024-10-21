@@ -7,11 +7,12 @@ import { SlicePipe } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
 import { User } from '../../../core/models/user.class';
 import { AddPeopleComponent } from './add-people/add-people.component';
+import { MembersComponent } from './members/members.component';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [MessageTextareaComponent, MessageComponent, AddPeopleComponent, SlicePipe],
+  imports: [MessageTextareaComponent, MessageComponent, AddPeopleComponent, MembersComponent, SlicePipe],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
@@ -21,11 +22,16 @@ export class ChatComponent {
   usersInCurrentChannel: Signal<User[]> = this.chatService.usersInCurrentChannel;
   messages: Signal<Message[]> = this.chatService.messages;
   isAddPeopleDialogVisible: Signal<boolean> = this.chatService.openAddPeople;
+  isMembersDialogVisible: Signal<boolean> = this.chatService.openMembers;
 
   constructor(private chatService: ChatService) { }
 
   toggleEditChannelVisibility() {
     this.chatService.toggleEditChannelVisibility();
+  }
+
+  toggleMembersVisibility() {
+    this.chatService.toggleMembersVisibility();
   }
 
   isSameDay(firstDate: Date, secondDate: Date) {

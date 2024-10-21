@@ -72,6 +72,9 @@ export class ChatService {
   private openAddPeopleSignal = signal<boolean>(false);
   readonly openAddPeople = this.openAddPeopleSignal.asReadonly();
 
+  private openMembersSignal = signal<boolean>(false);
+  readonly openMembers = this.openMembersSignal.asReadonly();
+
   private usersInCurrentChannelSignal = signal<User[]>([]);
   readonly usersInCurrentChannel = this.usersInCurrentChannelSignal.asReadonly();
 
@@ -273,10 +276,18 @@ export class ChatService {
 
   toggleEditChannelVisibility() {
     this.openEditChannelSignal.set(!this.openEditChannelSignal());
+    this.openAddPeopleSignal.set(false);
+    this.openMembersSignal.set(false);
   }
 
   toggleAddPeopleVisibility() {
     this.openAddPeopleSignal.set(!this.openAddPeopleSignal());
+    this.openMembersSignal.set(false);
+  }
+
+  toggleMembersVisibility() {
+    this.openMembersSignal.set(!this.openMembersSignal());
+    this.openAddPeopleSignal.set(false);
   }
 
   resubThread(threadId: string) {

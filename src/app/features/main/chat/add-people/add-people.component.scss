@@ -62,22 +62,11 @@ input {
     background-color: white;
 }
 
-.person {
-    @include dFlex($jc: normal);
-    gap: 15px;
-    border-radius: 35px;
-    padding: 4px 20px;
-    cursor: pointer;
-    &:hover {
-        background-color: $bg-color;
-    }
-}
-
 .add-people-header {
     @include dFlex($jc: space-between);
 }
 
-.add-people-headline {
+.add-people-heading {
     @include fontStyle9;
 }
 
@@ -86,5 +75,12 @@ input {
     gap: 15px;
     span {
         color: $purple-2;
+    }
+}
+
+.person {
+    cursor: pointer;
+    &:hover {
+        background-color: $bg-color;
     }
 }
