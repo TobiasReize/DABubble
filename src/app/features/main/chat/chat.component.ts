@@ -6,11 +6,12 @@ import { MessageComponent } from '../message/message.component';
 import { SlicePipe } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
 import { User } from '../../../core/models/user.class';
+import { AddPeopleComponent } from './add-people/add-people.component';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [MessageTextareaComponent, MessageComponent, SlicePipe],
+  imports: [MessageTextareaComponent, MessageComponent, AddPeopleComponent, SlicePipe],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
@@ -19,6 +20,7 @@ export class ChatComponent {
   userAvatars: string[] = ['avatar0.svg', 'avatar1.svg', 'avatar2.svg', 'avatar3.svg', 'avatar4.svg', 'avatar5.svg'];
   usersInCurrentChannel: Signal<User[]> = this.chatService.usersInCurrentChannel;
   messages: Signal<Message[]> = this.chatService.messages;
+  isAddPeopleDialogVisible: Signal<boolean> = this.chatService.openAddPeople;
 
   constructor(private chatService: ChatService) { }
 
@@ -59,5 +61,9 @@ export class ChatComponent {
     } else {
       return '';
     }
+  }
+
+  openAddPeople() {
+    this.chatService.toggleAddPeopleVisibility();
   }
 }

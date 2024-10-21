@@ -69,6 +69,9 @@ export class ChatService {
   private openEditChannelSignal = signal<boolean>(false);
   readonly openEditChannel = this.openEditChannelSignal.asReadonly();
 
+  private openAddPeopleSignal = signal<boolean>(false);
+  readonly openAddPeople = this.openAddPeopleSignal.asReadonly();
+
   private usersInCurrentChannelSignal = signal<User[]>([]);
   readonly usersInCurrentChannel = this.usersInCurrentChannelSignal.asReadonly();
 
@@ -272,6 +275,10 @@ export class ChatService {
     this.openEditChannelSignal.set(!this.openEditChannelSignal());
   }
 
+  toggleAddPeopleVisibility() {
+    this.openAddPeopleSignal.set(!this.openAddPeopleSignal());
+  }
+
   resubThread(threadId: string) {
     if (this.unsubThread) {
       this.unsubThread();
@@ -325,6 +332,17 @@ export class ChatService {
       })
     }
     this.usersInCurrentChannelSignal.set(foundUsers);
+  }
+
+  async addPersonToCurrentChannel(userUID: string) {
+    await this.updateChannel({
+      userIds: [...this.currentChannel().userIds, userUID]
+    })
+  }
+
+  findUsers(name: string) {
+    const users = this.userService.allUsers.filter(user => user.name.includes(name));
+    return users;
   }
 
   async increaseNumberOfReplies() {
