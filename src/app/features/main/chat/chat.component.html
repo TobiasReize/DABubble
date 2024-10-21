@@ -12,8 +12,8 @@
                     }
             </div>
         }
-        @if (userAvatars.length - 3 > 0) {
-            <span class="chat-header-right-span">+{{ userAvatars.length - 3 }}</span>
+        @if (usersInCurrentChannel().length - 3 > 0) {
+            <span class="chat-header-right-span">+{{ usersInCurrentChannel().length - 3 }}</span>
         }
         <div class="icon-btn" (click)="openAddPeople()">
             <span class="material-symbols-rounded">person_add</span>
