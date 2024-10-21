@@ -15,21 +15,14 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
 import { ChannelName } from '../../models/channel-name.interface';
 import { ChannelDescription } from '../../models/channel-description.interface';
+import { collection, CollectionReference } from 'firebase/firestore/lite';
+import { contact, contact } from '../../models/contact.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
   chat: boolean = true;
-  contacts = [0, 1, 2, 3, 4, 5];
-  names = [
-    'Frederik Beck (Du)',
-    'Sofia Müller',
-    'Noah Braun',
-    'Elise Roth',
-    'Elias Neumann',
-    'Steffen Hoffmann',
-  ];
   contactIndex: any = null;
   newMessage: boolean = false;
   directMessage: boolean = false;
@@ -70,6 +63,11 @@ export class ChatService {
 
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
+
+  profileViewLoggedUser: boolean = false;
+  myChatDescription: boolean = false;
+  chatDescription: boolean = false;
+  customProfile: boolean = false;
 
   constructor(private firebaseService: FirebaseService) {
     this.unsubChannels = this.subChannels();
@@ -237,6 +235,16 @@ export class ChatService {
     return channel;
   }
 
+  createContact(doc: QueryDocumentSnapshot) {
+    const data = doc.data();
+    const contact:any = new contact(
+      data['id'],
+      data['vorname'],
+      data['nachname']
+    );
+    return contact;
+  }
+
   subChannels() {
     return onSnapshot(
       this.firebaseService.getCollectionRef('channels'),
@@ -245,6 +253,24 @@ export class ChatService {
         collection.forEach((doc) => {
           const channel = this.createChannel(doc);
           channels.push(channel);
+        });
+        this.channelsSignal.set(channels);
+        if (!this.unsubMessages) {
+          this.currentChannelSignal.set(this.channels()[0]);
+          this.unsubMessages = this.subMessages(this.currentChannel().id);
+        }
+      }
+    );
+  }
+
+  subContacts() {
+    return onSnapshot(
+      this.firebaseService.getCollectionRef('contacts'),
+      (collection) => {
+        const contacts = [];
+        collection.forEach((doc) => {
+          const contact = this.createContact(doc);
+          contacts.push(contact);
         });
         this.channelsSignal.set(channels);
         if (!this.unsubMessages) {
@@ -353,10 +379,17 @@ export class ChatService {
     }
   }
 
-  openChat(index: number): void {
+  openChat(index: number, name:string): void {
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = index;
+    if(name.includes('(Du)')) {
+      this.myChatDescription = true;
+      this.chatDescription = false;
+    } else {
+      this.myChatDescription = false;
+      this.chatDescription = true;
+    }
   }
 }

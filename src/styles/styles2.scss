@@ -31,3 +31,29 @@
   z-index: 999;
 }
 
+input {
+  cursor: pointer;
+  &:hover {
+    border: 1px solid $purple-2;
+    transition: all 100ms ease-in-out;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+.whiteButton {
+  &:hover {
+    background: rgba(83, 90, 241, 1);
+    transition: all 100ms ease-in-out;
+    color: white;
+  }
+}
+
+.blueButton {
+  &:hover {
+    background: rgba(121, 126, 243, 1);
+    transition: all 100ms ease-in-out;
+  }
+}

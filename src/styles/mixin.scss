@@ -1,21 +1,21 @@
 // functions:
-@mixin dFlex($fd:row, $jc:center, $ai:center) {
-    display: flex;
-    flex-direction: $fd;
-    justify-content: $jc;
-    align-items: $ai;
+@mixin dFlex($fd: row, $jc: center, $ai: center) {
+  display: flex;
+  flex-direction: $fd;
+  justify-content: $jc;
+  align-items: $ai;
 }
 
 // variables:
-$purple-1: #444DF2;
-$purple-2: #797EF3;
-$purple-3: #535AF1;
+$purple-1: #444df2;
+$purple-2: #797ef3;
+$purple-3: #535af1;
 $text-gray: #686868;
-$bg-color: #ECEEFE;
-$light-purple: #ADB0D9;
+$bg-color: #eceefe;
+$light-purple: #adb0d9;
 // a little lighter for the scrollbar:
 $light-purple-scrollbar: #c7c9e5;
-$error-rosa: #ED1E79;
+$error-rosa: #ed1e79;
 $side-nav-width: 366px;
 $thread-width: 485px;
 $thread-width-small: $side-nav-width;
@@ -23,129 +23,133 @@ $header-and-bottom-spacing: 135px;
 
 // typography:
 @mixin fontStyle0 {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 19.1px;    
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.1px;
 }
 
 @mixin fontStyle1 {
-    font-size: 17px;
-    font-weight: 400;
-    line-height: 23.19px;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 23.19px;
 }
 
 // default font style
 @mixin fontStyle2 {
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 24.55px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24.55px;
 }
 
 @mixin fontStyle3 {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 24.55px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24.55px;
 }
 
 @mixin fontStyle4 {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 21.6px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21.6px;
 }
 
 @mixin fontStyle5 {
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 24px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
 }
 
 @mixin fontStyle6 {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 24px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
 }
 
 @mixin fontStlye7 {
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 27.28px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 27.28px;
 }
 
 @mixin fontStyle8 {
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 27.28px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 27.28px;
 }
 
 @mixin fontStyle9 {
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 32.74px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32.74px;
 }
 
 @mixin fontStyle10 {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 43.65px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 43.65px;
 }
 
 @mixin fontStyle11 {
-    font-size: 46px;
-    font-weight: 700;
-    line-height: 55.2px;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 55.2px;
 }
 
 @mixin fontStyle12 {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 21.82px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21.82px;
 }
 
 @mixin fontStyle13 {
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 49.1px;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 49.1px;
 }
 
 @mixin fontStyle14 {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 32.74px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32.74px;
 }
 
 @mixin fontStyle15 {
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 32.74px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32.74px;
 }
 
 @mixin fontStyle16 {
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 21.6px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 21.6px;
 }
 
 @mixin fontStyle17 {
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 32.74px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32.74px;
 }
 
 @mixin fontStyle18 {
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 24.55px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24.55px;
 }
 
+@mixin fontStyle19 {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 27.28px;
+}
 
 @mixin flex-gap($gap-size) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $gap-size;
-  }
-
-@mixin changeImgElement($imgSrc) {
-    content: url($imgSrc);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $gap-size;
 }
 
+@mixin changeImgElement($imgSrc) {
+  content: url($imgSrc);
+}

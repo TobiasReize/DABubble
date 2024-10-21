@@ -1,11 +1,29 @@
+.columnGap7 {
+  gap: 7px;
+  display: flex;
+  flex-direction: column;
+}
+
 .gap15 {
-    gap: 15px;
+  gap: 15px;
+}
+
+.columnGap16 {
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .gap20 {
-    gap: 20px;
+  gap: 20px;
 }
 
 .gap25 {
-    gap: 25px;
+  gap: 25px;
+}
+
+.rowGap32 {
+  gap: 32px;
+  display: flex;
+  flex-direction: row;
 }
