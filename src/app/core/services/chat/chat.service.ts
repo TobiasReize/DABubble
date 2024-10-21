@@ -306,22 +306,24 @@ export class ChatService {
   }
 
   leaveChannel() {
-    const newUserIds = this.currentChannel().userIds.filter(userId => userId !== this.userService.currentOnlineUser.userUID);
-    const newUserIdsAsJson = JSON.stringify(newUserIds);
-    console.log('leaving channel, newUserIdsAsJson: ', newUserIdsAsJson);
-    this.updateChannel({
-      userIds: newUserIdsAsJson
-    })
+    if (this.currentChannel().userIds && this.currentChannel().userIds.length > 0) {
+      const newUserIds = this.currentChannel().userIds.filter(userId => userId !== this.userService.currentOnlineUser.userUID);
+      this.updateChannel({
+        userIds: newUserIds
+      })
+    }
   }
 
   getUsersInCurrentChannel() {
     const foundUsers: User[] = [];
-    this.currentChannel().userIds.forEach(userId => {
-      const foundUser = this.userService.allUsers.find(user => userId === user.userUID);
-      if (foundUser) {
-        foundUsers.push(foundUser);
-      }
-    })
+    if (this.currentChannel().userIds && this.currentChannel().userIds.length > 0) {
+      this.currentChannel().userIds.forEach(userId => {
+        const foundUser = this.userService.allUsers.find(user => userId === user.userUID);
+        if (foundUser) {
+          foundUsers.push(foundUser);
+        }
+      })
+    }
     this.usersInCurrentChannelSignal.set(foundUsers);
   }
 
