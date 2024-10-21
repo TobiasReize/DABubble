@@ -3,7 +3,7 @@ import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { Reaction } from '../../../core/models/reaction.class';
-import { FirebaseService } from '../../../core/services/firebase/firebase.service';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-message',
@@ -19,12 +19,12 @@ export class MessageComponent {
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis;
   reactionOptions: Signal<string[]> = computed(() => ['1f64c.svg', '1f642.svg', '1f680.svg', '1f913.svg', '2705.svg'].filter(emoji => !this.menuEmojis().includes(emoji)));
   replies: Signal<Message[]> = this.chatService.threadReplies;
-  userName: string = 'Maria Musterfrau';
+  userName: string = this.userService.currentOnlineUser.name;
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;
   areReactionOptionsOpen: boolean = false;
 
-  constructor(private chatService: ChatService, private firebaseService: FirebaseService) {}
+  constructor(private chatService: ChatService, private userService: UserService) {}
 
   ngOnChanges() {
     this.isMe = this.messageData.userName == this.userName;
