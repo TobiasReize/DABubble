@@ -24,5 +24,11 @@ export class FirebaseService {
     return collection(this.getDocRef(docId, collectionName), subcollectionName);
   }
 
+  getSubSubcollectionRef(collectionName: string, docId1: string, subcollectionName: string, docId2: string, subSubCollectionName: string) {
+    return collection(this.firestore, collectionName, docId1, subcollectionName, docId2, subSubCollectionName);
+  }
 
+  getDocRefInSubSubcollection(collectionName: string, docId1: string, subcollectionName: string, docId2: string, subSubCollectionName: string, docId3: string) {
+    return doc(this.firestore, collectionName, docId1, subcollectionName, docId2, subSubCollectionName, docId3);
+  }
 }

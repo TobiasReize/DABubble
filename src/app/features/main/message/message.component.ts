@@ -32,9 +32,9 @@ export class MessageComponent {
 
   updateMessage() {
     if (this.isThreadMessage && !this.isTopMessage) {
-      this.chatService.updateMessage(this.chatService.currentThreadId, 'threads', this.messageData.id, this.messageData.toJson());
+      this.chatService.updateThreadReply(this.messageData.id, this.messageData.toJson());
     } else {
-      this.chatService.updateMessage(this.chatService.currentChannel().id, 'channels', this.messageData.id, this.messageData.toJson());
+      this.chatService.updateChatMessage(this.messageData.id, this.messageData.toJson());
     }
   }
 

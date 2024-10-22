@@ -19,7 +19,7 @@ export class ThreadComponent {
   
   constructor(private chatService: ChatService) { }
 
-  message: Signal<Message> = this.chatService.threadMessage;
+  message: Signal<Message> = this.chatService.topThreadMessage;
   replies: Signal<Message[]> = this.chatService.threadReplies;
 
   closeThread() {

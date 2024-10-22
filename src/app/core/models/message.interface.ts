@@ -5,6 +5,5 @@ export interface MessageInterface {
     lastReplyAt: number;
     content: string;
     reactions: string;
-    threadId: string;
     numberOfReplies: number;
 }

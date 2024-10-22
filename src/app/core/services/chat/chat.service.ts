@@ -1,9 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { Message } from '../../models/message.class';
-import { Reaction } from '../../models/reaction.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
   addDoc,
+  DocumentSnapshot,
   onSnapshot,
   orderBy,
   query,
@@ -43,6 +43,7 @@ export class ChatService {
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
+  unsubTopThreadMessage!: Unsubscribe;
 
   private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
@@ -52,8 +53,8 @@ export class ChatService {
   private openThreadSignal = signal<boolean>(false);
   readonly openThread = this.openThreadSignal.asReadonly();
 
-  private threadMessageSignal = signal<Message>(new Message());
-  readonly threadMessage = this.threadMessageSignal.asReadonly();
+  private topThreadMessageSignal = signal<Message>(new Message());
+  readonly topThreadMessage = this.topThreadMessageSignal.asReadonly();
 
   private threadRepliesSignal = signal<Message[]>([]);
   readonly threadReplies = this.threadRepliesSignal.asReadonly();
@@ -76,16 +77,14 @@ export class ChatService {
   private usersInCurrentChannelSignal = signal<User[]>([]);
   readonly usersInCurrentChannel = this.usersInCurrentChannelSignal.asReadonly();
 
-  public currentThreadId: string = '';
-
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
 
+  topThreadMessageId: string = '';
+
   constructor(private firebaseService: FirebaseService, private userService: UserService) {
     this.unsubChannels = this.subChannels();
-    if (this.currentThreadId !== '') {
-      this.unsubThread = this.subThread(this.currentThreadId);
-    }
+    this.unsubThread = this.subThread();
   }
 
   ngOnDestroy() {
@@ -94,25 +93,31 @@ export class ChatService {
     if (this.unsubThread) {
       this.unsubThread();
     }
+    if (this.unsubTopThreadMessage) {
+      this.unsubTopThreadMessage();
+    }
   }
 
-  createMessage(doc: QueryDocumentSnapshot) {
+  createMessage(doc: QueryDocumentSnapshot | DocumentSnapshot) {
     const data = doc.data();
-    const reactions = JSON.parse(data['reactions']);
-    const postedAt = new Date(data['postedAt']);
-    const lastReplyAt = new Date(data['lastReplyAt']);
-    const message = new Message(
-      doc.id,
-      data['imageName'],
-      data['userName'],
-      postedAt,
-      lastReplyAt,
-      data['content'],
-      reactions,
-      data['threadId'],
-      data['numberOfReplies']
-    );
-    return message;
+    if (data) {
+      const reactions = JSON.parse(data['reactions']);
+      const postedAt = new Date(data['postedAt']);
+      const lastReplyAt = new Date(data['lastReplyAt']);
+      const message = new Message(
+        doc.id,
+        data['imageName'],
+        data['userName'],
+        postedAt,
+        lastReplyAt,
+        data['content'],
+        reactions,
+        data['numberOfReplies']
+      );
+      return message;
+    } else {
+      return undefined;
+    }
   }
 
   async addThread() {
@@ -133,35 +138,17 @@ export class ChatService {
     this.threadRepliesSignal.set([]);
   }
 
-  async addThreadMessage(
-    docId: string,
-    collectionName: string,
-    messageObj: MessageInterface
-  ) {
-    if (docId !== '') {
+  async addThreadReply(messageObj: MessageInterface) {
       await addDoc(
-        this.firebaseService.getSubcollectionRef(
-          docId,
-          collectionName,
-          'messages'
+        this.firebaseService.getSubSubcollectionRef(
+          'channels',
+          this.currentChannel().id,
+          'messages',
+          this.topThreadMessage().id,
+          'thread'
         ),
         messageObj
       );
-      return '';
-    } else {
-      const threadId = await this.addThread();
-      if (threadId) {
-        await addDoc(
-          this.firebaseService.getSubcollectionRef(
-            threadId,
-            collectionName,
-            'messages'
-          ),
-          messageObj
-        );
-      }
-      return threadId;
-    }
   }
 
   async updateChannel(channelObj: ChannelName | ChannelDescription | ChannelUserIdsInterface) {
@@ -169,17 +156,12 @@ export class ChatService {
     await updateDoc(this.firebaseService.getDocRef(this.currentChannel().id, 'channels'), {...channelObj});
   }
 
-  async updateMessage(
-    channelOrThreadId: string,
-    collectionName: string,
-    messageId: string,
-    messageObj: any
-  ) {
+  async updateChatMessage(messageId: string, messageObj: any) {
     // {...messageObj} must be used due to a bug concerning the database
     await updateDoc(
       this.firebaseService.getDocRefInSubcollection(
-        channelOrThreadId,
-        collectionName,
+        this.currentChannel().id,
+        'channels',
         'messages',
         messageId
       ),
@@ -187,12 +169,17 @@ export class ChatService {
     );
   }
 
-  async updateThreadMessage() {
-    await this.updateMessage(
-      this.currentChannel().id,
-      'channels',
-      this.threadMessage().id,
-      this.threadMessage().toJson()
+  async updateThreadReply(replyId: string, messageObj: MessageInterface) {
+    await updateDoc(
+      this.firebaseService.getDocRefInSubSubcollection(
+        'channels',
+        this.currentChannel().id,
+        'messages',
+        this.topThreadMessage().id,
+        'thread',
+        replyId
+      ),
+      { ...messageObj }
     );
   }
 
@@ -214,23 +201,6 @@ export class ChatService {
         }
       });
       this.messagesSignal.set(tempMessages);
-    });
-  }
-
-  subThread(threadId: string) {
-    const q = query(
-      this.firebaseService.getSubcollectionRef(threadId, 'threads', 'messages'),
-      orderBy('postedAt')
-    );
-    return onSnapshot(q, (snapshot) => {
-      const tempMessages: Message[] = [];
-      snapshot.forEach((doc) => {
-        const message = this.createMessage(doc);
-        if (message) {
-          tempMessages.push(message);
-        }
-      });
-      this.threadRepliesSignal.set(tempMessages);
     });
   }
 
@@ -263,7 +233,6 @@ export class ChatService {
           this.changeChannel(this.currentChannel().id);
         }
         this.getUsersInCurrentChannel();
-        console.log(this.channels());
       }
     );
   }
@@ -288,22 +257,17 @@ export class ChatService {
     this.openAddPeopleSignal.set(false);
   }
 
-  resubThread(threadId: string) {
+  resubThread() {
     if (this.unsubThread) {
       this.unsubThread();
     }
-    this.unsubThread = this.subThread(threadId);
+    this.unsubThread = this.subThread();
   }
 
   changeThread(message: Message) {
-    const threadId = message.threadId;
-    this.currentThreadId = threadId;
-    this.threadMessageSignal.set(message);
-    if (threadId !== '') {
-      this.resubThread(threadId);
-    } else if (threadId === '') {
-      this.clearThread();
-    }
+    this.topThreadMessageId = message.id;
+    this.resubThread();
+    this.unsubTopThreadMessage = this.subTopThreadMessage();
   }
 
   resubChannel() {
@@ -355,9 +319,9 @@ export class ChatService {
   }
 
   async increaseNumberOfReplies() {
-    this.threadMessage().numberOfReplies++;
-    this.threadMessage().lastReplyAt = new Date();
-    await this.updateThreadMessage();
+    this.topThreadMessage().numberOfReplies++;
+    this.topThreadMessage().lastReplyAt = new Date();
+    this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
   }
 
   async addMessage(messageContent: string, type: 'thread' | 'chat') {
@@ -369,7 +333,6 @@ export class ChatService {
       new Date(),
       messageContent,
       [],
-      '',
       0
     );
     const messageAsJson: MessageInterface = message.toJson();
@@ -383,24 +346,8 @@ export class ChatService {
         messageAsJson
       );
     } else {
-      const threadId = await this.addThreadMessage(
-        this.currentThreadId,
-        'threads',
-        messageAsJson
-      );
+      this.addThreadReply(messageAsJson);
       await this.increaseNumberOfReplies();
-      if (threadId !== '') {
-        await this.updateMessage(
-          this.currentChannel().id,
-          'channels',
-          this.threadMessage().id,
-          {
-            threadId: threadId,
-          }
-        );
-        this.currentThreadId = threadId;
-        this.resubThread(threadId);
-      }
     }
   }
 
@@ -416,5 +363,33 @@ export class ChatService {
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = index;
+  }
+
+  subThread() {
+    const q = query(
+      this.firebaseService.getSubSubcollectionRef('channels', this.currentChannel().id, 'messages', this.topThreadMessageId, 'thread'),
+      orderBy('postedAt')
+    );
+    return onSnapshot(q, (snapshot) => {
+      const tempMessages: any[] = [];
+      snapshot.forEach((doc) => {
+        const message = this.createMessage(doc);
+        if (message) {
+          tempMessages.push(message);
+        }
+      });
+      this.threadRepliesSignal.set(tempMessages);
+    });
+  }
+
+  subTopThreadMessage() {
+    return onSnapshot(this.firebaseService.getDocRefInSubcollection(this.currentChannel().id, 'channels', 'messages', this.topThreadMessageId), (doc) => {
+      if (doc) {
+          const message = this.createMessage(doc);
+          if (message) {
+            this.topThreadMessageSignal.set(message);
+          }
+        }
+    });
   }
 }
