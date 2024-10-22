@@ -59,67 +59,39 @@ export class ChooseAvatarComponent {
     this.uploadError = false;
     this.uploadInfo = '';
     const file = input.files?.item(0);    //Lange Schreibweise: const file = input.files ? input.files.item(0) : null;
-    console.log('file', file);
-    if (file && (file.type == 'image/jpeg' || file.type == 'image/png' || file.type == 'image/svg+xml' || file.type == 'image/webp')) {
-      const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;
-      this.uploadInfo = file.name;
-      try {
-        await this.firebaseService.uploadFileToStorage(file, path);
-        this.profileImgPathSignal.set(this.firebaseService.downloadURL);
-        this.profileHTML.nativeElement.src = this.profileImgPath();
-        this.uploadFile = 'done';
-        console.log('Current profil img:', this.profileImgPath());
-      } catch (error) {
-        this.uploadError = true;
-        this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
-        this.uploadFile = 'done';
-        console.log('Error:', error);
+    if (file) {
+      console.log('file', file);
+      switch (true) {
+        case file.type != 'image/jpeg' || 'image/png' || 'image/svg+xml' || 'image/webp':
+          this.uploadError = true;
+          this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG oder WEBP auswählen';
+          this.uploadFile = 'done';
+          break;
+
+        case file.size >= 1000000:
+          this.uploadError = true;
+          this.uploadInfo = 'Datei zu groß! Dateigröße < 1MB';
+          this.uploadFile = 'done';
+          break;
+  
+        default:
+          const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;
+          this.uploadInfo = file.name;
+          try {
+            await this.firebaseService.uploadFileToStorage(file, path);
+            this.profileImgPathSignal.set(this.firebaseService.downloadURL);
+            this.profileHTML.nativeElement.src = this.profileImgPath();
+            this.uploadFile = 'done';
+            console.log('Current profil img:', this.profileImgPath());
+          } catch (error) {
+            this.uploadError = true;
+            this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
+            this.uploadFile = 'done';
+            console.log('Error:', error);
+          }
       }
     }
   }
-
-
-  // uploadImgToStorage(input: HTMLInputElement) {  --> alter Code!!!
-  //   this.uploadFile = 'inProgress';
-  //   this.uploadError = false;
-  //   this.uploadInfo = '';
-  //   this.uploadProgress = '';
-  //   if (input.files) {
-  //     const file = input.files.item(0);
-  //     console.log('file', file);
-  //     if (file && (file.type == 'image/jpeg' || file.type == 'image/png' || file.type == 'image/svg+xml' || file.type == 'image/webp')) {
-  //         const storageRef = ref(this.storage, this.userService.newUser.email + '/' + file.name);
-  //         const uploadTask = uploadBytesResumable(storageRef, file);
-  //         this.uploadInfo = file.name;
-
-  //         uploadTask.on('state_changed', (snapshot) => {
-  //             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //             this.uploadProgress = progress + '% (' + Math.round((snapshot.totalBytes / 1000)) + 'KB)';
-  //           }, (error) => {
-  //             this.uploadError = true;
-  //             this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
-  //             this.uploadFile = 'done';
-  //             console.log('Error:', error);
-  //           }, () => {
-  //             this.uploadFile = 'done';
-  //             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-  //               this.profileImgPathSignal.set(downloadURL);
-  //               this.profileHTML.nativeElement.src = this.profileImgPath();
-  //               // console.log('Current profil img:', this.profileImgPath());
-  //             })
-  //           }
-  //         )
-  //       } else {
-  //         this.uploadError = true;
-  //         this.uploadInfo = 'Keine Datei vorhanden oder Dateityp fehlerhaft!';
-  //         this.uploadFile = 'done';
-  //       }
-  //   } else {
-  //     this.uploadError = true;
-  //     this.uploadInfo = 'Keine Datei vorhanden!';
-  //     this.uploadFile = 'done';
-  //   }
-  // }
 
 
   registerNewUser() {   //User wird auch direkt in Firebase eingeloggt!
