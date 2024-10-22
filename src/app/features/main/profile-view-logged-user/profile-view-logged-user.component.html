@@ -7,29 +7,24 @@
     <!-- Profile -->
     <div class="dFlexRowSpaceBetweenCenter width-100">
       <span class="profil">Profil</span>
-      <!-- <img src="assets/img/main/close (2).png"> -->
       <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()"
-        >close</span
-      >
+        >close</span>
     </div>
 
     <!-- avatar -->
     <div class="dFlexRowCenterCenter">
-      <!-- <img src="assets/img/avatar{{chatService.contactIndex}}.svg"> -->
-      <img class="avatar avatar-200" src="assets/img/avatar0.svg" />
+      <img class="avatar avatar-200" src="assets/img/avatar{{chatService.contactIndex}}.svg" />
     </div>
 
     <!-- Bearbeiten -->
     <div class="dFlexColumnCenterFlexStart gap15 width-100">
       <div class="dFlexRowSpaceBetweenCenter width-100">
-        <!-- <span>{{chatService.contacts[chatService.contactIndex]}}</span> -->
-        <span class="nameCard">Elise Roth</span>
+        <span class="nameCard">{{getCleanName()}}</span>
         <span class="edit" (click)="customProfile($event)">Bearbeiten</span>
       </div>
       <div class="gap15 dFlexRowCenterCenter">
-        <img src="assets/img/main/online.png" />
-        <span class="f400w-20px-gray">Aktiv</span>
-        <!-- <span>{{chatService.userActive}}</span> -->
+        <img src="assets/img/main/{{chatService.currentUserStatus}}.png" />
+        <span class="f400w-20px-gray">{{chatService.currentUserStatus}}</span>
       </div>
     </div>
 
@@ -40,7 +35,7 @@
         <span class="email">E-Mail-Adresse</span>
       </div>
       <div class="width-100">
-        <span class="emailLink">beispiel.bsp&#64;beispiel.com</span>
+        <span class="emailLink">{{chatService.currentUsersEmail}}</span>
       </div>
     </div>
   </section>
@@ -53,7 +48,6 @@
     <!-- Profile -->
     <div class="dFlexRowSpaceBetweenCenter width-100">
       <span class="profil">Dein Profil bearbeiten</span>
-      <!-- <img src="assets/img/main/close (2).png"> -->
       <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()"
         >close</span
       >
@@ -61,8 +55,7 @@
 
     <!-- avatar -->
     <div class="dFlexRowCenterCenter">
-      <!-- <img src="assets/img/avatar{{chatService.contactIndex}}.svg"> -->
-      <img class="avatar avatar-200" src="assets/img/avatar0.svg" />
+      <img class="avatar avatar-200" src="assets/img/avatar{{chatService.contactIndex}}.svg" />
     </div>
 
     <div class="columnGap16">
@@ -72,7 +65,7 @@
           <img src="assets/img/main/account_circle.png" alt="" />
           <span class="emailAndName">Vollständiger Name</span>
         </div>
-        <input type="text" placeholder="" />
+        <input id="fullname" type="text" placeholder="{{getCleanName()}}"/>
       </div>
       <!-- Email Adresse -->
       <div class="width-100 gap15 dFlexColumn">
@@ -80,14 +73,14 @@
           <img src="assets/img/main/mail.png" />
           <span class="emailAndName">E-Mail-Adresse</span>
         </div>
-        <input type="text" placeholder="" />
+        <input id="emailAdresse" type="text" placeholder="{{chatService.currentUsersEmail}}" />
       </div>
     </div>
 
     <!-- buttons -->
     <div class="rowGap32">
       <button class="button1 whiteButton" (click)="onDiv1Click()">Abbrechen</button>
-      <button class="button2 blueButton">Speichern</button>
+      <button class="button2 blueButton" (click)="saveNewContactInfos()">Speichern</button>
     </div>
   </section>
 </div>

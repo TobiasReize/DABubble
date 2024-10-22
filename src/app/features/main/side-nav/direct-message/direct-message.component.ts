@@ -14,6 +14,8 @@ export class DirectMessageComponent {
 
   constructor(public chatService: ChatService) {}
 
+  
+
   openViewProfile(contactName: string) {
     if(contactName.includes('(Du)')) {
       this.chatService.profileViewLoggedUser = true;

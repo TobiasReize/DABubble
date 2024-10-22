@@ -24,6 +24,10 @@
 }
 
 .edit-channel-header {
+    @include dFlex($jc: space-between, $ai: center);
+}
+
+.edit-channel-header-left {
     @include dFlex($jc: normal, $ai: center);
     gap: 6.5px;
 }
@@ -120,4 +124,8 @@ input:disabled {
 
 .editable-hr {
     margin: 0 26.5px;
+}
+
+.leave-channel-btn {
+    align-self: flex-end;
 }

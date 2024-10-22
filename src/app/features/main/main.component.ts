@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { ChatService } from '../../core/services/chat/chat.service';
 import { HeaderComponent } from '../../shared/header/header.component';
@@ -12,6 +12,7 @@ import { NewMessageComponent } from './side-nav/new-message/new-message.componen
 import { DirectMessageComponent } from './side-nav/direct-message/direct-message.component';
 import { ProfileViewUsersComponent } from "./profile-view-users/profile-view-users.component";
 import { ProfileViewLoggedUserComponent } from './profile-view-logged-user/profile-view-logged-user.component';
+import { FirebaseService } from '../../core/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-main',
@@ -34,10 +35,10 @@ import { ProfileViewLoggedUserComponent } from './profile-view-logged-user/profi
   styleUrl: './main.component.scss',
   
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
   isThreadVisible: Signal<boolean> = this.chatService.openThread;
   isEditChannelVisible: Signal<boolean> = this.chatService.openEditChannel;
-  constructor(public chatService: ChatService, public sideNavService: SideNavService) {}
+  constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService) {}
   sectionIsVisible: boolean = true;
 
   closeSection() {
@@ -79,6 +80,8 @@ export class MainComponent {
     currentImg.src = `${newImgSrc}`;
   }
 
-  
+  ngOnInit(): void {
+    this.chatService.getContacts();
+  }
 }
 

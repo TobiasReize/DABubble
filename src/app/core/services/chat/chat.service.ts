@@ -4,6 +4,8 @@ import { Reaction } from '../../models/reaction.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
   addDoc,
+  collection,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -15,8 +17,9 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
 import { ChannelName } from '../../models/channel-name.interface';
 import { ChannelDescription } from '../../models/channel-description.interface';
-import { collection, CollectionReference } from 'firebase/firestore/lite';
-import { contact, contact } from '../../models/contact.class';
+import { UserService } from '../user/user.service';
+import { ChannelUserIdsInterface } from '../../models/channel-user-ids.interface';
+import { User } from '../../models/user.class';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +30,6 @@ export class ChatService {
   newMessage: boolean = false;
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
-  profileActive: string = 'Aktiv';
-  profileOffline: string = 'abwesend';
 
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
@@ -59,6 +60,10 @@ export class ChatService {
   private openEditChannelSignal = signal<boolean>(false);
   readonly openEditChannel = this.openEditChannelSignal.asReadonly();
 
+  private usersInCurrentChannelSignal = signal<User[]>([]);
+  readonly usersInCurrentChannel =
+    this.usersInCurrentChannelSignal.asReadonly();
+
   public currentThreadId: string = '';
 
   private channelsSignal = signal<Channel[]>([]);
@@ -68,8 +73,15 @@ export class ChatService {
   myChatDescription: boolean = false;
   chatDescription: boolean = false;
   customProfile: boolean = false;
+  contacts: any = [];
+  currentUser: string = "";
+  currentUserStatus: string = "";
+  currentUsersEmail: string = "";
 
-  constructor(private firebaseService: FirebaseService) {
+  constructor(
+    private firebaseService: FirebaseService,
+    private userService: UserService
+  ) {
     this.unsubChannels = this.subChannels();
     if (this.currentThreadId !== '') {
       this.unsubThread = this.subThread(this.currentThreadId);
@@ -152,9 +164,14 @@ export class ChatService {
     }
   }
 
-  async updateChannel(channelObj: ChannelName | ChannelDescription) {
+  async updateChannel(
+    channelObj: ChannelName | ChannelDescription | ChannelUserIdsInterface
+  ) {
     // {...channelObj} must be used due to a bug concerning the database
-    await updateDoc(this.firebaseService.getDocRef(this.currentChannel().id, 'channels'), {...channelObj});
+    await updateDoc(
+      this.firebaseService.getDocRef(this.currentChannel().id, 'channels'),
+      { ...channelObj }
+    );
   }
 
   async updateMessage(
@@ -224,25 +241,14 @@ export class ChatService {
 
   createChannel(doc: QueryDocumentSnapshot) {
     const data = doc.data();
-    const userIds = JSON.parse(data['userIds']);
     const channel = new Channel(
       doc.id,
       data['name'],
       data['description'],
-      userIds,
+      data['userIds'],
       data['createdBy']
     );
     return channel;
-  }
-
-  createContact(doc: QueryDocumentSnapshot) {
-    const data = doc.data();
-    const contact:any = new contact(
-      data['id'],
-      data['vorname'],
-      data['nachname']
-    );
-    return contact;
   }
 
   subChannels() {
@@ -258,25 +264,11 @@ export class ChatService {
         if (!this.unsubMessages) {
           this.currentChannelSignal.set(this.channels()[0]);
           this.unsubMessages = this.subMessages(this.currentChannel().id);
+        } else {
+          this.changeChannel(this.currentChannel().id);
         }
-      }
-    );
-  }
-
-  subContacts() {
-    return onSnapshot(
-      this.firebaseService.getCollectionRef('contacts'),
-      (collection) => {
-        const contacts = [];
-        collection.forEach((doc) => {
-          const contact = this.createContact(doc);
-          contacts.push(contact);
-        });
-        this.channelsSignal.set(channels);
-        if (!this.unsubMessages) {
-          this.currentChannelSignal.set(this.channels()[0]);
-          this.unsubMessages = this.subMessages(this.currentChannel().id);
-        }
+        this.getUsersInCurrentChannel();
+        console.log(this.channels());
       }
     );
   }
@@ -320,6 +312,30 @@ export class ChatService {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
     }
+  }
+
+  leaveChannel() {
+    const newUserIds = this.currentChannel().userIds.filter(
+      (userId) => userId !== this.userService.currentOnlineUser.userUID
+    );
+    const newUserIdsAsJson = JSON.stringify(newUserIds);
+    console.log('leaving channel, newUserIdsAsJson: ', newUserIdsAsJson);
+    this.updateChannel({
+      userIds: newUserIdsAsJson,
+    });
+  }
+
+  getUsersInCurrentChannel() {
+    const foundUsers: User[] = [];
+    this.currentChannel().userIds.forEach((userId) => {
+      const foundUser = this.userService.allUsers.find(
+        (user) => userId === user.userUID
+      );
+      if (foundUser) {
+        foundUsers.push(foundUser);
+      }
+    });
+    this.usersInCurrentChannelSignal.set(foundUsers);
   }
 
   async increaseNumberOfReplies() {
@@ -379,17 +395,29 @@ export class ChatService {
     }
   }
 
-  openChat(index: number, name:string): void {
+  openChat(id: number, vorname: string, nachname: string, status: string, email: string): void {
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
-    this.contactIndex = index;
-    if(name.includes('(Du)')) {
+    this.contactIndex = id;
+    this.currentUser = vorname + " " + nachname;
+    this.currentUserStatus = status;
+    this.currentUsersEmail = email;
+    if (this.currentUser.includes('(Du)')) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
       this.myChatDescription = false;
       this.chatDescription = true;
     }
+    console.log('index:', this.contactIndex);
+  }
+
+  async getContacts() {
+    const q = query(collection(this.firebaseService.firestore, 'contacts'));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      this.contacts.push(doc);
+    });
   }
 }

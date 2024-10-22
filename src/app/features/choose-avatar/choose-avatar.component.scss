@@ -19,6 +19,8 @@ p {
     height: 168px;
     width: 168px;
     border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
     margin-bottom: 32px;
 }
 
@@ -48,7 +50,28 @@ p {
     @include dFlex($jc: flex-start);
     width: 100%;
     gap: 24px;
-    margin-bottom: 21px;
+    margin-bottom: 8px;
+
+    [aria-disabled="true"] {
+        border: 1px solid $text-gray;
+        background-color: white;
+        color: $text-gray;
+    }
+}
+
+.upload-info-container {
+    @include dFlex($jc: flex-start);
+    width: 100%;
+    gap: 16px;
+    margin-bottom: 8px;
+
+    span {
+        @include fontStyle0;
+    }
+}
+
+.upload-error {
+    color: $error-rosa;
 }
 
 // Responsive Design:
@@ -79,7 +102,10 @@ p {
 
     .upload-img-container {
         gap: 20px;
-        margin-bottom: 30px;
+    }
+
+    .upload-info-container {
+        margin-bottom: 16px;
     }
 }
 

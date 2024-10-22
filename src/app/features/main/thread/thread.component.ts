@@ -4,6 +4,7 @@ import { MessageComponent } from '../message/message.component';
 import { CommonModule } from '@angular/common';
 import { MessageTextareaComponent } from '../message-textarea/message-textarea.component';
 import { ChatService } from '../../../core/services/chat/chat.service';
+import { Channel } from '../../../core/models/channel.class';
 
 @Component({
   selector: 'app-thread',
@@ -14,7 +15,7 @@ import { ChatService } from '../../../core/services/chat/chat.service';
 })
 export class ThreadComponent {
   
-  channelName: string = 'Entwicklerteam';
+  channel: Signal<Channel> = this.chatService.currentChannel;
   
   constructor(private chatService: ChatService) { }
 

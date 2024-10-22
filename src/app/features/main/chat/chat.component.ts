@@ -5,6 +5,7 @@ import { Message } from '../../../core/models/message.class';
 import { MessageComponent } from '../message/message.component';
 import { SlicePipe } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
+import { User } from '../../../core/models/user.class';
 
 @Component({
   selector: 'app-chat',
@@ -16,10 +17,10 @@ import { Channel } from '../../../core/models/channel.class';
 export class ChatComponent {
   channel: Signal<Channel> = this.chatService.currentChannel;
   userAvatars: string[] = ['avatar0.svg', 'avatar1.svg', 'avatar2.svg', 'avatar3.svg', 'avatar4.svg', 'avatar5.svg'];
+  usersInCurrentChannel: Signal<User[]> = this.chatService.usersInCurrentChannel;
+  messages: Signal<Message[]> = this.chatService.messages;
 
   constructor(private chatService: ChatService) { }
-
-  messages: Signal<Message[]> = this.chatService.messages;
 
   toggleEditChannelVisibility() {
     this.chatService.toggleEditChannelVisibility();
