@@ -16,7 +16,7 @@
             <input #email="ngModel" [(ngModel)]="registerData.email" type="email" name="email" id="email" placeholder="beispielname@email.com" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required>
             <span class="material-symbols-rounded">mail</span>
         </div>
-        <span class="error-text" [ngStyle]="{'visibility': (!email.valid && email.touched) ? 'visible' : 'hidden'}">*Diese E-Mail-Adresse ist leider ungültig.</span>
+        <span class="error-text" [ngStyle]="{'visibility': (!email.valid && email.touched) ? 'visible' : 'hidden'}">Diese E-Mail-Adresse ist leider ungültig.</span>
         
         <div class="input-style">
             <input #password="ngModel" [(ngModel)]="registerData.password" minlength="6" type="password" name="password" id="password" placeholder="Passwort" required>

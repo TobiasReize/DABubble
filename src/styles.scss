@@ -138,6 +138,11 @@ hr {
   border-radius: 50%;
 }
 
+.avatar-34 {
+  height: 34px;
+  width: 34px;
+}
+
 .avatar-40 {
   height: 40px;
   width: 40px;
@@ -172,6 +177,13 @@ hr {
 .avatar-200 {
   height: 200px;
   width: 200px;
+}
+
+.person {
+  @include dFlex($jc: normal);
+  gap: 15px;
+  border-radius: 35px;
+  padding: 4px 20px;
 }
 
 .d-none {

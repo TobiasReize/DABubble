@@ -35,8 +35,6 @@ export class ChatService {
   unsubChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
 
-  private userName: string = 'Maria Musterfrau';
-  private userAvatar: string = 'avatar4.svg';
   private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
   private messagesSignal = signal<Message[]>([]);
@@ -59,6 +57,12 @@ export class ChatService {
 
   private openEditChannelSignal = signal<boolean>(false);
   readonly openEditChannel = this.openEditChannelSignal.asReadonly();
+
+  private openAddPeopleSignal = signal<boolean>(false);
+  readonly openAddPeople = this.openAddPeopleSignal.asReadonly();
+
+  private openMembersSignal = signal<boolean>(false);
+  readonly openMembers = this.openMembersSignal.asReadonly();
 
   private usersInCurrentChannelSignal = signal<User[]>([]);
   readonly usersInCurrentChannel =
@@ -279,6 +283,18 @@ export class ChatService {
 
   toggleEditChannelVisibility() {
     this.openEditChannelSignal.set(!this.openEditChannelSignal());
+    this.openAddPeopleSignal.set(false);
+    this.openMembersSignal.set(false);
+  }
+
+  toggleAddPeopleVisibility() {
+    this.openAddPeopleSignal.set(!this.openAddPeopleSignal());
+    this.openMembersSignal.set(false);
+  }
+
+  toggleMembersVisibility() {
+    this.openMembersSignal.set(!this.openMembersSignal());
+    this.openAddPeopleSignal.set(false);
   }
 
   resubThread(threadId: string) {
@@ -315,27 +331,36 @@ export class ChatService {
   }
 
   leaveChannel() {
-    const newUserIds = this.currentChannel().userIds.filter(
-      (userId) => userId !== this.userService.currentOnlineUser.userUID
-    );
-    const newUserIdsAsJson = JSON.stringify(newUserIds);
-    console.log('leaving channel, newUserIdsAsJson: ', newUserIdsAsJson);
-    this.updateChannel({
-      userIds: newUserIdsAsJson,
-    });
+    if (this.currentChannel().userIds && this.currentChannel().userIds.length > 0) {
+      const newUserIds = this.currentChannel().userIds.filter(userId => userId !== this.userService.currentOnlineUser.userUID);
+      this.updateChannel({
+        userIds: newUserIds
+      })
+    }
   }
 
   getUsersInCurrentChannel() {
     const foundUsers: User[] = [];
-    this.currentChannel().userIds.forEach((userId) => {
-      const foundUser = this.userService.allUsers.find(
-        (user) => userId === user.userUID
-      );
-      if (foundUser) {
-        foundUsers.push(foundUser);
-      }
-    });
+    if (this.currentChannel().userIds && this.currentChannel().userIds.length > 0) {
+      this.currentChannel().userIds.forEach(userId => {
+        const foundUser = this.userService.allUsers.find(user => userId === user.userUID);
+        if (foundUser) {
+          foundUsers.push(foundUser);
+        }
+      })
+    }
     this.usersInCurrentChannelSignal.set(foundUsers);
+  }
+
+  async addPersonToCurrentChannel(userUID: string) {
+    await this.updateChannel({
+      userIds: [...this.currentChannel().userIds, userUID]
+    })
+  }
+
+  findUsers(name: string) {
+    const users = this.userService.allUsers.filter(user => user.name.includes(name));
+    return users;
   }
 
   async increaseNumberOfReplies() {
@@ -347,12 +372,12 @@ export class ChatService {
   async addMessage(messageContent: string, type: 'thread' | 'chat') {
     const message = new Message(
       '',
-      this.userAvatar,
-      this.userName,
+      this.userService.currentOnlineUser.avatar,
+      this.userService.currentOnlineUser.name,
       new Date(),
       new Date(),
       messageContent,
-      [new Reaction(), new Reaction('2705.svg', ['Marina Mustermann'])],
+      [],
       '',
       0
     );

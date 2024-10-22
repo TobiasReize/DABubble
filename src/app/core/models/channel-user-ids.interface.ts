@@ -1,3 +1,3 @@
 export interface ChannelUserIdsInterface {
-    userIds: string
+    userIds: string[]
 }

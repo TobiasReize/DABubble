@@ -1,5 +1,5 @@
 <div class="message" [ngClass]="{ 'message-alternative' : isMe, 'thread-message' : isThreadMessage, 'thread-message-alternative' : isMe && isThreadMessage }">
-    <img class="avatar avatar-70" src="assets/img/{{ messageData.imageName }}" alt="{{messageData.imageName}}">
+    <img class="avatar avatar-70" src="{{ messageData.imageName }}" alt="{{messageData.imageName}}">
     <div class="main-message-container" [ngClass]="isMe ? 'main-message-container-alternative' : ''">
         <div class="message-header">
             <span class="user-name">{{ messageData.userName }}</span>
