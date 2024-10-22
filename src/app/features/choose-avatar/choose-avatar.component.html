@@ -23,7 +23,7 @@
 
         <div [ngStyle]="{'opacity': uploadFile != null ? '1' : '0'}" class="upload-info-container">
             <span [ngClass]="{'upload-error': uploadError}">{{uploadInfo}}</span>
-            <span [ngStyle]="{'visibility': uploadError ? 'hidden' : 'visible'}">{{uploadProgress}}</span>
+            <span [ngStyle]="{'visibility': uploadError ? 'hidden' : 'visible'}">{{firebaseService.uploadProgress()}}%</span>
         </div>
 
         <div class="btn-container">
