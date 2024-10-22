@@ -4,6 +4,8 @@ import { MessageInterface } from '../../models/message.interface';
 import {
   addDoc,
   DocumentSnapshot,
+  collection,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -24,21 +26,10 @@ import { User } from '../../models/user.class';
 })
 export class ChatService {
   chat: boolean = true;
-  contacts = [0, 1, 2, 3, 4, 5];
-  names = [
-    'Frederik Beck (Du)',
-    'Sofia Müller',
-    'Noah Braun',
-    'Elise Roth',
-    'Elias Neumann',
-    'Steffen Hoffmann',
-  ];
   contactIndex: any = null;
   newMessage: boolean = false;
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
-  profileActive: string = 'Aktiv';
-  profileOffline: string = 'abwesend';
 
   unsubMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
@@ -75,14 +66,27 @@ export class ChatService {
   readonly openMembers = this.openMembersSignal.asReadonly();
 
   private usersInCurrentChannelSignal = signal<User[]>([]);
-  readonly usersInCurrentChannel = this.usersInCurrentChannelSignal.asReadonly();
+  readonly usersInCurrentChannel =
+    this.usersInCurrentChannelSignal.asReadonly();
 
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
 
   topThreadMessageId: string = '';
 
-  constructor(private firebaseService: FirebaseService, private userService: UserService) {
+  profileViewLoggedUser: boolean = false;
+  myChatDescription: boolean = false;
+  chatDescription: boolean = false;
+  customProfile: boolean = false;
+  contacts: any = [];
+  currentUser: string = "";
+  currentUserStatus: string = "";
+  currentUsersEmail: string = "";
+
+  constructor(
+    private firebaseService: FirebaseService,
+    private userService: UserService
+  ) {
     this.unsubChannels = this.subChannels();
     this.unsubThread = this.subThread();
   }
@@ -151,9 +155,14 @@ export class ChatService {
       );
   }
 
-  async updateChannel(channelObj: ChannelName | ChannelDescription | ChannelUserIdsInterface) {
+  async updateChannel(
+    channelObj: ChannelName | ChannelDescription | ChannelUserIdsInterface
+  ) {
     // {...channelObj} must be used due to a bug concerning the database
-    await updateDoc(this.firebaseService.getDocRef(this.currentChannel().id, 'channels'), {...channelObj});
+    await updateDoc(
+      this.firebaseService.getDocRef(this.currentChannel().id, 'channels'),
+      { ...channelObj }
+    );
   }
 
   async updateChatMessage(messageId: string, messageObj: any) {
@@ -358,11 +367,30 @@ export class ChatService {
     }
   }
 
-  openChat(index: number): void {
+  openChat(id: number, vorname: string, nachname: string, status: string, email: string): void {
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
-    this.contactIndex = index;
+    this.contactIndex = id;
+    this.currentUser = vorname + " " + nachname;
+    this.currentUserStatus = status;
+    this.currentUsersEmail = email;
+    if (this.currentUser.includes('(Du)')) {
+      this.myChatDescription = true;
+      this.chatDescription = false;
+    } else {
+      this.myChatDescription = false;
+      this.chatDescription = true;
+    }
+    console.log('index:', this.contactIndex);
+  }
+
+  async getContacts() {
+    const q = query(collection(this.firebaseService.firestore, 'contacts'));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      this.contacts.push(doc);
+    });
   }
 
   subThread() {

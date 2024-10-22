@@ -5,7 +5,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
 import { createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
-import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
+import { FirebaseService } from '../../core/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -21,9 +21,8 @@ export class ChooseAvatarComponent {
 
   inputFinished: boolean = false;
   userService = inject(UserService);
-  private readonly storage: Storage = inject(Storage);
+  firebaseService = inject(FirebaseService);
   uploadInfo: string = '';
-  uploadProgress: string = '';
   uploadFile: null | 'inProgress' | 'done' = null;
   uploadError: boolean = false;
   @ViewChild('profile') profileHTML!: ElementRef;
@@ -53,45 +52,52 @@ export class ChooseAvatarComponent {
   }
 
 
-  uploadImgToStorage(input: HTMLInputElement) {
+  uploadImg(input: HTMLInputElement) {
     this.uploadFile = 'inProgress';
     this.uploadError = false;
     this.uploadInfo = '';
-    this.uploadProgress = '';
-    if (input.files) {
-      const file = input.files.item(0);
+    const file = input.files?.item(0);
+    if (file) {
       console.log('file', file);
-      if (file && (file.type == 'image/jpeg' || file.type == 'image/png' || file.type == 'image/svg+xml' || file.type == 'image/webp')) {
-          const storageRef = ref(this.storage, this.userService.newUser.email + '/' + file.name);
-          const uploadTask = uploadBytesResumable(storageRef, file);
-          this.uploadInfo = file.name;
+      switch (true) {
+        case file.type != 'image/jpeg' || 'image/png' || 'image/svg+xml' || 'image/webp':
+          this.handleUploadError('type');
+          break;
+        case file.size >= 1000000:
+          this.handleUploadError('size');
+          break;
+        default:
+          this.uploadImgToStorage(file);
+      }
+    }
+  }
 
-          uploadTask.on('state_changed', (snapshot) => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              this.uploadProgress = progress + '% (' + Math.round((snapshot.totalBytes / 1000)) + 'KB)';
-            }, (error) => {
-              this.uploadError = true;
-              this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
-              this.uploadFile = 'done';
-              console.log('Error:', error);
-            }, () => {
-              this.uploadFile = 'done';
-              getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                this.profileImgPathSignal.set(downloadURL);
-                this.profileHTML.nativeElement.src = this.profileImgPath();
-                // console.log('Current profil img:', this.profileImgPath());
-              })
-            }
-          )
-        } else {
-          this.uploadError = true;
-          this.uploadInfo = 'Keine Datei vorhanden oder Dateityp fehlerhaft!';
-          this.uploadFile = 'done';
-        }
+
+  handleUploadError(info: string) {
+    this.uploadError = true;
+    this.uploadFile = 'done';
+    if (info == 'size') {
+      this.uploadInfo = 'Datei zu groß! Dateigröße < 1MB';
     } else {
-      this.uploadError = true;
-      this.uploadInfo = 'Keine Datei vorhanden!';
+      this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG oder WEBP auswählen';
+    }
+  }
+
+
+  async uploadImgToStorage(file: File) {
+    const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;
+    this.uploadInfo = file.name;
+    try {
+      await this.firebaseService.uploadFileToStorage(file, path);
+      this.profileImgPathSignal.set(this.firebaseService.downloadURL);
+      this.profileHTML.nativeElement.src = this.profileImgPath();
       this.uploadFile = 'done';
+      console.log('Current profil img:', this.profileImgPath());
+    } catch (error) {
+      this.uploadError = true;
+      this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
+      this.uploadFile = 'done';
+      console.log('Error:', error);
     }
   }
 

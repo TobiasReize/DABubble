@@ -124,9 +124,9 @@ export class LogInComponent implements OnDestroy {
     let userIndex = this.userService.getUserIndex(user.uid);
     console.log('userIndex:', userIndex);
     if (userIndex == -1) {
-      this.userService.newUser.name = user.displayName ? user.displayName : '';
-      this.userService.newUser.email = user.email ? user.email : '';
-      this.userService.newUser.avatar = 'profile.svg';
+      this.userService.newUser.name = user.displayName ? user.displayName : 'Google User';
+      this.userService.newUser.email = user.email ? user.email : 'Google Mail';
+      this.userService.newUser.avatar = user.photoURL ? user.photoURL : 'assets/img/profile.svg';
       this.userService.newUser.userUID = user.uid;
       await this.userService.addUser(this.userService.newUser.toJSON());
       console.log('Google-User hinzugefügt!');

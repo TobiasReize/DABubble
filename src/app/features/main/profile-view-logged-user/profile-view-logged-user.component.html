@@ -1,42 +1,86 @@
 <div class="overlayComponent fadeInFromOpacity0" (click)="onDiv1Click()">
-    <section class="card dFlexColumn" (click)="onDiv2Click($event)">
-      <!-- Profile -->
+  <section
+    *ngIf="!chatService.customProfile"
+    class="card dFlexColumn"
+    (click)="onDiv2Click($event)"
+  >
+    <!-- Profile -->
+    <div class="dFlexRowSpaceBetweenCenter width-100">
+      <span class="profil">Profil</span>
+      <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()"
+        >close</span>
+    </div>
+
+    <!-- avatar -->
+    <div class="dFlexRowCenterCenter">
+      <img class="avatar avatar-200" src="assets/img/avatar{{chatService.contactIndex}}.svg" />
+    </div>
+
+    <!-- Bearbeiten -->
+    <div class="dFlexColumnCenterFlexStart gap15 width-100">
       <div class="dFlexRowSpaceBetweenCenter width-100">
-        <span class="profil">Profil</span>
-        <!-- <img src="assets/img/main/close (2).png"> -->
-        <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()">close</span>
+        <span class="nameCard">{{getCleanName()}}</span>
+        <span class="edit" (click)="customProfile($event)">Bearbeiten</span>
       </div>
-  
-      <!-- avatar -->
-      <div class="dFlexRowCenterCenter">
-        <!-- <img src="assets/img/avatar{{chatService.contactIndex}}.svg"> -->
-        <img class="avatar avatar-200" src="assets/img/avatar0.svg" />
+      <div class="gap15 dFlexRowCenterCenter">
+        <img src="assets/img/main/{{chatService.currentUserStatus}}.png" />
+        <span class="f400w-20px-gray">{{chatService.currentUserStatus}}</span>
       </div>
-  
-      <!-- Bearbeiten -->
-      <div class="dFlexColumnCenterFlexStart gap15 width-100">
-        <div class="dFlexRowSpaceBetweenCenter width-100">
-          <!-- <span>{{chatService.contacts[chatService.contactIndex]}}</span> -->
-          <span class="nameCard">Elise Roth</span>
-          <span class="edit">Bearbeiten</span>
+    </div>
+
+    <!-- Email Adresse -->
+    <div class="width-100 gap15 dFlexColumn">
+      <div class="dFlexRowFlex-StartCenter gap20 width-100">
+        <img src="assets/img/main/mail.png" />
+        <span class="email">E-Mail-Adresse</span>
+      </div>
+      <div class="width-100">
+        <span class="emailLink">{{chatService.currentUsersEmail}}</span>
+      </div>
+    </div>
+  </section>
+
+  <section
+    *ngIf="chatService.customProfile"
+    class="card2 dFlexColumn"
+    (click)="onDiv2Click($event)"
+  >
+    <!-- Profile -->
+    <div class="dFlexRowSpaceBetweenCenter width-100">
+      <span class="profil">Dein Profil bearbeiten</span>
+      <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()"
+        >close</span
+      >
+    </div>
+
+    <!-- avatar -->
+    <div class="dFlexRowCenterCenter">
+      <img class="avatar avatar-200" src="assets/img/avatar{{chatService.contactIndex}}.svg" />
+    </div>
+
+    <div class="columnGap16">
+      <!-- name -->
+      <div class="columnGap7">
+        <div class="dFlexRowFlex-StartCenter gap20 width-100">
+          <img src="assets/img/main/account_circle.png" alt="" />
+          <span class="emailAndName">Vollständiger Name</span>
         </div>
-        <div class="gap15 dFlexRowCenterCenter">
-          <img src="assets/img/main/online.png" />
-          <span class="f400w-20px-gray">Aktiv</span>
-          <!-- <span>{{chatService.userActive}}</span> -->
-        </div>
+        <input id="fullname" type="text" placeholder="{{getCleanName()}}"/>
       </div>
-  
       <!-- Email Adresse -->
       <div class="width-100 gap15 dFlexColumn">
         <div class="dFlexRowFlex-StartCenter gap20 width-100">
           <img src="assets/img/main/mail.png" />
-          <span class="email">E-Mail-Adresse</span>
+          <span class="emailAndName">E-Mail-Adresse</span>
         </div>
-        <div class="width-100">
-          <span class="emailLink">beispiel.bsp&#64;beispiel.com</span>
-        </div>
+        <input id="emailAdresse" type="text" placeholder="{{chatService.currentUsersEmail}}" />
       </div>
-    </section>
-  </div>
-  
+    </div>
+
+    <!-- buttons -->
+    <div class="rowGap32">
+      <button class="button1 whiteButton" (click)="onDiv1Click()">Abbrechen</button>
+      <button class="button2 blueButton" (click)="saveNewContactInfos()">Speichern</button>
+    </div>
+  </section>
+</div>

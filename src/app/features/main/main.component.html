@@ -6,6 +6,7 @@
     <app-direct-message *ngIf="chatService.directMessage"></app-direct-message>
     <app-chat *ngIf="chatService.chat"></app-chat>
     <app-profile-view-users *ngIf="chatService.profileViewUsersActive"></app-profile-view-users>
+    <app-profile-view-logged-user *ngIf="chatService.profileViewLoggedUser"></app-profile-view-logged-user>
     <app-thread [ngClass]="isThreadVisible() ? '' : 'd-none'"></app-thread>
   </div>
   <div class="closeMenu purpleHover" (click)="closeSection()" >

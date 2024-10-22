@@ -3,27 +3,22 @@
     <!-- Profile -->
     <div class="dFlexRowSpaceBetweenCenter width-100">
       <span class="profil">Profil</span>
-      <!-- <img src="assets/img/main/close (2).png"> -->
       <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()">close</span>
     </div>
 
     <!-- avatar -->
     <div class="dFlexRowCenterCenter">
-      <!-- <img src="assets/img/avatar{{chatService.contactIndex}}.svg"> -->
-      <img class="avatar avatar-200" src="assets/img/avatar0.svg" />
+      <img class="avatar avatar-200" src="assets/img/avatar{{chatService.contactIndex}}.svg" />
     </div>
 
     <!-- Bearbeiten -->
     <div class="dFlexColumnCenterFlexStart gap15 width-100">
       <div class="dFlexRowSpaceBetweenCenter width-100">
-        <!-- <span>{{chatService.contacts[chatService.contactIndex]}}</span> -->
-        <span class="nameCard">Elise Roth</span>
-        <span class="edit">Bearbeiten</span>
+        <span class="nameCard">{{chatService.currentUser}}</span>
       </div>
       <div class="gap15 dFlexRowCenterCenter">
-        <img src="assets/img/main/online.png" />
-        <span class="f400w-20px-gray">Aktiv</span>
-        <!-- <span>{{chatService.userActive}}</span> -->
+        <img src="assets/img/main/{{chatService.currentUserStatus}}.png" />
+        <span class="f400w-20px-gray">{{chatService.currentUserStatus}}</span>
       </div>
     </div>
 
@@ -34,7 +29,7 @@
         <span class="email">E-Mail-Adresse</span>
       </div>
       <div class="width-100">
-        <span class="emailLink">beispiel.bsp&#64;beispiel.com</span>
+        <span class="emailLink">{{chatService.currentUsersEmail}}</span>
       </div>
     </div>
 

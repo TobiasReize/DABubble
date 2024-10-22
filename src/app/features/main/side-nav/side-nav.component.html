@@ -61,7 +61,7 @@
         </button>
       </div>
       <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out">
-        <div class="divWidth dFlex2">
+        <div class="divWidth dFlexColumn gap25">
           @for (channel of chatService.channels(); track channel.name) {
             <div class="entwicklerTeam dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id)">
               <span class="material-symbols-rounded cursor-pointer">tag</span>
@@ -107,9 +107,9 @@
 
       <!-- contacts -->
       <div class="gap13" *ngIf="sideNavService.contactsOpened">
-        <div *ngFor="let contact of chatService.contacts; let i = index" class="contactsDiv" (click)="chatService.openChat(chatService.contacts[i])">
-          <img class="avatar avatar-50" [src]="'assets/img/avatar' + i + '.svg'"/>
-          <span id="{{ chatService.contacts[i] }}">{{ chatService.names[i] }}</span>
+        <div *ngFor="let contact of chatService.contacts; let i = index" class="contactsDiv" (click)="chatService.openChat(contact['id'], contact.data().vorname, contact.data().nachname, contact.data().status, contact.data().email)">
+          <img class="avatar avatar-50" [src]="'assets/img/avatar' + contact['id'] + '.svg'"/>
+          <span id="{{ contact['id'] }}">{{ contact.data().vorname }} {{ contact.data().nachname }}</span>
         </div>
       </div>
     </div>

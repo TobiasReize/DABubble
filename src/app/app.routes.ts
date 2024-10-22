@@ -21,6 +21,5 @@ export const routes: Routes = [
     { path: 'new-password', component: NewPasswordComponent },
     { path: 'imprint', component: ImprintComponent },
     { path: 'privacy-policy', component: PrivacyPolicyComponent },
-    { path: 'profile_card', component: ProfileViewUsersComponent },
-    { path: 'profile_card_loggedUser', component: ProfileViewLoggedUserComponent }
+    { path: 'profile_card', component: ProfileViewUsersComponent }
 ];

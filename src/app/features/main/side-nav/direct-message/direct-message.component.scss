@@ -1,5 +1,6 @@
 @import "../../../../../styles/mixin.scss";
 @import "../../../../../styles/styles2.scss";
+@import "../../../../../styles/fontStyles.scss";
 
 section {
   width: 100%;
@@ -39,6 +40,15 @@ section {
   .avatar-notice {
     height: 100px;
     width: 100px;
+  }
+
+  .grayText {
+    color: rgba(104, 104, 104, 1);
+    @include fontStyle19;
+  }
+
+  .lightGrayText {
+    font-weight: 400;
   }
 }
 
@@ -85,7 +95,5 @@ section {
 .dFlex-height100-aIFE-padding60px {
   height: 100%;
   padding: 60px;
-  @include dFlex($fd: row, $jc:undefined, $ai: flex-end);
+  @include dFlex($fd: row, $jc: undefined, $ai: flex-end);
 }
-
-

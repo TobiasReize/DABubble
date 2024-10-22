@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { SideNavService } from '../../../../core/services/sideNav/side-nav.service';
+import { ChatService } from '../../../../core/services/chat/chat.service';
 
 @Component({
   selector: 'app-create-channel',
@@ -9,7 +10,7 @@ import { SideNavService } from '../../../../core/services/sideNav/side-nav.servi
   styleUrl: './create-channel.component.scss',
 })
 export class CreateChannelComponent {
-  constructor(public sideNavService: SideNavService) {}
+  constructor(public sideNavService: SideNavService, private chatService: ChatService) {}
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
