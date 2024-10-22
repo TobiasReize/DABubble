@@ -5,7 +5,6 @@ import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
 import { createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
-import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
 
 @Component({
@@ -23,7 +22,6 @@ export class ChooseAvatarComponent {
   inputFinished: boolean = false;
   userService = inject(UserService);
   firebaseService = inject(FirebaseService);
-  private readonly storage: Storage = inject(Storage);
   uploadInfo: string = '';
   uploadFile: null | 'inProgress' | 'done' = null;
   uploadError: boolean = false;
@@ -54,42 +52,52 @@ export class ChooseAvatarComponent {
   }
 
 
-  async uploadImgToStorage(input: HTMLInputElement) {
+  uploadImg(input: HTMLInputElement) {
     this.uploadFile = 'inProgress';
     this.uploadError = false;
     this.uploadInfo = '';
-    const file = input.files?.item(0);    //Lange Schreibweise: const file = input.files ? input.files.item(0) : null;
+    const file = input.files?.item(0);
     if (file) {
       console.log('file', file);
       switch (true) {
         case file.type != 'image/jpeg' || 'image/png' || 'image/svg+xml' || 'image/webp':
-          this.uploadError = true;
-          this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG oder WEBP auswählen';
-          this.uploadFile = 'done';
+          this.handleUploadError('type');
           break;
-
         case file.size >= 1000000:
-          this.uploadError = true;
-          this.uploadInfo = 'Datei zu groß! Dateigröße < 1MB';
-          this.uploadFile = 'done';
+          this.handleUploadError('size');
           break;
-  
         default:
-          const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;
-          this.uploadInfo = file.name;
-          try {
-            await this.firebaseService.uploadFileToStorage(file, path);
-            this.profileImgPathSignal.set(this.firebaseService.downloadURL);
-            this.profileHTML.nativeElement.src = this.profileImgPath();
-            this.uploadFile = 'done';
-            console.log('Current profil img:', this.profileImgPath());
-          } catch (error) {
-            this.uploadError = true;
-            this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
-            this.uploadFile = 'done';
-            console.log('Error:', error);
-          }
+          this.uploadImgToStorage(file);
       }
+    }
+  }
+
+
+  handleUploadError(info: string) {
+    this.uploadError = true;
+    this.uploadFile = 'done';
+    if (info == 'size') {
+      this.uploadInfo = 'Datei zu groß! Dateigröße < 1MB';
+    } else {
+      this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG oder WEBP auswählen';
+    }
+  }
+
+
+  async uploadImgToStorage(file: File) {
+    const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;
+    this.uploadInfo = file.name;
+    try {
+      await this.firebaseService.uploadFileToStorage(file, path);
+      this.profileImgPathSignal.set(this.firebaseService.downloadURL);
+      this.profileHTML.nativeElement.src = this.profileImgPath();
+      this.uploadFile = 'done';
+      console.log('Current profil img:', this.profileImgPath());
+    } catch (error) {
+      this.uploadError = true;
+      this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
+      this.uploadFile = 'done';
+      console.log('Error:', error);
     }
   }
 
