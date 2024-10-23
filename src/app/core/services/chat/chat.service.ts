@@ -18,7 +18,7 @@ import { Channel } from '../../models/channel.class';
 import { ChannelName } from '../../models/channel-name.interface';
 import { ChannelDescription } from '../../models/channel-description.interface';
 import { UserService } from '../user/user.service';
-import { ChannelUserIdsInterface } from '../../models/channel-user-ids.interface';
+import { ChannelUserUIDsInterface } from '../../models/channel-user-uids.interface';
 import { User } from '../../models/user.class';
 
 @Injectable({
@@ -170,7 +170,7 @@ export class ChatService {
   }
 
   async updateChannel(
-    channelObj: ChannelName | ChannelDescription | ChannelUserIdsInterface
+    channelObj: ChannelName | ChannelDescription | ChannelUserUIDsInterface
   ) {
     // {...channelObj} must be used due to a bug concerning the database
     await updateDoc(
@@ -233,7 +233,7 @@ export class ChatService {
       doc.id,
       data['name'],
       data['description'],
-      data['userIds'],
+      data['userUIDs'],
       data['createdBy']
     );
     return channel;
@@ -309,19 +309,19 @@ export class ChatService {
   }
 
   leaveChannel() {
-    if (this.currentChannel().userIds && this.currentChannel().userIds.length > 0) {
-      const newUserIds = this.currentChannel().userIds.filter(userId => userId !== this.userService.currentOnlineUser.userUID);
+    if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
+      const newuserUIDs = this.currentChannel().userUIDs.filter(userUID => userUID !== this.userService.currentOnlineUser.userUID);
       this.updateChannel({
-        userIds: newUserIds
+        userUIDs: newuserUIDs
       })
     }
   }
 
   getUsersInCurrentChannel() {
     const foundUsers: User[] = [];
-    if (this.currentChannel().userIds && this.currentChannel().userIds.length > 0) {
-      this.currentChannel().userIds.forEach(userId => {
-        const foundUser = this.userService.allUsers.find(user => userId === user.userUID);
+    if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
+      this.currentChannel().userUIDs.forEach(userUID => {
+        const foundUser = this.userService.allUsers.find(user => userUID === user.userUID);
         if (foundUser) {
           foundUsers.push(foundUser);
         }
@@ -332,7 +332,7 @@ export class ChatService {
 
   async addPersonToCurrentChannel(userUID: string) {
     await this.updateChannel({
-      userIds: [...this.currentChannel().userIds, userUID]
+      userUIDs: [...this.currentChannel().userUIDs, userUID]
     })
   }
 
