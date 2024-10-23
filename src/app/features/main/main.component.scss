@@ -9,7 +9,6 @@
 .main {
   @include dFlex($jc: flex-start, $ai: flex-start);
   gap: 20px;
-  height: 100%;
   width: 100%;
 }
 
