@@ -9,9 +9,13 @@
   color: black;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: $bg-color;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 a {
@@ -198,17 +202,21 @@ hr {
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: $light-purple-scrollbar;
 }
 
 ::-webkit-scrollbar-thumb {
   background: $purple-2;
-  border-radius: 6px;
+  border-radius: 4px;
+}
+
+.m-btm-8 {
+  margin-bottom: 8px;
 }
 
 .m-btm-16 {

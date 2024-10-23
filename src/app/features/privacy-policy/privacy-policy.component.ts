@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { LoginHeaderComponent } from "../../shared/login-header/login-header.component";
-import { Location } from "@angular/common";
+import { Location, ViewportScroller } from "@angular/common";
 
 @Component({
   selector: 'app-privacy-policy',
@@ -14,11 +14,16 @@ import { Location } from "@angular/common";
 })
 export class PrivacyPolicyComponent {
 
-  constructor(private location: Location) { }
+  constructor(private location: Location, private scroller: ViewportScroller) { }
 
 
   goBack() {
     this.location.back();    
+  }
+
+
+  scrollToTop() {
+    this.scroller.scrollToAnchor('top');
   }
 
 

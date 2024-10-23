@@ -6,6 +6,12 @@
     width: 100%;
 }
 
+.content-wrapper {
+    app-login-header {
+        top: 25px;
+    }
+}
+
 .imprint-text-container {
     @include dFlex($fd: column, $ai: flex-start);
     padding: 48px 56px;

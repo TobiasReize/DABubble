@@ -170,12 +170,15 @@ app-intro {
 
     .google-btn {
         padding: 6px 32px;
-        margin-bottom: 20px;
 
         > span {
             font-size: 17px;
             line-height: 20.4px;
         }
+    }
+
+    .google-login-info {
+        margin-bottom: 8px;
     }
 
     .create-account-container {
@@ -186,6 +189,14 @@ app-intro {
 @media(max-width: 450px) {
     .google-btn {
         padding: 6px 16px;
+    }
+
+    .google-login-info {
+        justify-content: center;
+
+        > span {
+            text-align: center;
+        }
     }
 
     .login-btn-container {
