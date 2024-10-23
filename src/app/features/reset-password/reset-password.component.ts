@@ -21,6 +21,7 @@ export class ResetPasswordComponent {
   resetEmail: string = '';
   inputFinished: boolean = false;
   emailFalse: boolean = false;
+  errorMsg: string = 'Diese E-Mail-Adresse ist leider ungültig.';
 
 
   constructor(private location: Location, private router: Router) { }
@@ -49,6 +50,7 @@ export class ResetPasswordComponent {
       })
       .catch((error) => {
         this.emailFalse = true;
+        this.errorMsg = 'Es ist ein Fehler aufgetreten. Bitte erneut versuchen.';
         console.log('Passwort zurücksetzen Error-Code:', error.code);
         console.log('Passwort zurücksetzen Error-Message:', error.message);
       });

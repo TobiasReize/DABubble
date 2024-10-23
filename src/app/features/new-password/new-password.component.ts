@@ -25,6 +25,8 @@ export class NewPasswordComponent implements OnInit {
   private mode!: string;
   private actionCode!: string;
   userEmail = '';
+  resetPasswordError: boolean = false;
+  errorMsg: string = 'Ihre Kennwörter stimmen nicht überein!';
 
 
   constructor(private location: Location, private router: Router, private activeRoute: ActivatedRoute) { }
@@ -45,6 +47,7 @@ export class NewPasswordComponent implements OnInit {
 
   async onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
+      this.resetPasswordError = false;
       await this.handleResetPassword(this.auth, this.actionCode);
       ngForm.resetForm();
     }
@@ -60,11 +63,13 @@ export class NewPasswordComponent implements OnInit {
         console.log('New password accepted!', this.newPassword);
         this.goToLogin();
       } catch (error) {
-        // Error occurred during confirmation. The code might have expired or the password is too weak.
+        this.resetPasswordError = true;
+        this.errorMsg = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
         console.log('New password rejected!', error);
       }
     } catch (error) {
-      // Invalid or expired action code. Ask user to try to reset the password again.
+      this.resetPasswordError = true;
+      this.errorMsg = 'Aktionscode ist ungültig oder abgelaufen! Bitte erneut versuchen.';
       console.log('Action code invalid or expired!', error);
     }
   }

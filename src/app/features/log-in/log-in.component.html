@@ -33,6 +33,10 @@
             <img src="assets/img/google.svg" alt="google">
             <span (click)="signInWithGoogle()">Anmelden mit Google</span>
         </div>
+
+        <div class="google-login-info" [ngStyle]="{'visibility': googleLoginError ? 'visible' : 'hidden'}">
+            <span>Es ist ein Fehler aufgetreten! Bitte erneut versuchen.</span>
+        </div>
         
         <div class="login-btn-container">
             <input [disabled]="!email.valid || !password.valid"  class="btn btn-prim" type="submit" name="submit" id="submit" value="Anmelden">

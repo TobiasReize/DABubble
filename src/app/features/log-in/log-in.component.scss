@@ -74,7 +74,7 @@ app-intro {
     padding: 11px 32px;
     border-radius: 100px;
     border: 1px solid $bg-color;
-    margin-bottom: 43px;
+    margin-bottom: 6px;
     transition: all 100ms ease-out;
 
     &:hover {
@@ -102,6 +102,17 @@ app-intro {
     > span {
         color: $purple-1;
         line-height: 21.6px;
+    }
+}
+
+.google-login-info {
+    @include dFlex($jc: flex-start);
+    width: 100%;
+    margin-bottom: 18px;
+
+    > span {
+        @include fontStyle0;
+        color: $error-rosa;
     }
 }
 

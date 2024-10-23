@@ -26,6 +26,7 @@ export class LogInComponent implements OnDestroy {
   userService = inject(UserService);
   private auth = inject(Auth);
   forwardedEmail: string | null = null;
+  googleLoginError: boolean = false;
 
   user$ = user(this.auth);
   userSubscription: Subscription;
@@ -103,6 +104,7 @@ export class LogInComponent implements OnDestroy {
   signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
+    this.googleLoginError = false;
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
@@ -111,6 +113,7 @@ export class LogInComponent implements OnDestroy {
         console.log('Aktueller User:', this.userService.currentOnlineUser);
         this.router.navigateByUrl('main');
       }).catch((error) => {
+        this.googleLoginError = true;
         const credential = GoogleAuthProvider.credentialFromError(error);
         console.log('Error-Code:', error.code);
         console.log('Error-Message:', error.message);

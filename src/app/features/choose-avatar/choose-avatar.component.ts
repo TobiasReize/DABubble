@@ -85,7 +85,7 @@ export class ChooseAvatarComponent {
 
 
   async uploadImgToStorage(file: File) {
-    const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;
+    const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;   //user-UID ist noch nicht vorhanden! (erst wenn der user registriert wurde)
     this.uploadInfo = file.name;
     try {
       await this.firebaseService.uploadFileToStorage(file, path);
