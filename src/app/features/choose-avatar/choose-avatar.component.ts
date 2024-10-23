@@ -78,8 +78,10 @@ export class ChooseAvatarComponent {
     this.uploadFile = 'done';
     if (info == 'size') {
       this.uploadInfo = 'Datei zu groß! Dateigröße < 1MB';
-    } else {
+    } else if (info == 'type') {
       this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG oder WEBP auswählen';
+    } else {
+      this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
     }
   }
 
@@ -94,9 +96,7 @@ export class ChooseAvatarComponent {
       this.uploadFile = 'done';
       console.log('Current profil img:', this.profileImgPath());
     } catch (error) {
-      this.uploadError = true;
-      this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
-      this.uploadFile = 'done';
+      this.handleUploadError('else');
       console.log('Error:', error);
     }
   }
@@ -114,6 +114,7 @@ export class ChooseAvatarComponent {
         this.goToLogin();
       })
       .catch((error) => {
+        this.handleUploadError('else');
         console.log('Registrierung fehlgeschlagen, Error-Code:', error.code);
         console.log('Registrierung fehlgeschlagen, Error-Message:', error.message);
       });
