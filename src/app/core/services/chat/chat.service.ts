@@ -334,6 +334,7 @@ export class ChatService {
   }
 
   async addMessage(messageContent: string, type: 'thread' | 'chat') {
+    console.log(this.userService.currentOnlineUser);
     const message = new Message(
       '',
       this.userService.currentOnlineUser.avatar,

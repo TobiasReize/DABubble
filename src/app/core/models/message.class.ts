@@ -4,12 +4,12 @@ import { Reaction } from "./reaction.class";
 export class Message {
     constructor(
         public id: string = '',
-        public imageName: string = 'assets/img/avatar1.svg',
-        public userName: string = 'Max Mustermann',
+        public imageName: string = '',
+        public userName: string = '',
         public postedAt: Date = new Date(),
         public lastReplyAt: Date | undefined = undefined,
-        public content: string = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi odio quia distinctio, a rem tenetur nihil iste saepe voluptates.',
-        public reactions: Reaction[] = [new Reaction('2705.svg', ['Marina Mustermann']), new Reaction()],
+        public content: string = '',
+        public reactions: Reaction[] = [],
         public numberOfReplies: number = 0
     ) {}
 

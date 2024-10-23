@@ -14,7 +14,10 @@ export class UserService implements OnDestroy {
   newUser = new User();
   allUsers: User[] = [];
   unsubUserCol!: Unsubscribe;
-  currentOnlineUser = new User();
+  currentOnlineUser = new User({
+    name: 'Gast',
+    avatar: 'assets/img/profile.svg'
+  });
 
 
   constructor() {
