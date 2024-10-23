@@ -142,7 +142,20 @@ export class ChatService {
     this.threadRepliesSignal.set([]);
   }
 
-  async addThreadReply(messageObj: MessageInterface) {
+  async addChatMessage(messageContent: string) {
+    const messageAsJson = this.prepareMessageForDatabase(messageContent);
+    await addDoc(
+      this.firebaseService.getSubcollectionRef(
+        this.currentChannel().id,
+        'channels',
+        'messages'
+      ),
+      messageAsJson
+    );
+  }
+
+  async addThreadReply(messageContent: string) {
+      const messageAsJson = this.prepareMessageForDatabase(messageContent);
       await addDoc(
         this.firebaseService.getSubSubcollectionRef(
           'channels',
@@ -151,8 +164,9 @@ export class ChatService {
           this.topThreadMessage().id,
           'thread'
         ),
-        messageObj
+        messageAsJson
       );
+      await this.increaseNumberOfReplies();
   }
 
   async updateChannel(
@@ -334,7 +348,7 @@ export class ChatService {
     this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
   }
 
-  async addMessage(messageContent: string, type: 'thread' | 'chat') {
+  prepareMessageForDatabase(messageContent: string): MessageInterface {
     const message = new Message(
       '',
       this.userService.currentOnlineUser.avatar,
@@ -345,20 +359,7 @@ export class ChatService {
       [],
       0
     );
-    const messageAsJson: MessageInterface = message.toJson();
-    if (type === 'chat') {
-      await addDoc(
-        this.firebaseService.getSubcollectionRef(
-          this.currentChannel().id,
-          'channels',
-          'messages'
-        ),
-        messageAsJson
-      );
-    } else {
-      this.addThreadReply(messageAsJson);
-      await this.increaseNumberOfReplies();
-    }
+    return message.toJson();
   }
 
   saveLastEmoji(emoji: string) {

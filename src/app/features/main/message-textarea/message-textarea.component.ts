@@ -19,9 +19,9 @@ export class MessageTextareaComponent {
   addMessage() {
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
-        this.chatService.addMessage(this.messageText, 'chat');
+        this.chatService.addChatMessage(this.messageText);
       } else if (this.type === 'thread') {
-        this.chatService.addMessage(this.messageText, 'thread');
+        this.chatService.addThreadReply(this.messageText);
       }
       this.messageText = '';
     }
