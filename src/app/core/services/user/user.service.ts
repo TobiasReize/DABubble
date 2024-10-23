@@ -16,7 +16,8 @@ export class UserService implements OnDestroy {
   unsubUserCol!: Unsubscribe;
   currentOnlineUser = new User({
     name: 'Gast',
-    avatar: 'assets/img/profile.svg'
+    avatar: 'assets/img/profile.svg',
+    userUID: '0'
   });
 
 
