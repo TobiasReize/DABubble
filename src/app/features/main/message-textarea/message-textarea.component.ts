@@ -17,10 +17,13 @@ export class MessageTextareaComponent {
   constructor(private chatService: ChatService) { }
 
   addMessage() {
-    if (this.type === 'chat') {
-      this.chatService.addMessage(this.messageText, 'chat');
-    } else if (this.type === 'thread') {
-      this.chatService.addMessage(this.messageText, 'thread');
+    if (this.messageText.length > 0) {
+      if (this.type === 'chat') {
+        this.chatService.addMessage(this.messageText, 'chat');
+      } else if (this.type === 'thread') {
+        this.chatService.addMessage(this.messageText, 'thread');
+      }
+      this.messageText = '';
     }
   }
 }
