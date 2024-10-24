@@ -4,14 +4,16 @@ export class User {
     password: string;
     avatar: string;
     userUID: string;
+    userId: string
 
 
-    constructor(obj?: any) {
+    constructor(obj?: any, userId?: string) {
         this.name = obj ? obj.name : '';
         this.email = obj ? obj.email : '';
         this.password = '';
         this.avatar = obj ? obj.avatar : '';
         this.userUID = obj ? obj.userUID : '';
+        this.userId = userId ? userId : '';
     }
 
 
@@ -21,6 +23,7 @@ export class User {
           email: this.email,
           avatar: this.avatar,
           userUID: this.userUID,
+          userId: this.userId
         }
       }
 

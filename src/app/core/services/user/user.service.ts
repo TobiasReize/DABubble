@@ -1,8 +1,8 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
-import { addDoc, onSnapshot, Unsubscribe } from '@angular/fire/firestore';
+import { addDoc, onSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { User } from '../../models/user.class';
-import { getAuth, signOut } from '@angular/fire/auth';
+import { getAuth, signOut, updateEmail } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -35,19 +35,46 @@ export class UserService implements OnDestroy {
   }
 
 
+  async updateUserEmailandName(userId: string, data = {name: '', email: ''}) {
+    await this.firebaseService.updateDocData('users', userId, data)
+      .then(() => {
+        this.updateUserAuthEmail(data.email);
+      })
+      .catch((error) => {
+        console.log('Update User Error:', error);
+      })
+  }
+
+
+  updateUserAuthEmail(newEmail: string) {
+    const auth = getAuth();
+    if (auth.currentUser) {
+      updateEmail(auth.currentUser, newEmail)
+        .then(() => {
+          console.log('Email updated!');
+        })
+        .catch((error) => {
+          console.log('Email Update Error:', error);
+        });
+    } else {
+      console.log('Aktuell kein User eingeloggt!');
+    }
+  }
+
+
   subUserCol() {
     return onSnapshot(this.firebaseService.getCollectionRef('users'), usersCollection => {
       this.allUsers = [];
       usersCollection.forEach(user => {
-        this.allUsers.push(new User(user.data()));
+        this.allUsers.push(new User(user.data(), user.id));
       });
       console.log('Alle User:', this.allUsers);
     });
   }
 
 
-  getUserIndex(userUID: string) {
-    return this.allUsers.findIndex(element => element.userUID == userUID);
+  getUserIndexWithUID(userUID: string) {
+    return this.allUsers.findIndex(singleUser => singleUser.userUID == userUID);
   }
 
 
