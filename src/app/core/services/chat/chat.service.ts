@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, Signal, signal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
@@ -65,9 +65,15 @@ export class ChatService {
   private openMembersSignal = signal<boolean>(false);
   readonly openMembers = this.openMembersSignal.asReadonly();
 
+  private openAtSignal = signal<boolean>(false);
+  readonly opentAt = this.openAtSignal.asReadonly();
+
   private usersInCurrentChannelSignal = signal<User[]>([]);
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
+
+  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<User[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser.userUID));
+  readonly usersInCurrentChannelWithoutCurrentUser = this.usersInCurrentChannelWithoutCurrentUserSignal;
 
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
@@ -278,6 +284,10 @@ export class ChatService {
   toggleMembersVisibility() {
     this.openMembersSignal.set(!this.openMembersSignal());
     this.openAddPeopleSignal.set(false);
+  }
+
+  toggleAtVisibility() {
+    this.openAtSignal.set(!this.openAtSignal());
   }
 
   resubThread() {
