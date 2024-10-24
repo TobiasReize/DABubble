@@ -131,7 +131,7 @@ export class LogInComponent implements OnDestroy {
       this.userService.newUser.email = user.email ? user.email : 'Google Mail';
       this.userService.newUser.avatar = user.photoURL ? user.photoURL : 'assets/img/profile.svg';
       this.userService.newUser.userUID = user.uid;
-      await this.userService.addUser(this.userService.newUser.toJSON());
+      await this.userService.addUser(user.uid, this.userService.newUser.toJSON());
       console.log('Google-User hinzugefügt!');
     } else {
       console.log('Google-User bereits vorhanden!');

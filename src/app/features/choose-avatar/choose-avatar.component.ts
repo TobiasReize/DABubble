@@ -110,7 +110,7 @@ export class ChooseAvatarComponent {
         console.log('Registrierung erfolgreich!');
         this.userService.newUser.userUID = user.uid;
         this.userService.newUser.avatar = this.profileImgPath();
-        this.userService.addUser(this.userService.newUser.toJSON());
+        this.userService.addUser(user.uid, this.userService.newUser.toJSON());
         this.goToLogin();
       })
       .catch((error) => {

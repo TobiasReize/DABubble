@@ -1,5 +1,5 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
-import { addDoc, onSnapshot, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import { addDoc, doc, onSnapshot, setDoc, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { User } from '../../models/user.class';
 import { getAuth, signOut, updateEmail } from '@angular/fire/auth';
@@ -26,8 +26,8 @@ export class UserService implements OnDestroy {
   }
 
 
-  async addUser(data: object) {
-    await addDoc(this.firebaseService.getCollectionRef('users'), data)
+  async addUser(userUID: string, data: object) {
+    await setDoc(doc(this.firebaseService.getCollectionRef('users'), userUID), data)
     .then(
       (result) => {console.log('User erfolgreich hinzugefügt!')}
     ).catch(
@@ -35,8 +35,8 @@ export class UserService implements OnDestroy {
   }
 
 
-  async updateUserEmailandName(userId: string, data = {name: '', email: ''}) {
-    await this.firebaseService.updateDocData('users', userId, data)
+  async updateUserEmailandName(userUID: string, data = {name: '', email: ''}) {
+    await this.firebaseService.updateDocData('users', userUID, data)
       .then(() => {
         this.updateUserAuthEmail(data.email);
       })
@@ -66,7 +66,7 @@ export class UserService implements OnDestroy {
     return onSnapshot(this.firebaseService.getCollectionRef('users'), usersCollection => {
       this.allUsers = [];
       usersCollection.forEach(user => {
-        this.allUsers.push(new User(user.data(), user.id));
+        this.allUsers.push(new User(user.data()));
       });
       console.log('Alle User:', this.allUsers);
     });
