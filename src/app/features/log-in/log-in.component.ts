@@ -89,7 +89,7 @@ export class LogInComponent implements OnDestroy {
     await signInWithEmailAndPassword(auth, this.loginData.email, this.loginData.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndex(user.uid)];
+        this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndexWithUID(user.uid)];
         console.log('Aktueller User:', this.userService.currentOnlineUser);
         this.router.navigateByUrl('main');
       })
@@ -109,7 +109,7 @@ export class LogInComponent implements OnDestroy {
       .then(async (result) => {
         const user = result.user;
         await this.saveGoogleUser(user);  //await, damit der neue User gefunden werden kann und als currentOnlineUser übergeben werden kann!
-        this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndex(user.uid)];
+        this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndexWithUID(user.uid)];
         console.log('Aktueller User:', this.userService.currentOnlineUser);
         this.router.navigateByUrl('main');
       }).catch((error) => {
@@ -124,14 +124,14 @@ export class LogInComponent implements OnDestroy {
 
 
   async saveGoogleUser(user: User) {
-    let userIndex = this.userService.getUserIndex(user.uid);
+    let userIndex = this.userService.getUserIndexWithUID(user.uid);
     console.log('userIndex:', userIndex);
     if (userIndex == -1) {
       this.userService.newUser.name = user.displayName ? user.displayName : 'Google User';
       this.userService.newUser.email = user.email ? user.email : 'Google Mail';
       this.userService.newUser.avatar = user.photoURL ? user.photoURL : 'assets/img/profile.svg';
       this.userService.newUser.userUID = user.uid;
-      await this.userService.addUser(this.userService.newUser.toJSON());
+      await this.userService.addUser(user.uid, this.userService.newUser.toJSON());
       console.log('Google-User hinzugefügt!');
     } else {
       console.log('Google-User bereits vorhanden!');

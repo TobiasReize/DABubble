@@ -1,8 +1,8 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
-import { addDoc, onSnapshot, Unsubscribe } from '@angular/fire/firestore';
+import { addDoc, doc, onSnapshot, setDoc, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { User } from '../../models/user.class';
-import { getAuth, signOut } from '@angular/fire/auth';
+import { getAuth, signOut, updateEmail } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -26,12 +26,39 @@ export class UserService implements OnDestroy {
   }
 
 
-  async addUser(data: object) {
-    await addDoc(this.firebaseService.getCollectionRef('users'), data)
+  async addUser(userUID: string, data: object) {
+    await setDoc(doc(this.firebaseService.getCollectionRef('users'), userUID), data)
     .then(
       (result) => {console.log('User erfolgreich hinzugefügt!')}
     ).catch(
       (err) => {console.error('User hinzufügen error:', err)});
+  }
+
+
+  async updateUserEmailandName(userUID: string, data = {name: '', email: ''}) {
+    await this.firebaseService.updateDocData('users', userUID, data)
+      .then(() => {
+        this.updateUserAuthEmail(data.email);
+      })
+      .catch((error) => {
+        console.log('Update User Error:', error);
+      })
+  }
+
+
+  updateUserAuthEmail(newEmail: string) {
+    const auth = getAuth();
+    if (auth.currentUser) {
+      updateEmail(auth.currentUser, newEmail)
+        .then(() => {
+          console.log('Email updated!');
+        })
+        .catch((error) => {
+          console.log('Email Update Error:', error);
+        });
+    } else {
+      console.log('Aktuell kein User eingeloggt!');
+    }
   }
 
 
@@ -46,8 +73,8 @@ export class UserService implements OnDestroy {
   }
 
 
-  getUserIndex(userUID: string) {
-    return this.allUsers.findIndex(element => element.userUID == userUID);
+  getUserIndexWithUID(userUID: string) {
+    return this.allUsers.findIndex(singleUser => singleUser.userUID == userUID);
   }
 
 

@@ -1,15 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
-import {
- 
-  collection,
-  doc,
-  Firestore,
-  getDocs,
-  query,
-  updateDoc,
-} from '@angular/fire/firestore';
+import { collection, doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
-import { ChatService } from '../chat/chat.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,12 +17,7 @@ export class FirebaseService {
     return doc(this.getCollectionRef(collectionName), docId);
   }
 
-  getDocRefInSubcollection(
-    docId1: string,
-    collectionName: string,
-    subcollectionName: string,
-    docId2: string
-  ) {
+  getDocRefInSubcollection(docId1: string, collectionName: string, subcollectionName: string, docId2: string) {
     return doc(
       this.firestore,
       collectionName,
@@ -74,5 +60,10 @@ export class FirebaseService {
 
   getDocRefInSubSubcollection(collectionName: string, docId1: string, subcollectionName: string, docId2: string, subSubCollectionName: string, docId3: string) {
     return doc(this.firestore, collectionName, docId1, subcollectionName, docId2, subSubCollectionName, docId3);
+  }
+
+  async updateDocData(collectionName: string, docId: string, data: any) {
+    let docRef = this.getDocRef(docId, collectionName);
+    await updateDoc(docRef, data);
   }
 }
