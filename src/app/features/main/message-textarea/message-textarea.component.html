@@ -1,5 +1,8 @@
 <div class="textarea-container">
-    <textarea [placeholder]="placeholder" [(ngModel)]="messageText" name="" id=""></textarea>
+    <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea">
+        <ng-template #mentionInsertion contenteditable="false"></ng-template>
+        <textarea name="text-area" id="text-area" ([ngModel])="messageText"></textarea>
+    </div>
     <div class="textarea-container-inside">
         <div class="textarea-symbols-left">
             <button class="icon-btn">
@@ -12,7 +15,7 @@
             <button class="icon-btn" (click)="toggleAtVisibility()">
                 <span class="material-symbols-rounded">alternate_email</span>
                 @if (isAtVisible()) {
-                    <app-at></app-at>
+                    <app-at (selectUserEvent)="addMention($event)"></app-at>
                 }
             </button>    
         </div>

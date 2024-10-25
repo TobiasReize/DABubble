@@ -21,7 +21,7 @@
     width: 100%;
 }
 
-textarea {
+.textarea {
     width: 100%;
     height: 100%;
     border-radius: 20px;
@@ -39,6 +39,15 @@ textarea {
     &:focus {
         border-color: $purple-1;
         outline: unset;
+    }
+}
+
+textarea {
+    width: 100%;
+    border: unset;
+    resize: none;
+    &:hover, &:focus {
+        outline: none;
     }
 }
 

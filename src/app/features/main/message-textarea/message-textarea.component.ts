@@ -1,7 +1,9 @@
-import { Component, Input, Signal } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2, Signal, ViewChild, ViewContainerRef } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { FormsModule } from '@angular/forms';
 import { AtComponent } from './at/at.component';
+import { ChatUser } from '../../../core/models/user.class';
+import { MentionComponent } from './mention/mention.component';
 
 @Component({
   selector: 'app-message-textarea',
@@ -15,8 +17,9 @@ export class MessageTextareaComponent {
   @Input() type: string = 'chat';
   messageText = '';
   isAtVisible: Signal<boolean> = this.chatService.opentAt;
+  @ViewChild('mentionInsertion', { read: ViewContainerRef }) mentionInsertion!: ViewContainerRef;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private renderer: Renderer2) { }
 
   addMessage() {
     if (this.messageText.length > 0) {
@@ -32,4 +35,12 @@ export class MessageTextareaComponent {
   toggleAtVisibility() {
     this.chatService.toggleAtVisibility();
   }
+
+  addMention(user: ChatUser) {
+    console.log(user.name);
+    const userName: string = user.name;
+    const mention = this.mentionInsertion.createComponent(MentionComponent);
+    mention.instance.userName = userName;
+  }
+
 }
