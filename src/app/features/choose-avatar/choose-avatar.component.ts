@@ -60,7 +60,7 @@ export class ChooseAvatarComponent {
     if (file) {
       console.log('file', file);
       switch (true) {
-        case file.type != 'image/jpeg' || 'image/png' || 'image/svg+xml' || 'image/webp':
+        case (file.type != 'image/jpeg') && (file.type != 'image/png') && (file.type != 'image/svg+xml') && (file.type != 'image/webp'):
           this.handleUploadError('type');
           break;
         case file.size >= 1000000:
@@ -124,7 +124,7 @@ export class ChooseAvatarComponent {
   goToLogin() {
     this.inputFinished = true;
     setTimeout(() => {
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('' + '?email=' + this.userService.newUser.email);
     }, 1300);
   }
 
