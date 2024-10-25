@@ -8,6 +8,7 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
 import { Auth, browserSessionPersistence, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
+import { ChatUser } from '../../core/models/user.class';
 
 @Component({
   selector: 'app-log-in',
@@ -58,7 +59,7 @@ export class LogInComponent implements OnDestroy {
     const auth = getAuth();
     auth.setPersistence(browserSessionPersistence)
       .then(() => {
-        console.log('Persistence geändert!');
+        // console.log('Persistence geändert!');
       })
       .catch((error) => {
         console.log('Error-Code:', error.code);
@@ -136,6 +137,16 @@ export class LogInComponent implements OnDestroy {
     } else {
       console.log('Google-User bereits vorhanden!');
     }
+  }
+
+
+  signInWithGuest() {
+    this.userService.currentOnlineUser = new ChatUser({
+      name: 'Gast',
+      avatar: 'assets/img/profile.svg',
+      userUID: '0'
+    });
+    this.router.navigateByUrl('main');
   }
  
 

@@ -19,7 +19,7 @@ import { ChannelName } from '../../models/channel-name.interface';
 import { ChannelDescription } from '../../models/channel-description.interface';
 import { UserService } from '../user/user.service';
 import { ChannelUserUIDsInterface } from '../../models/channel-user-uids.interface';
-import { User } from '../../models/user.class';
+import { ChatUser } from '../../models/user.class';
 
 @Injectable({
   providedIn: 'root',
@@ -68,11 +68,11 @@ export class ChatService {
   private openAtSignal = signal<boolean>(false);
   readonly opentAt = this.openAtSignal.asReadonly();
 
-  private usersInCurrentChannelSignal = signal<User[]>([]);
+  private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
 
-  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<User[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser.userUID));
+  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser.userUID));
   readonly usersInCurrentChannelWithoutCurrentUser = this.usersInCurrentChannelWithoutCurrentUserSignal;
 
   private channelsSignal = signal<Channel[]>([]);
@@ -328,7 +328,7 @@ export class ChatService {
   }
 
   getUsersInCurrentChannel() {
-    const foundUsers: User[] = [];
+    const foundUsers: ChatUser[] = [];
     if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
       this.currentChannel().userUIDs.forEach(userUID => {
         const foundUser = this.userService.allUsers.find(user => userUID === user.userUID);

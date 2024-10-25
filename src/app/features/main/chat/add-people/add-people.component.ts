@@ -1,7 +1,7 @@
 import { Component, Signal } from '@angular/core';
 import { Channel } from '../../../../core/models/channel.class';
 import { ChatService } from '../../../../core/services/chat/chat.service';
-import { User } from '../../../../core/models/user.class';
+import { ChatUser } from '../../../../core/models/user.class';
 
 @Component({
   selector: 'app-add-people',
@@ -12,8 +12,8 @@ import { User } from '../../../../core/models/user.class';
 })
 export class AddPeopleComponent {
   currentChannel: Signal<Channel> = this.chatService.currentChannel;
-  userOptions: User[] = [];
-  selectedUser: User | undefined;
+  userOptions: ChatUser[] = [];
+  selectedUser: ChatUser | undefined;
 
   constructor(private chatService: ChatService) { }
 

@@ -1,8 +1,9 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import { addDoc, doc, onSnapshot, setDoc, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
-import { User } from '../../models/user.class';
+import { ChatUser } from '../../models/user.class';
 import { getAuth, signOut, updateEmail } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +12,29 @@ export class UserService implements OnDestroy {
 
   introDone: boolean = false;
   firebaseService = inject(FirebaseService);
-  newUser = new User();
-  allUsers: User[] = [];
+  newUser = new ChatUser();
+  allUsers: ChatUser[] = [];
   unsubUserCol!: Unsubscribe;
-  currentOnlineUser = new User({
+  currentOnlineUser = new ChatUser({
     name: 'Gast',
     avatar: 'assets/img/profile.svg',
     userUID: '0'
   });
 
 
-  constructor() {
+  constructor(private router: Router) {
     this.unsubUserCol = this.subUserCol();
+  }
+
+
+  subUserCol() {
+    return onSnapshot(this.firebaseService.getCollectionRef('users'), usersCollection => {
+      this.allUsers = [];
+      usersCollection.forEach(user => {
+        this.allUsers.push(new ChatUser(user.data()));
+      });
+      console.log('Alle User:', this.allUsers);
+    });
   }
 
 
@@ -62,17 +74,6 @@ export class UserService implements OnDestroy {
   }
 
 
-  subUserCol() {
-    return onSnapshot(this.firebaseService.getCollectionRef('users'), usersCollection => {
-      this.allUsers = [];
-      usersCollection.forEach(user => {
-        this.allUsers.push(new User(user.data()));
-      });
-      console.log('Alle User:', this.allUsers);
-    });
-  }
-
-
   getUserIndexWithUID(userUID: string) {
     return this.allUsers.findIndex(singleUser => singleUser.userUID == userUID);
   }
@@ -83,6 +84,7 @@ export class UserService implements OnDestroy {
     signOut(auth)
       .then(() => {
         console.log('Sign-out successful');
+        this.router.navigateByUrl('');
       }).catch((error) => {
         console.log('Error:', error);
       })

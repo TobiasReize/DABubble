@@ -40,7 +40,7 @@
         
         <div class="login-btn-container">
             <input [disabled]="!email.valid || !password.valid"  class="btn btn-prim" type="submit" name="submit" id="submit" value="Anmelden">
-            <a class="btn btn-sec" routerLink="/main">Gäste-Login</a>
+            <a (click)="signInWithGuest()" class="btn btn-sec">Gäste-Login</a>
         </div>
     </form>
 

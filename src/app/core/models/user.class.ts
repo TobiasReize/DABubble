@@ -1,4 +1,4 @@
-export class User {
+export class ChatUser {
     name: string;
     email: string;
     password: string;

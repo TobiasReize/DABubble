@@ -5,7 +5,7 @@ import { Message } from '../../../core/models/message.class';
 import { MessageComponent } from '../message/message.component';
 import { SlicePipe } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
-import { User } from '../../../core/models/user.class';
+import { ChatUser } from '../../../core/models/user.class';
 import { AddPeopleComponent } from './add-people/add-people.component';
 import { MembersComponent } from './members/members.component';
 
@@ -19,7 +19,7 @@ import { MembersComponent } from './members/members.component';
 export class ChatComponent {
   channel: Signal<Channel> = this.chatService.currentChannel;
   userAvatars: string[] = ['avatar0.svg', 'avatar1.svg', 'avatar2.svg', 'avatar3.svg', 'avatar4.svg', 'avatar5.svg'];
-  usersInCurrentChannel: Signal<User[]> = this.chatService.usersInCurrentChannel;
+  usersInCurrentChannel: Signal<ChatUser[]> = this.chatService.usersInCurrentChannel;
   messages: Signal<Message[]> = this.chatService.messages;
   isAddPeopleDialogVisible: Signal<boolean> = this.chatService.openAddPeople;
   isMembersDialogVisible: Signal<boolean> = this.chatService.openMembers;
