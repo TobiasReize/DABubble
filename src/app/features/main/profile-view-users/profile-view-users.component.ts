@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-profile-view-users',
@@ -9,7 +10,7 @@ import { ChatService } from '../../../core/services/chat/chat.service';
   styleUrl: './profile-view-users.component.scss',
 })
 export class ProfileViewUsersComponent {
-  constructor(public chatService: ChatService) {}
+  constructor(public chatService: ChatService, public userService: UserService) {}
 
   onDiv1Click(): void {
     this.chatService.profileViewUsersActive = false;

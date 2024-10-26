@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../core/services/chat/chat.service';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -15,7 +16,8 @@ export class SideNavComponent {
 
   constructor(
     public sideNavService: SideNavService,
-    public chatService: ChatService
+    public chatService: ChatService,
+    public userService: UserService,
   ) {}
 
   openChannels(): void {
