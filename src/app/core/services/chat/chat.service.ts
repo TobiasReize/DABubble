@@ -85,9 +85,6 @@ export class ChatService {
   chatDescription: boolean = false;
   customProfile: boolean = false;
   contacts: any = [];
-  currentUser: string = "";
-  currentUserStatus: string = "";
-  currentUsersEmail: string = "";
 
   constructor(
     private firebaseService: FirebaseService,
@@ -379,22 +376,18 @@ export class ChatService {
     }
   }
 
-  openChat(id: number, vorname: string, nachname: string, status: string, email: string): void {
+  openChat(id: number, name: string, email: string, avatar: string, passwort: string, userUID: string): void {
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = id;
-    this.currentUser = vorname + " " + nachname;
-    this.currentUserStatus = status;
-    this.currentUsersEmail = email;
-    if (this.currentUser.includes('(Du)')) {
+    if (this.userService.allUsers[this.contactIndex].name === this.userService.currentOnlineUser.name) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
       this.myChatDescription = false;
       this.chatDescription = true;
     }
-    console.log('index:', this.contactIndex);
   }
 
   async getContacts() {

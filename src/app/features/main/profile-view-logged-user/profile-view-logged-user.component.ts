@@ -4,6 +4,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { doc, updateDoc } from 'firebase/firestore';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-profile-view-logged-user',
@@ -15,7 +16,8 @@ import { FirebaseService } from '../../../core/services/firebase/firebase.servic
 export class ProfileViewLoggedUserComponent {
   constructor(
     public chatService: ChatService,
-    public fireBaseService: FirebaseService
+    public fireBaseService: FirebaseService,
+    public userService: UserService
   ) {}
 
   onDiv1Click(): void {
@@ -32,31 +34,22 @@ export class ProfileViewLoggedUserComponent {
     this.onDiv2Click(event);
   }
 
-  getCleanName(): string {
-    const cleanUserName: string = this.chatService.currentUser
-      .replace('(Du)', '')
-      .trim();
-    return cleanUserName;
-  }
-
   saveNewContactInfos(): void {
     const fullname = document.getElementById('fullname') as HTMLInputElement;
     const email = document.getElementById('emailAdresse') as HTMLInputElement;
 
-    let splitedName = fullname.value.split(' ');
-
-    this.chatService.currentUser = fullname.value;
-    this.chatService.currentUsersEmail = email.value;
     this.chatService.profileViewLoggedUser = false;
+
+    this.userService.allUsers[this.chatService.contactIndex].name = fullname.value;
+    this.userService.allUsers[this.chatService.contactIndex].email = email.value;
 
     const docRef = doc(
       this.fireBaseService.firestore,
-      'contacts',
-      this.chatService.contacts[this.chatService.contactIndex]['id']
+      'users',
+      this.userService.allUsers[this.chatService.contactIndex].userUID
     );
     updateDoc(docRef, {
-      vorname: splitedName[0],
-      nachname: splitedName[1],
+      name: fullname.value,
       email: email.value,
     });
   }
