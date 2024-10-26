@@ -1,4 +1,4 @@
-import { Component, computed, Input, SecurityContext, Signal } from '@angular/core';
+import { Component, computed, Input, Signal } from '@angular/core';
 import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
