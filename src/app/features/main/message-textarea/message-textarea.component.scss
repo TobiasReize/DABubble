@@ -81,3 +81,9 @@ textarea {
         font-variation-settings: "GRAD" 100;
     }
 }
+
+@media (max-width: 1440px) {
+    app-at, app-emoji-picker {
+        left: 0;
+    }
+}
