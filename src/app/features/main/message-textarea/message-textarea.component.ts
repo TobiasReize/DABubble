@@ -24,6 +24,13 @@ export class MessageTextareaComponent {
 
   constructor(private chatService: ChatService, private renderer: Renderer2) { }
 
+  ngOnInit() {
+    if (this.type === 'thread') {
+      this.isAtVisible = this.chatService.openAtForThread;
+      this.isEmojiPickerVisible = this.chatService.openEmojiPickerForThread;
+    }
+  }
+
   addMessage() {
     this.saveMessageText();
     if (this.messageText.length > 0) {
@@ -33,15 +40,24 @@ export class MessageTextareaComponent {
         this.chatService.addThreadReply(this.messageText);
       }
       this.messageText = '';
+      this.editableTextarea.nativeElement.innerHTML = '';
     }
   }
 
   toggleAtVisibility() {
-    this.chatService.toggleAtVisibility();
+    if (this.type === 'chat') {
+      this.chatService.toggleAtVisibility();
+    } else {
+      this.chatService.toggleAtForThreadVisibility();
+    }
   }
 
   toggleEmojiPickerVisibility() {
-    this.chatService.toggleEmojiPickerVisibility();
+    if (this.type === 'chat') {
+      this.chatService.toggleEmojiPickerVisibility();
+    } else {
+      this.chatService.toggleEmojiPickerForThreadVisibility();
+    }
   }
 
   addMention(user: ChatUser) {

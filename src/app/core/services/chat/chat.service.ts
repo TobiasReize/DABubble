@@ -1,4 +1,4 @@
-import { computed, Injectable, Signal, signal } from '@angular/core';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
@@ -68,8 +68,14 @@ export class ChatService {
   private openAtSignal = signal<boolean>(false);
   readonly opentAt = this.openAtSignal.asReadonly();
 
+  private openAtForThreadSignal = signal<boolean>(false);
+  readonly openAtForThread = this.openAtForThreadSignal.asReadonly();
+
   private openEmojiPickerSignal = signal<boolean>(false);
   readonly openEmojiPicker = this.openEmojiPickerSignal.asReadonly();
+
+  private openEmojiPickerForThreadSignal = signal<boolean>(false);
+  readonly openEmojiPickerForThread = this.openEmojiPickerForThreadSignal.asReadonly();
 
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
@@ -257,30 +263,38 @@ export class ChatService {
     this.openThreadSignal.set(bool);
   }
 
+  toggleVisibilitySignal(visibilitySignal: WritableSignal<boolean>) {
+    const visibilitySignals = [this.openAddPeopleSignal, this.openEditChannelSignal, this.openMembersSignal, this.openAtSignal, this.openAtForThreadSignal, this.openEmojiPickerSignal, this.openEmojiPickerForThreadSignal];
+    visibilitySignals.forEach(s => s != visibilitySignal ? s.set(false) : null);
+    visibilitySignal.set(!visibilitySignal());
+  }
+
   toggleEditChannelVisibility() {
-    this.openEditChannelSignal.set(!this.openEditChannelSignal());
-    this.openAddPeopleSignal.set(false);
-    this.openMembersSignal.set(false);
+    this.toggleVisibilitySignal(this.openEditChannelSignal);
   }
 
   toggleAddPeopleVisibility() {
-    this.openAddPeopleSignal.set(!this.openAddPeopleSignal());
-    this.openMembersSignal.set(false);
+    this.toggleVisibilitySignal(this.openAddPeopleSignal);
   }
 
   toggleMembersVisibility() {
-    this.openMembersSignal.set(!this.openMembersSignal());
-    this.openAddPeopleSignal.set(false);
+    this.toggleVisibilitySignal(this.openMembersSignal);
   }
 
   toggleAtVisibility() {
-    this.openAtSignal.set(!this.openAtSignal());
-    this.openEmojiPickerSignal.set(false);
+    this.toggleVisibilitySignal(this.openAtSignal);
+  }
+
+  toggleAtForThreadVisibility() {
+    this.toggleVisibilitySignal(this.openAtForThreadSignal);
   }
 
   toggleEmojiPickerVisibility() {
-    this.openEmojiPickerSignal.set(!this.openEmojiPickerSignal());
-    this.openAtSignal.set(false);
+    this.toggleVisibilitySignal(this.openEmojiPickerSignal);
+  }
+
+  toggleEmojiPickerForThreadVisibility() {
+    this.toggleVisibilitySignal(this.openEmojiPickerForThreadSignal);
   }
 
   resubThread() {
