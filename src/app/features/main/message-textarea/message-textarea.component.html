@@ -1,8 +1,6 @@
 <div class="textarea-container">
-    <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea">
-        <ng-template #mentionInsertion contenteditable="false"></ng-template>
-        <textarea name="text-area" id="text-area" ([ngModel])="messageText"></textarea>
-    </div>
+    <span #mentionInsertion contenteditable="false"></span>
+    <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true"></div>
     <div class="textarea-container-inside">
         <div class="textarea-symbols-left">
             <button class="icon-btn">

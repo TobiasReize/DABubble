@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChatUser } from '../../../../core/models/user.class';
 
 @Component({
   selector: 'app-mention',
@@ -8,9 +9,21 @@ import { Component, Input } from '@angular/core';
   styleUrl: './mention.component.scss'
 })
 export class MentionComponent {
-  @Input() userName: string = '';
+  @Input() user!: ChatUser;
+  @ViewChild('mention', { read: ElementRef }) mention!: ElementRef;
 
-  removeMention() {
-    console.log('removing mention');
+  constructor() { }
+
+  selectMention() {
+    this.mention.nativeElement.setAttribute('contenteditable', true);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    const range = document.createRange();
+    range.selectNodeContents(this.mention.nativeElement);
+    selection?.addRange(range);
   }
+
+  // openUserProfile(userUID: string) {
+  //   console.log('opening user profile', userUID);
+  // }
 }
