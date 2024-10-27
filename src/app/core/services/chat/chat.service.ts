@@ -12,7 +12,6 @@ import {
   QueryDocumentSnapshot,
   Unsubscribe,
   updateDoc,
-  DocumentData,
 } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
@@ -126,20 +125,6 @@ export class ChatService {
     } else {
       return undefined;
     }
-  }
-
-  async addThread() {
-    let threadId: string = '';
-    await addDoc(this.firebaseService.getCollectionRef('threads'), {})
-      .catch((err) => {
-        console.log(err);
-      })
-      .then((docRef) => {
-        if (docRef) {
-          threadId = docRef.id;
-        }
-      });
-    return threadId;
   }
 
   clearThread() {
