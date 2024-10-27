@@ -12,6 +12,7 @@ import {
   QueryDocumentSnapshot,
   Unsubscribe,
   updateDoc,
+  DocumentData,
 } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
@@ -105,7 +106,7 @@ export class ChatService {
     }
   }
 
-  createMessage(doc: QueryDocumentSnapshot | DocumentSnapshot) {
+  createMessageFromDocumentSnapshot(doc: QueryDocumentSnapshot | DocumentSnapshot) {
     const data = doc.data();
     if (data) {
       const reactions = JSON.parse(data['reactions']);
@@ -221,7 +222,7 @@ export class ChatService {
     return onSnapshot(q, (snapshot) => {
       const tempMessages: Message[] = [];
       snapshot.forEach((doc) => {
-        const message = this.createMessage(doc);
+        const message = this.createMessageFromDocumentSnapshot(doc);
         if (message) {
           tempMessages.push(message);
         }
@@ -230,7 +231,7 @@ export class ChatService {
     });
   }
 
-  createChannel(doc: QueryDocumentSnapshot) {
+  createChannelFromQueryDocumentSnapshot(doc: QueryDocumentSnapshot) {
     const data = doc.data();
     const channel = new Channel(
       doc.id,
@@ -248,7 +249,7 @@ export class ChatService {
       (collection) => {
         const channels: Channel[] = [];
         collection.forEach((doc) => {
-          const channel = this.createChannel(doc);
+          const channel = this.createChannelFromQueryDocumentSnapshot(doc);
           channels.push(channel);
         });
         this.channelsSignal.set(channels);
@@ -406,7 +407,7 @@ export class ChatService {
     return onSnapshot(q, (snapshot) => {
       const tempMessages: any[] = [];
       snapshot.forEach((doc) => {
-        const message = this.createMessage(doc);
+        const message = this.createMessageFromDocumentSnapshot(doc);
         if (message) {
           tempMessages.push(message);
         }
@@ -418,7 +419,7 @@ export class ChatService {
   subTopThreadMessage() {
     return onSnapshot(this.firebaseService.getDocRefInSubcollection(this.currentChannel().id, 'channels', 'messages', this.topThreadMessageId), (doc) => {
       if (doc) {
-          const message = this.createMessage(doc);
+          const message = this.createMessageFromDocumentSnapshot(doc);
           if (message) {
             this.topThreadMessageSignal.set(message);
           }
