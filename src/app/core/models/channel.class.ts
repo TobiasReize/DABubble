@@ -6,4 +6,6 @@ export class Channel {
         public userUIDs: string[] = [''],
         public createdBy: string = ''
     ) {}
+
+    
 }

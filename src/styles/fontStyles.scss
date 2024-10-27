@@ -5,4 +5,14 @@
   color: rgba(104, 104, 104, 1);
 }
 
+.fontStyle2 {
+  @include fontStyle9;
+}
 
+.fontStyle9 {
+  @include fontStyle9;
+}
+
+.blueColor {
+  color: rgba(83, 90, 241, 1);
+}

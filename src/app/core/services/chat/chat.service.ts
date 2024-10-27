@@ -228,6 +228,7 @@ export class ChatService {
       data['userUIDs'],
       data['createdBy']
     );
+    console.log(channel);
     return channel;
   }
 

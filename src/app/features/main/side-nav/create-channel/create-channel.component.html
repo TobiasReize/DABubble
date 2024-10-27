@@ -1,5 +1,5 @@
 <div class="overlayComponent" (click)="onDiv1Click()">
-  <section style="display: none;"
+  <section
     id="createChannel"
     class="sectionDflex"
     (click)="onDiv2Click($event)"
@@ -44,19 +44,19 @@
       />
     </div>
     <div class="dFlexRowFlexEndCenter">
-      <button disabled class="btn btn-prim" (click)="createChannel()">Erstellen</button>
+      <button class="btn btn-prim" (click)="createChannel()">Erstellen</button>
     </div>
   </section>
 
   <div class="addPeople dFlexColumn">
     <div class="dFlexRowSpaceBetweenCenter">
-      <span>Leute hinzufügen</span>
+      <span class="fontStyle9">Leute hinzufügen</span>
       <span class="material-symbols-rounded cursor-pointer">close</span></div>
     <div>
     <div>
       <div>
         <div class="checkbox"></div>
-        <span>Alle Mitglieder von OfficeTeam hinzufügen</span>
+        <span class="fontStyle2">Alle Mitglieder von <span class="blueColor">OfficeTeam</span> hinzufügen</span>
       </div>
       <div>
         <div class="checkbox"></div>
