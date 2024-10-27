@@ -61,7 +61,7 @@ export class MessageTextareaComponent {
   }
 
   insertEmoji(emoji: string) {
-    this.editableTextarea.nativeElement.textContent += emoji;
+    this.editableTextarea.nativeElement.innerHTML += emoji;
   }
 
 }

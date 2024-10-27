@@ -274,10 +274,12 @@ export class ChatService {
 
   toggleAtVisibility() {
     this.openAtSignal.set(!this.openAtSignal());
+    this.openEmojiPickerSignal.set(false);
   }
 
   toggleEmojiPickerVisibility() {
     this.openEmojiPickerSignal.set(!this.openEmojiPickerSignal());
+    this.openAtSignal.set(false);
   }
 
   resubThread() {
