@@ -7,8 +7,11 @@
                 <span class="material-symbols-rounded">add</span>
             </button>
             <div class="small-divider"></div>
-            <button class="icon-btn">
+            <button class="icon-btn" (click)="toggleEmojiPickerVisibility()">
                 <span class="material-symbols-rounded">sentiment_satisfied</span>
+                @if (isEmojiPickerVisible()) {
+                    <app-emoji-picker (selectEmojiEvent)="insertEmoji($event)"></app-emoji-picker>
+                }
             </button>
             <button class="icon-btn" (click)="toggleAtVisibility()">
                 <span class="material-symbols-rounded">alternate_email</span>

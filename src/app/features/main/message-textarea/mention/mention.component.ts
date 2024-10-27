@@ -15,15 +15,10 @@ export class MentionComponent {
   constructor() { }
 
   selectMention() {
-    this.mention.nativeElement.setAttribute('contenteditable', true);
     const selection = window.getSelection();
     selection?.removeAllRanges();
     const range = document.createRange();
     range.selectNodeContents(this.mention.nativeElement);
     selection?.addRange(range);
   }
-
-  // openUserProfile(userUID: string) {
-  //   console.log('opening user profile', userUID);
-  // }
 }

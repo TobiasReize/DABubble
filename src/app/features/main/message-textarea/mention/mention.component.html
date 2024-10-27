@@ -1,1 +1,3 @@
-<span #mention class="mention" (click)="selectMention()" contenteditable="false">&#64;{{user.name}}</span><span></span><span>&nbsp;</span>
+<span #mention (click)="selectMention()">
+    <span class="mention" contenteditable="false">&#64;{{user.name}}&nbsp;</span><span></span>
+</span>
