@@ -6,11 +6,12 @@ import { Reaction } from '../../../core/models/reaction.class';
 import { UserService } from '../../../core/services/user/user.service';
 import { FormsModule } from '@angular/forms';
 import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
+import { ReactionOptionsComponent } from './reaction-options/reaction-options.component';
 
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [EmojiPickerComponent, CommonModule, FormsModule],
+  imports: [EmojiPickerComponent, ReactionOptionsComponent, CommonModule, FormsModule],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
@@ -25,6 +26,7 @@ export class MessageComponent {
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;
   areReactionOptionsOpen: boolean = false;
+  areSecondaryReactionOptionsOpen: boolean = false;
   isMessageBeingEdited: boolean = false;
   editMessageText: string = '';
   isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
@@ -83,6 +85,7 @@ export class MessageComponent {
     } else {
       this.toggleReaction(this.messageData.reactions[index]);
     }
+    this.areReactionOptionsOpen = false;
   }
 
   filterReactionUserNames(userNames: string[]) {
@@ -100,6 +103,13 @@ export class MessageComponent {
 
   toggleReactionOptionMenu() {
     this.areReactionOptionsOpen = !this.areReactionOptionsOpen;
+    this.areSecondaryReactionOptionsOpen = false;
+    this.isMoreMenuOpen = false;
+  }
+
+  toggleSecondaryReactionOptionMenu() {
+    this.areSecondaryReactionOptionsOpen = !this.areSecondaryReactionOptionsOpen;
+    this.areReactionOptionsOpen = false;
     this.isMoreMenuOpen = false;
   }
 

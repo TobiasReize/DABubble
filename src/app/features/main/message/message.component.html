@@ -53,7 +53,12 @@
                             </div>
                         </div>
                     }
-                    <span class="material-symbols-rounded">add_reaction</span>
+                    <button class="icon-btn" (click)="toggleSecondaryReactionOptionMenu()">
+                        <span class="material-symbols-rounded">add_reaction</span>
+                        @if (areSecondaryReactionOptionsOpen) {
+                            <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()"></app-reaction-options>
+                        }
+                    </button>
             </div>
         }
     </div>
@@ -85,13 +90,7 @@
             </div>
         }
         @if (areReactionOptionsOpen) {
-            <div class="reaction-options">
-                @for (reaction of reactionOptions(); track reaction) {
-                    <div class="icon-btn" (click)="addNewReaction(reaction)">
-                        <img class="reaction-img" src="assets/img/emojis/{{reaction}}" alt="menu emoji 2">
-                    </div>
-                }
-            </div>
+            <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()"></app-reaction-options>
         }
     </div>
     }
