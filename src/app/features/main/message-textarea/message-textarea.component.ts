@@ -60,13 +60,17 @@ export class MessageTextareaComponent {
     }
   }
 
-  addMention(user: ChatUser) {
+  removeBrTag() {
     if (this.editableTextarea.nativeElement.textContent == '') {
       const child = this.editableTextarea.nativeElement.firstElementChild;
       if (child && child.tagName === 'BR') {
         child.remove();
       }
     }
+  }
+
+  addMention(user: ChatUser) {
+    this.removeBrTag();
     const mention = this.mentionInsertion.createComponent(MentionComponent);
     mention.instance.user = user;
     this.renderer.appendChild(this.editableTextarea.nativeElement, mention.location.nativeElement);
@@ -77,6 +81,7 @@ export class MessageTextareaComponent {
   }
 
   insertEmoji(emoji: string) {
+    this.removeBrTag();
     this.editableTextarea.nativeElement.innerHTML += emoji;
   }
 
