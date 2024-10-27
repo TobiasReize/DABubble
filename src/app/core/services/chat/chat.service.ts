@@ -68,6 +68,9 @@ export class ChatService {
   private openAtSignal = signal<boolean>(false);
   readonly opentAt = this.openAtSignal.asReadonly();
 
+  private openEmojiPickerSignal = signal<boolean>(false);
+  readonly openEmojiPicker = this.openEmojiPickerSignal.asReadonly();
+
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
@@ -271,6 +274,10 @@ export class ChatService {
 
   toggleAtVisibility() {
     this.openAtSignal.set(!this.openAtSignal());
+  }
+
+  toggleEmojiPickerVisibility() {
+    this.openEmojiPickerSignal.set(!this.openEmojiPickerSignal());
   }
 
   resubThread() {
