@@ -52,5 +52,7 @@ export class ProfileViewLoggedUserComponent {
       name: fullname.value,
       email: email.value,
     });
+
+    this.userService.updateUserAuthEmail(email.value);
   }
 }
