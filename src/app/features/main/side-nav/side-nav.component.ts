@@ -25,8 +25,7 @@ export class SideNavComponent {
   }
 
   openCreateChannels(): void {
-    this.sideNavService.createChannelsDivOpened =
-      !this.sideNavService.createChannelsDivOpened;
+    this.sideNavService.createChannelsDivOpened = true;
   }
 
   closeContactDiv(): void {
