@@ -140,8 +140,8 @@ export class ChatService {
     this.threadRepliesSignal.set([]);
   }
 
-  async addChatMessage(messageContent: string) {
-    const messageAsJson = this.prepareMessageForDatabase(messageContent);
+  async addChatMessage(messageContent: string, fileUrl: string, fileType: string) {
+    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
     await addDoc(
       this.firebaseService.getSubcollectionRef(
         this.currentChannel().id,
@@ -152,8 +152,8 @@ export class ChatService {
     );
   }
 
-  async addThreadReply(messageContent: string) {
-      const messageAsJson = this.prepareMessageForDatabase(messageContent);
+  async addThreadReply(messageContent: string, fileUrl: string, fileType: string) {
+      const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
       await addDoc(
         this.firebaseService.getSubSubcollectionRef(
           'channels',
@@ -366,7 +366,7 @@ export class ChatService {
     this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
   }
 
-  prepareMessageForDatabase(messageContent: string): MessageInterface {
+  prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string): MessageInterface {
     const message = new Message(
       '',
       this.userService.currentOnlineUser.avatar,
@@ -375,7 +375,9 @@ export class ChatService {
       new Date(),
       messageContent,
       [],
-      0
+      0,
+      fileUrl,
+      fileType
     );
     return message.toJson();
   }

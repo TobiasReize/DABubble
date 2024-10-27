@@ -10,7 +10,9 @@ export class Message {
         public lastReplyAt: Date | undefined = undefined,
         public content: string = '',
         public reactions: Reaction[] = [],
-        public numberOfReplies: number = 0
+        public numberOfReplies: number = 0,
+        public fileUrl: string = '',
+        public fileType: string = ''
     ) {}
 
     toJson(): MessageInterface {
@@ -21,7 +23,9 @@ export class Message {
             lastReplyAt: this.lastReplyAt ? this.lastReplyAt.getTime() : 0,
             content: this.content,
             reactions: JSON.stringify(this.reactions),
-            numberOfReplies: this.numberOfReplies
+            numberOfReplies: this.numberOfReplies,
+            fileUrl: this.fileUrl,
+            fileType: this.fileType
         }
     }
 }
