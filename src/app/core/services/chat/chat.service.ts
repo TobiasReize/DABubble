@@ -315,6 +315,7 @@ export class ChatService {
       this.unsubMessages();
     }
     this.unsubMessages = this.subMessages(this.currentChannel().id);
+    this.getUsersInCurrentChannel();
   }
 
   changeChannel(id: string) {
