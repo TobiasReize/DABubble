@@ -354,7 +354,7 @@ export class ChatService {
   }
 
   findUsers(name: string) {
-    let users = this.userService.allUsers.filter(user => user.name.includes(name));
+    let users = this.userService.allUsers.filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
     users = users.filter(user => user.userUID !== this.userService.currentOnlineUser.userUID);
     return users;
   }
