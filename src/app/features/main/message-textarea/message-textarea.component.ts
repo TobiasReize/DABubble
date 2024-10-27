@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AtComponent } from './at/at.component';
 import { ChatUser } from '../../../core/models/user.class';
 import { MentionComponent } from './mention/mention.component';
-import { EmojiPickerComponent } from './emoji-picker/emoji-picker.component';
+import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 
 @Component({

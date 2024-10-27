@@ -72,6 +72,33 @@
     border-radius: 30px 0px 30px 30px;
 }
 
+.edit-message-container {
+    padding: 20px;
+    gap: 16px;
+    border-radius: 20px;
+    border: 1px solid #ADB0D9;
+    width: 70%;
+    background-color: white;
+}
+
+.edit-message-container-bottom {
+    @include dFlex($jc: space-between);
+}
+
+.edit-message-button-container {
+    @include dFlex($jc: normal);
+    gap: 32px;
+}
+
+.edit-message-textarea {
+    resize: none;
+    width: 100%;
+    border: unset;
+    &:focus {
+        outline: unset;
+    }
+}
+
 .message-img {
     max-width: 300px;
     object-fit: contain;
@@ -200,6 +227,15 @@
         background-color: $bg-color;
         color: $purple-3;
     }
+}
+
+.icon-btn {
+    position: relative;
+}
+
+app-emoji-picker {
+    left: 0px;
+    bottom: 44px;
 }
 
 @media (max-width: 1200px) {

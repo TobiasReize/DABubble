@@ -1,59 +1,60 @@
 <div class="message" [ngClass]="{ 'message-alternative' : isMe, 'thread-message' : isThreadMessage, 'thread-message-alternative' : isMe && isThreadMessage }">
     <img class="avatar avatar-70" src="{{ messageData.imageName }}" alt="{{messageData.imageName}}">
+    @if (!isMessageBeingEdited) {
     <div class="main-message-container" [ngClass]="isMe ? 'main-message-container-alternative' : ''">
-        <div class="message-header">
-            <span class="user-name">{{ messageData.userName }}</span>
-            <span class="message-posted-at">{{ messageData.postedAt.toLocaleTimeString().slice(0, -3) }}</span>
-        </div>
-        <div class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{messageData.content}}</div>
-        @if (messageData.fileUrl !== '' && messageData.fileType) {
-            <img class="message-img" src="{{messageData.fileUrl}}" alt="message image">
-        }
-        @if (messageData.numberOfReplies > 0 && !isThreadMessage) {
-            <div class="bottom-message-container">
-                <div (click)="openThread()" class="number-of-replies">{{ messageData.numberOfReplies }} Antworten</div>
-                @if (messageData.lastReplyAt) {
-                    <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt.toLocaleTimeString().slice(0, -3) }}</div>
-                }
+            <div class="message-header">
+                <span class="user-name">{{ messageData.userName }}</span>
+                <span class="message-posted-at">{{ messageData.postedAt.toLocaleTimeString().slice(0, -3) }}</span>
             </div>
-        }
-        @if (messageData.reactions && !isTopMessage) {
-        <div class="reactions-container">
-                @for (reaction of messageData.reactions; track reaction) {
-                    <div class="reaction-container">
-                        <button class="reaction" (click)="toggleReaction(reaction)">
-                            <img class="reaction-img" src="assets/img/emojis/{{reaction.emoji}}" alt="reaction emoji"><span>{{ reaction.userNames.length }}</span>
-                        </button>
-                        <div class="reaction-bubble">
-                            <img class="reaction-img" src="assets/img/emojis/{{reaction.emoji}}" alt="reaction emoji">
-                            <div>
-                                @for (user of filterReactionUserNames(reaction.userNames) | slice:0:3; track user) {
-                                    @if (user !== userName) {
-                                        <span class="reaction-bubble-username">{{ user }}</span><br>
+            <div #messageContent class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{messageData.content}}</div>
+            @if (messageData.fileUrl !== '' && messageData.fileType) {
+                <img class="message-img" src="{{messageData.fileUrl}}" alt="message image">
+            }
+            @if (messageData.numberOfReplies > 0 && !isThreadMessage) {
+                <div class="bottom-message-container">
+                    <div (click)="openThread()" class="number-of-replies">{{ messageData.numberOfReplies }} Antworten</div>
+                    @if (messageData.lastReplyAt) {
+                        <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt.toLocaleTimeString().slice(0, -3) }}</div>
+                    }
+                </div>
+            }
+            @if (messageData.reactions && !isTopMessage) {
+            <div class="reactions-container">
+                    @for (reaction of messageData.reactions; track reaction) {
+                        <div class="reaction-container">
+                            <button class="reaction" (click)="toggleReaction(reaction)">
+                                <img class="reaction-img" src="assets/img/emojis/{{reaction.emoji}}" alt="reaction emoji"><span>{{ reaction.userNames.length }}</span>
+                            </button>
+                            <div class="reaction-bubble">
+                                <img class="reaction-img" src="assets/img/emojis/{{reaction.emoji}}" alt="reaction emoji">
+                                <div>
+                                    @for (user of filterReactionUserNames(reaction.userNames) | slice:0:3; track user) {
+                                        @if (user !== userName) {
+                                            <span class="reaction-bubble-username">{{ user }}</span><br>
+                                        }
                                     }
-                                }
-                                @if (didIReact(reaction)) {
-                                    <span class="reaction-bubble-username">Du</span><br>
-                                }
-                                @if (reaction.userNames.length > 3 && !didIReact(reaction) || reaction.userNames.length > 4 && didIReact(reaction)) {
-                                    <span class="has-reacted">und weitere</span><br>
-                                    <span class="has-reacted">haben reagiert</span>
-                                }
-                                @else if (reaction.userNames.length > 1) {
-                                    <span class="has-reacted">haben reagiert</span>
-                                } @else {
                                     @if (didIReact(reaction)) {
-                                        <span class="has-reacted">hast reagiert</span>
-                                    } @else {
-                                        <span class="has-reacted">hat reagiert</span>
+                                        <span class="reaction-bubble-username">Du</span><br>
                                     }
-                                }
+                                    @if (reaction.userNames.length > 3 && !didIReact(reaction) || reaction.userNames.length > 4 && didIReact(reaction)) {
+                                        <span class="has-reacted">und weitere</span><br>
+                                        <span class="has-reacted">haben reagiert</span>
+                                    }
+                                    @else if (reaction.userNames.length > 1) {
+                                        <span class="has-reacted">haben reagiert</span>
+                                    } @else {
+                                        @if (didIReact(reaction)) {
+                                            <span class="has-reacted">hast reagiert</span>
+                                        } @else {
+                                            <span class="has-reacted">hat reagiert</span>
+                                        }
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-                <span class="material-symbols-rounded">add_reaction</span>
-        </div>
+                    }
+                    <span class="material-symbols-rounded">add_reaction</span>
+            </div>
         }
     </div>
     <div class="message-menu chat-message-menu" [ngClass]="{ 'chat-message-menu-alternative': isMe }">
@@ -80,7 +81,7 @@
         }
         @if (isMoreMenuOpen) {
             <div class="more-menu">
-                <div class="edit-message">Nachricht&nbsp;bearbeiten</div>
+                <div class="edit-message" (click)="editMessage()">Nachricht&nbsp;bearbeiten</div>
             </div>
         }
         @if (areReactionOptionsOpen) {
@@ -93,4 +94,22 @@
             </div>
         }
     </div>
+    }
+    @if (isMessageBeingEdited) {
+        <div class="edit-message-container">
+            <textarea #editMessageContent [(ngModel)]="editMessageText"  name="edit-message-content" id="edit-message-content" class="edit-message-textarea"></textarea>
+            <div class="edit-message-container-bottom">
+                <button class="icon-btn" (click)="toggleEmojiPickerForEditing()">
+                    <span class="material-symbols-rounded">sentiment_satisfied</span>
+                    @if (isEmojiPickerForEditingVisible()) {
+                        <app-emoji-picker (selectEmojiEvent)="insertEmoji($event)"></app-emoji-picker>
+                    }
+                </button>
+                <div class="edit-message-button-container">
+                    <button class="btn btn-sec" (click)="stopEditingMessage()">Abbrechen</button>
+                    <button class="btn btn-prim" (click)="saveEditedMessage()">Speichern</button>
+                </div>
+            </div>
+        </div>
+    }
 </div>

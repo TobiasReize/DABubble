@@ -77,6 +77,9 @@ export class ChatService {
   private openEmojiPickerForThreadSignal = signal<boolean>(false);
   readonly openEmojiPickerForThread = this.openEmojiPickerForThreadSignal.asReadonly();
 
+  private openEmojiPickerForEditingSignal = signal<boolean>(false);
+  readonly openEmojiPickerForEditing = this.openEmojiPickerForEditingSignal.asReadonly();
+
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
@@ -264,7 +267,7 @@ export class ChatService {
   }
 
   toggleVisibilitySignal(visibilitySignal: WritableSignal<boolean>) {
-    const visibilitySignals = [this.openAddPeopleSignal, this.openEditChannelSignal, this.openMembersSignal, this.openAtSignal, this.openAtForThreadSignal, this.openEmojiPickerSignal, this.openEmojiPickerForThreadSignal];
+    const visibilitySignals = [this.openAddPeopleSignal, this.openEditChannelSignal, this.openMembersSignal, this.openAtSignal, this.openAtForThreadSignal, this.openEmojiPickerSignal, this.openEmojiPickerForThreadSignal, this.openEmojiPickerForEditingSignal];
     visibilitySignals.forEach(s => s != visibilitySignal ? s.set(false) : null);
     visibilitySignal.set(!visibilitySignal());
   }
@@ -295,6 +298,10 @@ export class ChatService {
 
   toggleEmojiPickerForThreadVisibility() {
     this.toggleVisibilitySignal(this.openEmojiPickerForThreadSignal);
+  }
+
+  toggleEmojiPickerForEditingVisibility() {
+    this.toggleVisibilitySignal(this.openEmojiPickerForEditingSignal);
   }
 
   resubThread() {

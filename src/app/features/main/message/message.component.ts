@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { Reaction } from '../../../core/models/reaction.class';
 import { UserService } from '../../../core/services/user/user.service';
+import { FormsModule } from '@angular/forms';
+import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [CommonModule],
+  imports: [EmojiPickerComponent, CommonModule, FormsModule],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
@@ -23,6 +25,9 @@ export class MessageComponent {
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;
   areReactionOptionsOpen: boolean = false;
+  isMessageBeingEdited: boolean = false;
+  editMessageText: string = '';
+  isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
 
   constructor(private chatService: ChatService, private userService: UserService) {}
 
@@ -89,8 +94,37 @@ export class MessageComponent {
     this.areReactionOptionsOpen = false;
   }
 
+  closeMoreMenu() {
+    this.isMoreMenuOpen = false;
+  }
+
   toggleReactionOptionMenu() {
     this.areReactionOptionsOpen = !this.areReactionOptionsOpen;
     this.isMoreMenuOpen = false;
+  }
+
+  editMessage() {
+    this.closeMoreMenu();
+    this.isMessageBeingEdited = true;
+    this.editMessageText = this.messageData.content;
+  }
+
+  stopEditingMessage() {
+    this.isMessageBeingEdited = false;
+  }
+
+  saveEditedMessage() {
+    this.chatService.updateChatMessage(this.messageData.id, {
+      content: this.editMessageText
+    })
+    this.stopEditingMessage();
+  }
+
+  toggleEmojiPickerForEditing() {
+    this.chatService.toggleEmojiPickerForEditingVisibility();
+  }
+
+  insertEmoji(emoji: string) {
+    this.editMessageText += emoji;
   }
 }
