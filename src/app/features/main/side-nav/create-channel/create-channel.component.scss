@@ -1,5 +1,7 @@
 @import "../../../../../styles/mixin.scss";
 @import "../../../../../styles/styles2.scss";
+@import "../../../../../styles/fontStyles.scss";
+@import "../../../../../styles/gap.scss";
 * {
   @include fontStyle2;
 }
@@ -41,7 +43,7 @@ section {
 
 .addPeople {
   width: 710px;
-  height: 279px;
+  min-height: 279px;
   padding: 40px;
   gap: 20px;
   border-radius: 30px;
@@ -51,4 +53,18 @@ section {
   div {
     width: 100%;
   }
+}
+
+.checkbox {
+  width: 20px !important;
+  height: 20px !important;
+  border: 1px solid rgba(173, 176, 217, 1);
+  background: rgba(255, 255, 255, 1);
+  border-radius: 100%;
+}
+
+.checkBox-choosed {
+  background-color: blue;
+  width: 12px;
+  height: 12px;
 }

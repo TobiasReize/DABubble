@@ -14,10 +14,16 @@ import { FirebaseService } from '../../../../core/services/firebase/firebase.ser
   styleUrl: './create-channel.component.scss',
 })
 export class CreateChannelComponent {
-  constructor(public sideNavService: SideNavService, public chatService: ChatService, public userService: UserService, public fireBaseService: FirebaseService) {}
+  constructor(
+    public sideNavService: SideNavService,
+    public chatService: ChatService,
+    public userService: UserService,
+    public fireBaseService: FirebaseService
+  ) {}
 
   userUIDs: string[] = [];
-  channelId: string = "";
+  channelId: string = '';
+  AddSpecificPeople: boolean = false;
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
@@ -28,8 +34,12 @@ export class CreateChannelComponent {
   }
 
   async createChannel() {
-    let channelName: HTMLInputElement = document.getElementById('input1') as HTMLInputElement;
-    let description: HTMLInputElement = document.getElementById('input2') as HTMLInputElement;
+    let channelName: HTMLInputElement = document.getElementById(
+      'input1'
+    ) as HTMLInputElement;
+    let description: HTMLInputElement = document.getElementById(
+      'input2'
+    ) as HTMLInputElement;
 
     let channel = new Channel(
       this.chatService.contactIndex,
@@ -37,17 +47,47 @@ export class CreateChannelComponent {
       description.value,
       this.userUIDs,
       this.userService.currentOnlineUser.name
-    )
+    );
 
-    this.channelId = doc(collection(this.fireBaseService.firestore, "channels")).id;
+    this.channelId = doc(
+      collection(this.fireBaseService.firestore, 'channels')
+    ).id;
 
     this.sideNavService.addChannel(channel);
 
-    await setDoc(doc(this.fireBaseService.firestore, "channels", this.channelId), {
-      name: channelName.value,
-      description: description.value,
-      createdBy: this.userService.currentOnlineUser.name,
-      userIds: this.userUIDs
-    });
+    await setDoc(
+      doc(this.fireBaseService.firestore, 'channels', this.channelId),
+      {
+        name: channelName.value,
+        description: description.value,
+        createdBy: this.userService.currentOnlineUser.name,
+        userIds: this.userUIDs,
+      }
+    );
+
+    const addPeopleDiv: HTMLElement = document.getElementById(
+      'addPeople'
+    ) as HTMLElement;
+    addPeopleDiv.style.display = 'flex';
+    const createChannelDiv: HTMLElement = document.getElementById(
+      'createChannel'
+    ) as HTMLElement;
+    createChannelDiv.style.display = 'none';
+  }
+
+  selectMembersFromChannel() {
+    const checkBoxSelectMembersFromChannel =
+      document.getElementById('checkbox1');
+  }
+
+  chooseMembers() {
+    const checkBoxSelectMembers = document.getElementById('checkboxBlue2');
+    if (checkBoxSelectMembers!.style.display == 'flex') {
+      checkBoxSelectMembers!.style.display = 'none';
+      this.AddSpecificPeople = false;
+    } else {
+      checkBoxSelectMembers!.style.display = 'flex';
+      this.AddSpecificPeople = true;
+    }
   }
 }

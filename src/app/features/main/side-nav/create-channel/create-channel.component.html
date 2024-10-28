@@ -48,21 +48,57 @@
     </div>
   </section>
 
-  <div class="addPeople dFlexColumn">
+  <div
+    id="addPeople"
+    class="addPeople dFlexColumn dNone"
+    (click)="onDiv2Click($event)"
+  >
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Leute hinzufügen</span>
-      <span class="material-symbols-rounded cursor-pointer">close</span></div>
-    <div>
-    <div>
-      <div>
-        <div class="checkbox"></div>
-        <span class="fontStyle2">Alle Mitglieder von <span class="blueColor">OfficeTeam</span> hinzufügen</span>
+      <img
+        class="icon-btn"
+        src="assets/img/main/close (2).png"
+        (click)="onDiv1Click()"
+      />
+    </div>
+    <div class="dFlexColumn gap20">
+      <div class="dFlexColumn gap20">
+        <div class="dFlexRowFlex-StartCenter gap20">
+          <div
+            id="checkbox1"
+            class="dFlexRowCenterCenter checkbox cursor-pointer"
+            (click)="selectMembersFromChannel()"
+          >
+            <div class="checkBox-choosed"></div>
+          </div>
+          <span class="fontStyle2"
+            >Alle Mitglieder von
+            <span class="blueColor">OfficeTeam</span> hinzufügen</span
+          >
+        </div>
+        <div id="checkbox2" class="dFlexRowFlex-StartCenter gap20">
+          <div
+            (click)="chooseMembers()"
+            class="dFlexRowCenterCenter checkbox cursor-pointer"
+          >
+            <div
+              id="checkboxBlue2"
+              class="checkBox-choosed"
+              style="display: none"
+            ></div>
+          </div>
+          <span class="fontStyle2">Bestimmte Leute hinzufügen</span>
+        </div>
       </div>
-      <div>
-        <div class="checkbox"></div>
-        <span>Bestimmte Leute hinzufügen</span>
+
+      <!-- input -->
+      @if(AddSpecificPeople) {
+        <input type="text" class="inputElement" placeholder="Name eingeben"/>
+      }
+
+      <div class="dFlexRowFlexEndCenter">
+        <button class="btn btn-prim">Erstellen</button>
       </div>
     </div>
-    <button>Erstellen</button>
   </div>
 </div>
