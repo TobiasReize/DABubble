@@ -48,6 +48,23 @@ export class UserService implements OnDestroy {
     });
   }
 
+  // Should we do this instead?
+  // private currentOnlineUserSignal = signal<ChatUser>(new ChatUser({
+  //   name: 'Gast',
+  //   avatar: 'assets/img/profile.svg',
+  //   userUID: '0'
+  // }));
+  // readonly currentOnlineUser = this.currentOnlineUserSignal.asReadonly();
+
+  // constructor(private router: Router) {
+  //   this.unsubUserCol = this.subUserCol();
+  //   this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
+  //     if (currentUser) {
+  //       this.currentOnlineUserSignal.set(this.allUsers()[this.getUserIndexWithUID(currentUser.uid)]);
+  //     }
+  //   });
+  // }
+
 
   subUserCol() {
     return onSnapshot(this.firebaseService.getCollectionRef('users'), usersCollection => {
