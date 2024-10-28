@@ -8,13 +8,13 @@
 
     <!-- avatar -->
     <div class="dFlexRowCenterCenter">
-      <img class="avatar avatar-200" [src]="userService.allUsers[chatService.contactIndex].avatar" />
+      <img class="avatar avatar-200" [src]="userService.allUsers()[chatService.contactIndex].avatar" />
     </div>
 
     <!-- Bearbeiten -->
     <div class="dFlexColumnCenterFlexStart gap15 width-100">
       <div class="dFlexRowSpaceBetweenCenter width-100">
-        <span class="nameCard">{{userService.allUsers[chatService.contactIndex].name}}</span>
+        <span class="nameCard">{{userService.allUsers()[chatService.contactIndex].name}}</span>
       </div>
       <div class="gap15 dFlexRowCenterCenter">
         <!-- <img src="assets/img/main/{{chatService.currentUserStatus}}.png" />
@@ -29,7 +29,7 @@
         <span class="email">E-Mail-Adresse</span>
       </div>
       <div class="width-100">
-        <span class="emailLink">{{userService.allUsers[chatService.contactIndex].email}}</span>
+        <span class="emailLink">{{userService.allUsers()[chatService.contactIndex].email}}</span>
       </div>
     </div>
 

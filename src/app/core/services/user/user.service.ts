@@ -15,7 +15,8 @@ export class UserService implements OnDestroy {
   firebaseService = inject(FirebaseService);
   private auth = inject(Auth);
   newUser = new ChatUser();
-  allUsers: ChatUser[] = [];
+  private allUsersSignal= signal<ChatUser[]>([]);
+  readonly allUsers = this.allUsersSignal.asReadonly();
   unsubUserCol: Unsubscribe;
   user$ = user(this.auth);
   userSubscription!: Subscription;
@@ -23,8 +24,8 @@ export class UserService implements OnDestroy {
   readonly currentUserUID = this.currentUserUIDSignal.asReadonly();
 
   currentOnlineUser: Signal<ChatUser> = computed(() => {
-    if (this.currentUserUID() && this.allUsers.length > 0) {
-      return this.allUsers[this.getUserIndexWithUID(this.currentUserUID())];
+    if (this.currentUserUID() && this.allUsers().length > 0) {
+      return this.allUsers()[this.getUserIndexWithUID(this.currentUserUID())];
     } else {
       return new ChatUser();
     }
@@ -36,7 +37,7 @@ export class UserService implements OnDestroy {
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
       if (currentUser) {
         this.currentUserUIDSignal.set(currentUser.uid);
-        // console.log(currentUser);
+        // console.log('currentUser', currentUser);
       } else {
         this.currentUserUIDSignal.set('0');
       }
@@ -46,10 +47,11 @@ export class UserService implements OnDestroy {
 
   subUserCol() {
     return onSnapshot(this.firebaseService.getCollectionRef('users'), usersCollection => {
-      this.allUsers = [];
+      this.allUsersSignal.set([]);
       usersCollection.forEach(user => {
-        this.allUsers.push(new ChatUser(user.data()));
+        this.allUsersSignal().push(new ChatUser(user.data()));
       });
+      // console.log('All users', this.allUsers());
     });
   }
 
@@ -91,7 +93,7 @@ export class UserService implements OnDestroy {
 
 
   getUserIndexWithUID(userUID: string) {
-    return this.allUsers.findIndex(singleUser => singleUser.userUID == userUID);
+    return this.allUsers().findIndex(singleUser => singleUser.userUID == userUID);
   }
 
 

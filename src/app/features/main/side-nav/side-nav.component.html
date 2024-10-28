@@ -107,13 +107,13 @@
 
       <!-- contacts -->
       <div class="gap13" *ngIf="sideNavService.contactsOpened">
-        <div *ngFor="let user of userService.allUsers; let i = index" class="contactsDiv" (click)="(chatService.openChat(i, user.name, user.email, user.avatar, user.password, user.userUID))">
+        <div *ngFor="let user of userService.allUsers(); let i = index" class="contactsDiv" (click)="(chatService.openChat(i, user.name, user.email, user.avatar, user.password, user.userUID))">
           <img class="avatar avatar-50" [src]="user.avatar"/>
           <span id="{{ i }}">
             @if(userService.currentOnlineUser().name == user.name) {
-              {{ userService.allUsers[i].name + " (Du)" }}
+              {{ userService.allUsers()[i].name + " (Du)" }}
             } @else {
-              {{ userService.allUsers[i].name }}
+              {{ userService.allUsers()[i].name }}
             }
           </span>
         </div>

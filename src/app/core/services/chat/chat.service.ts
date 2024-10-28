@@ -346,7 +346,7 @@ export class ChatService {
     const foundUsers: ChatUser[] = [];
     if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
       this.currentChannel().userUIDs.forEach(userUID => {
-        const foundUser = this.userService.allUsers.find(user => userUID === user.userUID);
+        const foundUser = this.userService.allUsers().find(user => userUID === user.userUID);
         if (foundUser) {
           foundUsers.push(foundUser);
         }
@@ -362,7 +362,7 @@ export class ChatService {
   }
 
   findUsers(name: string) {
-    let users = this.userService.allUsers.filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
+    let users = this.userService.allUsers().filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
     users = users.filter(user => user.userUID !== this.userService.currentOnlineUser().userUID);
     return users;
   }
@@ -401,7 +401,7 @@ export class ChatService {
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = id;
-    if (this.userService.allUsers[this.contactIndex].name === this.userService.currentOnlineUser().name) {
+    if (this.userService.allUsers()[this.contactIndex].name === this.userService.currentOnlineUser().name) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
