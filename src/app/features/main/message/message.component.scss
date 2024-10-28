@@ -99,12 +99,6 @@
     }
 }
 
-.message-img {
-    max-height: 200px;
-    max-width: 300px;
-    object-fit: contain;
-}
-
 .user-name {
         @include fontStyle3;
 }

@@ -138,6 +138,12 @@ hr {
   width: 34px;
 }
 
+.message-img {
+  max-height: 200px;
+  max-width: 300px;
+  object-fit: contain;
+}
+
 .avatar {
   border-radius: 50%;
 }
