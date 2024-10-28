@@ -23,7 +23,7 @@ export class UserService implements OnDestroy {
   currentUserUIDSignal = signal<string>('');
   readonly currentUserUID = this.currentUserUIDSignal.asReadonly();
 
-  currentOnlineUser: Signal<ChatUser> = computed(() => {
+  readonly currentOnlineUser: Signal<ChatUser> = computed(() => {
     if (this.currentUserUID() && this.allUsers().length > 0) {
       return this.allUsers()[this.getUserIndexWithUID(this.currentUserUID())];
     } else {
