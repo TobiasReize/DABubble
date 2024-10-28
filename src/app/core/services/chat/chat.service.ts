@@ -131,7 +131,9 @@ export class ChatService {
         lastReplyAt,
         data['content'],
         reactions,
-        data['numberOfReplies']
+        data['numberOfReplies'],
+        data['fileUrl'],
+        data['fileType']
       );
       return message;
     } else {

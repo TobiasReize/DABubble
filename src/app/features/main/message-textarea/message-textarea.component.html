@@ -1,9 +1,10 @@
 <div class="textarea-container">
     <span #mentionInsertion contenteditable="false"></span>
-    <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true"></div>
-    @if (fileUrl && isImage(fileType)) {
-        <img src="{{fileUrl}}" alt="message image">
-    }
+    <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true">
+        @if (fileUrl && isImage(fileType)) {
+            <img src="{{fileUrl}}" alt="message image">
+        }
+    </div>
     <div class="textarea-container-inside">
         <div class="textarea-symbols-left">
             <button class="icon-btn">
