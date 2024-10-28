@@ -22,7 +22,7 @@ export class MessageComponent {
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis;
   reactionOptions: Signal<string[]> = computed(() => ['1f64c.svg', '1f642.svg', '1f680.svg', '1f913.svg', '2705.svg'].filter(emoji => !this.menuEmojis().includes(emoji)));
   replies: Signal<Message[]> = this.chatService.threadReplies;
-  userName: string = this.userService.currentOnlineUser.name;
+  userName: string = this.userService.currentOnlineUser().name;
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;
   areReactionOptionsOpen: boolean = false;

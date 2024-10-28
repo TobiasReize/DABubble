@@ -36,7 +36,7 @@ export class CreateChannelComponent {
       channelName.value,
       description.value,
       this.userUIDs,
-      this.userService.currentOnlineUser.name
+      this.userService.currentOnlineUser().name
     )
 
     this.channelId = doc(collection(this.fireBaseService.firestore, "channels")).id;
@@ -46,7 +46,7 @@ export class CreateChannelComponent {
     await setDoc(doc(this.fireBaseService.firestore, "channels", this.channelId), {
       name: channelName.value,
       description: description.value,
-      createdBy: this.userService.currentOnlineUser.name,
+      createdBy: this.userService.currentOnlineUser().name,
       userIds: this.userUIDs
     });
   }

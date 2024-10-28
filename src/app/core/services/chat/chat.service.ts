@@ -84,7 +84,7 @@ export class ChatService {
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
 
-  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser.userUID));
+  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser().userUID));
   readonly usersInCurrentChannelWithoutCurrentUser = this.usersInCurrentChannelWithoutCurrentUserSignal;
 
   private channelsSignal = signal<Channel[]>([]);
@@ -335,7 +335,7 @@ export class ChatService {
 
   leaveChannel() {
     if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
-      const newuserUIDs = this.currentChannel().userUIDs.filter(userUID => userUID !== this.userService.currentOnlineUser.userUID);
+      const newuserUIDs = this.currentChannel().userUIDs.filter(userUID => userUID !== this.userService.currentOnlineUser().userUID);
       this.updateChannel({
         userUIDs: newuserUIDs
       })
@@ -363,7 +363,7 @@ export class ChatService {
 
   findUsers(name: string) {
     let users = this.userService.allUsers.filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
-    users = users.filter(user => user.userUID !== this.userService.currentOnlineUser.userUID);
+    users = users.filter(user => user.userUID !== this.userService.currentOnlineUser().userUID);
     return users;
   }
 
@@ -376,8 +376,8 @@ export class ChatService {
   prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string): MessageInterface {
     const message = new Message(
       '',
-      this.userService.currentOnlineUser.avatar,
-      this.userService.currentOnlineUser.name,
+      this.userService.currentOnlineUser().avatar,
+      this.userService.currentOnlineUser().name,
       new Date(),
       new Date(),
       messageContent,
@@ -401,7 +401,7 @@ export class ChatService {
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = id;
-    if (this.userService.allUsers[this.contactIndex].name === this.userService.currentOnlineUser.name) {
+    if (this.userService.allUsers[this.contactIndex].name === this.userService.currentOnlineUser().name) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {

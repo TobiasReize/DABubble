@@ -20,7 +20,7 @@ export class DirectMessageComponent {
   openViewProfile(contactName: string) {
     if (
       this.userService.allUsers[this.chatService.contactIndex].name ==
-      this.userService.currentOnlineUser.name
+      this.userService.currentOnlineUser().name
     ) {
       this.chatService.profileViewLoggedUser = true;
     } else {
