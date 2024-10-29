@@ -3,7 +3,6 @@ import { doc, onSnapshot, setDoc, Unsubscribe } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { ChatUser } from '../../models/user.class';
 import { Auth, getAuth, signOut, updateEmail, User, user } from '@angular/fire/auth';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -20,50 +19,27 @@ export class UserService implements OnDestroy {
   unsubUserCol: Unsubscribe;
   user$ = user(this.auth);
   userSubscription!: Subscription;
-  currentUserUIDSignal = signal<string>('');
+  currentUserUIDSignal = signal<string>('0');
   readonly currentUserUID = this.currentUserUIDSignal.asReadonly();
 
   readonly currentOnlineUser: Signal<ChatUser> = computed(() => {
-    if (this.currentUserUID() !== '0' && this.allUsers().length > 0) {
+    if (this.currentUserUID() && this.allUsers().length > 0) {
       return this.allUsers()[this.getUserIndexWithUID(this.currentUserUID())];
     } else {
-      return new ChatUser({
-        name: 'Gast',
-        avatar: 'assets/img/profile.svg',
-        userUID: '0'
-      });
+      return new ChatUser();
     }
   });
 
 
-  constructor(private router: Router) {
+  constructor() {
     this.unsubUserCol = this.subUserCol();
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
+      console.log('currentUser', currentUser);
       if (currentUser) {
         this.currentUserUIDSignal.set(currentUser.uid);
-        // console.log('currentUser', currentUser);
-      } else {
-        this.currentUserUIDSignal.set('0');
       }
     });
   }
-
-  // Should we do this instead?
-  // private currentOnlineUserSignal = signal<ChatUser>(new ChatUser({
-  //   name: 'Gast',
-  //   avatar: 'assets/img/profile.svg',
-  //   userUID: '0'
-  // }));
-  // readonly currentOnlineUser = this.currentOnlineUserSignal.asReadonly();
-
-  // constructor(private router: Router) {
-  //   this.unsubUserCol = this.subUserCol();
-  //   this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
-  //     if (currentUser) {
-  //       this.currentOnlineUserSignal.set(this.allUsers()[this.getUserIndexWithUID(currentUser.uid)]);
-  //     }
-  //   });
-  // }
 
 
   subUserCol() {
@@ -123,7 +99,6 @@ export class UserService implements OnDestroy {
     signOut(auth)
       .then(() => {
         console.log('Sign-out successful');
-        this.router.navigateByUrl('');
       }).catch((error) => {
         console.log('Error:', error);
       })

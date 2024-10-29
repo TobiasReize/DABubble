@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -6,9 +6,7 @@ import { IntroComponent } from './intro/intro.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
-import { Auth, browserSessionPersistence, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User, user } from '@angular/fire/auth';
-import { Subscription } from 'rxjs';
-import { ChatUser } from '../../core/models/user.class';
+import { browserSessionPersistence, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-log-in',
@@ -132,6 +130,7 @@ export class LogInComponent implements OnInit {
 
 
   signInWithGuest() {
+    this.userService.signOutUser();
     this.userService.currentUserUIDSignal.set('0');
     console.log('Aktueller User:', this.userService.currentOnlineUser());
     this.router.navigateByUrl('main');
