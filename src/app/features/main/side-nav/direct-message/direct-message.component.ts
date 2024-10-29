@@ -16,15 +16,4 @@ export class DirectMessageComponent {
     public chatService: ChatService,
     public userService: UserService
   ) {}
-
-  openViewProfile(contactName: string) {
-    if (
-      this.userService.allUsers[this.chatService.contactIndex].name ==
-      this.userService.currentOnlineUser.name
-    ) {
-      this.chatService.profileViewLoggedUser = true;
-    } else {
-      this.chatService.profileViewUsersActive = true;
-    }
-  }
 }

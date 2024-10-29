@@ -25,7 +25,8 @@
           type="text"
           id="input1"
           placeholder="z.B. Kooperationsprojekte"
-          required
+          [(ngModel)]="channelName"
+          (keyup)="checkInputs()"
         />
       </div>
     </div>
@@ -40,17 +41,24 @@
         type="text"
         id="input2"
         placeholder="Dein Text hier"
-        required
+        [(ngModel)]="description"
       />
     </div>
     <div class="dFlexRowFlexEndCenter">
-      <button class="btn btn-prim" (click)="createChannel()">Erstellen</button>
+      <button
+        class="btn btn-prim"
+        (click)="addPeople()"
+        [disabled]="inputsAreEmpty"
+      >
+        Erstellen
+      </button>
     </div>
   </section>
 
   <div
     id="addPeople"
-    class="addPeople dFlexColumn dNone"
+    class="addPeople dFlexColumn"
+    style="display: none"
     (click)="onDiv2Click($event)"
   >
     <div class="dFlexRowSpaceBetweenCenter">
@@ -64,28 +72,29 @@
     <div class="dFlexColumn gap20">
       <div class="dFlexColumn gap20">
         <div class="dFlexRowFlex-StartCenter gap20">
+          <!-- checkbox1 -->
           <div
             id="checkbox1"
             class="dFlexRowCenterCenter checkbox cursor-pointer"
-            (click)="selectMembersFromChannel()"
+            (click)="addMembersFromDevspace()"
           >
-            <div class="checkBox-choosed"></div>
+            <div
+              *ngIf="selectMembersFromDevspace"
+              class="checkBox-choosed"
+            ></div>
           </div>
           <span class="fontStyle2"
             >Alle Mitglieder von
-            <span class="blueColor">OfficeTeam</span> hinzufügen</span
+            <span class="blueColor">Devspace</span> hinzufügen</span
           >
         </div>
         <div id="checkbox2" class="dFlexRowFlex-StartCenter gap20">
+          <!-- checkbox2 -->
           <div
-            (click)="chooseMembers()"
+            (click)="chooseSpecificMembers()"
             class="dFlexRowCenterCenter checkbox cursor-pointer"
           >
-            <div
-              id="checkboxBlue2"
-              class="checkBox-choosed"
-              style="display: none"
-            ></div>
+            <div *ngIf="selectSpecificMembers" class="checkBox-choosed"></div>
           </div>
           <span class="fontStyle2">Bestimmte Leute hinzufügen</span>
         </div>
@@ -93,11 +102,22 @@
 
       <!-- input -->
       @if(AddSpecificPeople) {
-        <input type="text" class="inputElement" placeholder="Name eingeben"/>
+      <input type="text" class="inputElement" placeholder="Name eingeben" [(ngModel)]="addedPeopleToTheChannel" (keyup)="checkIfPeopleAddedToTheChannel()"/>
       }
 
+      <!-- @if (!selectedUser && userOptions.length > 0) { -->
+        <!-- <div class="people">
+            @for (user of userOptions; track user.userUID) {
+                <div class="person" (click)="selectUser($index)">
+                    <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}">
+                    <span class="user-name">{{ user.name }}</span>
+                </div>
+            }
+        </div> -->
+      <!-- } -->
+
       <div class="dFlexRowFlexEndCenter">
-        <button class="btn btn-prim">Erstellen</button>
+        <button class="btn btn-prim" [disabled]="notAddedSpecificPeopleToTheChannel">Erstellen</button>
       </div>
     </div>
   </div>

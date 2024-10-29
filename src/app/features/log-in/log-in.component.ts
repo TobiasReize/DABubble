@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -20,17 +20,13 @@ import { ChatUser } from '../../core/models/user.class';
     '../../../styles/login.scss'
   ]
 })
-export class LogInComponent implements OnDestroy {
+export class LogInComponent implements OnInit {
 
   hideIntroScreen: boolean = false;
   passwordFalse: boolean = false;
   userService = inject(UserService);
-  private auth = inject(Auth);
   forwardedEmail: string | null = null;
   googleLoginError: boolean = false;
-
-  user$ = user(this.auth);
-  userSubscription: Subscription;
   
   loginData = {
     email: '',
@@ -38,12 +34,7 @@ export class LogInComponent implements OnDestroy {
   }
 
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute) {
-    this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
-      //handle user state changes here. Note, that user will be null if there is no currently logged in user.
-      console.log('User subscription:', currentUser);
-    });
-  }
+  constructor(private router: Router, private activeRoute: ActivatedRoute) { }
 
 
   ngOnInit(): void {
@@ -90,8 +81,8 @@ export class LogInComponent implements OnDestroy {
     await signInWithEmailAndPassword(auth, this.loginData.email, this.loginData.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndexWithUID(user.uid)];
-        console.log('Aktueller User:', this.userService.currentOnlineUser);
+        this.userService.currentUserUIDSignal.set(user.uid);
+        console.log('Aktueller User:', this.userService.currentOnlineUser());
         this.router.navigateByUrl('main');
       })
       .catch((error) => {
@@ -110,8 +101,8 @@ export class LogInComponent implements OnDestroy {
       .then(async (result) => {
         const user = result.user;
         await this.saveGoogleUser(user);  //await, damit der neue User gefunden werden kann und als currentOnlineUser übergeben werden kann!
-        this.userService.currentOnlineUser = this.userService.allUsers[this.userService.getUserIndexWithUID(user.uid)];
-        console.log('Aktueller User:', this.userService.currentOnlineUser);
+        this.userService.currentUserUIDSignal.set(user.uid);
+        console.log('Aktueller User:', this.userService.currentOnlineUser());
         this.router.navigateByUrl('main');
       }).catch((error) => {
         this.googleLoginError = true;
@@ -141,17 +132,9 @@ export class LogInComponent implements OnDestroy {
 
 
   signInWithGuest() {
-    this.userService.currentOnlineUser = new ChatUser({
-      name: 'Gast',
-      avatar: 'assets/img/profile.svg',
-      userUID: '0'
-    });
+    this.userService.currentUserUIDSignal.set('0');
+    console.log('Aktueller User:', this.userService.currentOnlineUser());
     this.router.navigateByUrl('main');
-  }
- 
-
-  ngOnDestroy() {
-    this.userSubscription.unsubscribe();
   }
 
 

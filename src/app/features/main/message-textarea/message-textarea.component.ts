@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { AtComponent } from './at/at.component';
 import { ChatUser } from '../../../core/models/user.class';
 import { MentionComponent } from './mention/mention.component';
-import { EmojiPickerComponent } from './emoji-picker/emoji-picker.component';
+import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
+import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-message-textarea',
@@ -21,36 +22,61 @@ export class MessageTextareaComponent {
   isEmojiPickerVisible: Signal<boolean> = this.chatService.openEmojiPicker;
   @ViewChild('editableTextarea') editableTextarea!: ElementRef
   @ViewChild('mentionInsertion', { read: ViewContainerRef }) mentionInsertion!: ViewContainerRef;
+  uploadInfo: string = '';
+  uploadFile: null | 'inProgress' | 'done' = null;
+  uploadError: boolean = false;
+  fileUrl: string = '';
+  fileType: string = '';
 
-  constructor(private chatService: ChatService, private renderer: Renderer2) { }
+  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2) { }
+
+  ngOnInit() {
+    if (this.type === 'thread') {
+      this.isAtVisible = this.chatService.openAtForThread;
+      this.isEmojiPickerVisible = this.chatService.openEmojiPickerForThread;
+    }
+  }
 
   addMessage() {
     this.saveMessageText();
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
-        this.chatService.addChatMessage(this.messageText);
+        this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType);
       } else if (this.type === 'thread') {
-        this.chatService.addThreadReply(this.messageText);
+        this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType);
       }
       this.messageText = '';
+      this.editableTextarea.nativeElement.innerHTML = '';
     }
   }
 
   toggleAtVisibility() {
-    this.chatService.toggleAtVisibility();
+    if (this.type === 'chat') {
+      this.chatService.toggleAtVisibility();
+    } else {
+      this.chatService.toggleAtForThreadVisibility();
+    }
   }
 
   toggleEmojiPickerVisibility() {
-    this.chatService.toggleEmojiPickerVisibility();
+    if (this.type === 'chat') {
+      this.chatService.toggleEmojiPickerVisibility();
+    } else {
+      this.chatService.toggleEmojiPickerForThreadVisibility();
+    }
   }
 
-  addMention(user: ChatUser) {
+  removeBrTag() {
     if (this.editableTextarea.nativeElement.textContent == '') {
       const child = this.editableTextarea.nativeElement.firstElementChild;
       if (child && child.tagName === 'BR') {
         child.remove();
       }
     }
+  }
+
+  addMention(user: ChatUser) {
+    this.removeBrTag();
     const mention = this.mentionInsertion.createComponent(MentionComponent);
     mention.instance.user = user;
     this.renderer.appendChild(this.editableTextarea.nativeElement, mention.location.nativeElement);
@@ -61,7 +87,58 @@ export class MessageTextareaComponent {
   }
 
   insertEmoji(emoji: string) {
-    this.editableTextarea.nativeElement.textContent += emoji;
+    this.removeBrTag();
+    this.editableTextarea.nativeElement.innerHTML += emoji;
+  }
+
+  isImage(fileType: string) {
+    return fileType === 'image/jpeg' || fileType === 'image/png' || fileType === 'image/svg+xml' || fileType === 'image/webp';
+  }
+
+  addFile(input: HTMLInputElement) {
+    this.uploadFile = 'inProgress';
+    this.uploadError = false;
+    this.uploadInfo = '';
+    const file = input.files?.item(0);
+    if (file) {
+      console.log('file', file);
+      switch (true) {
+        case (!this.isImage(file.type) && file.type != 'application/pdf'):
+          this.handleUploadError('type');
+          break;
+        case file.size >= 1000000:
+          this.handleUploadError('size');
+          break;
+        default:
+          this.fileType = file.type;
+          this.uploadFileToStorage(file);
+      }
+    }
+  }
+
+  async uploadFileToStorage(file: File) {
+    try {
+      const path = 'message-images/' + file.name;
+      await this.firebaseService.uploadFileToStorage(file, path);
+      this.fileUrl = this.firebaseService.downloadURL;
+      this.uploadFile = 'done';
+    } catch (error) {
+      this.handleUploadError('else');
+      console.log('Error:', error);
+    }
+  }
+
+  handleUploadError(info: string) {
+    this.uploadError = true;
+    this.uploadFile = 'done';
+    if (info == 'size') {
+      this.uploadInfo = 'Datei zu groß! Dateigröße < 1MB';
+    } else if (info == 'type') {
+      this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG, WEBP oder PDF auswählen';
+    } else {
+      this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
+    }
+    console.log(this.uploadInfo);
   }
 
 }

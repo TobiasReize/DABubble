@@ -73,3 +73,21 @@ textarea {
         color: $purple-2;
     }
 }
+
+.icon-btn:has(app-at:hover):hover, .icon-btn:has(app-emoji-picker:hover):hover  {
+    background-color: unset;
+    .material-symbols-rounded {
+        color: $text-gray;
+        font-variation-settings: "GRAD" 100;
+    }
+}
+
+label {
+    cursor: pointer;
+}
+
+@media (max-width: 1440px) {
+    app-at, app-emoji-picker {
+        left: 0;
+    }
+}

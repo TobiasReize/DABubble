@@ -1,4 +1,4 @@
-import { computed, Injectable, Signal, signal } from '@angular/core';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
@@ -68,14 +68,23 @@ export class ChatService {
   private openAtSignal = signal<boolean>(false);
   readonly opentAt = this.openAtSignal.asReadonly();
 
+  private openAtForThreadSignal = signal<boolean>(false);
+  readonly openAtForThread = this.openAtForThreadSignal.asReadonly();
+
   private openEmojiPickerSignal = signal<boolean>(false);
   readonly openEmojiPicker = this.openEmojiPickerSignal.asReadonly();
+
+  private openEmojiPickerForThreadSignal = signal<boolean>(false);
+  readonly openEmojiPickerForThread = this.openEmojiPickerForThreadSignal.asReadonly();
+
+  private openEmojiPickerForEditingSignal = signal<boolean>(false);
+  readonly openEmojiPickerForEditing = this.openEmojiPickerForEditingSignal.asReadonly();
 
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
 
-  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser.userUID));
+  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser().userUID));
   readonly usersInCurrentChannelWithoutCurrentUser = this.usersInCurrentChannelWithoutCurrentUserSignal;
 
   private channelsSignal = signal<Channel[]>([]);
@@ -134,8 +143,8 @@ export class ChatService {
     this.threadRepliesSignal.set([]);
   }
 
-  async addChatMessage(messageContent: string) {
-    const messageAsJson = this.prepareMessageForDatabase(messageContent);
+  async addChatMessage(messageContent: string, fileUrl: string, fileType: string) {
+    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
     await addDoc(
       this.firebaseService.getSubcollectionRef(
         this.currentChannel().id,
@@ -146,8 +155,8 @@ export class ChatService {
     );
   }
 
-  async addThreadReply(messageContent: string) {
-      const messageAsJson = this.prepareMessageForDatabase(messageContent);
+  async addThreadReply(messageContent: string, fileUrl: string, fileType: string) {
+      const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
       await addDoc(
         this.firebaseService.getSubSubcollectionRef(
           'channels',
@@ -257,28 +266,42 @@ export class ChatService {
     this.openThreadSignal.set(bool);
   }
 
+  toggleVisibilitySignal(visibilitySignal: WritableSignal<boolean>) {
+    const visibilitySignals = [this.openAddPeopleSignal, this.openEditChannelSignal, this.openMembersSignal, this.openAtSignal, this.openAtForThreadSignal, this.openEmojiPickerSignal, this.openEmojiPickerForThreadSignal, this.openEmojiPickerForEditingSignal];
+    visibilitySignals.forEach(s => s != visibilitySignal ? s.set(false) : null);
+    visibilitySignal.set(!visibilitySignal());
+  }
+
   toggleEditChannelVisibility() {
-    this.openEditChannelSignal.set(!this.openEditChannelSignal());
-    this.openAddPeopleSignal.set(false);
-    this.openMembersSignal.set(false);
+    this.toggleVisibilitySignal(this.openEditChannelSignal);
   }
 
   toggleAddPeopleVisibility() {
-    this.openAddPeopleSignal.set(!this.openAddPeopleSignal());
-    this.openMembersSignal.set(false);
+    this.toggleVisibilitySignal(this.openAddPeopleSignal);
   }
 
   toggleMembersVisibility() {
-    this.openMembersSignal.set(!this.openMembersSignal());
-    this.openAddPeopleSignal.set(false);
+    this.toggleVisibilitySignal(this.openMembersSignal);
   }
 
   toggleAtVisibility() {
-    this.openAtSignal.set(!this.openAtSignal());
+    this.toggleVisibilitySignal(this.openAtSignal);
+  }
+
+  toggleAtForThreadVisibility() {
+    this.toggleVisibilitySignal(this.openAtForThreadSignal);
   }
 
   toggleEmojiPickerVisibility() {
-    this.openEmojiPickerSignal.set(!this.openEmojiPickerSignal());
+    this.toggleVisibilitySignal(this.openEmojiPickerSignal);
+  }
+
+  toggleEmojiPickerForThreadVisibility() {
+    this.toggleVisibilitySignal(this.openEmojiPickerForThreadSignal);
+  }
+
+  toggleEmojiPickerForEditingVisibility() {
+    this.toggleVisibilitySignal(this.openEmojiPickerForEditingSignal);
   }
 
   resubThread() {
@@ -299,6 +322,7 @@ export class ChatService {
       this.unsubMessages();
     }
     this.unsubMessages = this.subMessages(this.currentChannel().id);
+    this.getUsersInCurrentChannel();
   }
 
   changeChannel(id: string) {
@@ -311,7 +335,7 @@ export class ChatService {
 
   leaveChannel() {
     if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
-      const newuserUIDs = this.currentChannel().userUIDs.filter(userUID => userUID !== this.userService.currentOnlineUser.userUID);
+      const newuserUIDs = this.currentChannel().userUIDs.filter(userUID => userUID !== this.userService.currentOnlineUser().userUID);
       this.updateChannel({
         userUIDs: newuserUIDs
       })
@@ -338,8 +362,8 @@ export class ChatService {
   }
 
   findUsers(name: string) {
-    let users = this.userService.allUsers.filter(user => user.name.includes(name));
-    users = users.filter(user => user.userUID !== this.userService.currentOnlineUser.userUID);
+    let users = this.userService.allUsers.filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
+    users = users.filter(user => user.userUID !== this.userService.currentOnlineUser().userUID);
     return users;
   }
 
@@ -349,16 +373,18 @@ export class ChatService {
     this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
   }
 
-  prepareMessageForDatabase(messageContent: string): MessageInterface {
+  prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string): MessageInterface {
     const message = new Message(
       '',
-      this.userService.currentOnlineUser.avatar,
-      this.userService.currentOnlineUser.name,
+      this.userService.currentOnlineUser().avatar,
+      this.userService.currentOnlineUser().name,
       new Date(),
       new Date(),
       messageContent,
       [],
-      0
+      0,
+      fileUrl,
+      fileType
     );
     return message.toJson();
   }
@@ -370,12 +396,12 @@ export class ChatService {
     }
   }
 
-  openChat(id: number, name: string, email: string, avatar: string, passwort: string, userUID: string): void {
+  openChat(id: number): void {
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = id;
-    if (this.userService.allUsers[this.contactIndex].name === this.userService.currentOnlineUser.name) {
+    if (this.userService.allUsers[this.contactIndex].name === this.userService.currentOnlineUser().name) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
@@ -418,5 +444,13 @@ export class ChatService {
           }
         }
     });
+  }
+
+  openViewProfile(userUID: string) {
+    if (userUID == this.userService.currentOnlineUser().userUID) {
+      this.profileViewLoggedUser = true;
+    } else {
+      this.profileViewUsersActive = true;
+    }
   }
 }

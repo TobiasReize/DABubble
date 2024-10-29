@@ -1,0 +1,5 @@
+@for (reactionName of reactionOptions; track reactionName) {
+    <div class="icon-btn" (click)="addNewReaction(reactionName)">
+        <img class="reaction-img" src="assets/img/emojis/{{reactionName}}" alt="menu emoji 2">
+    </div>
+}

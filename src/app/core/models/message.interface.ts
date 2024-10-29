@@ -6,4 +6,6 @@ export interface MessageInterface {
     content: string;
     reactions: string;
     numberOfReplies: number;
+    fileUrl: string;
+    fileType: string;
 }

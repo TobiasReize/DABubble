@@ -1,9 +1,10 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
-import { addDoc, doc, onSnapshot, setDoc, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import { computed, inject, Injectable, OnDestroy, Signal, signal } from '@angular/core';
+import { doc, onSnapshot, setDoc, Unsubscribe } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { ChatUser } from '../../models/user.class';
-import { getAuth, signOut, updateEmail } from '@angular/fire/auth';
+import { Auth, getAuth, signOut, updateEmail, User, user } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +13,34 @@ export class UserService implements OnDestroy {
 
   introDone: boolean = false;
   firebaseService = inject(FirebaseService);
+  private auth = inject(Auth);
   newUser = new ChatUser();
   allUsers: ChatUser[] = [];
-  unsubUserCol!: Unsubscribe;
-  currentOnlineUser = new ChatUser({
-    name: 'Gast',
-    avatar: 'assets/img/profile.svg',
-    userUID: '0'
+  unsubUserCol: Unsubscribe;
+  user$ = user(this.auth);
+  userSubscription!: Subscription;
+  currentUserUIDSignal = signal<string>('');
+  readonly currentUserUID = this.currentUserUIDSignal.asReadonly();
+
+  currentOnlineUser: Signal<ChatUser> = computed(() => {
+    if (this.currentUserUID() && this.allUsers.length > 0) {
+      return this.allUsers[this.getUserIndexWithUID(this.currentUserUID())];
+    } else {
+      return new ChatUser();
+    }
   });
 
 
   constructor(private router: Router) {
     this.unsubUserCol = this.subUserCol();
+    this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
+      if (currentUser) {
+        this.currentUserUIDSignal.set(currentUser.uid);
+        // console.log(currentUser);
+      } else {
+        this.currentUserUIDSignal.set('0');
+      }
+    });
   }
 
 
@@ -33,7 +50,6 @@ export class UserService implements OnDestroy {
       usersCollection.forEach(user => {
         this.allUsers.push(new ChatUser(user.data()));
       });
-      console.log('Alle User:', this.allUsers);
     });
   }
 
@@ -92,6 +108,7 @@ export class UserService implements OnDestroy {
 
 
   ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
     this.unsubUserCol();
   }
 
