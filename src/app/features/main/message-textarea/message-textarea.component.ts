@@ -76,6 +76,14 @@ export class MessageTextareaComponent {
     }
   }
 
+  handleTextAreaKeyDown(event: KeyboardEvent) {
+    if (event.key === '@') {
+      if (!this.isAtVisible()) {
+        this.toggleAtVisibility();
+      }
+    }
+  }
+
   toggleAtVisibility() {
     if (this.type === 'chat') {
       this.chatService.toggleAtVisibility();
@@ -102,10 +110,23 @@ export class MessageTextareaComponent {
   }
 
   addMention(user: ChatUser) {
+    let sel = window.getSelection();
+    sel?.modify('move', 'backward', 'character');
+    sel?.modify('extend', 'forward', 'character');
+    if (sel?.toString() === '@') {
+      sel.deleteFromDocument();
+    }
     this.removeBrTag();
     const mention = this.mentionInsertion.createComponent(MentionComponent);
     mention.instance.user = user;
     this.renderer.appendChild(this.editableTextarea.nativeElement, mention.location.nativeElement);
+    this.setRangeToEnd();
+  }
+
+  setRangeToEnd() {
+    this.editableTextarea.nativeElement.focus()
+    window.getSelection()?.selectAllChildren(this.editableTextarea.nativeElement);
+    window.getSelection()?.collapseToEnd();
   }
 
   saveMessageText() {
