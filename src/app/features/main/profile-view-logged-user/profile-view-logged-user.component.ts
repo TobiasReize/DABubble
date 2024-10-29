@@ -53,6 +53,6 @@ export class ProfileViewLoggedUserComponent {
       email: email.value,
     });
 
-    this.userService.updateUserAuthEmail(email.value);
+    // this.userService.updateUserAuthEmail(email.value);
   }
 }

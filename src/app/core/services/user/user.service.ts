@@ -2,7 +2,7 @@ import { computed, inject, Injectable, OnDestroy, Signal, signal } from '@angula
 import { doc, onSnapshot, setDoc, Unsubscribe } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { ChatUser } from '../../models/user.class';
-import { Auth, getAuth, signOut, updateEmail, User, user } from '@angular/fire/auth';
+import { Auth, getAuth, signOut, updateEmail, User, user, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -63,29 +63,35 @@ export class UserService implements OnDestroy {
 
 
   async updateUserEmailandName(userUID: string, data = {name: '', email: ''}) {
+    // const auth = getAuth();
+    if (this.auth.currentUser) {
+      if (data.email === this.currentOnlineUser().email) {
+        this.updateUserDoc(userUID, data);
+      } else {
+        // await updateEmail(auth.currentUser, data.email)
+        await verifyBeforeUpdateEmail(this.auth.currentUser, data.email)
+          .then(() => {
+            console.log('Email updated!');
+            // this.updateUserDoc(userUID, data); --> Erst nachdem die neue Email bestätigt wurde!
+          })
+          .catch((error) => {
+            console.log('Email Update Error:', error);
+          });
+      }
+    } else {
+      console.log('Aktuell kein User eingeloggt!');
+    }
+  }
+
+
+  async updateUserDoc(userUID: string, data = {name: '', email: ''}) {
     await this.firebaseService.updateDocData('users', userUID, data)
       .then(() => {
-        this.updateUserAuthEmail(data.email);
+        console.log('Users-Collection updated');
       })
       .catch((error) => {
         console.log('Update User Error:', error);
       })
-  }
-
-
-  updateUserAuthEmail(newEmail: string) {
-    const auth = getAuth();
-    if (auth.currentUser) {
-      updateEmail(auth.currentUser, newEmail)
-        .then(() => {
-          console.log('Email updated!');
-        })
-        .catch((error) => {
-          console.log('Email Update Error:', error);
-        });
-    } else {
-      console.log('Aktuell kein User eingeloggt!');
-    }
   }
 
 
@@ -95,8 +101,8 @@ export class UserService implements OnDestroy {
 
 
   signOutUser() {
-    const auth = getAuth();
-    signOut(auth)
+    // const auth = getAuth();
+    signOut(this.auth)
       .then(() => {
         console.log('Sign-out successful');
       }).catch((error) => {

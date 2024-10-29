@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule, Location } from '@angular/common';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { Router } from '@angular/router';
-import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
+import { Auth, getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-reset-password',
@@ -18,6 +18,7 @@ import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
 })
 export class ResetPasswordComponent {
 
+  private auth = inject(Auth);
   resetEmail: string = '';
   inputFinished: boolean = false;
   emailFalse: boolean = false;
@@ -42,8 +43,8 @@ export class ResetPasswordComponent {
 
 
   async sendEmail() {
-    const auth = getAuth();
-    await sendPasswordResetEmail(auth, this.resetEmail)
+    // const auth = getAuth();
+    await sendPasswordResetEmail(this.auth, this.resetEmail)
       .then(() => {
         console.log('Passwort zurücksetzen Email versendet!', this.resetEmail);
         this.goToLogin();
