@@ -88,6 +88,11 @@ textarea {
 
 label {
     cursor: pointer;
+    transition: transform 100ms ease-in-out;
+}
+
+.img-x {
+    transform: rotate(45deg);
 }
 
 @media (max-width: 1440px) {
