@@ -6,11 +6,12 @@ import { ChatUser } from '../../../core/models/user.class';
 import { MentionComponent } from './mention/mention.component';
 import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-message-textarea',
   standalone: true,
-  imports: [AtComponent, EmojiPickerComponent, FormsModule],
+  imports: [AtComponent, EmojiPickerComponent, FormsModule, CommonModule],
   templateUrl: './message-textarea.component.html',
   styleUrl: './message-textarea.component.scss'
 })
@@ -63,7 +64,24 @@ export class MessageTextareaComponent {
   resetInput() {
     this.resetUploadData();
     this.fileInput.nativeElement.value = null;
-    console.log('resetting input', this.fileInput.nativeElement.value);
+  }
+
+  handleInputClick(event: Event) {
+    if (this.uploadFile === 'done') {
+      this.firebaseService.deleteFile(this.fileUrl);
+      this.resetInput();
+      event?.preventDefault();
+    } else if (this.uploadFile === 'inProgress') {
+      event?.preventDefault();
+    }
+  }
+
+  handleTextAreaKeyDown(event: KeyboardEvent) {
+    if (event.key === '@') {
+      if (!this.isAtVisible()) {
+        this.toggleAtVisibility();
+      }
+    }
   }
 
   toggleAtVisibility() {
@@ -92,10 +110,23 @@ export class MessageTextareaComponent {
   }
 
   addMention(user: ChatUser) {
+    let sel = window.getSelection();
+    sel?.modify('move', 'backward', 'character');
+    sel?.modify('extend', 'forward', 'character');
+    if (sel?.toString() === '@') {
+      sel.deleteFromDocument();
+    }
     this.removeBrTag();
     const mention = this.mentionInsertion.createComponent(MentionComponent);
     mention.instance.user = user;
     this.renderer.appendChild(this.editableTextarea.nativeElement, mention.location.nativeElement);
+    this.setRangeToEnd();
+  }
+
+  setRangeToEnd() {
+    this.editableTextarea.nativeElement.focus()
+    window.getSelection()?.selectAllChildren(this.editableTextarea.nativeElement);
+    window.getSelection()?.collapseToEnd();
   }
 
   saveMessageText() {
@@ -135,7 +166,7 @@ export class MessageTextareaComponent {
 
   async uploadFileToStorage(file: File) {
     try {
-      const path = 'message-images/' + file.name;
+      const path = `channels/${this.chatService.currentChannel().id}/${self.crypto.randomUUID()}/${file.name}`;
       await this.firebaseService.uploadFileToStorage(file, path);
       this.fileUrl = this.firebaseService.downloadURL;
       this.uploadFile = 'done';

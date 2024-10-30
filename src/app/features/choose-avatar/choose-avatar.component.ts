@@ -4,7 +4,7 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
-import { createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
 
 @Component({
@@ -22,6 +22,7 @@ export class ChooseAvatarComponent {
   inputFinished: boolean = false;
   userService = inject(UserService);
   firebaseService = inject(FirebaseService);
+  private auth = inject(Auth);
   uploadInfo: string = '';
   uploadFile: null | 'inProgress' | 'done' = null;
   uploadError: boolean = false;
@@ -103,8 +104,7 @@ export class ChooseAvatarComponent {
 
 
   registerNewUser() {   //User wird auch direkt in Firebase eingeloggt!
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, this.userService.newUser.email, this.userService.newUser.password)
+    createUserWithEmailAndPassword(this.auth, this.userService.newUser.email, this.userService.newUser.password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('Registrierung erfolgreich!');

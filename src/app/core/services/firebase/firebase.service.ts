@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { collection, doc, Firestore, updateDoc } from '@angular/fire/firestore';
-import { getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
+import { deleteObject, getDownloadURL, ref, Storage, uploadBytesResumable } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -52,6 +52,15 @@ export class FirebaseService {
         resolve(this.downloadURL = await getDownloadURL(uploadTask.snapshot.ref));
       })
     })
+  }
+
+  async deleteFile(path: string) {
+    const storageRef = ref(this.storage, path);
+    try {
+      await deleteObject(storageRef);
+    } catch(error) {
+      console.log(error);
+    }
   }
 
   getSubSubcollectionRef(collectionName: string, docId1: string, subcollectionName: string, docId2: string, subSubCollectionName: string) {

@@ -2,8 +2,7 @@ import { computed, inject, Injectable, OnDestroy, Signal, signal } from '@angula
 import { doc, onSnapshot, setDoc, Unsubscribe } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { ChatUser } from '../../models/user.class';
-import { Auth, getAuth, signOut, updateEmail, User, user } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import { Auth, getAuth, signOut, updateEmail, User, user, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -20,50 +19,27 @@ export class UserService implements OnDestroy {
   unsubUserCol: Unsubscribe;
   user$ = user(this.auth);
   userSubscription!: Subscription;
-  currentUserUIDSignal = signal<string>('');
+  currentUserUIDSignal = signal<string>('0');
   readonly currentUserUID = this.currentUserUIDSignal.asReadonly();
 
   readonly currentOnlineUser: Signal<ChatUser> = computed(() => {
-    if (this.currentUserUID() !== '0' && this.allUsers().length > 0) {
+    if (this.currentUserUID() && this.allUsers().length > 0) {
       return this.allUsers()[this.getUserIndexWithUID(this.currentUserUID())];
     } else {
-      return new ChatUser({
-        name: 'Gast',
-        avatar: 'assets/img/profile.svg',
-        userUID: '0'
-      });
+      return new ChatUser();
     }
   });
 
 
-  constructor(private router: Router) {
+  constructor() {
     this.unsubUserCol = this.subUserCol();
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
+      console.log('currentUser', currentUser);
       if (currentUser) {
         this.currentUserUIDSignal.set(currentUser.uid);
-        // console.log('currentUser', currentUser);
-      } else {
-        this.currentUserUIDSignal.set('0');
       }
     });
   }
-
-  // Should we do this instead?
-  // private currentOnlineUserSignal = signal<ChatUser>(new ChatUser({
-  //   name: 'Gast',
-  //   avatar: 'assets/img/profile.svg',
-  //   userUID: '0'
-  // }));
-  // readonly currentOnlineUser = this.currentOnlineUserSignal.asReadonly();
-
-  // constructor(private router: Router) {
-  //   this.unsubUserCol = this.subUserCol();
-  //   this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
-  //     if (currentUser) {
-  //       this.currentOnlineUserSignal.set(this.allUsers()[this.getUserIndexWithUID(currentUser.uid)]);
-  //     }
-  //   });
-  // }
 
 
   subUserCol() {
@@ -87,22 +63,11 @@ export class UserService implements OnDestroy {
 
 
   async updateUserEmailandName(userUID: string, data = {name: '', email: ''}) {
-    await this.firebaseService.updateDocData('users', userUID, data)
-      .then(() => {
-        this.updateUserAuthEmail(data.email);
-      })
-      .catch((error) => {
-        console.log('Update User Error:', error);
-      })
-  }
-
-
-  updateUserAuthEmail(newEmail: string) {
-    const auth = getAuth();
-    if (auth.currentUser) {
-      updateEmail(auth.currentUser, newEmail)
+    if (this.auth.currentUser) {
+      await verifyBeforeUpdateEmail(this.auth.currentUser, data.email)
         .then(() => {
           console.log('Email updated!');
+          this.updateUserDoc(userUID, data);
         })
         .catch((error) => {
           console.log('Email Update Error:', error);
@@ -113,17 +78,26 @@ export class UserService implements OnDestroy {
   }
 
 
+  async updateUserDoc(userUID: string, data = {name: '', email: ''}) {
+    await this.firebaseService.updateDocData('users', userUID, data)
+      .then(() => {
+        console.log('Users-Collection updated');
+      })
+      .catch((error) => {
+        console.log('Update User Error:', error);
+      })
+  }
+
+
   getUserIndexWithUID(userUID: string) {
     return this.allUsers().findIndex(singleUser => singleUser.userUID == userUID);
   }
 
 
   signOutUser() {
-    const auth = getAuth();
-    signOut(auth)
+    signOut(this.auth)
       .then(() => {
         console.log('Sign-out successful');
-        this.router.navigateByUrl('');
       }).catch((error) => {
         console.log('Error:', error);
       })

@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Auth, confirmPasswordReset, verifyPasswordResetCode } from "@angular/fire/auth";
+import { applyActionCode, Auth, confirmPasswordReset, verifyPasswordResetCode } from "@angular/fire/auth";
 
 @Component({
   selector: 'app-new-password',
@@ -22,14 +22,14 @@ export class NewPasswordComponent implements OnInit {
   newPasswordRepeat: string = '';
   inputFinished: boolean = false;
   private auth = inject(Auth);
-  private mode!: string;
-  private actionCode!: string;
+  mode: string = '';
+  private actionCode: string = '';
   userEmail = '';
   resetPasswordError: boolean = false;
   errorMsg: string = 'Ihre Kennwörter stimmen nicht überein!';
 
 
-  constructor(private location: Location, private router: Router, private activeRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute) { }
 
 
   ngOnInit(): void {
@@ -37,11 +37,6 @@ export class NewPasswordComponent implements OnInit {
     this.mode = this.activeRoute.snapshot.queryParamMap.get('mode')!;
     console.log('oobCode:', this.actionCode);
     console.log('mode:', this.mode);
-  }
-
-
-  goBack() {
-    this.location.back();
   }
 
 
@@ -72,6 +67,17 @@ export class NewPasswordComponent implements OnInit {
       this.errorMsg = 'Aktionscode ist ungültig oder abgelaufen! Bitte erneut versuchen.';
       console.log('Action code invalid or expired!', error);
     }
+  }
+
+
+  async sendActionCode() {
+    await applyActionCode(this.auth, this.actionCode)
+      .then(() => {
+        console.log('sendActionCode OK');
+        // this.userEmail = 'neue Email...';
+        this.goToLogin();
+      })
+      .catch((error) => console.log('sendActionCode-Error:', error))
   }
 
 

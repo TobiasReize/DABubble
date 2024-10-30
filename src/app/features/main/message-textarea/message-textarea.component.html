@@ -1,7 +1,7 @@
 <div class="textarea-container">
     <span #mentionInsertion contenteditable="false"></span>
     <div class="textarea-and-image-container">
-        <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true"></div>
+        <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true" (keydown)="handleTextAreaKeyDown($event)"></div>
         @if (fileUrl && isImage(fileType)) {
             <img class="message-img" src="{{fileUrl}}" alt="message image">
         }
@@ -9,7 +9,7 @@
     <div class="textarea-container-inside">
         <div class="textarea-symbols-left">
             <button class="icon-btn">
-                <label (click)="resetInput()" [ariaDisabled]="uploadFile == 'inProgress'" for="file_upload" class="material-symbols-rounded">add</label>
+                <label (click)="handleInputClick($event)" [ariaDisabled]="uploadFile == 'inProgress'" for="file_upload" class="material-symbols-rounded" [ngClass]="{'img-x': uploadFile == 'done'}">add</label>
                 <input #fileInput (change)="addFile(upload)" #upload [disabled]="uploadFile == 'inProgress'" style="display: none;" id="file_upload" type="file" accept="image/png, image/jpeg, image/svg+xml, image/webp">
             </button>
             <div class="small-divider"></div>
