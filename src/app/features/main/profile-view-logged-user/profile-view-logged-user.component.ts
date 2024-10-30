@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { CommonModule, NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { doc, updateDoc } from 'firebase/firestore';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { UserService } from '../../../core/services/user/user.service';
@@ -14,6 +14,12 @@ import { UserService } from '../../../core/services/user/user.service';
   styleUrl: './profile-view-logged-user.component.scss',
 })
 export class ProfileViewLoggedUserComponent {
+  
+  data = {
+    name: this.userService.currentOnlineUser().name,
+    email: this.userService.currentOnlineUser().email
+  }
+  
   constructor(
     public chatService: ChatService,
     public fireBaseService: FirebaseService,
@@ -34,25 +40,10 @@ export class ProfileViewLoggedUserComponent {
     this.onDiv2Click(event);
   }
 
-  saveNewContactInfos(): void {
-    const fullname = document.getElementById('fullname') as HTMLInputElement;
-    const email = document.getElementById('emailAdresse') as HTMLInputElement;
-
-    this.chatService.profileViewLoggedUser = false;
-
-    this.userService.allUsers()[this.chatService.contactIndex].name = fullname.value;
-    this.userService.allUsers()[this.chatService.contactIndex].email = email.value;
-
-    const docRef = doc(
-      this.fireBaseService.firestore,
-      'users',
-      this.userService.allUsers()[this.chatService.contactIndex].userUID
-    );
-    updateDoc(docRef, {
-      name: fullname.value,
-      email: email.value,
-    });
-
-    // this.userService.updateUserAuthEmail(email.value);
+  saveNewContactInfos(ngForm: NgForm): void {
+    if (ngForm.submitted && ngForm.form.valid) {
+      this.chatService.profileViewLoggedUser = false;
+      this.userService.updateUserEmailandName(this.userService.currentOnlineUser().userUID, this.data);
+    }
   }
 }

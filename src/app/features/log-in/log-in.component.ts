@@ -75,7 +75,6 @@ export class LogInComponent implements OnInit {
 
 
   async signInUser() {
-    // const auth = getAuth();
     await signInWithEmailAndPassword(this.auth, this.loginData.email, this.loginData.password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -93,7 +92,6 @@ export class LogInComponent implements OnInit {
 
   signInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    // const auth = getAuth();
     this.googleLoginError = false;
     signInWithPopup(this.auth, provider)
       .then(async (result) => {

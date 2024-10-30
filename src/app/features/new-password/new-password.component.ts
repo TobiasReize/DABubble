@@ -74,9 +74,8 @@ export class NewPasswordComponent implements OnInit {
     await applyActionCode(this.auth, this.actionCode)
       .then(() => {
         console.log('sendActionCode OK');
-        // userService.updateUserDoc(...); --> Woher bekomme ich jetzt die Daten?
         // this.userEmail = 'neue Email...';
-        // this.goToLogin();
+        this.goToLogin();
       })
       .catch((error) => console.log('sendActionCode-Error:', error))
   }

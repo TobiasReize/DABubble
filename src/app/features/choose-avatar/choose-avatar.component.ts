@@ -104,7 +104,6 @@ export class ChooseAvatarComponent {
 
 
   registerNewUser() {   //User wird auch direkt in Firebase eingeloggt!
-    // const auth = getAuth();
     createUserWithEmailAndPassword(this.auth, this.userService.newUser.email, this.userService.newUser.password)
       .then((userCredential) => {
         const user = userCredential.user;

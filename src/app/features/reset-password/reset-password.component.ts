@@ -43,7 +43,6 @@ export class ResetPasswordComponent {
 
 
   async sendEmail() {
-    // const auth = getAuth();
     await sendPasswordResetEmail(this.auth, this.resetEmail)
       .then(() => {
         console.log('Passwort zurücksetzen Email versendet!', this.resetEmail);

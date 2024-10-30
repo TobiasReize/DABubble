@@ -87,7 +87,7 @@
   }
 }
 
-input {
+.input {
   width: 420px;
   height: 55px;
   padding: 15px 20px 15px 20px;
@@ -96,25 +96,29 @@ input {
   border: 1px solid rgba(173, 176, 217, 1);
 }
 
-.button1 {
-  width: 141px;
-  height: 49px;
-  padding: 12px 25px 12px 25px;
-  gap: 10px;
-  border-radius: 50px;
-  border: 1px solid rgba(121, 126, 243, 1);
-  color: rgba(68, 77, 242, 1);
-  @include fontStyle3;
+.jc-center {
+  justify-content: center;
 }
 
-.button2 {
-  width: 133px;
-  height: 49px;
-  padding: 12px 25px 12px 25px;
-  gap: 10px;
-  border-radius: 50px;
-  background: rgba(68, 77, 242, 1);
-  color: rgba(255, 255, 255, 1);
-  @include fontStyle3;
-  border: 0;
-}
+// .button1 {
+//   width: 141px;
+//   height: 49px;
+//   padding: 12px 25px 12px 25px;
+//   gap: 10px;
+//   border-radius: 50px;
+//   border: 1px solid rgba(121, 126, 243, 1);
+//   color: rgba(68, 77, 242, 1);
+//   @include fontStyle3;
+// }
+
+// .button2 {
+//   width: 133px;
+//   height: 49px;
+//   padding: 12px 25px 12px 25px;
+//   gap: 10px;
+//   border-radius: 50px;
+//   background: rgba(68, 77, 242, 1);
+//   color: rgba(255, 255, 255, 1);
+//   @include fontStyle3;
+//   border: 0;
+// }

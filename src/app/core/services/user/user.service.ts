@@ -63,16 +63,15 @@ export class UserService implements OnDestroy {
 
 
   async updateUserEmailandName(userUID: string, data = {name: '', email: ''}) {
-    // const auth = getAuth();
     if (this.auth.currentUser) {
       if (data.email === this.currentOnlineUser().email) {
+        console.log('Email ist unverändert!');
         this.updateUserDoc(userUID, data);
       } else {
-        // await updateEmail(auth.currentUser, data.email)
         await verifyBeforeUpdateEmail(this.auth.currentUser, data.email)
           .then(() => {
             console.log('Email updated!');
-            // this.updateUserDoc(userUID, data); --> Erst nachdem die neue Email bestätigt wurde!
+            this.updateUserDoc(userUID, data);
           })
           .catch((error) => {
             console.log('Email Update Error:', error);
@@ -101,7 +100,6 @@ export class UserService implements OnDestroy {
 
 
   signOutUser() {
-    // const auth = getAuth();
     signOut(this.auth)
       .then(() => {
         console.log('Sign-out successful');
