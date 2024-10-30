@@ -19,10 +19,10 @@
                     <app-emoji-picker (selectEmojiEvent)="insertEmoji($event)"></app-emoji-picker>
                 }
             </button>
-            <button class="icon-btn" (click)="toggleAtVisibility()">
+            <button class="icon-btn" (click)="toggleUserVisibility()">
                 <span class="material-symbols-rounded">alternate_email</span>
                 @if (isAtVisible()) {
-                    <app-at (selectUserEvent)="addMention($event)"></app-at>
+                    <app-at (selectUserEvent)="addMention($event)" [usersOrChannels]="usersOrChannels"></app-at>
                 }
             </button>    
         </div>
