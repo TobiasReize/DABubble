@@ -21,16 +21,16 @@ export class AddPeopleComponent {
     this.chatService.toggleAddPeopleVisibility();
   }
 
-  findUsers(name: string) {
+  findUsersToAdd(name: string) {
     if (name.length > 0) {
-      return this.chatService.findUsers(name);
+      return this.chatService.findUsersToAdd(name);
     } else {
       return [];
     }
   }
 
   onInputChange(input: any) {
-    this.userOptions = this.findUsers(input.value);
+    this.userOptions = this.findUsersToAdd(input.value);
   }
 
   selectUser(index: number) {

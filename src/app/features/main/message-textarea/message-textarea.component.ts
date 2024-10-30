@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, Renderer2, SecurityContext, Signal, ViewChild, ViewContainerRef } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AtComponent } from './at/at.component';
 import { ChatUser } from '../../../core/models/user.class';
 import { MentionComponent } from './mention/mention.component';
@@ -20,8 +20,9 @@ export class MessageTextareaComponent {
   messageText = '';
   isAtVisible: Signal<boolean> = this.chatService.opentAt;
   isEmojiPickerVisible: Signal<boolean> = this.chatService.openEmojiPicker;
-  @ViewChild('editableTextarea') editableTextarea!: ElementRef
+  @ViewChild('editableTextarea') editableTextarea!: ElementRef;
   @ViewChild('mentionInsertion', { read: ViewContainerRef }) mentionInsertion!: ViewContainerRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
   uploadInfo: string = '';
   uploadFile: null | 'inProgress' | 'done' = null;
   uploadError: boolean = false;
@@ -47,7 +48,22 @@ export class MessageTextareaComponent {
       }
       this.messageText = '';
       this.editableTextarea.nativeElement.innerHTML = '';
+      this.resetInput();
     }
+  }
+
+  resetUploadData() {
+    this.uploadInfo = '';
+    this.uploadFile = null;
+    this.uploadError = false;
+    this.fileUrl = '';
+    this.fileType = '';
+  }
+
+  resetInput() {
+    this.resetUploadData();
+    this.fileInput.nativeElement.value = null;
+    console.log('resetting input', this.fileInput.nativeElement.value);
   }
 
   toggleAtVisibility() {
@@ -92,6 +108,7 @@ export class MessageTextareaComponent {
   }
 
   isImage(fileType: string) {
+    console.log('image check');
     return fileType === 'image/jpeg' || fileType === 'image/png' || fileType === 'image/svg+xml' || fileType === 'image/webp';
   }
 

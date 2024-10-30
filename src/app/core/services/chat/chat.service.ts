@@ -131,7 +131,9 @@ export class ChatService {
         lastReplyAt,
         data['content'],
         reactions,
-        data['numberOfReplies']
+        data['numberOfReplies'],
+        data['fileUrl'],
+        data['fileType']
       );
       return message;
     } else {
@@ -346,7 +348,7 @@ export class ChatService {
     const foundUsers: ChatUser[] = [];
     if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
       this.currentChannel().userUIDs.forEach(userUID => {
-        const foundUser = this.userService.allUsers.find(user => userUID === user.userUID);
+        const foundUser = this.userService.allUsers().find(user => userUID === user.userUID);
         if (foundUser) {
           foundUsers.push(foundUser);
         }
@@ -356,15 +358,20 @@ export class ChatService {
   }
 
   async addPersonToCurrentChannel(userUID: string) {
-    await this.updateChannel({
-      userUIDs: [...this.currentChannel().userUIDs, userUID]
-    })
+    if (!this.currentChannel().userUIDs.includes(userUID)) {
+      await this.updateChannel({
+        userUIDs: [...this.currentChannel().userUIDs, userUID]
+      })
+    }
   }
 
-  findUsers(name: string) {
-    let users = this.userService.allUsers.filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
-    users = users.filter(user => user.userUID !== this.userService.currentOnlineUser().userUID);
-    return users;
+  findUserInAllUsers(name: string): ChatUser[] {
+    return this.userService.allUsers().filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
+  }
+
+  findUsersToAdd(name: string): ChatUser[] {
+    const users = this.findUserInAllUsers(name);
+    return users.filter(user => !this.usersInCurrentChannel().includes(user));
   }
 
   async increaseNumberOfReplies() {
@@ -401,7 +408,7 @@ export class ChatService {
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = id;
-    if (this.userService.allUsers[this.contactIndex].name === this.userService.currentOnlineUser().name) {
+    if (this.userService.allUsers()[this.contactIndex].name === this.userService.currentOnlineUser().name) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {

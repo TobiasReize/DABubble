@@ -2,7 +2,7 @@
   <section
     id="createChannel"
     class="sectionDflex"
-    (click)="onDiv2Click($event)"
+    (click)="stopPropagation($event)"
   >
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Channel erstellen</span>
@@ -59,7 +59,7 @@
     id="addPeople"
     class="addPeople dFlexColumn"
     style="display: none"
-    (click)="onDiv2Click($event)"
+    (click)="stopPropagation($event)"
   >
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Leute hinzufügen</span>
@@ -102,22 +102,34 @@
 
       <!-- input -->
       @if(AddSpecificPeople) {
-      <input type="text" class="inputElement" placeholder="Name eingeben" [(ngModel)]="addedPeopleToTheChannel" (keyup)="checkIfPeopleAddedToTheChannel()"/>
+        <div style="position: relative;" (click)="showAllUsers()">
+          <input id="addName" type="text" class="inputElement" placeholder="Name eingeben" [(ngModel)]="addedPeopleToTheChannel" (keyup)="checkIfPeopleAddedToTheChannel()"/>
+          @if (contactsChoosen) {
+            <div class="choosenContactsDiv">
+              @for (user of arrayOfChoosenContacts; track $index) {
+                <div class="choosenContactsDivKid">
+                  <img src="{{user.avatar}}">
+                  <span>{{user.name}}</span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+          
       }
 
-      <!-- @if (!selectedUser && userOptions.length > 0) { -->
-        <!-- <div class="people">
-            @for (user of userOptions; track user.userUID) {
-                <div class="person" (click)="selectUser($index)">
-                    <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}">
-                    <span class="user-name">{{ user.name }}</span>
-                </div>
-            }
-        </div> -->
-      <!-- } -->
-
-      <div class="dFlexRowFlexEndCenter">
-        <button class="btn btn-prim" [disabled]="notAddedSpecificPeopleToTheChannel">Erstellen</button>
+      <div class="dFlexRowFlexEndCenter" style="position: relative;">
+        @if (showedAllUsers == true) {
+        <div class="people">
+          @for (user of userService.allUsers(); track user.userUID) {
+              <div class="person" (click)="selectUser($index)">
+                  <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}">
+                  <span class="user-name">{{ user.name }}</span>
+              </div>
+          }
+        </div>
+        }
+        <button (click)="createChannel()" class="btn btn-prim" [disabled]="notAddedSpecificPeopleToTheChannel && arrayOfChoosenContacts.length === 0">Erstellen</button>
       </div>
     </div>
   </div>

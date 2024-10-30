@@ -33,13 +33,13 @@ export class CreateChannelComponent {
   description: string = "";
   notAddedSpecificPeopleToTheChannel: boolean = false;
   addedPeopleToTheChannel: string = "";
+  selectedUser: object = [];
+  showedAllUsers: boolean = false;
+  contactsChoosen: boolean = false;
+  arrayOfChoosenContacts: any = [];
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
-  }
-
-  onDiv2Click(event: MouseEvent): void {
-    event.stopPropagation();
   }
 
   async createChannel() {
@@ -49,6 +49,10 @@ export class CreateChannelComponent {
     let description: HTMLInputElement = document.getElementById(
       'input2'
     ) as HTMLInputElement;
+
+    if(this.selectMembersFromDevspace) {
+      this.addAllMembersFromDevspace();
+    }
 
     let channel = new Channel(
       this.chatService.contactIndex,
@@ -82,6 +86,8 @@ export class CreateChannelComponent {
       'createChannel'
     ) as HTMLElement;
     createChannelDiv.style.display = 'none';
+
+    this.onDiv1Click();
   }
 
   addMembersFromDevspace() {
@@ -89,6 +95,7 @@ export class CreateChannelComponent {
     this.selectSpecificMembers = false;
     this.AddSpecificPeople = false;
     this.notAddedSpecificPeopleToTheChannel = false;
+    this.closeUsersWindow();
   }
 
   chooseSpecificMembers() {
@@ -120,5 +127,33 @@ export class CreateChannelComponent {
     } else {
       this.notAddedSpecificPeopleToTheChannel = false;
     }
+  }
+
+  selectUser(index: number) {
+    const selectedUser = this.userService.allUsers()[index];
+    this.arrayOfChoosenContacts.push(selectedUser);
+    this.userUIDs.push(selectedUser.userUID);
+    this.contactsChoosen = true;
+    this.notAddedSpecificPeopleToTheChannel = false;
+    this.showedAllUsers = false;
+  }
+
+  showAllUsers() {
+    this.showedAllUsers = true;
+  }
+
+  closeUsersWindow(): void {
+    this.showedAllUsers = false;
+  }
+
+  stopPropagation(event: MouseEvent): void {
+    event.stopPropagation();
+  }
+
+  addAllMembersFromDevspace() {
+    this.userUIDs = [];
+    this.userService.allUsers().forEach(user => {
+      this.userUIDs.push(user.userUID);
+    })
   }
 }

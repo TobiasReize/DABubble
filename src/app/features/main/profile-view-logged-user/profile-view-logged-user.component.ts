@@ -40,13 +40,13 @@ export class ProfileViewLoggedUserComponent {
 
     this.chatService.profileViewLoggedUser = false;
 
-    this.userService.allUsers[this.chatService.contactIndex].name = fullname.value;
-    this.userService.allUsers[this.chatService.contactIndex].email = email.value;
+    this.userService.allUsers()[this.chatService.contactIndex].name = fullname.value;
+    this.userService.allUsers()[this.chatService.contactIndex].email = email.value;
 
     const docRef = doc(
       this.fireBaseService.firestore,
       'users',
-      this.userService.allUsers[this.chatService.contactIndex].userUID
+      this.userService.allUsers()[this.chatService.contactIndex].userUID
     );
     updateDoc(docRef, {
       name: fullname.value,
