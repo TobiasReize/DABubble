@@ -84,3 +84,10 @@
     </form>
   </section>
 </div>
+
+<div [ngClass]="{'translateX-0': inputFinished}" class="email-sent-overlay">
+  <div class="email-sent-content">
+      <span class="material-symbols-rounded email-sent-icon">send</span>
+      <span>E-Mail gesendet</span>
+  </div>
+</div>

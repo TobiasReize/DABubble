@@ -64,19 +64,14 @@ export class UserService implements OnDestroy {
 
   async updateUserEmailandName(userUID: string, data = {name: '', email: ''}) {
     if (this.auth.currentUser) {
-      if (data.email === this.currentOnlineUser().email) {
-        console.log('Email ist unverändert!');
-        this.updateUserDoc(userUID, data);
-      } else {
-        await verifyBeforeUpdateEmail(this.auth.currentUser, data.email)
-          .then(() => {
-            console.log('Email updated!');
-            this.updateUserDoc(userUID, data);
-          })
-          .catch((error) => {
-            console.log('Email Update Error:', error);
-          });
-      }
+      await verifyBeforeUpdateEmail(this.auth.currentUser, data.email)
+        .then(() => {
+          console.log('Email updated!');
+          this.updateUserDoc(userUID, data);
+        })
+        .catch((error) => {
+          console.log('Email Update Error:', error);
+        });
     } else {
       console.log('Aktuell kein User eingeloggt!');
     }

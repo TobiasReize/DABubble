@@ -15,6 +15,7 @@ import { UserService } from '../../../core/services/user/user.service';
 })
 export class ProfileViewLoggedUserComponent {
   
+  inputFinished: boolean = false;
   data = {
     name: this.userService.currentOnlineUser().name,
     email: this.userService.currentOnlineUser().email
@@ -40,10 +41,20 @@ export class ProfileViewLoggedUserComponent {
     this.onDiv2Click(event);
   }
 
-  saveNewContactInfos(ngForm: NgForm): void {
+  async saveNewContactInfos(ngForm: NgForm): Promise<void> {
     if (ngForm.submitted && ngForm.form.valid) {
-      this.chatService.profileViewLoggedUser = false;
-      this.userService.updateUserEmailandName(this.userService.currentOnlineUser().userUID, this.data);
+      if (this.data.email == this.userService.currentOnlineUser().email) {
+        await this.userService.updateUserDoc(this.userService.currentOnlineUser().userUID, this.data);
+        this.chatService.profileViewLoggedUser = false;
+      } else {
+        await this.userService.updateUserEmailandName(this.userService.currentOnlineUser().userUID, this.data);
+        this.inputFinished = true;
+        setTimeout(() => {
+          this.inputFinished = false;
+          this.chatService.profileViewLoggedUser = false;
+        }, 1300);
+      }
     }
   }
+
 }
