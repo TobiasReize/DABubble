@@ -20,7 +20,7 @@
     <div class="dFlexColumnCenterFlexStart gap15 width-100">
       <div class="dFlexRowSpaceBetweenCenter width-100">
         <span class="nameCard">{{userService.allUsers()[chatService.contactIndex].name}}</span>
-        <span class="edit" (click)="customProfile($event)">Bearbeiten</span>
+        <span *ngIf="userService.currentOnlineUser().userUID != '0'" class="edit" (click)="customProfile($event)">Bearbeiten</span>
       </div>
       <div class="gap15 dFlexRowCenterCenter">
         <!-- <img src="assets/img/main/{{chatService.currentUserStatus}}.png" /> -->
