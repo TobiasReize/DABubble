@@ -64,7 +64,7 @@ export class ChooseAvatarComponent {
         case (file.type != 'image/jpeg') && (file.type != 'image/png') && (file.type != 'image/svg+xml') && (file.type != 'image/webp'):
           this.handleUploadError('type');
           break;
-        case file.size >= 1000000:
+        case file.size > 500000:
           this.handleUploadError('size');
           break;
         default:
@@ -78,7 +78,7 @@ export class ChooseAvatarComponent {
     this.uploadError = true;
     this.uploadFile = 'done';
     if (info == 'size') {
-      this.uploadInfo = 'Datei zu groß! Dateigröße < 1MB';
+      this.uploadInfo = 'Datei zu groß! Dateigröße < 500KB';
     } else if (info == 'type') {
       this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG oder WEBP auswählen';
     } else {
