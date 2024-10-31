@@ -2,6 +2,7 @@
 @import "../../../../../styles/styles2.scss";
 @import "../../../../../styles/fontStyles.scss";
 @import "../../../../../styles/gap.scss";
+
 * {
   @include fontStyle2;
 }
@@ -86,35 +87,35 @@ section {
 .person {
   cursor: pointer;
   &:hover {
-      background-color: $bg-color;
+    background-color: $bg-color;
   }
 }
 
-.choosenContactsDiv {
-  position: absolute;
-  left: 0px;
-  right: 0;
-  bottom: 0;
-  top: 0px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
+.avatar {
+  margin-left: -20px;
 }
 
-.choosenContactsDivKid {
-  width: 160px !important;
+.choosenAvatars {
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
-  gap: 5px;
-  background-color: #ECEEFE;
-  border-radius: 35px;
-  top: 14px;
-  left: 15px;
+  align-items: center;
+  padding: 3px 10px 3px 10px;
+  gap: 10px;
+  border-radius: 100px;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  max-width: 200px;
+  height: 80%;
 
-  img {
-    width: 30px;
-    border-radius: 100%;
+  &:hover {
+    background-color: #f3f3f3;
   }
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
 }

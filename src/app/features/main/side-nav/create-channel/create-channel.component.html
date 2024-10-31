@@ -60,6 +60,7 @@
     class="addPeople dFlexColumn"
     style="display: none"
     (click)="stopPropagation($event)"
+    (click)="closeWindowWithContacts()"
   >
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Leute hinzufügen</span>
@@ -101,35 +102,65 @@
       </div>
 
       <!-- input -->
-      @if(AddSpecificPeople) {
-        <div style="position: relative;" (click)="showAllUsers()">
-          <input id="addName" type="text" class="inputElement" placeholder="Name eingeben" [(ngModel)]="addedPeopleToTheChannel" (keyup)="checkIfPeopleAddedToTheChannel()"/>
-          @if (contactsChoosen) {
-            <div class="choosenContactsDiv">
-              @for (user of arrayOfChoosenContacts; track $index) {
-                <div class="choosenContactsDivKid">
-                  <img src="{{user.avatar}}">
-                  <span>{{user.name}}</span>
-                </div>
-              }
-            </div>
-          }
-        </div>
-          
-      }
+      <div
+        *ngIf="AddSpecificPeople"
+        style="position: relative"
+        class="input-wrapper"
+        (click)="stopPropagation($event)"
+      >
+        <!-- Input Feld mit Klick-Event -->
+        <input
+          id="addName"
+          class="inputElement"
+          placeholder="Name eingeben"
+          (click)="showAllUsers()"
+          (keyup)="searchUsers()"
+        />
 
-      <div class="dFlexRowFlexEndCenter" style="position: relative;">
+        <!-- Anzeigen der ausgewählten Kontakte, falls welche vorhanden sind -->
+        <div
+          *ngIf="arrayOfChoosenContacts.length > 0"
+          class="choosenAvatars"
+        >
+          <ng-container
+            *ngFor="let choosenContact of arrayOfChoosenContacts | slice:0:3; let i = index"
+          >
+            <img
+              class="avatar avatar-50"
+              [src]="choosenContact.avatar"
+            />
+          </ng-container>
+          <!-- Anzahl der gewählten Kontakte -->
+          <span class="contact-count">{{ numberOfChoosenContacts }}</span>
+        </div>
+      </div>
+
+      <!-- show users in a window down of the input field -->
+      <div class="dFlexRowFlexEndCenter" style="position: relative">
         @if (showedAllUsers == true) {
-        <div class="people">
-          @for (user of userService.allUsers(); track user.userUID) {
-              <div class="person" (click)="selectUser($index)">
-                  <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}">
-                  <span class="user-name">{{ user.name }}</span>
-              </div>
+        <div id="results" class="people" (click)="stopPropagation($event)">
+          @for (user of filteredUsers; track user.userUID) {
+          <div class="person" (click)="selectUser($index)">
+            <img
+              class="avatar avatar-50"
+              src="{{ user.avatar }}"
+              alt="{{ user.name }}"
+            />
+            <span class="user-name">{{ user.name }}</span>
+          </div>
           }
         </div>
         }
-        <button (click)="createChannel()" class="btn btn-prim" [disabled]="notAddedSpecificPeopleToTheChannel && arrayOfChoosenContacts.length === 0">Erstellen</button>
+        <button
+          (click)="createChannel()"
+          class="btn btn-prim"
+          [disabled]="
+            notAddedSpecificPeopleToTheChannel &&
+            arrayOfChoosenContacts.length === 0
+          "
+        >
+          Erstellen
+        </button>
       </div>
     </div>
   </div>

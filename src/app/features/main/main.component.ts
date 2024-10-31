@@ -13,6 +13,7 @@ import { DirectMessageComponent } from './side-nav/direct-message/direct-message
 import { ProfileViewUsersComponent } from "./profile-view-users/profile-view-users.component";
 import { ProfileViewLoggedUserComponent } from './profile-view-logged-user/profile-view-logged-user.component';
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
+import { doc } from 'firebase/firestore';
 
 @Component({
   selector: 'app-main',
@@ -40,6 +41,7 @@ export class MainComponent implements OnInit {
   isEditChannelVisible: Signal<boolean> = this.chatService.openEditChannel;
   constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService) {}
   sectionIsVisible: boolean = true;
+  sideNav: boolean = true;
 
   closeSection() {
     let section: HTMLElement | null = document.getElementById('section');
@@ -59,6 +61,7 @@ export class MainComponent implements OnInit {
         );
       }
     }
+    this.sideNav = !this.sideNav;
   }
 
   addSectionHiddenClass(div: any) {

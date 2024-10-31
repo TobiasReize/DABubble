@@ -7,6 +7,7 @@ import { collection, doc, setDoc } from 'firebase/firestore';
 import { FirebaseService } from '../../../../core/services/firebase/firebase.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
+import { ChatUser } from '../../../../core/models/user.class';
 
 @Component({
   selector: 'app-create-channel',
@@ -29,14 +30,17 @@ export class CreateChannelComponent {
   selectMembersFromDevspace: boolean = true;
   selectSpecificMembers: boolean = false;
   inputsAreEmpty: boolean = true;
-  channelName: string = "";
-  description: string = "";
+  channelName: string = '';
+  description: string = '';
   notAddedSpecificPeopleToTheChannel: boolean = false;
-  addedPeopleToTheChannel: string = "";
+  addedPeopleToTheChannel: string = '';
   selectedUser: object = [];
   showedAllUsers: boolean = false;
   contactsChoosen: boolean = false;
-  arrayOfChoosenContacts: any = [];
+  arrayOfChoosenContacts: ChatUser[] = [];
+  showPlaceholder: boolean = true;
+  filteredUsers: ChatUser[] = [];
+  numberOfChoosenContacts: number = 0;
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
@@ -50,7 +54,7 @@ export class CreateChannelComponent {
       'input2'
     ) as HTMLInputElement;
 
-    if(this.selectMembersFromDevspace) {
+    if (this.selectMembersFromDevspace) {
       this.addAllMembersFromDevspace();
     }
 
@@ -106,15 +110,19 @@ export class CreateChannelComponent {
   }
 
   addPeople() {
-    const section1: HTMLDivElement = document.getElementById('createChannel') as HTMLDivElement;
-    const section2: HTMLDivElement = document.getElementById('addPeople') as HTMLDivElement;
+    const section1: HTMLDivElement = document.getElementById(
+      'createChannel'
+    ) as HTMLDivElement;
+    const section2: HTMLDivElement = document.getElementById(
+      'addPeople'
+    ) as HTMLDivElement;
 
-    section1.style.display = "none";
-    section2.style.display = "flex";
+    section1.style.display = 'none';
+    section2.style.display = 'flex';
   }
 
   checkInputs() {
-    if(this.channelName === "") {
+    if (this.channelName === '') {
       this.inputsAreEmpty = true;
     } else {
       this.inputsAreEmpty = false;
@@ -122,7 +130,7 @@ export class CreateChannelComponent {
   }
 
   checkIfPeopleAddedToTheChannel() {
-    if(this.addedPeopleToTheChannel == "") {
+    if (this.addedPeopleToTheChannel == '') {
       this.notAddedSpecificPeopleToTheChannel = true;
     } else {
       this.notAddedSpecificPeopleToTheChannel = false;
@@ -136,10 +144,14 @@ export class CreateChannelComponent {
     this.contactsChoosen = true;
     this.notAddedSpecificPeopleToTheChannel = false;
     this.showedAllUsers = false;
+    const name = document.getElementById('addName');
+    this.showPlaceholder = false;
+    this.numberOfChoosenContacts++;
   }
 
   showAllUsers() {
     this.showedAllUsers = true;
+    this.filteredUsers = this.userService.allUsers();
   }
 
   closeUsersWindow(): void {
@@ -152,8 +164,27 @@ export class CreateChannelComponent {
 
   addAllMembersFromDevspace() {
     this.userUIDs = [];
-    this.userService.allUsers().forEach(user => {
+    this.userService.allUsers().forEach((user) => {
       this.userUIDs.push(user.userUID);
-    })
+    });
+  }
+
+  removeUserFromList(userID: object, $index: number) {
+    const user = document.getElementById('user' + $index);
+    user!.style.display = 'none';
+  }
+
+  searchUsers() {
+    const input = (document.getElementById('addName') as HTMLInputElement).value.toLowerCase(); 
+  
+    const filteredUsers = this.userService.allUsers().filter((user) =>
+      user.name.toLowerCase().includes(input)
+    );
+  
+    this.filteredUsers = filteredUsers;
+  }
+
+  closeWindowWithContacts() {
+    this.showedAllUsers = false;
   }
 }
