@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserService } from '../../../../core/services/user/user.service';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { ChatUser } from '../../../../core/models/user.class';
+import { Channel } from '../../../../core/models/channel.class';
 
 @Component({
   selector: 'app-at',
@@ -11,13 +12,18 @@ import { ChatUser } from '../../../../core/models/user.class';
   styleUrl: './at.component.scss'
 })
 export class AtComponent {
-  constructor(private userService: UserService, private chatService: ChatService) { }
 
-  users = this.chatService.usersInCurrentChannelWithoutCurrentUser;
-  @Output() selectUserEvent = new EventEmitter<ChatUser>();
+  constructor(private chatService: ChatService) {}
 
-  selectUser(index: number) {
-    const user = this.users()[index];
-    this.selectUserEvent.emit(user);
+  @Input('usersOrChannels') usersOrChannels: any;
+  @Output() selectUserEvent = new EventEmitter<ChatUser|Channel>();
+
+  selectOption(index: number) {
+    const userOrChannel = this.usersOrChannels()[index];
+    this.selectUserEvent.emit(userOrChannel);
+  }
+
+  isChatUser(option:  ChatUser | Channel): boolean {
+    return this.chatService.isChatUser(option);
   }
 }

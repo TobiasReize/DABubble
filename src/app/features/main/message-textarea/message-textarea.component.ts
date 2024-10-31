@@ -7,6 +7,7 @@ import { MentionComponent } from './mention/mention.component';
 import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { CommonModule } from '@angular/common';
+import { Channel } from '../../../core/models/channel.class';
 
 @Component({
   selector: 'app-message-textarea',
@@ -29,6 +30,9 @@ export class MessageTextareaComponent {
   uploadError: boolean = false;
   fileUrl: string = '';
   fileType: string = '';
+  users: Signal<ChatUser[]> = this.chatService.usersInCurrentChannelWithoutCurrentUser;
+  channels: Signal<Channel[]> = this.chatService.channels;
+  usersOrChannels: Signal<ChatUser[]> | Signal<Channel[]> = this.users;
 
   constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2) { }
 
@@ -78,10 +82,21 @@ export class MessageTextareaComponent {
 
   handleTextAreaKeyDown(event: KeyboardEvent) {
     if (event.key === '@') {
+      this.usersOrChannels = this.users;
+      if (!this.isAtVisible()) {
+        this.toggleAtVisibility();
+      }
+    } else if (event.key === '#') {
+      this.usersOrChannels = this.channels;
       if (!this.isAtVisible()) {
         this.toggleAtVisibility();
       }
     }
+  }
+
+  toggleUserVisibility() {
+    this.usersOrChannels = this.users;
+    this.toggleAtVisibility();
   }
 
   toggleAtVisibility() {
@@ -109,16 +124,17 @@ export class MessageTextareaComponent {
     }
   }
 
-  addMention(user: ChatUser) {
+  addMention(userOrChannel: ChatUser | Channel) {
     let sel = window.getSelection();
     sel?.modify('move', 'backward', 'character');
     sel?.modify('extend', 'forward', 'character');
-    if (sel?.toString() === '@') {
-      sel.deleteFromDocument();
+    const selString = sel?.toString();
+    if (selString === '@' || selString === '#') {
+      sel?.deleteFromDocument();
     }
     this.removeBrTag();
     const mention = this.mentionInsertion.createComponent(MentionComponent);
-    mention.instance.user = user;
+    mention.instance.userOrChannel = userOrChannel;
     this.renderer.appendChild(this.editableTextarea.nativeElement, mention.location.nativeElement);
     this.setRangeToEnd();
   }

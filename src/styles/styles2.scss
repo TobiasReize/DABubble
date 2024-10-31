@@ -44,21 +44,6 @@ button {
   cursor: pointer;
 }
 
-// .whiteButton {
-//   &:hover {
-//     background: rgba(83, 90, 241, 1);
-//     transition: all 100ms ease-in-out;
-//     color: white;
-//   }
-// }
-
-.blueButton {
-  &:hover {
-    background: rgba(121, 126, 243, 1);
-    transition: all 100ms ease-in-out;
-  }
-}
-
 .checkBox-choosed {
   background: rgba(68, 77, 242, 1);
   width: 12px !important;

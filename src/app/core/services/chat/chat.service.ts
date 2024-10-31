@@ -460,4 +460,12 @@ export class ChatService {
       this.profileViewUsersActive = true;
     }
   }
+
+  isChatUser(option: ChatUser | Channel) {
+    if (option instanceof ChatUser) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

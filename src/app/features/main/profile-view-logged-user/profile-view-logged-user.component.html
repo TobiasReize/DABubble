@@ -73,7 +73,7 @@
           <img src="assets/img/main/mail.png" />
           <span class="emailAndName">E-Mail-Adresse</span>
         </div>
-        <input [readOnly]="userService.currentOnlineUser().email.includes('@gmail')" [(ngModel)]="data.email" #email="ngModel" class="input" name="emailAdresse" type="email" placeholder="{{userService.currentOnlineUser().email}}" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required/>
+        <input [readOnly]="userService.currentOnlineUser().email.includes('@gmail') || userService.currentOnlineUser().email.includes('@googlemail')" [(ngModel)]="data.email" #email="ngModel" class="input" name="emailAdresse" type="email" placeholder="{{userService.currentOnlineUser().email}}" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required/>
       </div>
       <!-- buttons -->
       <div class="rowGap32 jc-center">
