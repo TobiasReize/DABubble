@@ -64,6 +64,11 @@
     background-color: $bg-color;
     padding: 15px;
     border-radius: 0px 30px 30px 30px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
 }
 
 .message-content-alternative {
