@@ -1,7 +1,7 @@
 <div class="members-header">
     <span class="members-heading">Mitglieder</span>
-    <button class="icon-btn">
-        <span class="material-symbols-rounded" (click)="closeDialog()">close</span>
+    <button class="icon-btn" (click)="closeDialog()">
+        <span class="material-symbols-rounded">close</span>
     </button>
 </div>
 @for (member of members(); track $index) {
