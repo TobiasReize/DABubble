@@ -218,12 +218,12 @@
 }
 
 .edit-message {
-    @include fontStyle14;
+    @include fontStyle8;
     padding: 10px 20px 10px 20px;
     border-radius: 100px;
     cursor: pointer;
     &:hover {
-        @include fontStyle9;
+        @include fontStyle19;
         background-color: $bg-color;
         color: $purple-3;
     }
