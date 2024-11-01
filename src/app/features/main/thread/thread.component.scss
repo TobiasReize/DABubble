@@ -31,7 +31,7 @@
 .messages-container {
     height: 100%;
     overflow-y: auto;
-    padding-top: 17px;
+    padding-top: 20px;
 }
 
 .channel {
@@ -41,7 +41,11 @@
 
 .thread-hr-container {
     @include dFlex($jc: normal);
-    padding: 0 32px 0 33px;
+    padding: 8px 32px 20px 33px;
+}
+
+.space-between-messages {
+    height: 18px;
 }
 
 hr {

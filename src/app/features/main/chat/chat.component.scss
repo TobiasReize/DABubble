@@ -59,12 +59,16 @@
 
 .hr-container {
     @include dFlex();
-    padding: 0 45px;
+    padding: 17px 45px;
     position: relative;
     z-index: 1;
     &:first-child {
         padding-top: 150px;
     }
+}
+
+.space-between-messages {
+    height: 20px;
 }
 
 hr {

@@ -189,7 +189,8 @@
     position: absolute;
     @include dFlex($jc: normal, $ai: normal);
     opacity: 0;
-    padding: 3px 15px 3px 20px;
+    margin-top: -27px;
+    padding: 2px 15px 2px 20px;
     gap: 5px;
     border-radius: 25px 25px 0px 25px;
     border: 1px solid $light-purple;
