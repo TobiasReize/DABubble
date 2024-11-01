@@ -1,15 +1,15 @@
 import { Component, ElementRef, Input } from '@angular/core';
-import { ChatUser } from '../../../../core/models/user.class';
+import { Channel } from '../../../../core/models/channel.class';
 
 @Component({
-  selector: 'app-mention',
+  selector: 'app-channel-mention',
   standalone: true,
   imports: [],
-  templateUrl: './mention.component.html',
-  styleUrl: './mention.component.scss'
+  templateUrl: './channel-mention.component.html',
+  styleUrl: './channel-mention.component.scss'
 })
-export class MentionComponent {
-  @Input() user!: ChatUser;
+export class ChannelMentionComponent {
+  @Input() channel!: Channel;
 
   constructor(private el: ElementRef) { }
 

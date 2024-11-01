@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Renderer2, SecurityContext, Signal, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, ElementRef, Input, Renderer2, SecurityContext, Signal, ViewChild, ViewContainerRef } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AtComponent } from './at/at.component';
@@ -8,6 +8,8 @@ import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { CommonModule } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
+import { user } from '@angular/fire/auth';
+import { ChannelMentionComponent } from './channel-mention/channel-mention.component';
 
 @Component({
   selector: 'app-message-textarea',
@@ -133,8 +135,14 @@ export class MessageTextareaComponent {
       sel?.deleteFromDocument();
     }
     this.removeBrTag();
-    const mention = this.mentionInsertion.createComponent(MentionComponent);
-    mention.instance.userOrChannel = userOrChannel;
+    let mention!: ComponentRef<MentionComponent> | ComponentRef<ChannelMentionComponent>;
+    if (userOrChannel instanceof ChatUser) {
+      mention = this.mentionInsertion.createComponent(MentionComponent);
+      mention.instance.user = userOrChannel;
+    } else {
+      mention = this.mentionInsertion.createComponent(ChannelMentionComponent);
+      mention.instance.channel = userOrChannel;
+    }
     this.renderer.appendChild(this.editableTextarea.nativeElement, mention.location.nativeElement);
     this.setRangeToEnd();
   }
@@ -204,5 +212,4 @@ export class MessageTextareaComponent {
     }
     console.log(this.uploadInfo);
   }
-
 }
