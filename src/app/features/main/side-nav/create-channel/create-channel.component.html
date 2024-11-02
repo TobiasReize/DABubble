@@ -58,7 +58,7 @@
   <div
     id="addPeople"
     class="addPeople dFlexColumn"
-    style="display: none"
+    style="display: none; position: relative"
     (click)="stopPropagation($event)"
     (click)="closeWindowWithContacts()"
   >
@@ -120,7 +120,8 @@
         <!-- Anzeigen der ausgewählten Kontakte, falls welche vorhanden sind -->
         <div
           *ngIf="arrayOfChoosenContacts.length > 0"
-          class="choosenAvatars"
+          class="choosenAvatars fadeInFromOpacity0"
+          (click)="showChoosedUsers()"
         >
           <ng-container
             *ngFor="let choosenContact of arrayOfChoosenContacts | slice:0:3; let i = index"
@@ -140,7 +141,7 @@
         @if (showedAllUsers == true) {
         <div id="results" class="people" (click)="stopPropagation($event)">
           @for (user of filteredUsers; track user.userUID) {
-          <div class="person" (click)="selectUser($index)">
+          <div class="person" (click)="selectUser($index, user.userUID)">
             <img
               class="avatar avatar-50"
               src="{{ user.avatar }}"
@@ -163,5 +164,15 @@
         </button>
       </div>
     </div>
-  </div>
+
+    <!-- show a window, how many users were added -->
+    <div *ngIf="hoverEffectForAddedUsers" class="members-header fadeInFromOpacity0" (click)="stopPropagation($event)">
+      <span class="members-heading">Mitglieder</span>
+      @for (user of arrayOfChoosenContacts; track $index) {
+          <div class="dFlexCenter gap10 paddingLeft20">
+              <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}">
+              <span class="user-name">{{ user.name }}</span>
+          </div>
+      }
+    </div>
 </div>

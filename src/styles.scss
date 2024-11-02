@@ -15,7 +15,7 @@ html {
 
 body {
   background-color: $bg-color;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 a {
@@ -297,7 +297,7 @@ hr {
 }
 
 .dNone {
-  display: none;
+  display: none !important;
 }
 
 // Responsive Design:
