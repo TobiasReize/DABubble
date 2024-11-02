@@ -157,6 +157,18 @@ export class ChatService {
     );
   }
 
+  // async addDirectMessage(messageContent: string, fileUrl: string, fileType: string) {
+  //   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+  //   await addDoc(
+  //     this.firebaseService.getSubcollectionRef(
+  //       this.currentDirectMessageChannel().id,
+  //       'directmessages',
+  //       'messages'
+  //     ),
+  //     messageAsJson
+  //   );
+  // }
+
   async addThreadReply(messageContent: string, fileUrl: string, fileType: string) {
       const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
       await addDoc(
@@ -194,6 +206,19 @@ export class ChatService {
       { ...messageObj }
     );
   }
+
+  // async updateDirectMessage(messageId: string, messageObj: any) {
+  //   // {...messageObj} must be used due to a bug concerning the database
+  //   await updateDoc(
+  //     this.firebaseService.getDocRefInSubcollection(
+  //       this.currentDirectMessageChannel().id,
+  //       'directmessages',
+  //       'messages',
+  //       messageId
+  //     ),
+  //     { ...messageObj }
+  //   );
+  // }
 
   async updateThreadReply(replyId: string, messageObj: MessageInterface) {
     await updateDoc(
