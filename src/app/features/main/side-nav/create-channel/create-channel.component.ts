@@ -39,8 +39,11 @@ export class CreateChannelComponent {
   contactsChoosen: boolean = false;
   arrayOfChoosenContacts: ChatUser[] = [];
   showPlaceholder: boolean = true;
-  filteredUsers: ChatUser[] = [];
+  filteredUsers: ChatUser[] = JSON.parse(
+    JSON.stringify(this.userService.allUsers())
+  );
   numberOfChoosenContacts: number = 0;
+  hoverEffectForAddedUsers: boolean = false;
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
@@ -56,6 +59,11 @@ export class CreateChannelComponent {
 
     if (this.selectMembersFromDevspace) {
       this.addAllMembersFromDevspace();
+    } 
+    
+    if (this.arrayOfChoosenContacts.length > 0) {
+      this.addSpecificUsersToTheUserUID();
+      console.log('Specific Users added: ', this.userUIDs);
     }
 
     let channel = new Channel(
@@ -99,6 +107,7 @@ export class CreateChannelComponent {
     this.selectSpecificMembers = false;
     this.AddSpecificPeople = false;
     this.notAddedSpecificPeopleToTheChannel = false;
+    
     this.closeUsersWindow();
   }
 
@@ -107,6 +116,13 @@ export class CreateChannelComponent {
     this.selectMembersFromDevspace = false;
     this.AddSpecificPeople = true;
     this.notAddedSpecificPeopleToTheChannel = true;
+  }
+
+  addSpecificUsersToTheUserUID() {
+    this.userUIDs = [];
+    this.arrayOfChoosenContacts.forEach((user) => {
+      this.userUIDs.push(user.userUID);
+    });
   }
 
   addPeople() {
@@ -137,8 +153,12 @@ export class CreateChannelComponent {
     }
   }
 
-  selectUser(index: number) {
-    const selectedUser = this.userService.allUsers()[index];
+  selectUser(index: number, userUID: string) {
+    this.removeUser(userUID);
+    const selectedUserIndex = this.userService
+      .allUsers()
+      .findIndex((user) => user.userUID === userUID);
+    const selectedUser = this.userService.allUsers()[selectedUserIndex];
     this.arrayOfChoosenContacts.push(selectedUser);
     this.userUIDs.push(selectedUser.userUID);
     this.contactsChoosen = true;
@@ -149,9 +169,17 @@ export class CreateChannelComponent {
     this.numberOfChoosenContacts++;
   }
 
+  removeUser(userUID: string) {
+    const index = this.filteredUsers.findIndex(
+      (user) => user.userUID === userUID
+    );
+    if (index !== -1) {
+      this.filteredUsers.splice(index, 1);
+    }
+  }
+
   showAllUsers() {
     this.showedAllUsers = true;
-    this.filteredUsers = this.userService.allUsers();
   }
 
   closeUsersWindow(): void {
@@ -175,16 +203,23 @@ export class CreateChannelComponent {
   }
 
   searchUsers() {
-    const input = (document.getElementById('addName') as HTMLInputElement).value.toLowerCase(); 
-  
-    const filteredUsers = this.userService.allUsers().filter((user) =>
-      user.name.toLowerCase().includes(input)
-    );
-  
+    const input = (
+      document.getElementById('addName') as HTMLInputElement
+    ).value.toLowerCase();
+
+    const filteredUsers = this.userService
+      .allUsers()
+      .filter((user) => user.name.toLowerCase().includes(input));
+
     this.filteredUsers = filteredUsers;
   }
 
   closeWindowWithContacts() {
     this.showedAllUsers = false;
+    this.hoverEffectForAddedUsers = false;
+  }
+
+  showChoosedUsers() {
+    this.hoverEffectForAddedUsers = !this.hoverEffectForAddedUsers;
   }
 }
