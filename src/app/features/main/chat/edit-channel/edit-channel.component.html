@@ -5,8 +5,8 @@
                 <span class="material-symbols-rounded">tag</span>
                 <span>{{ currentChannel().name }}</span>
             </div>
-            <button class="icon-btn">
-                <span class="material-symbols-rounded" (click)="closeEditChannel()">close</span>
+            <button class="icon-btn" (click)="closeEditChannel()">
+                <span class="material-symbols-rounded">close</span>
             </button>
         </div>
         <div class="edit-channel-name-container" [ngClass]="{'editable-section': isChannelNameEditable}">

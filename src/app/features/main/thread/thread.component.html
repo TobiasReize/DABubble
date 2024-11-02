@@ -16,6 +16,7 @@
     </div>
     @for (reply of replies(); track reply.id) {
         <app-message [messageData]="reply" [isThreadMessage]="true"></app-message>
+        <div class="space-between-messages"></div>
     }
 </div>
 <app-message-textarea placeholder="Antworten..." type="thread"></app-message-textarea>

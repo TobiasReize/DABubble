@@ -1,7 +1,1 @@
-<span #mention (click)="selectMention()">
-    @if (isChatUser(userOrChannel)) {
-        <span class="mention" contenteditable="false">&#64;{{userOrChannel.name}}&nbsp;</span><span></span>
-    } @else {
-        <span class="mention" contenteditable="false">&#35;{{userOrChannel.name}}&nbsp;</span><span></span>
-    }
-</span>
+<span class="mention" contenteditable="false" (click)="selectMention()">&#64;{{user.name}}&nbsp;</span><span></span>
