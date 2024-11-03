@@ -36,6 +36,7 @@ export class UserService implements OnDestroy {
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
       console.log('currentUser', currentUser);
       if (currentUser) {
+        this.updateUserDoc(currentUser.uid, {isOnline: true});
         this.currentUserUIDSignal.set(currentUser.uid);
       }
     });
@@ -78,7 +79,7 @@ export class UserService implements OnDestroy {
   }
 
 
-  async updateUserDoc(userUID: string, data = {name: '', email: ''}) {
+  async updateUserDoc(userUID: string, data = {}) {
     await this.firebaseService.updateDocData('users', userUID, data)
       .then(() => {
         console.log('Users-Collection updated');
@@ -94,7 +95,12 @@ export class UserService implements OnDestroy {
   }
 
 
-  signOutUser() {
+  async signOutUser() {
+    if (this.currentUserUID() == '0') {
+      await this.updateUserDoc('guest', {isOnline: false});
+    } else {
+      await this.updateUserDoc(this.currentOnlineUser().userUID, {isOnline: false});
+    }
     signOut(this.auth)
       .then(() => {
         console.log('Sign-out successful');

@@ -4,6 +4,7 @@ export class ChatUser {
     password: string;
     avatar: string;
     userUID: string;
+    isOnline: boolean;
 
 
     constructor(obj?: any) {
@@ -12,6 +13,7 @@ export class ChatUser {
         this.password = '';
         this.avatar = obj ? obj.avatar : '';
         this.userUID = obj ? obj.userUID : '';
+        this.isOnline = obj ? obj.isOnline : false;
     }
 
 
@@ -21,6 +23,7 @@ export class ChatUser {
           email: this.email,
           avatar: this.avatar,
           userUID: this.userUID,
+          isOnline: this.isOnline
         }
       }
 

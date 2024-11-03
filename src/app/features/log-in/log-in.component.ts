@@ -98,6 +98,7 @@ export class LogInComponent implements OnInit {
         const user = result.user;
         await this.saveGoogleUser(user);  //await, damit der neue User gefunden werden kann und als currentOnlineUser übergeben werden kann!
         this.userService.currentUserUIDSignal.set(user.uid);
+        await this.userService.updateUserDoc(user.uid, {isOnline: true});
         console.log('Aktueller User:', this.userService.currentOnlineUser());
         this.router.navigateByUrl('main');
       }).catch((error) => {
@@ -117,7 +118,7 @@ export class LogInComponent implements OnInit {
     if (userIndex == -1) {
       this.userService.newUser.name = user.displayName ? user.displayName : 'Google User';
       this.userService.newUser.email = user.email ? user.email : 'Google Mail';
-      this.userService.newUser.avatar = user.photoURL ? user.photoURL : 'assets/img/profile.svg';
+      this.userService.newUser.avatar = 'assets/img/google.svg';
       this.userService.newUser.userUID = user.uid;
       await this.userService.addUser(user.uid, this.userService.newUser.toJSON());
       console.log('Google-User hinzugefügt!');
@@ -127,8 +128,24 @@ export class LogInComponent implements OnInit {
   }
 
 
-  signInWithGuest() {
-    this.userService.signOutUser();
+  // async saveGoogleImg(user: User) {
+  //   try {
+  //     const resp = await fetch(user.photoURL!);
+  //     console.log('resp', resp);
+  //     if (!resp.ok) {
+  //       throw new Error(`Response status: ${resp.status}`);
+  //     }
+  //     const blob = await resp.blob();
+  //     console.log('blob', blob);
+  //   } catch (error) {
+  //     console.log('Error Google Img:', error);
+  //   }
+  // }
+
+
+  async signInWithGuest() {
+    await this.userService.signOutUser();
+    await this.userService.updateUserDoc('guest', {isOnline: true});
     this.userService.currentUserUIDSignal.set('0');
     console.log('Aktueller User:', this.userService.currentOnlineUser());
     this.router.navigateByUrl('main');
