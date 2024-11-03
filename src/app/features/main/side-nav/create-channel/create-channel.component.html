@@ -166,12 +166,15 @@
     </div>
 
     <!-- show a window, how many users were added -->
-    <div *ngIf="hoverEffectForAddedUsers" class="members-header fadeInFromOpacity0" (click)="stopPropagation($event)">
+    <div *ngIf="addedUsers" class="members-header fadeInFromOpacity0" (click)="stopPropagation($event)">
       <span class="members-heading">Mitglieder</span>
       @for (user of arrayOfChoosenContacts; track $index) {
-          <div class="dFlexCenter gap10 paddingLeft20">
-              <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}">
-              <span class="user-name">{{ user.name }}</span>
+          <div class="dFlexRowCenterCenter gap25">
+              <img src="assets/img/main/close (2).png" class="cursor-pointer close" (click)="deleteUserFromArrayOfChoosenContacts(user.userUID)">
+              <div class="dFlex gap10">
+                <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}" >
+                <span class="user-name">{{ user.name }}</span>
+              </div>
           </div>
       }
     </div>

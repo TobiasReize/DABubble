@@ -161,3 +161,10 @@ section {
 #results {
   overflow-y: auto;
 }
+
+.close {
+  &:hover {
+    background-color: rgba(236, 238, 254, 1);
+    border-radius: 100%;
+  }
+}

@@ -17,8 +17,14 @@
         <span class="nameCard">{{userService.allUsers()[chatService.contactIndex].name}}</span>
       </div>
       <div class="gap15 dFlexRowCenterCenter">
-        <!-- <img src="assets/img/main/{{chatService.currentUserStatus}}.png" />
-        <span class="f400w-20px-gray">{{chatService.currentUserStatus}}</span> -->
+        @if (userService.allUsers()[chatService.contactIndex].isOnline == true) {
+          <img src="assets/img/main/Aktiv.png"/>
+          <span class="f400w-20px-gray">Aktiv</span>
+        }
+        @if (userService.allUsers()[chatService.contactIndex].isOnline == false) {
+          <img src="assets/img/main/Abwesend.png"/>
+          <span class="f400w-20px-gray">Abwesend</span>
+        }
       </div>
     </div>
 

@@ -43,7 +43,7 @@ export class CreateChannelComponent {
     JSON.stringify(this.userService.allUsers())
   );
   numberOfChoosenContacts: number = 0;
-  hoverEffectForAddedUsers: boolean = false;
+  addedUsers: boolean = false;
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
@@ -216,10 +216,22 @@ export class CreateChannelComponent {
 
   closeWindowWithContacts() {
     this.showedAllUsers = false;
-    this.hoverEffectForAddedUsers = false;
+    this.addedUsers = false;
   }
 
   showChoosedUsers() {
-    this.hoverEffectForAddedUsers = !this.hoverEffectForAddedUsers;
+    this.addedUsers = !this.addedUsers;
+  }
+
+  deleteUserFromArrayOfChoosenContacts(userUID: string) {
+    const indexOfUser = this.arrayOfChoosenContacts.findIndex((user) => user.userUID === userUID);
+    this.arrayOfChoosenContacts.splice(indexOfUser, 1);
+    const i = this.userService.allUsers().findIndex((user) => user.userUID === userUID);
+    this.filteredUsers.push(this.userService.allUsers()[i]);
+    this.numberOfChoosenContacts--;
+    this.filteredUsers.push();
+    if(this.arrayOfChoosenContacts.length === 0) {
+      this.addedUsers = false;
+    }
   }
 }
