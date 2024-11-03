@@ -187,6 +187,17 @@ app-intro {
 }
 
 @media(max-width: 450px) {
+    .login-text {
+        height: 61px;
+    }
+
+    .content-window {
+        .error-text {
+            height: 38px;
+            margin-bottom: 0;
+        }
+    }
+    
     .google-btn {
         padding: 6px 16px;
     }
@@ -196,6 +207,7 @@ app-intro {
 
         > span {
             text-align: center;
+            height: 38px;
         }
     }
 

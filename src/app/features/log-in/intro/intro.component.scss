@@ -150,3 +150,85 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
         }
     }
 }
+
+// Mobile:
+@keyframes shrinkLogoMobile {
+    from {
+        height: 70px;
+    }
+
+    to {
+        height: 56px;
+    }
+}
+
+@keyframes shrinkTitleMobile {
+    from {
+        font-size: 32px;
+        line-height: 1;
+        color: white;
+    }
+
+    to {
+        font-size: 20px;
+        line-height: 24px;
+        color: black;
+    }
+}
+
+@keyframes reducePaddingMobile {  //für den Logo-Container
+    from {
+        padding-right: 24px;
+    }
+
+    to {
+        padding-right: 16px;
+    }
+}
+
+@media(min-width: 450px) and (max-width: 654px) {   //für Bildschirmbreite 450 -654px
+    @keyframes moveTopMobile {    //für den intro-content-Container
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + (100vh - 842px) / 2 + 40px));
+            //plus Abstand nach oben und halbe Höhe des finalen Logos
+        }
+    }
+}
+
+@media(max-width: 450px) {   //für Bildschirmbreite < 450px
+    @keyframes moveTopMobile {    //für den intro-content-Container
+        from {
+            transform: translateY(0) translateX(0);
+        }
+    
+        to {
+            transform: translateY(calc(-50vh + (100vh - 849px) / 2 + 40px));
+            //plus Abstand nach oben und halbe Höhe des finalen Logos
+        }
+    }
+}
+
+@media(max-width: 654px) {
+    .intro-content {
+        animation: moveLeft 300ms ease-out 500ms forwards, moveTopMobile $animation-config;
+
+        div {
+            padding-right: 24px;
+            animation: reducePaddingMobile $animation-config;
+        }
+        
+        img {
+            height: 70px;
+            animation: shrinkLogoMobile $animation-config;
+        }
+
+        span {
+            font-size: 32px;
+            animation: moveRight 500ms ease-out 800ms forwards, shrinkTitleMobile $animation-config;
+        }
+    }
+}
