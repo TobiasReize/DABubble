@@ -32,6 +32,7 @@ export class MessageTextareaComponent {
   uploadFile: null | 'inProgress' | 'done' = null;
   uploadError: boolean = false;
   fileUrl: string = '';
+  fileName: string = '';
   fileType: string = '';
   users: Signal<ChatUser[]> = this.chatService.usersInCurrentChannelWithoutCurrentUser;
   channels: Signal<Channel[]> = this.chatService.channels;
@@ -68,6 +69,7 @@ export class MessageTextareaComponent {
     this.uploadFile = null;
     this.uploadError = false;
     this.fileUrl = '';
+    this.fileName = '';
     this.fileType = '';
   }
 
@@ -76,10 +78,14 @@ export class MessageTextareaComponent {
     this.fileInput.nativeElement.value = null;
   }
 
+  deleteFile() {
+    this.firebaseService.deleteFile(this.fileUrl);
+    this.resetInput();
+  }
+
   handleInputClick(event: Event) {
     if (this.uploadFile === 'done') {
-      this.firebaseService.deleteFile(this.fileUrl);
-      this.resetInput();
+      this.deleteFile();
       event?.preventDefault();
     } else if (this.uploadFile === 'inProgress') {
       event?.preventDefault();
@@ -199,6 +205,7 @@ export class MessageTextareaComponent {
     const file = input.files?.item(0);
     if (file) {
       console.log('file', file);
+      this.fileName = file.name;
       switch (true) {
         case (!this.isImage(file.type) && file.type != 'application/pdf'):
           this.handleUploadError('type');
@@ -245,5 +252,9 @@ export class MessageTextareaComponent {
         behavior: 'smooth'
       })
     }
+  }
+
+  getFileName(fileUrl: string) {
+    return fileUrl.split('/').pop();
   }
 }

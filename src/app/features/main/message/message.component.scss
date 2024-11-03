@@ -234,6 +234,15 @@
     position: relative;
 }
 
+.file-name {
+    @include dFlex();
+    padding: 4px 4px 4px 12px;
+    border: 1px solid $purple-2;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: $light-purple-scrollbar;
+}
+
 app-emoji-picker {
     left: 0px;
     bottom: 44px;
