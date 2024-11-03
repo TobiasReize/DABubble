@@ -26,7 +26,7 @@
         }
     </div>
 </div>
-<div class="messages-container">
+<div #messagesContainer class="messages-container">
     <div class="hr-container">
         <hr>
         <div class="date-info">{{ getDateInfo(messages()[0]) }}</div>
@@ -44,4 +44,4 @@
     }
     <div class="space-between-messages"></div>
 </div>
-<app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat"></app-message-textarea>
+<app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat" [messagesContainerRef]="messagesContainer"></app-message-textarea>

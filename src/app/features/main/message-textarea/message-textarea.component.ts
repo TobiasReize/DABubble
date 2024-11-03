@@ -6,7 +6,7 @@ import { ChatUser } from '../../../core/models/user.class';
 import { MentionComponent } from './mention/mention.component';
 import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
 import { user } from '@angular/fire/auth';
 import { ChannelMentionComponent } from './channel-mention/channel-mention.component';
@@ -21,6 +21,7 @@ import { ChannelMentionComponent } from './channel-mention/channel-mention.compo
 export class MessageTextareaComponent {
   @Input() placeholder: string = 'Nachricht an #';
   @Input() type: string = 'chat';
+  @Input() messagesContainerRef!: HTMLDivElement;
   messageText = '';
   isAtVisible: Signal<boolean> = this.chatService.opentAt;
   isEmojiPickerVisible: Signal<boolean> = this.chatService.openEmojiPicker;
@@ -36,7 +37,7 @@ export class MessageTextareaComponent {
   channels: Signal<Channel[]> = this.chatService.channels;
   usersOrChannels: Signal<ChatUser[]> | Signal<Channel[]> = this.users;
 
-  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2) { }
+  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private scroller: ViewportScroller) { }
 
   ngOnInit() {
     if (this.type === 'thread') {
@@ -56,6 +57,9 @@ export class MessageTextareaComponent {
       this.messageText = '';
       this.editableTextarea.nativeElement.innerHTML = '';
       this.resetInput();
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 1);
     }
   }
 
@@ -82,6 +86,11 @@ export class MessageTextareaComponent {
     }
   }
 
+  keys = {
+    shift: false,
+    enter: false
+  }
+
   handleTextAreaKeyDown(event: KeyboardEvent) {
     if (event.key === '@') {
       this.usersOrChannels = this.users;
@@ -93,6 +102,22 @@ export class MessageTextareaComponent {
       if (!this.isAtVisible()) {
         this.toggleAtVisibility();
       }
+    } else if (event.key === 'Enter') {
+      this.keys.enter = true;
+    } else if (event.key === 'Shift') {
+      this.keys.shift = true;
+    }
+    if (this.keys.enter && !this.keys.shift) {
+      event.preventDefault();
+      this.addMessage();
+    }
+  }
+
+  handleTextAreaKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.keys.enter = false;
+    } else if (event.key === 'Shift') {
+      this.keys.shift = false;
     }
   }
 
@@ -211,5 +236,14 @@ export class MessageTextareaComponent {
       this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
     }
     console.log(this.uploadInfo);
+  }
+
+  scrollToBottom() {
+    if (this.messagesContainerRef) {
+      this.messagesContainerRef.scrollTo({
+        top: this.messagesContainerRef.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
   }
 }
