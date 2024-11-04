@@ -9,6 +9,17 @@
     </div>
 </div>
 <div class="header-profile-section">
-    <h3>{{userService.currentOnlineUser().name}}</h3>
-    <img class="avatar avatar-70" src="{{userService.currentOnlineUser().avatar}}" alt="Dein Avatar">
+    <div (click)="toggleProfilInfo()" class="header-profile-container">
+        <h3>{{userService.currentOnlineUser().name}}</h3>
+        <img class="avatar avatar-70" src="{{userService.currentOnlineUser().avatar}}" alt="Dein Avatar">
+        <span class="material-symbols-rounded">keyboard_arrow_down</span>
+    </div>
+    @if (profilInfo) {
+        <div (click)="toggleProfilInfo()" class="profil-info-overlay">
+            <div (click)="stopPropagation($event)" class="profil-info">
+                <span (click)="showProfile()">Profil</span>
+                <span (click)="logout()">Log out</span>
+            </div>
+        </div>
+    }
 </div>
