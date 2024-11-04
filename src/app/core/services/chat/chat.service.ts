@@ -157,17 +157,13 @@ export class ChatService {
     );
   }
 
-  // async addDirectMessage(messageContent: string, fileUrl: string, fileType: string) {
-  //   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
-  //   await addDoc(
-  //     this.firebaseService.getSubcollectionRef(
-  //       this.currentDirectMessageChannel().id,
-  //       'directmessages',
-  //       'messages'
-  //     ),
-  //     messageAsJson
-  //   );
-  // }
+ async addDirectMessage(messageContent: string, fileUrl: string, fileType: string) {
+   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+   await addDoc(
+    this.firebaseService.getCollectionRef('directMessages'),
+     messageAsJson
+   );
+ }
 
   async addThreadReply(messageContent: string, fileUrl: string, fileType: string) {
       const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);

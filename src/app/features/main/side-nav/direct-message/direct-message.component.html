@@ -1,6 +1,12 @@
 <section>
   <div class="div-header">
-    <div (click)="chatService.openViewProfile(userService.allUsers()[chatService.contactIndex].userUID)">
+    <div
+      (click)="
+        chatService.openViewProfile(
+          userService.allUsers()[chatService.contactIndex].userUID
+        )
+      "
+    >
       <img
         class="avatar"
         [src]="userService.allUsers()[chatService.contactIndex].avatar"
@@ -16,11 +22,18 @@
       </span>
     </div>
   </div>
-  <div class="dFlex-height100-aIFE-padding60px">
+
+  <div
+    class="dFlex-height100-aIFE-padding60px"
+  >
     <div class="div-parent-notice">
       <div
         class="div-notice cursor-pointer"
-        (click)="chatService.openViewProfile(userService.allUsers()[chatService.contactIndex].userUID)"
+        (click)="
+          chatService.openViewProfile(
+            userService.allUsers()[chatService.contactIndex].userUID
+          )
+        "
       >
         <img
           class="avatar avatar-notice"
@@ -37,8 +50,20 @@
       </div>
       <span *ngIf="chatService.chatDescription" class="private-message-notice">
         Diese Unterhaltung findet nur zwischen
-        <span class="link-to-profile cursor-pointer name-contact-link" (click)="chatService.openViewProfile(userService.allUsers()[chatService.contactIndex].userUID)">
-          {{ "@" + userService.allUsers()[chatService.contactIndex].name }}</span> und dir statt.</span>
+        <span
+          class="link-to-profile cursor-pointer name-contact-link"
+          (click)="
+            chatService.openViewProfile(
+              userService.allUsers()[chatService.contactIndex].userUID
+            )
+          "
+        >
+          {{
+            "@" + userService.allUsers()[chatService.contactIndex].name
+          }}</span
+        >
+        und dir statt.</span
+      >
       <span
         *ngIf="chatService.myChatDescription"
         class="private-message-notice lightGrayText"
@@ -49,5 +74,25 @@
       >
     </div>
   </div>
-  <app-message-textarea></app-message-textarea>
+
+  <!-- chat -->
+  <!-- <div class="messages-container">
+    <div class="hr-container">
+      <hr />
+      <div class="date-info">{{ getDateInfo(messages()[0]) }}</div>
+    </div>
+    @for (message of messages(); track message.id) {
+    <div class="space-between-messages"></div>
+    <app-message [messageData]="message"></app-message>
+    @if (messages()[$index + 1] && isAnotherDay(message, messages()[$index +
+    1])) {
+    <div class="space-between-messages"></div>
+    <div class="hr-container">
+      <hr />
+      <div class="date-info">{{ getDateInfo(messages()[$index + 1]) }}</div>
+    </div>
+    } }
+    <div class="space-between-messages"></div>
+  </div> -->
+  <app-message-textarea type="directMessage"></app-message-textarea>
 </section>

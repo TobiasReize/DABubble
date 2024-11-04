@@ -7,14 +7,14 @@
 
 .dFlex1 {
   @include dFlex(row, space-between, center);
-  width: 176px;
+  // width: 176px;
   height: 40px;
   padding: 5px 10px 5px 0px;
   gap: 15px;
   border-radius: 15px 0px 0px 0px;
 
   div {
-    width: 121px;
+    // width: 121px;
     height: 27px;
     gap: 10px;
     @include dFlex(row, space-between, center);
@@ -34,9 +34,14 @@ section {
   @include dFlex($fd: column, $jc: unset, $ai: center);
   transition: 0.5s ease;
   background-color: white;
-  min-width: $side-nav-width;
+  max-width: 366px;
   height: calc(100vh - $header-and-bottom-spacing);
   border-radius: 30px;
+
+  @media screen and (max-width: 480px) {
+    max-width: unset;
+    width: 100%;
+  }
 }
 
 .font-size1 {
@@ -66,19 +71,28 @@ section {
 }
 
 .entwicklerTeam {
-  background: rgba(236, 238, 254, 1);
-  width: 206px;
+  margin-left: 15px;
+  min-width: 180px;
   height: 33px;
   gap: 10px;
   border-radius: 20px;
   padding: 4px 20px 4px 20px;
+  cursor: pointer;
 
-  span {
-    color: #535af1;
+  @media screen and (max-width: 480px) {
+    width: 90%;
+    min-width: unset;
+  }
+
+  &:hover {
+    #tag {
+      color: #535af1;
+    }
     font-size: 18px;
     font-weight: 700;
     line-height: 24.55px;
     text-align: left;
+    background: rgba(236, 238, 254, 1);
   }
 }
 
@@ -121,7 +135,7 @@ section {
 .directMessages {
   padding-top: 3px;
   padding-bottom: 3px;
-  gap: 25px;
+  gap: 15px;
   justify-content: flex-start;
 
   div {
@@ -156,5 +170,52 @@ section {
     @include changeImgElement(
       "../../../../assets/img/main/arrow_right_blue.png"
     );
+  }
+}
+
+#searchMobileLayout {
+  width: 398px;
+  height: 48px;
+  padding: 8px 24px 8px 24px;
+  border-radius: 42px;
+  border: 1px solid rgba(173, 176, 217, 1);
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 480px) {
+  section {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  #devSpace {
+    display: none;
+  }
+}
+
+#searchMobileDiv {
+  @include dFlex($fd: row, $jc: space-between, $ai: center);
+  position: relative;
+  width: 100%;
+  @media screen and (min-width: 481px) {
+    display: none;
+  }
+}
+
+#searchImg {
+  position: absolute;
+  right: 15px;
+}
+
+.channelWasChoosed {
+  text-align: left;
+  background: rgba(236, 238, 254, 1);
+  color: #535af1;
+  font-size: 18px;
+  span {
+    color: #535af1;
+    font-weight: 700;
+    line-height: 24.55px;
   }
 }

@@ -4,6 +4,10 @@
   @include dFlex($fd: column, $jc: flex-start, $ai: normal);
   height: 100vh;
   padding: 0 20px;
+
+  @media screen and (max-width: 480px) {
+    padding: 0;
+  }
 }
 
 .main {
@@ -64,4 +68,9 @@ app-new-message {
   width: 100%;
 }
 
+@media screen and (max-width: 480px) {
+  #menuButton {
+    height: 28px;
+  }  
+}
 

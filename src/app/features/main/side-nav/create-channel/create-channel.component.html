@@ -57,11 +57,12 @@
 
   <div
     id="addPeople"
-    class="addPeople dFlexColumn"
-    style="display: none; position: relative"
+    [ngClass]="{'addPeople': !mobile, 'mobileVersionAddPeople': mobile}"
+    class="dFlexColumn"
     (click)="stopPropagation($event)"
     (click)="closeWindowWithContacts()"
   >
+    <div *ngIf="mobile" class="greyDiv cursor-pointer"></div>
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Leute hinzufügen</span>
       <img
@@ -124,12 +125,12 @@
           (click)="showChoosedUsers()"
         >
           <ng-container
-            *ngFor="let choosenContact of arrayOfChoosenContacts | slice:0:3; let i = index"
+            *ngFor="
+              let choosenContact of arrayOfChoosenContacts | slice : 0 : 3;
+              let i = index
+            "
           >
-            <img
-              class="avatar avatar-50"
-              [src]="choosenContact.avatar"
-            />
+            <img class="avatar avatar-50" [src]="choosenContact.avatar" />
           </ng-container>
           <!-- Anzahl der gewählten Kontakte -->
           <span class="contact-count">{{ numberOfChoosenContacts }}</span>
@@ -166,16 +167,29 @@
     </div>
 
     <!-- show a window, how many users were added -->
-    <div *ngIf="addedUsers" class="members-header fadeInFromOpacity0" (click)="stopPropagation($event)">
+    <div
+      *ngIf="addedUsers"
+      class="members-header fadeInFromOpacity0"
+      (click)="stopPropagation($event)"
+    >
       <span class="members-heading">Mitglieder</span>
       @for (user of arrayOfChoosenContacts; track $index) {
-          <div class="dFlexRowCenterCenter gap25">
-              <img src="assets/img/main/close (2).png" class="cursor-pointer close" (click)="deleteUserFromArrayOfChoosenContacts(user.userUID)">
-              <div class="dFlex gap10">
-                <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}" >
-                <span class="user-name">{{ user.name }}</span>
-              </div>
-          </div>
+      <div class="dFlexRowCenterCenter gap25">
+        <img
+          src="assets/img/main/close (2).png"
+          class="cursor-pointer close"
+          (click)="deleteUserFromArrayOfChoosenContacts(user.userUID)"
+        />
+        <div class="dFlex gap10">
+          <img
+            class="avatar avatar-50"
+            src="{{ user.avatar }}"
+            alt="{{ user.name }}"
+          />
+          <span class="user-name">{{ user.name }}</span>
+        </div>
+      </div>
       }
     </div>
+  </div>
 </div>

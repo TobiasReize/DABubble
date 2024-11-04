@@ -37,4 +37,13 @@ export class SideNavComponent {
     this.chatService.chat = false;
     this.chatService.directMessage = false;
   }
+
+  selectChannel(id:number) {
+    const channelElements = document.querySelectorAll('.entwicklerTeam');
+    channelElements.forEach(element => {
+      element.classList.remove('channelWasChoosed');
+    });
+    const selectedDiv = document.getElementById('channelDivID' + id);
+    selectedDiv!.classList.add('channelWasChoosed');
+  }
 }

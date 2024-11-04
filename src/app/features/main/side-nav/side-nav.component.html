@@ -1,6 +1,11 @@
 <section id="section" class="sectionDisplayed">
+  <div id="searchMobileDiv">
+    <input id="searchMobileLayout" type="text" placeholder="Gehe zu...">
+    <img id="searchImg" src="assets/img/search.png" alt="">
+  </div>
+  
   <!-- 1 Section - Devspace Section -->
-  <div class="dFlex">
+  <div id="devSpace" class="dFlex">
     <div class="devSpace">
       <img src="assets/img/main/Workspace logo.svg" />
       <span class="font-size1">Devspace</span>
@@ -12,7 +17,7 @@
   </div>
 
   <!-- 2 Section -->
-  <div class="gap25 divWidth" style="position: relative">
+  <div class="gap25 divWidth" style="position: relative; overflow: auto; overflow-x: hidden;">
     <!-- Channels, Entwicklerteam, Channel hinzufügen -->
     <div class="gap25 dFlex">
       <div class="dFlex channels">
@@ -60,11 +65,11 @@
           <span class="material-symbols-rounded">add</span>
         </button>
       </div>
-      <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out">
-        <div class="divWidth dFlexColumn gap25">
-          @for (channel of chatService.channels(); track channel.name) {
-            <div class="entwicklerTeam dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id)">
-              <span class="material-symbols-rounded cursor-pointer">tag</span>
+      <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out divWidth" style="align-items: flex-start;">
+        <div class="divWidth dFlexColumn gap25 divWidth" style="overflow: auto; align-items: flex-start;">
+          @for (channel of chatService.channels(); track channel.name; let i = $index) {
+            <div id="{{'channelDivID' + i}}" class="entwicklerTeam dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id); selectChannel(i)">
+              <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
               <span>{{channel.name}}</span>
             </div>
             }

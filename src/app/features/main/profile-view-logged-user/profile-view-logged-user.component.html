@@ -8,22 +8,33 @@
     <div class="dFlexRowSpaceBetweenCenter width-100">
       <span class="profil">Profil</span>
       <span class="material-symbols-rounded closeIcon" (click)="onDiv1Click()"
-        >close</span>
+        >close</span
+      >
     </div>
 
     <!-- avatar -->
     <div class="dFlexRowCenterCenter">
-      <img class="avatar avatar-200" [src]="userService.allUsers()[chatService.contactIndex].avatar" />
+      <img
+        class="avatar avatar-200"
+        [src]="userService.allUsers()[chatService.contactIndex].avatar"
+      />
     </div>
 
     <!-- Bearbeiten -->
     <div class="dFlexColumnCenterFlexStart gap15 width-100">
       <div class="dFlexRowSpaceBetweenCenter width-100">
-        <span class="nameCard">{{userService.allUsers()[chatService.contactIndex].name}}</span>
-        <span *ngIf="userService.currentOnlineUser().userUID != '0'" class="edit" (click)="customProfile($event)">Bearbeiten</span>
+        <span class="nameCard">{{
+          userService.allUsers()[chatService.contactIndex].name
+        }}</span>
+        <span
+          *ngIf="userService.currentOnlineUser().userUID != '0'"
+          class="edit"
+          (click)="customProfile($event)"
+          >Bearbeiten</span
+        >
       </div>
       <div class="gap15 dFlexRowCenterCenter">
-        <img src="assets/img/main/Aktiv.png"/>
+        <img src="assets/img/main/Aktiv.png" />
         <span class="f400w-20px-gray">Aktiv</span>
       </div>
     </div>
@@ -35,7 +46,9 @@
         <span class="email">E-Mail-Adresse</span>
       </div>
       <div class="width-100">
-        <span class="emailLink">{{userService.allUsers()[chatService.contactIndex].email}}</span>
+        <span class="emailLink">{{
+          userService.allUsers()[chatService.contactIndex].email
+        }}</span>
       </div>
     </div>
   </section>
@@ -55,17 +68,33 @@
 
     <!-- avatar -->
     <div class="dFlexRowCenterCenter">
-      <img class="avatar avatar-200" [src]="userService.allUsers()[chatService.contactIndex].avatar" />
+      <img
+        class="avatar avatar-200"
+        [src]="userService.allUsers()[chatService.contactIndex].avatar"
+      />
     </div>
 
-    <form (ngSubmit)="saveNewContactInfos(contactForm)" #contactForm="ngForm" class="columnGap16">
+    <form
+      (ngSubmit)="saveNewContactInfos(contactForm)"
+      #contactForm="ngForm"
+      class="columnGap16"
+    >
       <!-- name -->
       <div class="columnGap7">
         <div class="dFlexRowFlex-StartCenter gap20 width-100">
           <img src="assets/img/main/account_circle.png" alt="" />
           <span class="emailAndName">Vollständiger Name</span>
         </div>
-        <input [(ngModel)]="data.name" #name="ngModel" minlength="3" class="input" name="fullname" type="text" placeholder="{{userService.currentOnlineUser().name}}" required/>
+        <input
+          [(ngModel)]="data.name"
+          #name="ngModel"
+          minlength="3"
+          class="input"
+          name="fullname"
+          type="text"
+          placeholder="{{ userService.currentOnlineUser().name }}"
+          required
+        />
       </div>
       <!-- Email Adresse -->
       <div class="columnGap7">
@@ -73,20 +102,39 @@
           <img src="assets/img/main/mail.png" />
           <span class="emailAndName">E-Mail-Adresse</span>
         </div>
-        <input [readOnly]="userService.currentOnlineUser().email.includes('@gmail') || userService.currentOnlineUser().email.includes('@googlemail')" [(ngModel)]="data.email" #email="ngModel" class="input" name="emailAdresse" type="email" placeholder="{{userService.currentOnlineUser().email}}" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required/>
+        <input
+          [readOnly]="
+            userService.currentOnlineUser().email.includes('@gmail') ||
+            userService.currentOnlineUser().email.includes('@googlemail')
+          "
+          [(ngModel)]="data.email"
+          #email="ngModel"
+          class="input"
+          name="emailAdresse"
+          type="email"
+          placeholder="{{ userService.currentOnlineUser().email }}"
+          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+          required
+        />
       </div>
       <!-- buttons -->
       <div class="rowGap32 jc-center">
         <button class="btn btn-sec" (click)="onDiv1Click()">Abbrechen</button>
-        <input [disabled]="!name.valid || !email.valid" class="btn btn-prim" type="submit" name="submit" value="Speichern">
+        <input
+          [disabled]="!name.valid || !email.valid"
+          class="btn btn-prim"
+          type="submit"
+          name="submit"
+          value="Speichern"
+        />
       </div>
     </form>
   </section>
 </div>
 
-<div [ngClass]="{'translateX-0': inputFinished}" class="email-sent-overlay">
+<div [ngClass]="{ 'translateX-0': inputFinished }" class="email-sent-overlay">
   <div class="email-sent-content">
-      <span class="material-symbols-rounded email-sent-icon">send</span>
-      <span>E-Mail gesendet</span>
+    <span class="material-symbols-rounded email-sent-icon">send</span>
+    <span>E-Mail gesendet</span>
   </div>
 </div>

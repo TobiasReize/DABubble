@@ -52,6 +52,8 @@ export class MessageTextareaComponent {
         this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType);
       } else if (this.type === 'thread') {
         this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType);
+      } else {
+        this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType);
       }
       this.messageText = '';
       this.editableTextarea.nativeElement.innerHTML = '';

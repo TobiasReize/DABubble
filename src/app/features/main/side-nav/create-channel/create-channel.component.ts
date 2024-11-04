@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { SideNavService } from '../../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { UserService } from '../../../../core/services/user/user.service';
@@ -16,7 +16,7 @@ import { ChatUser } from '../../../../core/models/user.class';
   templateUrl: './create-channel.component.html',
   styleUrl: './create-channel.component.scss',
 })
-export class CreateChannelComponent {
+export class CreateChannelComponent implements OnInit {
   constructor(
     public sideNavService: SideNavService,
     public chatService: ChatService,
@@ -45,6 +45,16 @@ export class CreateChannelComponent {
   numberOfChoosenContacts: number = 0;
   addedUsers: boolean = false;
 
+  //mobiler ansatz
+  mobile: boolean = false;
+
+  ngOnInit(): void {
+    if (window.outerWidth <= 480) {
+      this.mobile = true;
+      console.log('mobile: ', this.mobile);
+    }
+  }
+
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
   }
@@ -59,8 +69,8 @@ export class CreateChannelComponent {
 
     if (this.selectMembersFromDevspace) {
       this.addAllMembersFromDevspace();
-    } 
-    
+    }
+
     if (this.arrayOfChoosenContacts.length > 0) {
       this.addSpecificUsersToTheUserUID();
       console.log('Specific Users added: ', this.userUIDs);
@@ -107,7 +117,7 @@ export class CreateChannelComponent {
     this.selectSpecificMembers = false;
     this.AddSpecificPeople = false;
     this.notAddedSpecificPeopleToTheChannel = false;
-    
+
     this.closeUsersWindow();
   }
 
@@ -133,8 +143,13 @@ export class CreateChannelComponent {
       'addPeople'
     ) as HTMLDivElement;
 
-    section1.style.display = 'none';
-    section2.style.display = 'flex';
+    if (window.outerWidth > 480) {
+      section1.style.display = 'none';
+      section2.style.display = 'flex';
+    } else {
+      section1.style.display = 'flex';
+      section2.style.display = 'flex';
+    }
   }
 
   checkInputs() {
@@ -224,13 +239,17 @@ export class CreateChannelComponent {
   }
 
   deleteUserFromArrayOfChoosenContacts(userUID: string) {
-    const indexOfUser = this.arrayOfChoosenContacts.findIndex((user) => user.userUID === userUID);
+    const indexOfUser = this.arrayOfChoosenContacts.findIndex(
+      (user) => user.userUID === userUID
+    );
     this.arrayOfChoosenContacts.splice(indexOfUser, 1);
-    const i = this.userService.allUsers().findIndex((user) => user.userUID === userUID);
+    const i = this.userService
+      .allUsers()
+      .findIndex((user) => user.userUID === userUID);
     this.filteredUsers.push(this.userService.allUsers()[i]);
     this.numberOfChoosenContacts--;
     this.filteredUsers.push();
-    if(this.arrayOfChoosenContacts.length === 0) {
+    if (this.arrayOfChoosenContacts.length === 0) {
       this.addedUsers = false;
     }
   }
