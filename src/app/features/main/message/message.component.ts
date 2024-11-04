@@ -7,17 +7,19 @@ import { UserService } from '../../../core/services/user/user.service';
 import { FormsModule } from '@angular/forms';
 import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { ReactionOptionsComponent } from './reaction-options/reaction-options.component';
+import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
 
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [EmojiPickerComponent, ReactionOptionsComponent, CommonModule, FormsModule],
+  imports: [EmojiPickerComponent, ReactionOptionsComponent, DeletableFileComponent, CommonModule, FormsModule],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
 export class MessageComponent {
   @Input() messageData: Message = new Message();
-  @Input() isThreadMessage: boolean = false;
+  @Input() type: string = 'chat';
+  isThreadMessage: boolean = false;
   @Input() isTopMessage: boolean = false;
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis;
   reactionOptions: Signal<string[]> = computed(() => ['1f64c.svg', '1f642.svg', '1f680.svg', '1f913.svg', '2705.svg'].filter(emoji => !this.menuEmojis().includes(emoji)));
@@ -32,6 +34,10 @@ export class MessageComponent {
   isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
 
   constructor(private chatService: ChatService, private userService: UserService) {}
+
+  ngOnInit() {
+    this.isThreadMessage = this.type === 'thread';
+  }
 
   ngOnChanges() {
     this.isMe = this.messageData.userName == this.userName;

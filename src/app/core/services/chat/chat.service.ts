@@ -20,6 +20,7 @@ import { ChannelDescription } from '../../models/channel-description.interface';
 import { UserService } from '../user/user.service';
 import { ChannelUserUIDsInterface } from '../../models/channel-user-uids.interface';
 import { ChatUser } from '../../models/user.class';
+import { EmptyMessageFile } from '../../models/empty-message-file.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -133,7 +134,8 @@ export class ChatService {
         reactions,
         data['numberOfReplies'],
         data['fileUrl'],
-        data['fileType']
+        data['fileType'],
+        data['fileName']
       );
       return message;
     } else {
@@ -145,8 +147,8 @@ export class ChatService {
     this.threadRepliesSignal.set([]);
   }
 
-  async addChatMessage(messageContent: string, fileUrl: string, fileType: string) {
-    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+  async addChatMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
+    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
     await addDoc(
       this.firebaseService.getSubcollectionRef(
         this.currentChannel().id,
@@ -157,16 +159,16 @@ export class ChatService {
     );
   }
 
- async addDirectMessage(messageContent: string, fileUrl: string, fileType: string) {
-   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+ async addDirectMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
+   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
    await addDoc(
     this.firebaseService.getCollectionRef('directMessages'),
      messageAsJson
    );
  }
 
-  async addThreadReply(messageContent: string, fileUrl: string, fileType: string) {
-      const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+  async addThreadReply(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
+      const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
       await addDoc(
         this.firebaseService.getSubSubcollectionRef(
           'channels',
@@ -190,8 +192,9 @@ export class ChatService {
     );
   }
 
-  async updateChatMessage(messageId: string, messageObj: any) {
+  async updateChatMessage(messageId: string, messageObj: any | EmptyMessageFile) {
     // {...messageObj} must be used due to a bug concerning the database
+    console.log(messageId);
     await updateDoc(
       this.firebaseService.getDocRefInSubcollection(
         this.currentChannel().id,
@@ -216,7 +219,7 @@ export class ChatService {
   //   );
   // }
 
-  async updateThreadReply(replyId: string, messageObj: MessageInterface) {
+  async updateThreadReply(replyId: string, messageObj: MessageInterface | EmptyMessageFile) {
     await updateDoc(
       this.firebaseService.getDocRefInSubSubcollection(
         'channels',
@@ -401,7 +404,8 @@ export class ChatService {
     this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
   }
 
-  prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string): MessageInterface {
+  prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string, fileName: string): MessageInterface {
+    console.log('fileName from prepareMessageForDatabase', fileName);
     const message = new Message(
       '',
       this.userService.currentOnlineUser().avatar,
@@ -412,7 +416,8 @@ export class ChatService {
       [],
       0,
       fileUrl,
-      fileType
+      fileType,
+      fileName
     );
     return message.toJson();
   }
