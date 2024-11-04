@@ -20,7 +20,7 @@
             </div>
         </div>
         @if (channelNameError) {
-            <span class="channel-name-error">Channelname existiert bereits/wurde nicht geändert.</span>
+            <span class="channel-name-error">Channel-Name existiert bereits/wurde nicht geändert.</span>
         }
         <div class="edit-channel-lower-container" [ngClass]="{'editable-section': isChannelDescriptionEditable}">
             <div class="edit-channel-description-container">
@@ -29,9 +29,12 @@
                     <button class="edit-btn" (click)="toggleChannelDescriptionEdit(channelDescriptionInput.value)">{{ isChannelDescriptionEditable ? 'Speichern' : 'Bearbeiten' }}</button>
                 </div>
                 <div class="edit-channel-description">
-                    <input #channelDescriptionInput [ngClass]="{'editable-field': isChannelDescriptionEditable}" value="{{ currentChannel().description }}" [disabled]="!isChannelDescriptionEditable">
+                    <textarea rows="1" #channelDescriptionInput [ngClass]="{'editable-field': isChannelDescriptionEditable}" value="{{ currentChannel().description }}" [disabled]="!isChannelDescriptionEditable" (input)="resizeTextArea()"></textarea>
                 </div>
             </div>
+            @if (channelDescriptionError) {
+                <span class="channel-name-error">Channel-Beschreibung existiert bereits/wurde nicht geändert.</span>
+            }
             <hr [ngClass]="{'editable-hr': isChannelDescriptionEditable}">
             <div class="edit-channel-created-by">
                 <span>Erstellt von</span>
