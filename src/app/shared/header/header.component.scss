@@ -54,7 +54,59 @@
 .header-profile-section {
     min-width: $thread-width;
     @include dFlex($jc: flex-end);
+}
+
+.header-profile-container {
+    @include dFlex();
     gap: 20px;
+
+    &:hover {
+        cursor: pointer;
+        h3 {
+            color: $purple-2;
+        }
+        span {
+            color: $purple-2;
+            font-variation-settings: "GRAD" 200;
+        }
+    }
+}
+
+.profil-info-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    background-color: rgba(153, 153, 153, 0.6);
+    z-index: 5;
+    @include dFlex($jc: flex-end, $ai: flex-start);
+    padding: 115px 20px 0 0;
+}
+
+.profil-info {
+    @include dFlex($fd: column);
+    width: 280px;
+    gap: 15px;
+    padding: 30px;
+    border-radius: 30px 0 30px 30px;
+    background-color: white;
+    filter: drop-shadow(0px 6px 10px rgba(0, 0, 0, 0.2));
+    span {
+        @include fontStyle14;
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+        border-radius: 100px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $bg-color;
+            color: $purple-3;
+            font-weight: 700;
+        }
+    }
 }
 
 @media (max-width: 1440px) {
