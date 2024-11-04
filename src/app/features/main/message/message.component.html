@@ -7,8 +7,13 @@
                 <span class="message-posted-at">{{ messageData.postedAt.toLocaleTimeString().slice(0, -3) }}</span>
             </div>
             <div #messageContent class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{messageData.content}}</div>
-            @if (messageData.fileUrl !== '' && messageData.fileType) {
+            @if (messageData.fileUrl !== '' && messageData.fileType !== 'application/pdf') {
                 <img class="message-img" src="{{messageData.fileUrl}}" alt="message image">
+            } @else if (messageData.fileUrl) {
+                <div class="file-name">
+                    <span>test.pdf</span>
+                    <span class="material-symbols-rounded">download</span>
+                </div>
             }
             @if (messageData.numberOfReplies > 0 && !isThreadMessage) {
                 <div class="bottom-message-container">

@@ -1,16 +1,28 @@
 <div class="textarea-container">
     <span #mentionInsertion contenteditable="false"></span>
     <div class="textarea-and-image-container">
-        <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true" (keydown)="handleTextAreaKeyDown($event)"></div>
+        <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true" (keydown)="handleTextAreaKeyDown($event)" (keyup)="handleTextAreaKeyUp($event)"></div>
         @if (fileUrl && isImage(fileType)) {
-            <img class="message-img" src="{{fileUrl}}" alt="message image">
+            <div class="message-img-container">
+                <img class="message-img" src="{{fileUrl}}" alt="message image">
+                <div class="icon-btn" (click)="deleteFile()">
+                    <span class="material-symbols-rounded">close</span>
+                </div>
+            </div>
+        } @else if (fileUrl) {
+            <div class="file-name">
+                <span>{{fileName}}</span>
+                <div class="icon-btn" (click)="deleteFile()">
+                    <span class="material-symbols-rounded">close</span>
+                </div>
+            </div>
         }
     </div>
     <div class="textarea-container-inside">
         <div class="textarea-symbols-left">
             <button class="icon-btn">
                 <label (click)="handleInputClick($event)" [ariaDisabled]="uploadFile == 'inProgress'" for="file_upload" class="material-symbols-rounded" [ngClass]="{'img-x': uploadFile == 'done'}">add</label>
-                <input #fileInput (change)="addFile(upload)" #upload [disabled]="uploadFile == 'inProgress'" style="display: none;" id="file_upload" type="file" accept="image/png, image/jpeg, image/svg+xml, image/webp">
+                <input #fileInput (change)="addFile(upload)" #upload [disabled]="uploadFile == 'inProgress'" style="display: none;" id="file_upload" type="file" accept="image/png, image/jpeg, image/svg+xml, image/webp, application/pdf">
             </button>
             <div class="small-divider"></div>
             <button class="icon-btn" (click)="toggleEmojiPickerVisibility()">
