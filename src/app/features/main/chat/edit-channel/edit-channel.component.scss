@@ -129,3 +129,8 @@ input:disabled {
 .leave-channel-btn {
     align-self: flex-end;
 }
+
+.channel-name-error {
+    @include fontStyle0;
+    color: $error-rosa;
+}
