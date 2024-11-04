@@ -135,10 +135,12 @@ export class MessageTextareaComponent {
   }
 
   toggleAtVisibility() {
-    if (this.type === 'chat') {
-      this.chatService.toggleAtVisibility();
-    } else {
-      this.chatService.toggleAtForThreadVisibility();
+    if (this.usersOrChannels().length > 0) {
+      if (this.type === 'chat') {
+        this.chatService.toggleAtVisibility();
+      } else {
+        this.chatService.toggleAtForThreadVisibility();
+      }
     }
   }
 
