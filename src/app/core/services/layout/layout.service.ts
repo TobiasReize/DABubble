@@ -6,16 +6,16 @@ import { LayoutStateSignal } from '../../models/layout-state-signal.interface';
 })
 export class LayoutService {
   
-  selectedCollection = signal<string>('channels');
-  isThreadSelected = signal<boolean>(false);
-  isSideNavSelected = signal<boolean>(true);
+  public selectedCollection = signal<string>('channels');
+  private isThreadSelected = signal<boolean>(false);
+  private isSideNavSelected = signal<boolean>(true);
 
   constructor() { }
 
-  winWidth = signal<number>(1920);
-  isDesktop = computed(() => this.winWidth() > 1200);
-  isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() >= 768);
-  isMobile = computed(() => this.winWidth() < 768);
+  private winWidth = signal<number>(1920);
+  private isDesktop = computed(() => this.winWidth() > 1200);
+  private isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() >= 768);
+  private isMobile = computed(() => this.winWidth() < 768);
 
   selectChat() {
     this.selectedCollection.set('channels');
