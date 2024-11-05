@@ -1,4 +1,4 @@
-import { Component, ElementRef, Signal, ViewChild } from '@angular/core';
+import { Component, Signal, ViewChild } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { MessageTextareaComponent } from '../message-textarea/message-textarea.component';
 import { Message } from '../../../core/models/message.class';
@@ -38,11 +38,5 @@ export class ChatComponent {
 
   openAddPeople() {
     this.chatService.toggleAddPeopleVisibility();
-  }
-
-
-
-  getEl(containerComponent: ChatBottomContainerComponent): HTMLElement {
-    return containerComponent.elementRef.nativeElement;
   }
 }
