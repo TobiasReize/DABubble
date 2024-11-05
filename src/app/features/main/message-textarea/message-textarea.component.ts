@@ -10,6 +10,7 @@ import { CommonModule, ViewportScroller } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
 import { ChannelMentionComponent } from './channel-mention/channel-mention.component';
 import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
+import { LayoutService } from '../../../core/services/layout/layout.service';
 
 @Component({
   selector: 'app-message-textarea',
@@ -38,7 +39,7 @@ export class MessageTextareaComponent {
   channels: Signal<Channel[]> = this.chatService.channels;
   usersOrChannels: Signal<ChatUser[]> | Signal<Channel[]> = this.users;
 
-  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private scroller: ViewportScroller) { }
+  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private scroller: ViewportScroller, private layoutService: LayoutService) { }
 
   ngOnInit() {
     if (this.type === 'thread') {

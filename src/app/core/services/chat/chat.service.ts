@@ -110,6 +110,8 @@ export class ChatService {
   customProfile: boolean = false;
   contacts: any = [];
 
+  private currentMainChatCollectionSignal = computed(() => this.layoutService.layoutState().isChatOpen ? 'channels' : 'directMessageChannels');
+
   constructor(
     private firebaseService: FirebaseService,
     private userService: UserService,
@@ -191,7 +193,6 @@ export class ChatService {
  async addDirectMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
    await this.addDirectMessageChannel();
    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
-   console.log('adding message to dm with ', this.contactUUID);
    await addDoc(
     this.firebaseService.getSubcollectionRef(
       this.getDirectMessageChannelId(this.contactUUID),
@@ -203,19 +204,23 @@ export class ChatService {
   this.changeDirectMessageChannel(this.contactUUID);
  }
 
+ getMainChatChannelId() {
+  return this.currentMainChatCollectionSignal() === 'channels' ? this.currentChannel().id : this.currentDirectMessageChannel().id; 
+ }
+
   async addThreadReply(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
       const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
       await addDoc(
         this.firebaseService.getSubSubcollectionRef(
-          'channels',
-          this.currentChannel().id,
+          this.currentMainChatCollectionSignal(),
+          this.getMainChatChannelId(),
           'messages',
           this.topThreadMessage().id,
           'thread'
         ),
         messageAsJson
       );
-      await this.increaseNumberOfReplies();
+      await this.increaseNumberOfReplies(this.currentMainChatCollectionSignal());
   }
 
   async updateChannel(
@@ -230,7 +235,6 @@ export class ChatService {
 
   async updateChatMessage(messageId: string, messageObj: any | EmptyMessageFile) {
     // {...messageObj} must be used due to a bug concerning the database
-    console.log(messageId);
     await updateDoc(
       this.firebaseService.getDocRefInSubcollection(
         this.currentChannel().id,
@@ -320,7 +324,6 @@ export class ChatService {
       data['userUIDs'],
       data['createdBy']
     );
-    console.log(channel);
     return channel;
   }
 
@@ -330,7 +333,6 @@ export class ChatService {
       doc.id,
       data['userUIDs'],
     );
-    console.log(channel);
     return channel;
   }
 
@@ -367,15 +369,12 @@ export class ChatService {
         });
         this.directMessageChannelsSignal.set(channels);
         if (!this.unsubDirectMessages) {
-          console.log('wot');
           this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[0]);
           this.unsubDirectMessages = this.subDirectMessages(this.currentDirectMessageChannel().id);
         } else {
-          console.log('woti', this.contactUUID);
           this.changeDirectMessageChannel(this.contactUUID);
         }
         this.getUsersInCurrentChannel();
-        console.log('directMessageChannels', this.directMessageChannels());
       }
     );
   }
@@ -428,7 +427,7 @@ export class ChatService {
   changeThread(message: Message) {
     this.topThreadMessageId = message.id;
     this.resubThread();
-    this.unsubTopThreadMessage = this.subTopThreadMessage();
+    this.unsubTopThreadMessage = this.subTopThreadMessage(this.currentMainChatCollectionSignal());
   }
 
   resubChannel() {
@@ -504,10 +503,14 @@ export class ChatService {
     return users.filter(user => !this.usersInCurrentChannel().includes(user));
   }
 
-  async increaseNumberOfReplies() {
+  async increaseNumberOfReplies(collection: string) {
     this.topThreadMessage().numberOfReplies++;
     this.topThreadMessage().lastReplyAt = new Date();
-    this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+    if (collection === 'channels') {
+      this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+    } else {
+      this.updateDirectMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+    }
   }
 
   prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string, fileName: string): MessageInterface {
@@ -562,7 +565,7 @@ export class ChatService {
 
   subThread() {
     const q = query(
-      this.firebaseService.getSubSubcollectionRef('channels', this.currentChannel().id, 'messages', this.topThreadMessageId, 'thread'),
+      this.firebaseService.getSubSubcollectionRef(this.currentMainChatCollectionSignal(), this.getMainChatChannelId(), 'messages', this.topThreadMessageId, 'thread'),
       orderBy('postedAt')
     );
     return onSnapshot(q, (snapshot) => {
@@ -577,8 +580,8 @@ export class ChatService {
     });
   }
 
-  subTopThreadMessage() {
-    return onSnapshot(this.firebaseService.getDocRefInSubcollection(this.currentChannel().id, 'channels', 'messages', this.topThreadMessageId), (doc) => {
+  subTopThreadMessage(collection: string) { 
+    return onSnapshot(this.firebaseService.getDocRefInSubcollection(this.getMainChatChannelId(), collection, 'messages', this.topThreadMessageId), (doc) => {
       if (doc) {
           const message = this.createMessageFromDocumentSnapshot(doc);
           if (message) {
