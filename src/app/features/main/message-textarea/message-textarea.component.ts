@@ -136,7 +136,7 @@ export class MessageTextareaComponent {
 
   toggleAtVisibility() {
     if (this.usersOrChannels().length > 0) {
-      if (this.type === 'chat') {
+      if (this.type === 'chat' || this.type === 'directMessage') {
         this.chatService.toggleAtVisibility();
       } else {
         this.chatService.toggleAtForThreadVisibility();
@@ -145,7 +145,7 @@ export class MessageTextareaComponent {
   }
 
   toggleEmojiPickerVisibility() {
-    if (this.type === 'chat') {
+    if (this.type === 'chat' || this.type === 'directMessage') {
       this.chatService.toggleEmojiPickerVisibility();
     } else {
       this.chatService.toggleEmojiPickerForThreadVisibility();
