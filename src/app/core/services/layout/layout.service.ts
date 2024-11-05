@@ -13,8 +13,8 @@ export class LayoutService {
   constructor() { }
 
   winWidth = signal<number>(1920);
-  isDesktop = computed(() => this.winWidth() >= 1201);
-  isTablet = computed(() => this.winWidth() < 1200 && this.winWidth() >= 768);
+  isDesktop = computed(() => this.winWidth() > 1200);
+  isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() >= 768);
   isMobile = computed(() => this.winWidth() < 768);
 
   selectChat() {
