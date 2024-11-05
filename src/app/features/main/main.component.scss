@@ -68,6 +68,12 @@ app-new-message {
   width: 100%;
 }
 
+@media screen and (max-width: 768px) {
+  app-side-nav {
+    width: 100%;
+  }
+}
+
 @media screen and (max-width: 480px) {
   #menuButton {
     height: 28px;

@@ -21,7 +21,7 @@ import { DeletableFileComponent } from '../deletable-file/deletable-file.compone
 export class MessageTextareaComponent {
   @Input() placeholder: string = 'Nachricht an #';
   @Input() type: string = 'chat';
-  @Input() messagesContainerRef!: HTMLDivElement;
+  @Input() messagesContainerRef!: HTMLElement;
   messageText = '';
   isAtVisible: Signal<boolean> = this.chatService.opentAt;
   isEmojiPickerVisible: Signal<boolean> = this.chatService.openEmojiPicker;

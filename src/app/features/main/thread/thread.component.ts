@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MessageTextareaComponent } from '../message-textarea/message-textarea.component';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { Channel } from '../../../core/models/channel.class';
+import { LayoutService } from '../../../core/services/layout/layout.service';
 
 @Component({
   selector: 'app-thread',
@@ -17,12 +18,12 @@ export class ThreadComponent {
   
   channel: Signal<Channel> = this.chatService.currentChannel;
   
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private layoutService: LayoutService) { }
 
   message: Signal<Message> = this.chatService.topThreadMessage;
   replies: Signal<Message[]> = this.chatService.threadReplies;
 
   closeThread() {
-    this.chatService.changeThreadVisibility(false);
+    this.layoutService.changeThreadVisibility(false);
   }
 }

@@ -2,6 +2,7 @@ import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserService } from './core/services/user/user.service';
+import { LayoutService } from './core/services/layout/layout.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent {
   title = 'da-bubble';
 
   userService = inject(UserService);
-
+  layoutService = inject(LayoutService);
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
@@ -25,5 +26,11 @@ export class AppComponent {
       console.log('Funktioniert!!!');
       this.userService.updateUserDoc(this.userService.currentOnlineUser().userUID, {isOnline: false});
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    const windowWidth = event.target.innerWidth;
+    this.layoutService.onResize(windowWidth);
   }
 }

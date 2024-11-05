@@ -49,7 +49,7 @@ export class CreateChannelComponent implements OnInit {
   mobile: boolean = false;
 
   ngOnInit(): void {
-    if (window.outerWidth <= 480) {
+    if (window.outerWidth <= 768) {
       this.mobile = true;
       console.log('mobile: ', this.mobile);
     }
@@ -143,7 +143,7 @@ export class CreateChannelComponent implements OnInit {
       'addPeople'
     ) as HTMLDivElement;
 
-    if (window.outerWidth > 480) {
+    if (window.outerWidth > 768) {
       section1.style.display = 'none';
       section2.style.display = 'flex';
     } else {

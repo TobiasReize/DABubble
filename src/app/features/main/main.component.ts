@@ -1,6 +1,7 @@
 import { Component, OnInit, Signal } from '@angular/core';
 import { CommonModule, NgIf } from '@angular/common';
 import { ChatService } from '../../core/services/chat/chat.service';
+import { LayoutService } from '../../core/services/layout/layout.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { ChatComponent } from './chat/chat.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
@@ -37,9 +38,10 @@ import { doc } from 'firebase/firestore';
   
 })
 export class MainComponent implements OnInit {
-  isThreadVisible: Signal<boolean> = this.chatService.openThread;
+  layoutState: Signal<any> = this.layoutService.layoutState;
+  // isThreadVisible: Signal<boolean> = this.layoutService.layoutState;
   isEditChannelVisible: Signal<boolean> = this.chatService.openEditChannel;
-  constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService) {}
+  constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService, private layoutService: LayoutService) {}
   sectionIsVisible: boolean = true;
   sideNav: boolean = true;
 
