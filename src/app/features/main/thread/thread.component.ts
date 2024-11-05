@@ -24,6 +24,6 @@ export class ThreadComponent {
   replies: Signal<Message[]> = this.chatService.threadReplies;
 
   closeThread() {
-    this.layoutService.changeThreadVisibility(false);
+    this.layoutService.deselectThread();
   }
 }

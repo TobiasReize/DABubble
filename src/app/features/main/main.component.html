@@ -1,7 +1,7 @@
 <div>
   <app-header></app-header>
   <div class="main">
-    <app-side-nav *ngIf="sideNav"></app-side-nav>
+    <app-side-nav *ngIf="layoutState().isSideNavOpen"></app-side-nav>
     <app-new-message *ngIf="chatService.newMessage"></app-new-message>
     <app-direct-message *ngIf="layoutState().isDirectMessageOpen"></app-direct-message>
     <app-chat *ngIf="layoutState().isChatOpen"></app-chat>

@@ -110,7 +110,7 @@ export class ChatService {
   customProfile: boolean = false;
   contacts: any = [];
 
-  private currentMainChatCollectionSignal = computed(() => this.layoutService.layoutState().isChatOpen ? 'channels' : 'directMessageChannels');
+  private currentMainChatCollectionSignal = computed(() => this.layoutService.selectedCollection());
 
   constructor(
     private firebaseService: FirebaseService,
@@ -451,7 +451,7 @@ export class ChatService {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
     }
-    this.layoutService.changeChatVisibility(true);
+    this.layoutService.selectChat();
   }
 
   changeDirectMessageChannel(id: string) {
@@ -551,7 +551,7 @@ export class ChatService {
       this.myChatDescription = false;
       this.chatDescription = true;
     }
-    this.layoutService.changeDirectMessageVisbility(true);
+    this.layoutService.selectDirectMessage();
     this.changeDirectMessageChannel(this.contactUUID);
   }
 

@@ -1,80 +1,93 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
+import { LayoutStateSignal } from '../../models/layout-state-signal.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LayoutService {
-
-  private layoutStateSignal = signal<any>({
-    isSideNavOpen: true,
-    isThreadOpen: false,
-    isChatOpen: true,
-    isDirectMessageOpen: false
-  });
-  readonly layoutState = this.layoutStateSignal.asReadonly();
+  
+  selectedCollection = signal<string>('channels');
+  isThreadSelected = signal<boolean>(false);
+  isSideNavSelected = signal<boolean>(true);
 
   constructor() { }
 
+  winWidth = signal<number>(1920);
+  isDesktop = computed(() => this.winWidth() >= 1201);
+  isTablet = computed(() => this.winWidth() < 1200 && this.winWidth() >= 768);
+  isMobile = computed(() => this.winWidth() < 768);
+
+  selectChat() {
+    this.selectedCollection.set('channels');
+  }
+
+  selectDirectMessage() {
+    this.selectedCollection.set('directMessageChannels');
+  }
+
+  selectThread() {
+    this.isThreadSelected.set(true);
+  }
+
+  deselectThread() {
+    this.isThreadSelected.set(false);
+  }
+
+  adaptLayoutToDesktop(signal: LayoutStateSignal) {
+    if (this.selectedCollection() === 'channels') {
+      signal.isChatOpen = true;
+    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;}
+    if (this.isSideNavSelected()) { signal.isSideNavOpen = true; }
+    if (this.isThreadSelected()) { signal.isThreadOpen = true; }
+  }
+
+  adaptLayoutToTablet(signal: LayoutStateSignal) {
+    if (this.isThreadSelected()) {
+      signal.isThreadOpen = true;
+    } else {
+      if (this.selectedCollection() === 'channels') {
+        signal.isChatOpen = true;
+      } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;}
+    }
+    if (this.isSideNavSelected()) { signal.isSideNavOpen = true; }
+  }
+
+  adaptLayoutToMobile(signal: LayoutStateSignal) {
+    if (this.isSideNavSelected()) { 
+      signal.isSideNavOpen = true;
+    } else if (this.isThreadSelected()) {
+      signal.isThreadOpen = true;
+    } else if (this.selectedCollection() === 'channels') {
+      signal.isChatOpen = true;
+    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;}
+  }
+
+  readonly layoutState = computed(() => {
+    const signal: LayoutStateSignal = {
+      isSideNavOpen: false,
+      isThreadOpen: false,
+      isChatOpen: false,
+      isDirectMessageOpen: false
+    };
+    if (this.isDesktop()) {
+      this.adaptLayoutToDesktop(signal);
+    } else if (this.isTablet()) {
+      this.adaptLayoutToTablet(signal);
+    } else if (this.isMobile()) {
+      this.adaptLayoutToMobile(signal);
+    }
+    return signal;
+  })
+
   onResize(width: number) {
-    if (width >= 1201) {
-      this.changeChatVisibility(true);
-    }
-    if (width < 1200) {
-      if (this.layoutState().isThreadOpen) {
-        this.changeChatVisibility(false);
-      } else {
-        this.changeChatVisibility(true);
-      }
-    }
-    if (width < 768) {
-      if (this.layoutState().isSideNavOpen) {
-        this.changeThreadVisibility(false);
-        this.changeChatVisibility(false);
-      }
-    }
-  }
-
-  changeSideNavVisibility(bool: boolean) {
-    this.layoutStateSignal.update(layoutState => ({...layoutState, isSideNavOpen: bool}));
-  }
-
-  changeThreadVisibility(bool: boolean) {
-    this.layoutStateSignal.update(layoutState => ({...layoutState, isThreadOpen: bool}));
-  }
-
-  changeChatVisibility(bool: boolean) {
-    if (bool) {
-      if (this.layoutState().isDirectMessageOpen) {
-        this.toggleDirectMessageVisibility();
-      }
-    }
-    this.layoutStateSignal.update(layoutState => ({... layoutState, isChatOpen: bool}));
-    console.log(this.layoutState());
-  }
-
-  changeDirectMessageVisbility(bool: boolean) {
-    if (bool) {
-      if (this.layoutState().isChatOpen) {
-        this.toggleChatVisibility();
-      }
-    }
-    this.layoutStateSignal.update(layoutState => ({... layoutState, isDirectMessageOpen: bool}));
+    this.winWidth.set(width);
   }
 
   toggleSideNavVisbility() {
-    this.changeSideNavVisibility(!this.layoutState().isSideNavOpen);
+    this.isSideNavSelected.set(!this.isSideNavSelected());
   }
 
   toggleThreadVisibility() {
-    this.changeThreadVisibility(!this.layoutState().isThreadOpen);
+    this.isThreadSelected.set(!this.isThreadSelected());
   }
-  
-  toggleChatVisibility() {
-    this.changeChatVisibility(!this.layoutState().isChatOpen);
-  }
-
-  toggleDirectMessageVisibility() {
-    this.changeDirectMessageVisbility(!this.layoutState().isDirectMessageOpen);
-  }
-
 }

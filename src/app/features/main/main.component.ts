@@ -63,7 +63,7 @@ export class MainComponent implements OnInit {
         );
       }
     }
-    this.sideNav = !this.sideNav;
+    this.layoutService.toggleSideNavVisbility();
   }
 
   addSectionHiddenClass(div: any) {
