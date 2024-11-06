@@ -66,13 +66,13 @@ export class EditChannelComponent {
     this.isChannelDescriptionEditable = !this.isChannelDescriptionEditable;
   }
 
-  closeEditChannel() {
+  closeDialog() {
     this.chatService.toggleEditChannelVisibility();
   }
 
   leaveChannel() {
     this.chatService.leaveChannel();
-    this.closeEditChannel();
+    this.closeDialog();
   }
 
   resizeTextArea() {

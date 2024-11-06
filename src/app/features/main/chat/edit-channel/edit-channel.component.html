@@ -1,11 +1,11 @@
-<div class="overlay">
-    <div class="edit-channel">
+<div class="overlayComponent" (click)="closeDialog()">
+    <div class="edit-channel" (click)="$event.stopPropagation()">
         <div class="edit-channel-header">
             <div class="edit-channel-header-left">
                 <span class="material-symbols-rounded">tag</span>
                 <span>{{ currentChannel().name }}</span>
             </div>
-            <button class="icon-btn" (click)="closeEditChannel()">
+            <button class="icon-btn" (click)="closeDialog()">
                 <span class="material-symbols-rounded">close</span>
             </button>
         </div>
@@ -42,5 +42,5 @@
             </div>
         </div>
         <button class="btn btn-prim leave-channel-btn" (click)="leaveChannel()">Channel verlassen</button>
-    </div>
+    </div>    
 </div>
