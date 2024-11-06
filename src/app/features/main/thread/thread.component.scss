@@ -67,12 +67,6 @@ app-message-textarea {
     }
 }
 
-// @media (max-width: 1200px) {
-//     :host {
-//         display: none;
-//     }
-// }
-
 @media (max-width: 1200px) {
     :host {
         width: 100%;
@@ -87,5 +81,8 @@ app-message-textarea {
         height: calc(100vh - 80px);
         border-radius: unset;
         padding-bottom: 30px;
+    }
+    .space-between-messages {
+        height: 10px;
     }
 }

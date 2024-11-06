@@ -272,6 +272,13 @@ app-emoji-picker {
         padding-right: 50px;
         padding-left: 16px;
         gap: 20px;
+        .chat-message-menu {
+            right: 0px;
+        }
+        .chat-message-menu-alternative {
+            right: unset;
+            left: 24px;
+        }
         &:hover {
             .chat-message-menu {
                 right: 12px;
@@ -293,9 +300,9 @@ app-emoji-picker {
 
 @media (max-width: 360px) {
     .message {
-        padding-right: 0px;
+        padding-right: 16px;
     }
     .message-alternative {
-        padding-left: 0px;
+        padding-left: 16px;
     }
 }
