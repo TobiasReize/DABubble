@@ -11,6 +11,7 @@ import { CreateChannelComponent } from './features/main/side-nav/create-channel/
 import { NewMessageComponent } from './features/main/side-nav/new-message/new-message.component';
 import { ProfileViewUsersComponent } from './features/main/profile-view-users/profile-view-users.component';
 import { ProfileViewLoggedUserComponent } from './features/main/profile-view-logged-user/profile-view-logged-user.component';
+import { SearchComponentComponent } from './features/main/search-component/search-component.component';
 
 export const routes: Routes = [
     { path: '', component: LogInComponent },
@@ -22,5 +23,5 @@ export const routes: Routes = [
     { path: 'imprint', component: ImprintComponent },
     { path: 'privacy-policy', component: PrivacyPolicyComponent },
     { path: 'profile_card', component: ProfileViewUsersComponent },
-    { path: 'LeuteHinzufügen', component: CreateChannelComponent }
+    { path: 'search', component: SearchComponentComponent },
 ];

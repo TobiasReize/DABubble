@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { SideNavService } from '../../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { UserService } from '../../../../core/services/user/user.service';
@@ -8,15 +8,16 @@ import { FirebaseService } from '../../../../core/services/firebase/firebase.ser
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ChatUser } from '../../../../core/models/user.class';
+import { FilterNameComponent } from './filter-name/filter-name.component';
 
 @Component({
   selector: 'app-create-channel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FilterNameComponent],
   templateUrl: './create-channel.component.html',
   styleUrl: './create-channel.component.scss',
 })
-export class CreateChannelComponent implements OnInit {
+export class CreateChannelComponent {
   constructor(
     public sideNavService: SideNavService,
     public chatService: ChatService,
@@ -47,13 +48,6 @@ export class CreateChannelComponent implements OnInit {
 
   //mobiler ansatz
   mobile: boolean = false;
-
-  ngOnInit(): void {
-    if (window.outerWidth <= 480) {
-      this.mobile = true;
-      console.log('mobile: ', this.mobile);
-    }
-  }
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
@@ -143,12 +137,15 @@ export class CreateChannelComponent implements OnInit {
       'addPeople'
     ) as HTMLDivElement;
 
-    if (window.outerWidth > 480) {
+    if (window.innerWidth > 480) {
+      this.mobile = false;
       section1.style.display = 'none';
-      section2.style.display = 'flex';
+      section2.classList.remove('dNone');
     } else {
+      this.mobile = true;
+      section2.classList.remove('dNone');
       section1.style.display = 'flex';
-      section2.style.display = 'flex';
+      section2.classList.add('fade-in-from-down');
     }
   }
 
@@ -201,10 +198,6 @@ export class CreateChannelComponent implements OnInit {
     this.showedAllUsers = false;
   }
 
-  stopPropagation(event: MouseEvent): void {
-    event.stopPropagation();
-  }
-
   addAllMembersFromDevspace() {
     this.userUIDs = [];
     this.userService.allUsers().forEach((user) => {
@@ -252,5 +245,10 @@ export class CreateChannelComponent implements OnInit {
     if (this.arrayOfChoosenContacts.length === 0) {
       this.addedUsers = false;
     }
+  }
+
+  closeDiv(id: string) {
+    let div = document.getElementById(id);
+    div!.classList.add('dNone');
   }
 }

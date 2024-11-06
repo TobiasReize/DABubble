@@ -30,7 +30,7 @@ import { doc } from 'firebase/firestore';
     NewMessageComponent,
     DirectMessageComponent,
     ProfileViewUsersComponent,
-    ProfileViewLoggedUserComponent
+    ProfileViewLoggedUserComponent,
 ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
@@ -85,6 +85,11 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatService.getContacts();
+  }
+
+  closeDropDownMenu() {
+    const dropDownDiv = document.getElementById('searchResultsDropdown');
+    dropDownDiv?.classList.add('dNone');
   }
 }
 

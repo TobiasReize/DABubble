@@ -3,10 +3,7 @@
         <img src="assets/img/logo.svg" alt="logo">
         <span>DABubble</span>
     </div>
-    <div class="input-container">
-        <input type="text" class="search-input">
-        <span class="material-symbols-rounded search-icon">search</span>
-    </div>
+    <app-search-component></app-search-component>
 </div>
 <div class="header-profile-section">
     <h3>{{userService.currentOnlineUser().name}}</h3>

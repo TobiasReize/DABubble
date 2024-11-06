@@ -4,6 +4,18 @@
   animation-duration: 100ms;
 }
 
+.fade-in-from-down {
+  animation-name: fadeInFromDown;
+  animation-timing-function: ease-in-out;
+  animation-duration: 100ms;
+}
+
+.fade-in-down {
+  animation-name: fadeInDown;
+  animation-timing-function: ease-in-out;
+  animation-duration: 100ms;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -12,6 +24,28 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeInFromDown {
+  from {
+    opacity: 0;
+    transform: translateY(+100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(+100%);
   }
 }
 

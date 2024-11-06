@@ -2,7 +2,7 @@
   <section
     id="createChannel"
     class="sectionDflex"
-    (click)="stopPropagation($event)"
+    (click)="sideNavService.stopPropagation($event)"
   >
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Channel erstellen</span>
@@ -55,14 +55,14 @@
     </div>
   </section>
 
+  <!-- add People to the channel -->
   <div
     id="addPeople"
-    [ngClass]="{'addPeople': !mobile, 'mobileVersionAddPeople': mobile}"
-    class="dFlexColumn"
-    (click)="stopPropagation($event)"
+    class="dFlexColumn dNone"
+    (click)="sideNavService.stopPropagation($event)"
     (click)="closeWindowWithContacts()"
   >
-    <div *ngIf="mobile" class="greyDiv cursor-pointer"></div>
+    <div (click)="closeDiv('addPeople')" *ngIf="mobile" class="greyDiv cursor-pointer"></div>
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Leute hinzufügen</span>
       <img
@@ -107,7 +107,7 @@
         *ngIf="AddSpecificPeople"
         style="position: relative"
         class="input-wrapper"
-        (click)="stopPropagation($event)"
+        (click)="sideNavService.stopPropagation($event)"
       >
         <!-- Input Feld mit Klick-Event -->
         <input
@@ -140,7 +140,7 @@
       <!-- show users in a window down of the input field -->
       <div class="dFlexRowFlexEndCenter" style="position: relative">
         @if (showedAllUsers == true) {
-        <div id="results" class="people" (click)="stopPropagation($event)">
+        <div id="results" class="people" (click)="sideNavService.stopPropagation($event)">
           @for (user of filteredUsers; track user.userUID) {
           <div class="person" (click)="selectUser($index, user.userUID)">
             <img
@@ -157,8 +157,7 @@
           (click)="createChannel()"
           class="btn btn-prim"
           [disabled]="
-            notAddedSpecificPeopleToTheChannel &&
-            arrayOfChoosenContacts.length === 0
+            notAddedSpecificPeopleToTheChannel && arrayOfChoosenContacts.length === 0
           "
         >
           Erstellen
@@ -170,7 +169,7 @@
     <div
       *ngIf="addedUsers"
       class="members-header fadeInFromOpacity0"
-      (click)="stopPropagation($event)"
+      (click)="sideNavService.stopPropagation($event)"
     >
       <span class="members-heading">Mitglieder</span>
       @for (user of arrayOfChoosenContacts; track $index) {

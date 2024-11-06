@@ -39,6 +39,8 @@ export class SideNavComponent {
   }
 
   selectChannel(id:number) {
+    this.chatService.directMessage = false;
+    this.chatService.chat = true;
     const channelElements = document.querySelectorAll('.entwicklerTeam');
     channelElements.forEach(element => {
       element.classList.remove('channelWasChoosed');
