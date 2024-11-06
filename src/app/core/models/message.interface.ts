@@ -8,4 +8,5 @@ export interface MessageInterface {
     numberOfReplies: number;
     fileUrl: string;
     fileType: string;
+    fileName: string;
 }

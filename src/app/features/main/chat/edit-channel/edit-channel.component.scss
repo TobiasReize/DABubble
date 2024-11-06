@@ -17,7 +17,7 @@
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     background-color: white;
     width: 872px;
-    height: 616px;
+    min-height: 616px;
     gap: 20px;
     padding: 40px;
     border-radius: 0px 30px 30px 30px;
@@ -82,13 +82,24 @@
     cursor: pointer;
 }
 
-input {
+input, textarea {
     width: 100%;
+    outline: none;
+    &:hover {
+        border: 1px solid $purple-2;
+    }
+    &:focus {
+        border: 1px solid $purple-1;
+    }
 }
 
-input:disabled {
+input:disabled, textarea:disabled {
     border: unset;
     background-color: transparent;
+}
+
+textarea {
+    resize: none;
 }
 
 .channel-name-input {
@@ -128,4 +139,9 @@ input:disabled {
 
 .leave-channel-btn {
     align-self: flex-end;
+}
+
+.channel-name-error {
+    @include fontStyle0;
+    color: $error-rosa;
 }

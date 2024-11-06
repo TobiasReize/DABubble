@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UserService } from '../../../../core/services/user/user.service';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { ChatUser } from '../../../../core/models/user.class';
 import { Channel } from '../../../../core/models/channel.class';

@@ -2,21 +2,7 @@
     <span #mentionInsertion contenteditable="false"></span>
     <div class="textarea-and-image-container">
         <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true" (keydown)="handleTextAreaKeyDown($event)" (keyup)="handleTextAreaKeyUp($event)"></div>
-        @if (fileUrl && isImage(fileType)) {
-            <div class="message-img-container">
-                <img class="message-img" src="{{fileUrl}}" alt="message image">
-                <div class="icon-btn" (click)="deleteFile()">
-                    <span class="material-symbols-rounded">close</span>
-                </div>
-            </div>
-        } @else if (fileUrl) {
-            <div class="file-name">
-                <span>{{fileName}}</span>
-                <div class="icon-btn" (click)="deleteFile()">
-                    <span class="material-symbols-rounded">close</span>
-                </div>
-            </div>
-        }
+        <app-deletable-file (deletionEvent)="resetInput()" [fileUrl]="fileUrl" [fileType]="fileType" [fileName]="fileName" [type]="type"></app-deletable-file>
     </div>
     <div class="textarea-container-inside">
         <div class="textarea-symbols-left">

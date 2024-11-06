@@ -186,15 +186,15 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
     }
 }
 
-@media(min-width: 450px) and (max-width: 654px) {   //für Bildschirmbreite 450 -654px
+@media(min-width: 450px) and (max-width: 654px) {   //für Bildschirmbreite 450px - 654px
     @keyframes moveTopMobile {    //für den intro-content-Container
         from {
             transform: translateY(0) translateX(0);
         }
     
         to {
-            transform: translateY(calc(-50vh + (100vh - 842px) / 2 + 40px));
-            //plus Abstand nach oben und halbe Höhe des finalen Logos
+            transform: translateY(calc(-50vh + (100vh - 784px) / 2 + 40px));
+            //-50vh + (100vh - Content)/2 + halbe Header-Höhe
         }
     }
 }
@@ -206,8 +206,8 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
         }
     
         to {
-            transform: translateY(calc(-50vh + (100vh - 849px) / 2 + 40px));
-            //plus Abstand nach oben und halbe Höhe des finalen Logos
+            transform: translateY(calc(-50vh + (100vh - 813px) / 2 + 40px));
+            //-50vh + (100vh - Content)/2 + halbe Header-Höhe
         }
     }
 }

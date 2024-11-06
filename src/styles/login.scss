@@ -168,11 +168,10 @@
 }
 
 // Responsive Design:
-@media(max-width: 654px) { 
+@media(max-width: 654px) {
     .content-wrapper {
         position: unset;
-        gap: 30px;
-        // padding: 0 8px;
+        gap: 12px;
     }
 
     .m-btm-32 {
@@ -189,7 +188,7 @@
 
     .content-window {
         width: 100%;
-        padding: 35px 20px;
+        padding: 24px 16px;
     }
 
     .arrow-back {
@@ -212,11 +211,29 @@
     }
 }
 
-@media(max-width: 450px) {
-    .content-window {
-        padding: 24px 16px;
+@media(max-width: 654px) and (max-height: 800px) {  //für Bildschirmhöhen < 800px
+    app-login-header {
+        display: none;
+    }
+    
+    .content-wrapper {
+        gap: 8px;
     }
 
+    .content-window {
+        padding: 16px;
+    }
+
+    .m-btm-32 {
+        margin-bottom: 12px;
+    }
+
+    .error-text {
+        margin-bottom: 8px;
+    }
+}
+
+@media(max-width: 450px) {
     .arrow-back {
         padding: 4px;
         font-size: 20px;

@@ -137,7 +137,7 @@ export class CreateChannelComponent {
       'addPeople'
     ) as HTMLDivElement;
 
-    if (window.innerWidth > 480) {
+    if (window.innerWidth > 768) {
       this.mobile = false;
       section1.style.display = 'none';
       section2.classList.remove('dNone');

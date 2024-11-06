@@ -101,7 +101,7 @@ export class UserService implements OnDestroy {
     } else {
       await this.updateUserDoc(this.currentOnlineUser().userUID, {isOnline: false});
     }
-    signOut(this.auth)
+    await signOut(this.auth)
       .then(() => {
         console.log('Sign-out successful');
       }).catch((error) => {

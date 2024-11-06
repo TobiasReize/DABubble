@@ -10,10 +10,10 @@
             @if (messageData.fileUrl !== '' && messageData.fileType !== 'application/pdf') {
                 <img class="message-img" src="{{messageData.fileUrl}}" alt="message image">
             } @else if (messageData.fileUrl) {
-                <div class="file-name">
-                    <span>test.pdf</span>
+                <a class="file-name" href="{{messageData.fileUrl}}" target="_blank">
+                    <span>{{messageData.fileName}}</span>
                     <span class="material-symbols-rounded">download</span>
-                </div>
+                </a>
             }
             @if (messageData.numberOfReplies > 0 && !isThreadMessage) {
                 <div class="bottom-message-container">
@@ -102,6 +102,7 @@
     @if (isMessageBeingEdited) {
         <div class="edit-message-container">
             <textarea #editMessageContent [(ngModel)]="editMessageText"  name="edit-message-content" id="edit-message-content" class="edit-message-textarea"></textarea>
+            <app-deletable-file [fileUrl]="messageData.fileUrl" [fileType]="messageData.fileType" [fileName]="messageData.fileName" [messageId]="messageData.id" [type]="type"></app-deletable-file>
             <div class="edit-message-container-bottom">
                 <button class="icon-btn" (click)="toggleEmojiPickerForEditing()">
                     <span class="material-symbols-rounded">sentiment_satisfied</span>

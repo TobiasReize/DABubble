@@ -1,6 +1,6 @@
-import { Component, ComponentRef, ElementRef, Input, Renderer2, SecurityContext, Signal, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, ElementRef, Input, Renderer2, Signal, ViewChild, ViewContainerRef } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AtComponent } from './at/at.component';
 import { ChatUser } from '../../../core/models/user.class';
 import { MentionComponent } from './mention/mention.component';
@@ -8,20 +8,21 @@ import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
-import { user } from '@angular/fire/auth';
 import { ChannelMentionComponent } from './channel-mention/channel-mention.component';
+import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
+import { LayoutService } from '../../../core/services/layout/layout.service';
 
 @Component({
   selector: 'app-message-textarea',
   standalone: true,
-  imports: [AtComponent, EmojiPickerComponent, FormsModule, CommonModule],
+  imports: [AtComponent, EmojiPickerComponent, DeletableFileComponent, FormsModule, CommonModule],
   templateUrl: './message-textarea.component.html',
   styleUrl: './message-textarea.component.scss'
 })
 export class MessageTextareaComponent {
   @Input() placeholder: string = 'Nachricht an #';
   @Input() type: string = 'chat';
-  @Input() messagesContainerRef!: HTMLDivElement;
+  @Input() messagesContainerRef!: HTMLElement;
   messageText = '';
   isAtVisible: Signal<boolean> = this.chatService.opentAt;
   isEmojiPickerVisible: Signal<boolean> = this.chatService.openEmojiPicker;
@@ -38,7 +39,7 @@ export class MessageTextareaComponent {
   channels: Signal<Channel[]> = this.chatService.channels;
   usersOrChannels: Signal<ChatUser[]> | Signal<Channel[]> = this.users;
 
-  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private scroller: ViewportScroller) { }
+  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private scroller: ViewportScroller, private layoutService: LayoutService) { }
 
   ngOnInit() {
     if (this.type === 'thread') {
@@ -51,11 +52,11 @@ export class MessageTextareaComponent {
     this.saveMessageText();
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
-        this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType);
+        this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
       } else if (this.type === 'thread') {
-        this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType);
+        this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName);
       } else {
-        this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType);
+        this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
       }
       this.messageText = '';
       this.editableTextarea.nativeElement.innerHTML = '';
@@ -82,12 +83,12 @@ export class MessageTextareaComponent {
 
   deleteFile() {
     this.firebaseService.deleteFile(this.fileUrl);
-    this.resetInput();
   }
 
   handleInputClick(event: Event) {
     if (this.uploadFile === 'done') {
       this.deleteFile();
+      this.resetInput();
       event?.preventDefault();
     } else if (this.uploadFile === 'inProgress') {
       event?.preventDefault();
@@ -135,15 +136,17 @@ export class MessageTextareaComponent {
   }
 
   toggleAtVisibility() {
-    if (this.type === 'chat') {
-      this.chatService.toggleAtVisibility();
-    } else {
-      this.chatService.toggleAtForThreadVisibility();
+    if (this.usersOrChannels().length > 0) {
+      if (this.type === 'chat' || this.type === 'directMessage') {
+        this.chatService.toggleAtVisibility();
+      } else {
+        this.chatService.toggleAtForThreadVisibility();
+      }
     }
   }
 
   toggleEmojiPickerVisibility() {
-    if (this.type === 'chat') {
+    if (this.type === 'chat' || this.type === 'directMessage') {
       this.chatService.toggleEmojiPickerVisibility();
     } else {
       this.chatService.toggleEmojiPickerForThreadVisibility();
@@ -254,9 +257,5 @@ export class MessageTextareaComponent {
         behavior: 'smooth'
       })
     }
-  }
-
-  getFileName(fileUrl: string) {
-    return fileUrl.split('/').pop();
   }
 }

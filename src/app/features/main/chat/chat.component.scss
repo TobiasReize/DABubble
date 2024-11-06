@@ -56,38 +56,3 @@
 .chat-header-right-span {
     @include fontStyle8;
 }
-
-.hr-container {
-    @include dFlex();
-    padding: 17px 45px;
-    position: relative;
-    z-index: 1;
-    &:first-child {
-        padding-top: 150px;
-    }
-}
-
-.space-between-messages {
-    height: 20px;
-}
-
-hr {
-    width: 100%;
-}
-
-.date-info {
-    padding: 5px 15px;
-    border: 1px solid $light-purple;
-    border-radius: 30px;
-    position: absolute;
-    background-color: white;
-}
-
-.messages-container {
-    height: 100%;
-    overflow-y: auto;
-}
-
-app-message-textarea {
-    width: 100%;
-}

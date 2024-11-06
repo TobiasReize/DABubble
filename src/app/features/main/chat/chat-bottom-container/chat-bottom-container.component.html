@@ -1,0 +1,16 @@
+<div class="hr-container">
+    <hr>
+    <div class="date-info">{{ getDateInfo(messages()[0]) }}</div>
+</div>
+@for (message of messages(); track message.id) {
+    <div class="space-between-messages"></div>
+    <app-message [messageData]="message" [type]="type"></app-message>
+    @if (messages()[$index + 1] && isAnotherDay(message, messages()[$index + 1])) {
+        <div class="space-between-messages"></div>
+        <div class="hr-container">
+            <hr>
+            <div class="date-info">{{ getDateInfo(messages()[$index + 1]) }}</div>
+        </div>
+    }
+}
+<div class="space-between-messages"></div>

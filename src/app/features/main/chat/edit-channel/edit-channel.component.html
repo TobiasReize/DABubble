@@ -12,13 +12,16 @@
         <div class="edit-channel-name-container" [ngClass]="{'editable-section': isChannelNameEditable}">
             <div class="edit-channel-name-header">
                 <span>Channel-Name</span>
-                <button class="edit-btn" (click)="toggleChannelNameEdit(channelNameInput.value)">{{ isChannelNameEditable ? 'Speichern' : 'Bearbeiten' }}</button>
+                <button class="edit-btn" (click)="toggleChannelNameEdit(channelNameInput.value, channelNameInput)">{{ isChannelNameEditable ? 'Speichern' : 'Bearbeiten' }}</button>
             </div>
             <div class="edit-channel-name">
                 <span class="material-symbols-rounded channel-tag" [ngClass]="{'editable-channel-tag': isChannelNameEditable}">tag</span>
                 <input #channelNameInput class="channel-name-input" value="{{ currentChannel().name }}" [ngClass]="{'editable-channel-name-input': isChannelNameEditable}" [disabled]="!isChannelNameEditable">
             </div>
         </div>
+        @if (channelNameError) {
+            <span class="channel-name-error">Channel-Name existiert bereits/wurde nicht geändert.</span>
+        }
         <div class="edit-channel-lower-container" [ngClass]="{'editable-section': isChannelDescriptionEditable}">
             <div class="edit-channel-description-container">
                 <div class="edit-channel-description-header">
@@ -26,9 +29,12 @@
                     <button class="edit-btn" (click)="toggleChannelDescriptionEdit(channelDescriptionInput.value)">{{ isChannelDescriptionEditable ? 'Speichern' : 'Bearbeiten' }}</button>
                 </div>
                 <div class="edit-channel-description">
-                    <input #channelDescriptionInput [ngClass]="{'editable-field': isChannelDescriptionEditable}" value="{{ currentChannel().description }}" [disabled]="!isChannelDescriptionEditable">
+                    <textarea rows="1" #channelDescriptionInput [ngClass]="{'editable-field': isChannelDescriptionEditable}" value="{{ currentChannel().description }}" [disabled]="!isChannelDescriptionEditable" (input)="resizeTextArea()"></textarea>
                 </div>
             </div>
+            @if (channelDescriptionError) {
+                <span class="channel-name-error">Channel-Beschreibung existiert bereits/wurde nicht geändert.</span>
+            }
             <hr [ngClass]="{'editable-hr': isChannelDescriptionEditable}">
             <div class="edit-channel-created-by">
                 <span>Erstellt von</span>

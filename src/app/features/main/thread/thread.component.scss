@@ -67,8 +67,14 @@ app-message-textarea {
     }
 }
 
+// @media (max-width: 1200px) {
+//     :host {
+//         display: none;
+//     }
+// }
+
 @media (max-width: 1200px) {
     :host {
-        display: none;
+        width: 100%;
     }
 }

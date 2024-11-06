@@ -16,7 +16,7 @@
     <div class="dFlexRowCenterCenter">
       <img
         class="avatar avatar-200"
-        [src]="userService.allUsers()[chatService.contactIndex].avatar"
+        [src]="userService.currentOnlineUser().avatar"
       />
     </div>
 
@@ -24,7 +24,7 @@
     <div class="dFlexColumnCenterFlexStart gap15 width-100">
       <div class="dFlexRowSpaceBetweenCenter width-100">
         <span class="nameCard">{{
-          userService.allUsers()[chatService.contactIndex].name
+          userService.currentOnlineUser().name
         }}</span>
         <span
           *ngIf="userService.currentOnlineUser().userUID != '0'"
@@ -47,7 +47,7 @@
       </div>
       <div class="width-100">
         <span class="emailLink">{{
-          userService.allUsers()[chatService.contactIndex].email
+          userService.currentOnlineUser().email
         }}</span>
       </div>
     </div>
@@ -70,7 +70,7 @@
     <div class="dFlexRowCenterCenter">
       <img
         class="avatar avatar-200"
-        [src]="userService.allUsers()[chatService.contactIndex].avatar"
+        [src]="userService.currentOnlineUser().avatar"
       />
     </div>
 

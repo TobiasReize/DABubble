@@ -12,7 +12,8 @@ export class Message {
         public reactions: Reaction[] = [],
         public numberOfReplies: number = 0,
         public fileUrl: string = '',
-        public fileType: string = ''
+        public fileType: string = '',
+        public fileName: string = ''
     ) {}
 
     toJson(): MessageInterface {
@@ -25,7 +26,8 @@ export class Message {
             reactions: JSON.stringify(this.reactions),
             numberOfReplies: this.numberOfReplies,
             fileUrl: this.fileUrl,
-            fileType: this.fileType
+            fileType: this.fileType,
+            fileName: this.fileName
         }
     }
 }

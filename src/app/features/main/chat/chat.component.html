@@ -26,22 +26,5 @@
         }
     </div>
 </div>
-<div #messagesContainer class="messages-container">
-    <div class="hr-container">
-        <hr>
-        <div class="date-info">{{ getDateInfo(messages()[0]) }}</div>
-    </div>
-    @for (message of messages(); track message.id) {
-        <div class="space-between-messages"></div>
-        <app-message [messageData]="message"></app-message>
-        @if (messages()[$index + 1] && isAnotherDay(message, messages()[$index + 1])) {
-            <div class="space-between-messages"></div>
-            <div class="hr-container">
-                <hr>
-                <div class="date-info">{{ getDateInfo(messages()[$index + 1]) }}</div>
-            </div>
-        }
-    }
-    <div class="space-between-messages"></div>
-</div>
-<app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat" [messagesContainerRef]="messagesContainer"></app-message-textarea>
+<app-chat-bottom-container #messageContainer [channel]="channel" [messages]="messages"></app-chat-bottom-container>
+<app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat" [messagesContainerRef]="messageContainer.elementRef.nativeElement"></app-message-textarea>

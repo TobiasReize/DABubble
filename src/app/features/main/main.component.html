@@ -1,13 +1,13 @@
 <div (click)="closeDropDownMenu()">
   <app-header></app-header>
   <div class="main">
-    <app-side-nav *ngIf="sideNav"></app-side-nav>
+    <app-side-nav *ngIf="layoutState().isSideNavOpen"></app-side-nav>
     <app-new-message *ngIf="chatService.newMessage"></app-new-message>
-    <app-direct-message *ngIf="chatService.directMessage"></app-direct-message>
-    <app-chat *ngIf="chatService.chat"></app-chat>
+    <app-direct-message *ngIf="layoutState().isDirectMessageOpen"></app-direct-message>
+    <app-chat *ngIf="layoutState().isChatOpen"></app-chat>
     <app-profile-view-users *ngIf="chatService.profileViewUsersActive"></app-profile-view-users>
     <app-profile-view-logged-user *ngIf="chatService.profileViewLoggedUser"></app-profile-view-logged-user>
-    <app-thread [ngClass]="isThreadVisible() ? '' : 'd-none'"></app-thread>
+    <app-thread *ngIf="layoutState().isThreadOpen"></app-thread>
   </div>
   <div class="closeMenu purpleHover" (click)="closeSection()" >
     <span *ngIf="sectionIsVisible">Workspace-Menü schließen</span>

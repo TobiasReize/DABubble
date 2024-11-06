@@ -1,4 +1,4 @@
-import { computed, ElementRef, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
@@ -12,6 +12,7 @@ import {
   QueryDocumentSnapshot,
   Unsubscribe,
   updateDoc,
+  setDoc,
 } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { Channel } from '../../models/channel.class';
@@ -20,6 +21,8 @@ import { ChannelDescription } from '../../models/channel-description.interface';
 import { UserService } from '../user/user.service';
 import { ChannelUserUIDsInterface } from '../../models/channel-user-uids.interface';
 import { ChatUser } from '../../models/user.class';
+import { EmptyMessageFile } from '../../models/empty-message-file.interface';
+import { LayoutService } from '../layout/layout.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,12 +30,15 @@ import { ChatUser } from '../../models/user.class';
 export class ChatService {
   chat: boolean = true;
   contactIndex: any = null;
+  contactUUID: string = '';
   newMessage: boolean = false;
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
 
   unsubMessages!: Unsubscribe;
+  unsubDirectMessages!: Unsubscribe;
   unsubChannels!: Unsubscribe;
+  unsubDirectMessageChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
   unsubTopThreadMessage!: Unsubscribe;
 
@@ -41,8 +47,8 @@ export class ChatService {
   private messagesSignal = signal<Message[]>([]);
   readonly messages = this.messagesSignal.asReadonly();
 
-  private openThreadSignal = signal<boolean>(false);
-  readonly openThread = this.openThreadSignal.asReadonly();
+  private directMessagesSignal = signal<Message[]>([]);
+  readonly directMessages = this.directMessagesSignal.asReadonly();
 
   private topThreadMessageSignal = signal<Message>(new Message());
   readonly topThreadMessage = this.topThreadMessageSignal.asReadonly();
@@ -55,6 +61,9 @@ export class ChatService {
 
   private currentChannelSignal = signal<Channel>(new Channel());
   readonly currentChannel = this.currentChannelSignal.asReadonly();
+
+  private currentDirectMessageChannelSignal = signal<Channel>(new Channel());
+  readonly currentDirectMessageChannel = this.currentDirectMessageChannelSignal.asReadonly();
 
   private openEditChannelSignal = signal<boolean>(false);
   readonly openEditChannel = this.openEditChannelSignal.asReadonly();
@@ -90,6 +99,9 @@ export class ChatService {
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
 
+  private directMessageChannelsSignal = signal<Channel[]>([]);
+  readonly directMessageChannels = this.directMessageChannelsSignal.asReadonly();
+
   topThreadMessageId: string = '';
 
   profileViewLoggedUser: boolean = false;
@@ -98,17 +110,23 @@ export class ChatService {
   customProfile: boolean = false;
   contacts: any = [];
 
+  private currentMainChatCollectionSignal = computed(() => this.layoutService.selectedCollection());
+
   constructor(
     private firebaseService: FirebaseService,
-    private userService: UserService
+    private userService: UserService,
+    private layoutService: LayoutService
   ) {
     this.unsubChannels = this.subChannels();
+    this.unsubDirectMessageChannels = this.subDirectMessageChannels();
     this.unsubThread = this.subThread();
   }
 
   ngOnDestroy() {
     this.unsubMessages();
+    this.unsubDirectMessages();
     this.unsubChannels();
+    this.unsubDirectMessageChannels();
     if (this.unsubThread) {
       this.unsubThread();
     }
@@ -133,7 +151,8 @@ export class ChatService {
         reactions,
         data['numberOfReplies'],
         data['fileUrl'],
-        data['fileType']
+        data['fileType'],
+        data['fileName']
       );
       return message;
     } else {
@@ -145,8 +164,16 @@ export class ChatService {
     this.threadRepliesSignal.set([]);
   }
 
-  async addChatMessage(messageContent: string, fileUrl: string, fileType: string) {
-    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+  async addDirectMessageChannel() {
+    const dmChannelId = this.getDirectMessageChannelId(this.contactUUID);
+    await setDoc(this.firebaseService.getDocRef(dmChannelId, 'directMessageChannels'), {
+      id: dmChannelId,
+      userIds: [this.contactUUID, this.userService.currentOnlineUser().userUID]
+    });
+  }
+
+  async addChatMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
+    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
     await addDoc(
       this.firebaseService.getSubcollectionRef(
         this.currentChannel().id,
@@ -157,27 +184,43 @@ export class ChatService {
     );
   }
 
- async addDirectMessage(messageContent: string, fileUrl: string, fileType: string) {
-   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+  getDirectMessageChannelId(userUID: string) {
+    const ids = [this.userService.currentOnlineUser().userUID, userUID];
+    const sortedIds = ids.sort();
+    return sortedIds[0] + sortedIds[1];
+  }
+
+ async addDirectMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
+   await this.addDirectMessageChannel();
+   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
    await addDoc(
-    this.firebaseService.getCollectionRef('directMessages'),
-     messageAsJson
-   );
+    this.firebaseService.getSubcollectionRef(
+      this.getDirectMessageChannelId(this.contactUUID),
+      'directMessageChannels',
+      'messages'
+    ),
+    messageAsJson
+  );
+  this.changeDirectMessageChannel(this.contactUUID);
  }
 
-  async addThreadReply(messageContent: string, fileUrl: string, fileType: string) {
-      const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType);
+ getMainChatChannelId() {
+  return this.currentMainChatCollectionSignal() === 'channels' ? this.currentChannel().id : this.currentDirectMessageChannel().id; 
+ }
+
+  async addThreadReply(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
+      const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
       await addDoc(
         this.firebaseService.getSubSubcollectionRef(
-          'channels',
-          this.currentChannel().id,
+          this.currentMainChatCollectionSignal(),
+          this.getMainChatChannelId(),
           'messages',
           this.topThreadMessage().id,
           'thread'
         ),
         messageAsJson
       );
-      await this.increaseNumberOfReplies();
+      await this.increaseNumberOfReplies(this.currentMainChatCollectionSignal());
   }
 
   async updateChannel(
@@ -190,7 +233,7 @@ export class ChatService {
     );
   }
 
-  async updateChatMessage(messageId: string, messageObj: any) {
+  async updateChatMessage(messageId: string, messageObj: any | EmptyMessageFile) {
     // {...messageObj} must be used due to a bug concerning the database
     await updateDoc(
       this.firebaseService.getDocRefInSubcollection(
@@ -203,20 +246,20 @@ export class ChatService {
     );
   }
 
-  // async updateDirectMessage(messageId: string, messageObj: any) {
-  //   // {...messageObj} must be used due to a bug concerning the database
-  //   await updateDoc(
-  //     this.firebaseService.getDocRefInSubcollection(
-  //       this.currentDirectMessageChannel().id,
-  //       'directmessages',
-  //       'messages',
-  //       messageId
-  //     ),
-  //     { ...messageObj }
-  //   );
-  // }
+  async updateDirectMessage(messageId: string, messageObj: any) {
+    // {...messageObj} must be used due to a bug concerning the database
+    await updateDoc(
+      this.firebaseService.getDocRefInSubcollection(
+        this.currentDirectMessageChannel().id,
+        'directMessageChannels',
+        'messages',
+        messageId
+      ),
+      { ...messageObj }
+    );
+  }
 
-  async updateThreadReply(replyId: string, messageObj: MessageInterface) {
+  async updateThreadReply(replyId: string, messageObj: MessageInterface | EmptyMessageFile | any) {
     await updateDoc(
       this.firebaseService.getDocRefInSubSubcollection(
         'channels',
@@ -251,6 +294,27 @@ export class ChatService {
     });
   }
 
+  subDirectMessages(directMessageChannelId: string) {
+    const q = query(
+      this.firebaseService.getSubcollectionRef(
+        directMessageChannelId,
+        'directMessageChannels',
+        'messages'
+      ),
+      orderBy('postedAt')
+    );
+    return onSnapshot(q, (snapshot) => {
+      const tempMessages: Message[] = [];
+      snapshot.forEach((doc) => {
+        const message = this.createMessageFromDocumentSnapshot(doc);
+        if (message) {
+          tempMessages.push(message);
+        }
+      });
+      this.directMessagesSignal.set(tempMessages);
+    });
+  }
+
   createChannelFromQueryDocumentSnapshot(doc: QueryDocumentSnapshot) {
     const data = doc.data();
     const channel = new Channel(
@@ -260,9 +324,18 @@ export class ChatService {
       data['userUIDs'],
       data['createdBy']
     );
-    console.log(channel);
     return channel;
   }
+
+  createDirectMessageChannelFromQueryDocumentSnapshot(doc: QueryDocumentSnapshot) {
+    const data = doc.data();
+    const channel = new Channel(
+      doc.id,
+      data['userUIDs'],
+    );
+    return channel;
+  }
+
 
   subChannels() {
     return onSnapshot(
@@ -285,8 +358,25 @@ export class ChatService {
     );
   }
 
-  changeThreadVisibility(bool: boolean) {
-    this.openThreadSignal.set(bool);
+  subDirectMessageChannels() {
+    return onSnapshot(
+      this.firebaseService.getCollectionRef('directMessageChannels'),
+      (collection) => {
+        const channels: Channel[] = [];
+        collection.forEach((doc) => {
+          const channel = this.createDirectMessageChannelFromQueryDocumentSnapshot(doc);
+          channels.push(channel);
+        });
+        this.directMessageChannelsSignal.set(channels);
+        if (!this.unsubDirectMessages) {
+          this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[0]);
+          this.unsubDirectMessages = this.subDirectMessages(this.currentDirectMessageChannel().id);
+        } else {
+          this.changeDirectMessageChannel(this.contactUUID);
+        }
+        this.getUsersInCurrentChannel();
+      }
+    );
   }
 
   toggleVisibilitySignal(visibilitySignal: WritableSignal<boolean>) {
@@ -337,7 +427,7 @@ export class ChatService {
   changeThread(message: Message) {
     this.topThreadMessageId = message.id;
     this.resubThread();
-    this.unsubTopThreadMessage = this.subTopThreadMessage();
+    this.unsubTopThreadMessage = this.subTopThreadMessage(this.currentMainChatCollectionSignal());
   }
 
   resubChannel() {
@@ -348,11 +438,29 @@ export class ChatService {
     this.getUsersInCurrentChannel();
   }
 
+  resubDirectMessageChannel() {
+    if (this.unsubDirectMessages) {
+      this.unsubDirectMessages();
+    }
+    this.unsubDirectMessages = this.subDirectMessages(this.currentDirectMessageChannel().id);
+  }
+
   changeChannel(id: string) {
     const index = this.channels().findIndex((channel) => channel.id === id);
     if (index !== -1) {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
+    }
+    this.layoutService.selectChat();
+  }
+
+  changeDirectMessageChannel(id: string) {
+    this.directMessagesSignal.set([]);
+    const directMessageChannelId = this.getDirectMessageChannelId(id);
+    const index = this.directMessageChannels().findIndex((channel) => channel.id === directMessageChannelId);
+    if (index !== -1) {
+      this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[index]);
+      this.resubDirectMessageChannel();
     }
   }
 
@@ -395,13 +503,17 @@ export class ChatService {
     return users.filter(user => !this.usersInCurrentChannel().includes(user));
   }
 
-  async increaseNumberOfReplies() {
+  async increaseNumberOfReplies(collection: string) {
     this.topThreadMessage().numberOfReplies++;
     this.topThreadMessage().lastReplyAt = new Date();
-    this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+    if (collection === 'channels') {
+      this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+    } else {
+      this.updateDirectMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+    }
   }
 
-  prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string): MessageInterface {
+  prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string, fileName: string): MessageInterface {
     const message = new Message(
       '',
       this.userService.currentOnlineUser().avatar,
@@ -412,7 +524,8 @@ export class ChatService {
       [],
       0,
       fileUrl,
-      fileType
+      fileType,
+      fileName
     );
     return message.toJson();
   }
@@ -429,13 +542,17 @@ export class ChatService {
     this.chat = false;
     this.directMessage = true;
     this.contactIndex = id;
-    if (this.userService.allUsers()[this.contactIndex].name === this.userService.currentOnlineUser().name) {
+    const user = this.userService.allUsers()[this.contactIndex];
+    this.contactUUID = user.userUID;
+    if (user.name === this.userService.currentOnlineUser().name) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
       this.myChatDescription = false;
       this.chatDescription = true;
     }
+    this.layoutService.selectDirectMessage();
+    this.changeDirectMessageChannel(this.contactUUID);
   }
 
   async getContacts() {
@@ -448,7 +565,7 @@ export class ChatService {
 
   subThread() {
     const q = query(
-      this.firebaseService.getSubSubcollectionRef('channels', this.currentChannel().id, 'messages', this.topThreadMessageId, 'thread'),
+      this.firebaseService.getSubSubcollectionRef(this.currentMainChatCollectionSignal(), this.getMainChatChannelId(), 'messages', this.topThreadMessageId, 'thread'),
       orderBy('postedAt')
     );
     return onSnapshot(q, (snapshot) => {
@@ -463,8 +580,8 @@ export class ChatService {
     });
   }
 
-  subTopThreadMessage() {
-    return onSnapshot(this.firebaseService.getDocRefInSubcollection(this.currentChannel().id, 'channels', 'messages', this.topThreadMessageId), (doc) => {
+  subTopThreadMessage(collection: string) { 
+    return onSnapshot(this.firebaseService.getDocRefInSubcollection(this.getMainChatChannelId(), collection, 'messages', this.topThreadMessageId), (doc) => {
       if (doc) {
           const message = this.createMessageFromDocumentSnapshot(doc);
           if (message) {

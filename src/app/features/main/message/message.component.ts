@@ -7,17 +7,20 @@ import { UserService } from '../../../core/services/user/user.service';
 import { FormsModule } from '@angular/forms';
 import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { ReactionOptionsComponent } from './reaction-options/reaction-options.component';
+import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
+import { LayoutService } from '../../../core/services/layout/layout.service';
 
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [EmojiPickerComponent, ReactionOptionsComponent, CommonModule, FormsModule],
+  imports: [EmojiPickerComponent, ReactionOptionsComponent, DeletableFileComponent, CommonModule, FormsModule],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss'
 })
 export class MessageComponent {
   @Input() messageData: Message = new Message();
-  @Input() isThreadMessage: boolean = false;
+  @Input() type: string = 'chat';
+  isThreadMessage: boolean = false;
   @Input() isTopMessage: boolean = false;
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis;
   reactionOptions: Signal<string[]> = computed(() => ['1f64c.svg', '1f642.svg', '1f680.svg', '1f913.svg', '2705.svg'].filter(emoji => !this.menuEmojis().includes(emoji)));
@@ -31,7 +34,11 @@ export class MessageComponent {
   editMessageText: string = '';
   isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
 
-  constructor(private chatService: ChatService, private userService: UserService) {}
+  constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService) {}
+
+  ngOnInit() {
+    this.isThreadMessage = this.type === 'thread';
+  }
 
   ngOnChanges() {
     this.isMe = this.messageData.userName == this.userName;
@@ -40,13 +47,15 @@ export class MessageComponent {
   updateMessage() {
     if (this.isThreadMessage && !this.isTopMessage) {
       this.chatService.updateThreadReply(this.messageData.id, this.messageData.toJson());
-    } else {
+    } else if (this.type === 'chat') {
       this.chatService.updateChatMessage(this.messageData.id, this.messageData.toJson());
+    } else if (this.type === 'directMessage') {
+      this.chatService.updateDirectMessage(this.messageData.id, this.messageData.toJson());
     }
   }
 
   openThread() {
-    this.chatService.changeThreadVisibility(true);
+    this.layoutService.selectThread();
     this.chatService.changeThread(this.messageData);
   }
 
@@ -124,9 +133,16 @@ export class MessageComponent {
   }
 
   saveEditedMessage() {
-    this.chatService.updateChatMessage(this.messageData.id, {
+    const obj = {
       content: this.editMessageText
-    })
+    };
+    if (this.type === 'chat' || (this.layoutService.layoutState().isChatOpen && this.isTopMessage)) {
+      this.chatService.updateChatMessage(this.messageData.id, obj);
+    } else if (this.type === 'directMessage' || (this.layoutService.layoutState().isDirectMessageOpen && this.isTopMessage)) {
+      this.chatService.updateDirectMessage(this.messageData.id, obj);
+    } else if (this.type === 'thread') {
+      this.chatService.updateThreadReply(this.messageData.id, obj);
+    }
     this.stopEditingMessage();
   }
 
