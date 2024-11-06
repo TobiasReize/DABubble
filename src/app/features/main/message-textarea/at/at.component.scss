@@ -19,3 +19,9 @@
         background-color: $bg-color;
     }
 }
+
+@media (max-width: 768px) {
+    :host {
+        padding: 10px;
+    }
+}
