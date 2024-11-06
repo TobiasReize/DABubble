@@ -78,3 +78,14 @@ app-message-textarea {
         width: 100%;
     }
 }
+
+@media (max-width: 768px) {
+    .thread-hr-container {
+        padding: 10px 21px 29px 21px;
+    }
+    :host {
+        height: calc(100vh - 80px);
+        border-radius: unset;
+        padding-bottom: 30px;
+    }
+}

@@ -56,3 +56,11 @@
 .chat-header-right-span {
     @include fontStyle8;
 }
+
+@media (max-width: 768px) {
+    :host {
+        height: calc(100vh - 80px);
+        border-radius: unset;
+        padding-bottom: 30px;
+    }
+}

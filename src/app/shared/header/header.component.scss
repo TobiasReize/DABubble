@@ -126,3 +126,20 @@
         display: none;
     }
 }
+
+@media (max-width: 768px) {
+    :host {
+        padding: 0 16px;
+        height: 80px;
+    }
+    .logo-container {
+        gap: 11px;
+        img {
+            height: 45px;
+            width: 45px;
+        }
+        span {
+            font-size: 17px;
+        }
+    }
+}

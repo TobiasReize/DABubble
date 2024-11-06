@@ -11,7 +11,7 @@
     position: relative;
     z-index: 1;
     &:first-child {
-        padding-top: 150px;
+        padding-top: 142px;
     }
 }
 
@@ -33,4 +33,24 @@ hr {
 
 app-message-textarea {
     width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .hr-container {
+        &:first-child {
+            padding-top: 104px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .hr-container {
+        padding: 17px 16px;
+        &:first-child {
+            padding-top: 65px;
+        }
+    }
+    .space-between-messages {
+        height: 10px;
+    }
 }

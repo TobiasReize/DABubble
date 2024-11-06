@@ -124,7 +124,7 @@
 
 .reactions-container {
     @include dFlex($jc: normal, $ai: center);
-    gap: 12px;
+    gap: 12.34px;
 }
 
 .reaction {
@@ -174,6 +174,10 @@
     text-wrap: nowrap;
     @include fontStyle3;
     color: white;
+}
+
+.add-reaction-btn {
+    margin-left: -1.92px;
 }
 
 .has-reacted {
@@ -254,5 +258,44 @@ app-emoji-picker {
     }
     .message-alternative {
         padding-left: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .reactions-container {
+        gap: 8px;
+    }
+    .add-reaction-btn {
+        margin-left: unset;
+    }
+    .message {
+        padding-right: 50px;
+        padding-left: 16px;
+        gap: 20px;
+        &:hover {
+            .chat-message-menu {
+                right: 12px;
+            }
+            .chat-message-menu-alternative {
+                right: unset;
+                left: 12px;
+            }
+        }
+    }
+    .message-alternative {
+        padding-left: 50px;
+        padding-right: 16px;
+    }
+    .message-content {
+        @include fontStyle1;
+    }
+}
+
+@media (max-width: 360px) {
+    .message {
+        padding-right: 0px;
+    }
+    .message-alternative {
+        padding-left: 0px;
     }
 }
