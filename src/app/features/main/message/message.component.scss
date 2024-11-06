@@ -252,12 +252,27 @@ app-emoji-picker {
     bottom: 44px;
 }
 
+@media (max-width: 1480px) {
+    .more-menu {
+        top: 48px;
+        left: 82px;
+    }
+    .left-more-menu {
+        top: 48px;
+        left: 64px;
+    }
+}
+
 @media (max-width: 1200px) {
     .message {
         padding-right: 50px;
     }
     .message-alternative {
         padding-left: 50px;
+    }
+    .left-more-menu {
+        top: 48px;
+        left: 24px;
     }
 }
 
@@ -298,6 +313,13 @@ app-emoji-picker {
     }
 }
 
+@media (max-width: 388px) {
+    .more-menu {
+        top: 48px;
+        left: 24px;
+    }
+}
+
 @media (max-width: 360px) {
     .message {
         padding-right: 16px;
@@ -306,3 +328,4 @@ app-emoji-picker {
         padding-left: 16px;
     }
 }
+

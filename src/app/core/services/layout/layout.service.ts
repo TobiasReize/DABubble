@@ -14,7 +14,7 @@ export class LayoutService {
 
   private winWidth = signal<number>(1920);
   private isDesktop = computed(() => this.winWidth() > 1200);
-  private isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() >= 768);
+  public isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() >= 768);
   private isMobile = computed(() => this.winWidth() < 768);
 
   selectChat() {

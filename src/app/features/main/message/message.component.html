@@ -90,7 +90,7 @@
             </div>
         }
         @if (isMoreMenuOpen) {
-            <div class="more-menu">
+            <div class="more-menu" [ngClass]="{'left-more-menu': isLeftMoreMenu()}">
                 <div class="edit-message" (click)="editMessage()">Nachricht&nbsp;bearbeiten</div>
             </div>
         }

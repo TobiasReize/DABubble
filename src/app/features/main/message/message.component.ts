@@ -153,4 +153,10 @@ export class MessageComponent {
   insertEmoji(emoji: string) {
     this.editMessageText += emoji;
   }
+
+  isLeftMoreMenu() {
+    return this.layoutService.layoutState().isSideNavOpen && this.layoutService.layoutState().isThreadOpen && this.layoutService.isTablet() ||
+    this.layoutService.layoutState().isSideNavOpen && this.layoutService.layoutState().isChatOpen && this.layoutService.isTablet() ||
+    this.layoutService.layoutState().isSideNavOpen && this.layoutService.layoutState().isThreadOpen && this.layoutService.layoutState().isChatOpen;
+  }
 }
