@@ -21,6 +21,7 @@
 .chat-header-avatars {
     @include dFlex();
     padding: 3px 10px 3px 10px;
+    margin-right: 10px;
     gap: 10px;
     border-radius: 100px;
     cursor: pointer;
@@ -35,6 +36,7 @@
 }
 
 .chat-header-left {
+    gap: 10px;
     cursor: pointer;
     &:hover {
         .channel-name {
@@ -50,11 +52,11 @@
 
 .chat-header-left, .chat-header-right {
     @include dFlex($jc: flex-start);
-    gap: 10px;
 }
 
 .chat-header-right-span {
     @include fontStyle8;
+    margin-right: 10px;
 }
 
 @media (max-width: 768px) {

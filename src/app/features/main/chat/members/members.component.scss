@@ -1,6 +1,7 @@
 @import '../../../../../styles/mixin.scss';
+@import '../../../../../styles/styles2.scss';
 
-:host {
+.inside {
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     position: absolute;
     right: 128px;

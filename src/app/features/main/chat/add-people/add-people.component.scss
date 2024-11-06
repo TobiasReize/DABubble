@@ -1,6 +1,7 @@
 @import '../../../../../styles/mixin.scss';
+@import '../../../../../styles/styles2.scss';
 
-:host {
+.inside {
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     position: absolute;
     right: 48px;
@@ -23,12 +24,12 @@ input {
     gap: 10px;
     border-radius: 30px;
     border: 1px solid $light-purple;
+    outline: unset;
     &:hover {
         border: 1px solid $purple-2;
     }
     &:focus {
         border: 1px solid $purple-1;
-        outline: unset;
     }
 }
 
@@ -75,12 +76,5 @@ input {
     gap: 15px;
     span {
         color: $purple-2;
-    }
-}
-
-.person {
-    cursor: pointer;
-    &:hover {
-        background-color: $bg-color;
     }
 }

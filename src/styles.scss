@@ -197,6 +197,11 @@ hr {
   gap: 15px;
   border-radius: 35px;
   padding: 4px 20px;
+  width: fit-content;
+  cursor: pointer;
+  &:hover {
+    background-color: $bg-color;
+  }
 }
 
 .mention {
@@ -301,6 +306,10 @@ hr {
 
 .dNone {
   display: none !important;
+}
+
+.fixed {
+  position: fixed !important;
 }
 
 // Responsive Design:
