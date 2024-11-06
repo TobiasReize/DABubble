@@ -29,7 +29,7 @@ import { LayoutService } from '../layout/layout.service';
 })
 export class ChatService {
   chat: boolean = true;
-  contactIndex: any = null;
+  contactIndex: number | any = null;
   contactUUID: string = '';
   newMessage: boolean = false;
   directMessage: boolean = false;
@@ -591,10 +591,20 @@ export class ChatService {
     });
   }
 
+  setContactIndexFromUID(userUID: string) {
+    const userIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
+    if (userIndex !== -1) {
+      this.contactIndex = userIndex;
+    }
+  }
+
   openViewProfile(userUID: string) {
     if (userUID == this.userService.currentOnlineUser().userUID) {
       this.profileViewLoggedUser = true;
     } else {
+      if (!this.contactIndex) {
+        this.setContactIndexFromUID(userUID);
+      }
       this.profileViewUsersActive = true;
     }
   }

@@ -21,4 +21,9 @@ export class MembersComponent {
   openAddPeople() {
     this.chatService.toggleAddPeopleVisibility();
   }
+
+  openViewProfile(userUID: string) {
+    this.chatService.openViewProfile(userUID);
+    this.closeDialog();
+  }
 }
