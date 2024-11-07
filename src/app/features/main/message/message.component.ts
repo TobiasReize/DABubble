@@ -1,4 +1,4 @@
-import { Component, computed, Input, Signal } from '@angular/core';
+import { Component, computed, ElementRef, Input, Signal } from '@angular/core';
 import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
@@ -34,7 +34,7 @@ export class MessageComponent {
   editMessageText: string = '';
   isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
 
-  constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService) {}
+  constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService, private el: ElementRef) {}
 
   ngOnInit() {
     this.isThreadMessage = this.type === 'thread';
@@ -154,9 +154,10 @@ export class MessageComponent {
     this.editMessageText += emoji;
   }
 
-  isLeftMoreMenu() {
-    return this.layoutService.layoutState().isSideNavOpen && this.layoutService.layoutState().isThreadOpen && this.layoutService.isTablet() ||
-    this.layoutService.layoutState().isSideNavOpen && this.layoutService.layoutState().isChatOpen && this.layoutService.isTablet() ||
-    this.layoutService.layoutState().isSideNavOpen && this.layoutService.layoutState().isThreadOpen && this.layoutService.layoutState().isChatOpen;
+  isSmallMessageWidth() {
+    return this.el.nativeElement.offsetWidth < 600;
+  }
+  isVerySmallMessageWidth() {
+    return this.el.nativeElement.offsetWidth < 382;
   }
 }

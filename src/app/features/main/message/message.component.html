@@ -1,4 +1,4 @@
-<div class="message" [ngClass]="{ 'message-alternative' : isMe, 'thread-message' : isThreadMessage, 'thread-message-alternative' : isMe && isThreadMessage }">
+<div #messageContainer class="message" [ngClass]="{ 'message-alternative' : isMe, 'thread-message' : isThreadMessage, 'thread-message-alternative' : isMe && isThreadMessage, 'small-message': isSmallMessageWidth(), 'very-small-message': isVerySmallMessageWidth() }">
     <img class="avatar avatar-70" src="{{ messageData.imageName }}" alt="{{messageData.imageName}}">
     @if (!isMessageBeingEdited) {
     <div class="main-message-container" [ngClass]="isMe ? 'main-message-container-alternative' : ''">
@@ -90,7 +90,7 @@
             </div>
         }
         @if (isMoreMenuOpen) {
-            <div class="more-menu" [ngClass]="{'left-more-menu': isLeftMoreMenu()}">
+            <div class="more-menu">
                 <div class="edit-message" (click)="editMessage()">Nachricht&nbsp;bearbeiten</div>
             </div>
         }

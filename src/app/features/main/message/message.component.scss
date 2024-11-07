@@ -251,15 +251,33 @@ app-emoji-picker {
     left: 0px;
     bottom: 44px;
 }
-
-@media (max-width: 1480px) {
+       
+.small-message {
+    .chat-message-menu {
+        right: 0px;
+    }
+    .chat-message-menu-alternative {
+        right: unset;
+        left: 24px;
+    }
+    &:hover {
+        .chat-message-menu {
+            right: 12px;
+        }
+        .chat-message-menu-alternative {
+            right: unset;
+            left: 12px;
+        }
+    }
     .more-menu {
         top: 48px;
         left: 82px;
     }
-    .left-more-menu {
-        top: 48px;
-        left: 64px;
+}
+
+.very-small-message {
+    .more-menu {
+        left: 18px;
     }
 }
 
@@ -269,10 +287,6 @@ app-emoji-picker {
     }
     .message-alternative {
         padding-left: 50px;
-    }
-    .left-more-menu {
-        top: 48px;
-        left: 24px;
     }
 }
 
@@ -287,22 +301,22 @@ app-emoji-picker {
         padding-right: 50px;
         padding-left: 16px;
         gap: 20px;
-        .chat-message-menu {
-            right: 0px;
-        }
-        .chat-message-menu-alternative {
-            right: unset;
-            left: 24px;
-        }
-        &:hover {
-            .chat-message-menu {
-                right: 12px;
-            }
-            .chat-message-menu-alternative {
-                right: unset;
-                left: 12px;
-            }
-        }
+        // .chat-message-menu {
+        //     right: 0px;
+        // }
+        // .chat-message-menu-alternative {
+        //     right: unset;
+        //     left: 24px;
+        // }
+        // &:hover {
+        //     .chat-message-menu {
+        //         right: 12px;
+        //     }
+        //     .chat-message-menu-alternative {
+        //         right: unset;
+        //         left: 12px;
+        //     }
+        // }
     }
     .message-alternative {
         padding-left: 50px;
@@ -310,13 +324,6 @@ app-emoji-picker {
     }
     .message-content {
         @include fontStyle1;
-    }
-}
-
-@media (max-width: 388px) {
-    .more-menu {
-        top: 48px;
-        left: 24px;
     }
 }
 
