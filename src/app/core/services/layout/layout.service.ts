@@ -15,7 +15,7 @@ export class LayoutService {
   private winWidth = signal<number>(1920);
   private isDesktop = computed(() => this.winWidth() > 1200);
   public isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() >= 768);
-  private isMobile = computed(() => this.winWidth() < 768);
+  public isMobile = computed(() => this.winWidth() < 768);
 
   selectChat() {
     this.selectedCollection.set('channels');
@@ -31,6 +31,16 @@ export class LayoutService {
 
   deselectThread() {
     this.isThreadSelected.set(false);
+  }
+
+  deselectSideNav() {
+    this.isSideNavSelected.set(false);
+  }
+
+  deselectSideNavOnMobile() {
+    if (this.isMobile()) {
+      this.deselectSideNav();
+    }
   }
 
   adaptLayoutToDesktop(signal: LayoutStateSignal) {

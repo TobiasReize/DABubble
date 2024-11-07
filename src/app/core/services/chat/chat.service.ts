@@ -451,6 +451,7 @@ export class ChatService {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
     }
+    this.layoutService.deselectSideNavOnMobile();
     this.layoutService.deselectThread();
     this.layoutService.selectChat();
   }
@@ -552,6 +553,7 @@ export class ChatService {
       this.myChatDescription = false;
       this.chatDescription = true;
     }
+    this.layoutService.deselectSideNavOnMobile();
     this.layoutService.deselectThread();
     this.layoutService.selectDirectMessage();
     this.changeDirectMessageChannel(this.contactUUID);
