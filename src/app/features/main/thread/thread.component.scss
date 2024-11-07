@@ -78,12 +78,15 @@ app-message-textarea {
     .thread-hr-container {
         padding: 10px 21px 29px 21px;
     }
+    .space-between-messages {
+        height: 10px;
+    }
+}
+
+@media (max-width: $mainBreakpoint1) {
     :host {
         height: calc(100vh - 80px);
         border-radius: unset;
         padding-bottom: 30px;
-    }
-    .space-between-messages {
-        height: 10px;
     }
 }

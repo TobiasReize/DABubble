@@ -21,8 +21,8 @@ $thread-width: 485px;
 $thread-width-small: $side-nav-width;
 $header-and-bottom-spacing: 135px;
 // main breakpoints:
-$breakpoint1: 768px;
-$breakpoint2: 1200px;
+$mainBreakpoint1: 768px;
+$mainBreakpoint2: 1200px;
 
 // typography:
 @mixin fontStyle0 {

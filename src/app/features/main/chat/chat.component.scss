@@ -59,7 +59,7 @@
     margin-right: 10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: $mainBreakpoint1) {
     :host {
         height: calc(100vh - 80px);
         border-radius: unset;
