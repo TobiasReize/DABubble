@@ -125,7 +125,8 @@
 }
 
 .reactions-container {
-    @include dFlex($jc: normal, $ai: center);
+    @include dFlex($jc: flex-end, $ai: center);
+    flex-wrap: wrap;
     gap: 12.34px;
 }
 

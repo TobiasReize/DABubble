@@ -60,12 +60,14 @@
                             </div>
                         </div>
                     }
-                    <button class="icon-btn add-reaction-btn" (click)="toggleSecondaryReactionOptionMenu()">
-                        <span class="material-symbols-rounded">add_reaction</span>
-                        @if (areSecondaryReactionOptionsOpen) {
-                            <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()"></app-reaction-options>
-                        }
-                    </button>
+                    @if (messageData.reactions.length > 0) {
+                        <button class="icon-btn add-reaction-btn" (click)="toggleSecondaryReactionOptionMenu()">
+                            <span class="material-symbols-rounded">add_reaction</span>
+                            @if (areSecondaryReactionOptionsOpen) {
+                                <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()"></app-reaction-options>
+                            }
+                        </button>
+                    }
             </div>
         }
     </div>
