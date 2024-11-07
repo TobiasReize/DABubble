@@ -10,6 +10,11 @@
 
 .message-img-container {
     @include dFlex($jc: normal, $ai: normal);
+    margin-bottom: 8px;
+}
+
+.message-img {
+    max-width: 156px;
 }
 
 .file-name {
