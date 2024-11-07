@@ -84,6 +84,7 @@
     border: 1px solid #ADB0D9;
     width: 70%;
     background-color: white;
+    width: 100%;
 }
 
 .edit-message-container-bottom {
@@ -98,6 +99,7 @@
 .edit-message-textarea {
     resize: none;
     width: 100%;
+    height: 75px;
     border: unset;
     &:focus {
         outline: unset;
@@ -251,6 +253,11 @@ app-emoji-picker {
     left: 0px;
     bottom: 44px;
 }
+
+.low-emoji-picker {
+     bottom: -220px;
+     border-radius: 0 30px 30px 30px;
+}
        
 .small-message {
     .chat-message-menu {
@@ -273,11 +280,20 @@ app-emoji-picker {
         top: 48px;
         left: 82px;
     }
+    .edit-message-button-container {
+        gap: 8px;
+    }
 }
 
 .very-small-message {
     .more-menu {
         left: 18px;
+    }
+    .edit-message-container-bottom .icon-btn {
+        align-self: flex-end;
+    }
+    .edit-message-button-container {
+        @include dFlex($fd: column);
     }
 }
 

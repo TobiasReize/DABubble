@@ -158,6 +158,6 @@ export class MessageComponent {
     return this.el.nativeElement.offsetWidth < 600;
   }
   isVerySmallMessageWidth() {
-    return this.el.nativeElement.offsetWidth < 382;
+    return this.el.nativeElement.offsetWidth < 450;
   }
 }
