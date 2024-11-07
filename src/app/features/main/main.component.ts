@@ -84,6 +84,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.chatService.getContacts();
+    this.layoutService.onResize(window.innerWidth);
   }
 
   closeDropDownMenu() {
