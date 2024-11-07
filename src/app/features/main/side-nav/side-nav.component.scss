@@ -114,6 +114,9 @@ section {
 
 .gap25 {
   @include flex-gap(25px);
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
 }
 
 .gap13 {
@@ -182,9 +185,10 @@ section {
   justify-content: space-between;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
   section {
     width: 100vw;
+    max-width: unset;
     height: 100vh;
     border-radius: 0;
   }

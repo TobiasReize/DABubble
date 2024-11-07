@@ -12,6 +12,11 @@ section {
   border-radius: 30px;
   background: rgba(255, 255, 255, 1);
   @include dFlex($fd: column, $jc: space-between, $ai: space-between);
+  @media (max-width: 768px) {
+        height: calc(100vh - 80px);
+        border-radius: unset;
+        padding-bottom: 30px;
+  }
 
   img {
     width: 50px;
@@ -62,6 +67,9 @@ section {
   border-radius: 30px;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+  @media (max-width: 768px) {
+    border-radius: 0;
+  }
 
   div {
     padding: 4px 20px 4px 20px;
