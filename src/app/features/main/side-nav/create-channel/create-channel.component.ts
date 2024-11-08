@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { SideNavService } from '../../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { UserService } from '../../../../core/services/user/user.service';
@@ -6,14 +6,13 @@ import { Channel } from '../../../../core/models/channel.class';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { FirebaseService } from '../../../../core/services/firebase/firebase.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ChatUser } from '../../../../core/models/user.class';
-import { FilterNameComponent } from './filter-name/filter-name.component';
 
 @Component({
   selector: 'app-create-channel',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterNameComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './create-channel.component.html',
   styleUrl: './create-channel.component.scss',
 })

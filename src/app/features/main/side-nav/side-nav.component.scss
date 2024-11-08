@@ -38,6 +38,10 @@ section {
   height: calc(100vh - $header-and-bottom-spacing);
   border-radius: 30px;
 
+  @media (max-width: 768px) {
+    height: calc(100vh - 80px);
+  }
+
   @media screen and (max-width: 480px) {
     max-width: unset;
     width: 100%;
@@ -189,7 +193,6 @@ section {
   section {
     width: 100vw;
     max-width: unset;
-    height: 100vh;
     border-radius: 0;
   }
 

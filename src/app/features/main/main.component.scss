@@ -68,6 +68,21 @@ app-new-message {
   width: 100%;
 }
 
+.width0 {
+  width: 0;
+  margin-right: -20px;
+  transition: width 150ms ease-in-out;
+}
+
+.width100 {
+  flex-shrink: 0;
+  width: $thread-width;
+  transition: width 150ms ease-in-out;
+  @media (max-width: 1440px) {
+    width: $thread-width-small;
+  }
+}
+
 @media screen and (max-width: $mainBreakpoint1) {
   app-side-nav {
     width: 100%;
