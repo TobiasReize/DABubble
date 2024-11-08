@@ -142,4 +142,15 @@
             font-size: 17px;
         }
     }
+    app-search-component {
+        display: none;
+    }
+    .logo-container {
+        width: 100%;
+        min-width: unset;
+    }
+    .header-profile-section {
+        min-width: unset;
+        justify-content: normal;
+    }
 }

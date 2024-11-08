@@ -1,7 +1,7 @@
 <div (click)="closeDropDownMenu()">
   <app-header></app-header>
   <div class="main">
-    <app-side-nav *ngIf="layoutState().isSideNavOpen"></app-side-nav>
+    <app-side-nav [ngClass]="{'width100': layoutState().isSideNavOpen && shouldAnimateSideNav(), 'width0': !layoutState().isSideNavOpen && shouldAnimateSideNav(), 'd-none': !layoutState().isSideNavOpen && !shouldAnimateSideNav() }"></app-side-nav>
     <app-new-message *ngIf="chatService.newMessage"></app-new-message>
     <app-direct-message *ngIf="layoutState().isDirectMessageOpen"></app-direct-message>
     <app-chat *ngIf="layoutState().isChatOpen"></app-chat>

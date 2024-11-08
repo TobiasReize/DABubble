@@ -100,5 +100,10 @@ export class MainComponent implements OnInit {
     const result = (this.layoutService.layoutState().isChatOpen || this.layoutService.layoutState().isDirectMessageOpen) && this.layoutService.isDesktop();
     return result
   }
+
+  shouldAnimateSideNav() {
+    const result = (this.layoutService.layoutState().isChatOpen || this.layoutService.layoutState().isDirectMessageOpen || this.layoutService.layoutState().isThreadOpen) && !this.layoutService.isMobile();
+    return result;
+  }
 }
 
