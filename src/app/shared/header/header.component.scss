@@ -109,6 +109,10 @@
     }
 }
 
+app-search-component {
+    padding: 0;
+}
+
 @media (max-width: 1440px) {
     .header-profile-section {
         min-width: $thread-width-small;
@@ -124,6 +128,13 @@
     }
     .header-profile-section h2 {
         display: none;
+    }
+}
+
+@media (max-width: 1200px) {
+    .header-profile-section {
+        min-width: unset;
+        padding-left: 16px;
     }
 }
 
