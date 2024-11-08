@@ -138,7 +138,21 @@ app-search-component {
     }
 }
 
+@media (max-width: 880px) {
+    .header-profile-container {
+        h3, span {
+            display: none;
+        }
+    }
+}
+
 @media (max-width: 768px) {
+    .header-profile-container {
+        h3, span {
+            display: block;
+            @include fontStyle3;
+        }
+    }
     :host {
         padding: 0 16px;
         height: 80px;
@@ -163,5 +177,13 @@ app-search-component {
     .header-profile-section {
         min-width: unset;
         justify-content: normal;
+    }
+}
+
+@media (max-width: 560px) {
+    .header-profile-container {
+        h3, span {
+            display: none;
+        }
     }
 }
