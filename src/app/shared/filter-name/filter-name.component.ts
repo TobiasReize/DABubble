@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { UserService } from '../../../../../core/services/user/user.service';
-import { ChatUser } from '../../../../../core/models/user.class';
-import { SideNavService } from '../../../../../core/services/sideNav/side-nav.service';
-import { Channel } from '../../../../../core/models/channel.class';
-import { ChatService } from '../../../../../core/services/chat/chat.service';
+import { UserService } from '../../core/services/user/user.service';
+import { ChatUser } from '../../core/models/user.class';
+import { SideNavService } from '../../core/services/sideNav/side-nav.service';
+import { Channel } from '../../core/models/channel.class';
+import { ChatService } from '../../core/services/chat/chat.service';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { FirebaseService } from '../../../../../core/services/firebase/firebase.service';
+import { FirebaseService } from '../../core/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-filter-name',

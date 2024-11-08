@@ -4,7 +4,7 @@
       placeholder="Suchen..."
       type="text"
       class="search-input"
-      (keyup)="updateSearchQuery($event)"
+      (input)="updateSearchQuery($event)"
     />
     <span class="material-symbols-rounded search-icon">search</span>
   </div>
@@ -18,6 +18,9 @@
       } @else if(result.description) {
         <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
         <span>{{ result.name }}</span>
+      }
+      @else {
+        <span>{{ result }}</span>
       }
     </div>
   </div>

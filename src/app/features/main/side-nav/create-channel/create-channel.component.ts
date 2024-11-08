@@ -8,7 +8,7 @@ import { FirebaseService } from '../../../../core/services/firebase/firebase.ser
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ChatUser } from '../../../../core/models/user.class';
-import { FilterNameComponent } from './filter-name/filter-name.component';
+import { FilterNameComponent } from '../../../../shared/filter-name/filter-name.component';
 
 @Component({
   selector: 'app-create-channel',

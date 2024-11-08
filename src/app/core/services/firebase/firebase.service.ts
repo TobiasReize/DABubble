@@ -11,7 +11,6 @@ export class FirebaseService {
   private uploadProgressSignal = signal<number>(0);
   readonly uploadProgress = this.uploadProgressSignal.asReadonly();
   downloadURL: string = '';
-
  
   getDocRef(docId: string, collectionName: string) {
     return doc(this.getCollectionRef(collectionName), docId);
