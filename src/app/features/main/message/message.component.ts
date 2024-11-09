@@ -9,6 +9,7 @@ import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { ReactionOptionsComponent } from './reaction-options/reaction-options.component';
 import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
 import { LayoutService } from '../../../core/services/layout/layout.service';
+import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 
 @Component({
   selector: 'app-message',
@@ -33,8 +34,10 @@ export class MessageComponent {
   isMessageBeingEdited: boolean = false;
   editMessageText: string = '';
   isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
+  fileRemoved: boolean = false;
+  deleteFileWhenSavingMessage: boolean = true;
 
-  constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService, private el: ElementRef) {}
+  constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private el: ElementRef) {}
 
   ngOnInit() {
     this.isThreadMessage = this.type === 'thread';
@@ -123,6 +126,7 @@ export class MessageComponent {
   }
 
   editMessage() {
+    this.fileRemoved = false;
     this.closeMoreMenu();
     this.isMessageBeingEdited = true;
     this.editMessageText = this.messageData.content;
@@ -144,6 +148,10 @@ export class MessageComponent {
       this.chatService.updateThreadReply(this.messageData.id, obj);
     }
     this.stopEditingMessage();
+    if (this.fileRemoved) {
+      this.chatService.deleteFile(this.messageData.id, this.type);
+      this.firebaseService.deleteFile(this.messageData.fileUrl);
+    }
   }
 
   toggleEmojiPickerForEditing() {
@@ -159,5 +167,9 @@ export class MessageComponent {
   }
   isVerySmallMessageWidth() {
     return this.el.nativeElement.offsetWidth < 450;
+  }
+
+  handleDeletionEvent() {
+    this.fileRemoved = true;
   }
 }

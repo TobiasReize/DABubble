@@ -106,7 +106,7 @@
     @if (isMessageBeingEdited) {
         <div class="edit-message-container">
             <textarea #editMessageContent [(ngModel)]="editMessageText"  name="edit-message-content" id="edit-message-content" class="edit-message-textarea"></textarea>
-            <app-deletable-file [fileUrl]="messageData.fileUrl" [fileType]="messageData.fileType" [fileName]="messageData.fileName" [messageId]="messageData.id" [type]="type"></app-deletable-file>
+            <app-deletable-file (deletionEventFromMessage)="handleDeletionEvent()" [fileUrl]="!fileRemoved ? messageData.fileUrl : ''" [fileType]="messageData.fileType" [fileName]="messageData.fileName" [messageId]="messageData.id" [type]="type"></app-deletable-file>
             <div class="edit-message-container-bottom">
                 <button class="icon-btn" (click)="toggleEmojiPickerForEditing()">
                     <span class="material-symbols-rounded">sentiment_satisfied</span>

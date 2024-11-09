@@ -620,4 +620,21 @@ export class ChatService {
       return false;
     }
   }
+
+  deleteFile(messageId: string, type: string) {
+    const emptyFileData = {
+      fileUrl: '',
+      fileType: '',
+      fileName: ''
+    };
+    if (messageId) {
+      if (type === 'chat') {
+        this.updateChatMessage(messageId, emptyFileData);
+      } else if (type === 'thread') {
+        this.updateThreadReply(messageId, emptyFileData);
+      } else if (type === 'directMessage') {
+        this.updateDirectMessage(messageId, emptyFileData);
+      }
+    }
+  }
 }
