@@ -1,7 +1,7 @@
 <div class="thread-header">
     <div class="thread-header-left">
         <span class="thread-heading">Thread</span>
-        @if (!layoutService.layoutState().isDirectMessageOpen) {
+        @if (layoutService.selectedCollection() === 'channels') {
             <span class="material-symbols-rounded channel">tag</span>
             <div class="channel-name channel">{{ channel().name }}</div>
         } @else {
