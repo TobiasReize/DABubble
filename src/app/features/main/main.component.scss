@@ -5,6 +5,7 @@
   height: 100vh;
   padding: 0 20px;
   position: relative;
+  overflow: hidden;
 
   @media screen and (max-width: $mainBreakpoint1) {
     padding: 0;

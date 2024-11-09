@@ -207,7 +207,7 @@ app-search-component {
     }
 
     .profil-info-overlay {
-        background-color: rgba(153, 153, 153, 0.1);
+        background-color: rgba(153, 153, 153, 0.2);
         justify-content: center;
         align-items: flex-end;
         padding: 0;
@@ -220,6 +220,7 @@ app-search-component {
         gap: 15px;
         padding: 30px 26px;
         filter: drop-shadow(0px -3px 10px rgba(0, 0, 0, 0.2));
+        animation: moveUp 200ms ease-in-out;
         span {
             width: unset;
             padding: 0;
@@ -227,6 +228,16 @@ app-search-component {
         span:last-child {
             font-size: 20px;
             line-height: 27.28px;
+        }
+    }
+
+    @keyframes moveUp {
+        from {
+            transform: translateY(210px);
+        }
+
+        to {
+            transform: translateY(0);
         }
     }
 
