@@ -16,6 +16,7 @@ import { SideNavService } from '../../core/services/sideNav/side-nav.service';
 export class HeaderComponent {
   userService = inject(UserService);
   chatService = inject(ChatService);
+  sideNavService = inject(SideNavService);
   profilInfo: boolean = false;
 
   constructor(private router: Router) { }
@@ -40,7 +41,8 @@ export class HeaderComponent {
   async logout() {
     await this.userService.signOutUser();
     this.router.navigateByUrl('');
-  }  sideNavService = inject(SideNavService);
+  }
+
 
   onSearch() {
     this.sideNavService.search = true;
