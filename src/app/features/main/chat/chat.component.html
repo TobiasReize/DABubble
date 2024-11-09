@@ -26,7 +26,10 @@
         }
     </div>
 </div>
-@if (messages().length > 0) {
+@if (chatService.isLoadingMessages()) {
+    <div class="height100"></div>
+    <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat"></app-message-textarea>
+} @else if (messages().length > 0) {
     <app-chat-bottom-container #messageContainer [channel]="channel" [messages]="messages"></app-chat-bottom-container>
     <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat" [messagesContainerRef]="messageContainer.elementRef.nativeElement"></app-message-textarea>
 } @else {

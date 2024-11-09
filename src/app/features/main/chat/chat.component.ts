@@ -26,7 +26,7 @@ export class ChatComponent {
   isMembersDialogVisible: Signal<boolean> = this.chatService.openMembers;
   @ViewChild('messageContainer') messageContainer!: ChatBottomContainerComponent;
 
-  constructor(private chatService: ChatService) { }
+  constructor(public chatService: ChatService) { }
 
   toggleEditChannelVisibility() {
     this.chatService.toggleEditChannelVisibility();

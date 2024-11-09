@@ -34,6 +34,7 @@ export class ChatService {
   newMessage: boolean = false;
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
+  public isLoadingMessages = signal<boolean>(true);
 
   unsubMessages!: Unsubscribe;
   unsubDirectMessages!: Unsubscribe;
@@ -273,7 +274,7 @@ export class ChatService {
     );
   }
 
-  subMessages(channelId: string) {
+  async subMessages(channelId: string) {
     const q = query(
       this.firebaseService.getSubcollectionRef(
         channelId,
@@ -291,6 +292,7 @@ export class ChatService {
         }
       });
       this.messagesSignal.set(tempMessages);
+      this.isLoadingMessages.set(false);
     });
   }
 
@@ -312,6 +314,7 @@ export class ChatService {
         }
       });
       this.directMessagesSignal.set(tempMessages);
+      this.isLoadingMessages.set(false);
     });
   }
 
@@ -340,7 +343,7 @@ export class ChatService {
   subChannels() {
     return onSnapshot(
       this.firebaseService.getCollectionRef('channels'),
-      (collection) => {
+      async (collection) => {
         const channels: Channel[] = [];
         collection.forEach((doc) => {
           const channel = this.createChannelFromQueryDocumentSnapshot(doc);
@@ -349,7 +352,7 @@ export class ChatService {
         this.channelsSignal.set(channels);
         if (!this.unsubMessages) {
           this.currentChannelSignal.set(this.channels()[0]);
-          this.unsubMessages = this.subMessages(this.currentChannel().id);
+          this.unsubMessages = await this.subMessages(this.currentChannel().id);
         } else {
           this.changeChannel(this.currentChannel().id);
         }
@@ -430,11 +433,11 @@ export class ChatService {
     this.unsubTopThreadMessage = this.subTopThreadMessage(this.currentMainChatCollectionSignal());
   }
 
-  resubChannel() {
+  async resubChannel() {
     if (this.unsubMessages) {
       this.unsubMessages();
     }
-    this.unsubMessages = this.subMessages(this.currentChannel().id);
+    this.unsubMessages = await this.subMessages(this.currentChannel().id);
     this.getUsersInCurrentChannel();
   }
 
@@ -446,6 +449,7 @@ export class ChatService {
   }
 
   changeChannel(id: string) {
+    this.isLoadingMessages.set(true);
     const index = this.channels().findIndex((channel) => channel.id === id);
     if (index !== -1) {
       this.currentChannelSignal.set(this.channels()[index]);
@@ -539,6 +543,7 @@ export class ChatService {
   }
 
   openChat(id: number): void {
+    this.isLoadingMessages.set(true);
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
