@@ -4,7 +4,7 @@
     @include dFlex($jc: space-between);
     width: 100%;
     padding-top: 25px;
-    padding-right: 34px;
+    padding-right: 14px;
     padding-bottom: 20px;
 }
 
@@ -109,6 +109,10 @@
     }
 }
 
+app-search-component {
+    padding: 0;
+}
+
 @media (max-width: 1440px) {
     .header-profile-section {
         min-width: $thread-width-small;
@@ -127,7 +131,28 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .header-profile-section {
+        min-width: unset;
+        padding-left: 16px;
+    }
+}
+
+@media (max-width: 880px) {
+    .header-profile-container {
+        h3, span {
+            display: none;
+        }
+    }
+}
+
 @media (max-width: 768px) {
+    .header-profile-container {
+        h3, span {
+            display: block;
+            @include fontStyle3;
+        }
+    }
     :host {
         padding: 0 16px;
         height: 80px;
@@ -140,6 +165,25 @@
         }
         span {
             font-size: 17px;
+        }
+    }
+    app-search-component {
+        display: none;
+    }
+    .logo-container {
+        width: 100%;
+        min-width: unset;
+    }
+    .header-profile-section {
+        min-width: unset;
+        justify-content: normal;
+    }
+}
+
+@media (max-width: 560px) {
+    .header-profile-container {
+        h3, span {
+            display: none;
         }
     }
 }

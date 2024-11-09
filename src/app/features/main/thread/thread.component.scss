@@ -2,8 +2,7 @@
 
 :host {
     background-color: white;
-    min-width: $thread-width;
-    width: $thread-width;
+    width: 100%;
     height: calc(100vh - $header-and-bottom-spacing);
     border-radius: 30px;
     @include dFlex($fd: column, $jc: normal, $ai: normal);
@@ -59,19 +58,6 @@ hr {
 
 app-message-textarea {
     width: 100%;
-}
-
-@media (max-width: 1440px) {
-    :host {
-        min-width: $thread-width-small;
-        width: $thread-width-small;
-    }
-}
-
-@media (max-width: 1200px) {
-    :host {
-        width: 100%;
-    }
 }
 
 @media (max-width: 768px) {

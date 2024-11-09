@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, Signal } from '@angular/core';
-import { MessageTextareaComponent } from '../../message-textarea/message-textarea.component';
 import { MessageComponent } from '../../message/message.component';
 import { Channel } from '../../../../core/models/channel.class';
 import { Message } from '../../../../core/models/message.class';
@@ -7,7 +6,7 @@ import { Message } from '../../../../core/models/message.class';
 @Component({
   selector: 'app-chat-bottom-container',
   standalone: true,
-  imports: [MessageComponent, MessageTextareaComponent],
+  imports: [MessageComponent],
   templateUrl: './chat-bottom-container.component.html',
   styleUrl: './chat-bottom-container.component.scss'
 })

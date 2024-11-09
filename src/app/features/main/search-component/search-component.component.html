@@ -10,7 +10,7 @@
   </div>
 
   <!-- drop down menu -->
-  <div id="searchResultsDropdown" *ngIf="filteredResults.length > 0" class="dNone searchingResults" (click)="sideNavService.stopPropagation($event)">
+  <div id="searchResultsDropdown" *ngIf="filteredResults.length > 0" class=" searchingResults" (click)="sideNavService.stopPropagation($event)">
     <div *ngFor="let result of filteredResults" class="contactsDiv">
       @if(result.avatar) {
         <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">

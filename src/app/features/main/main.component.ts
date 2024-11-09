@@ -91,5 +91,19 @@ export class MainComponent implements OnInit {
     const dropDownDiv = document.getElementById('searchResultsDropdown');
     dropDownDiv?.classList.add('dNone');
   }
+
+  isDesktop() {
+    return this.layoutService.isDesktop();
+  }
+  
+  shouldAnimateThread() {
+    const result = (this.layoutService.layoutState().isChatOpen || this.layoutService.layoutState().isDirectMessageOpen) && this.layoutService.isDesktop();
+    return result
+  }
+
+  shouldAnimateSideNav() {
+    const result = (this.layoutService.layoutState().isChatOpen || this.layoutService.layoutState().isDirectMessageOpen || this.layoutService.layoutState().isThreadOpen) && !this.layoutService.isMobile();
+    return result;
+  }
 }
 

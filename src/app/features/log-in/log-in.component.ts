@@ -128,21 +128,6 @@ export class LogInComponent implements OnInit {
   }
 
 
-  // async saveGoogleImg(user: User) {
-  //   try {
-  //     const resp = await fetch(user.photoURL!);
-  //     console.log('resp', resp);
-  //     if (!resp.ok) {
-  //       throw new Error(`Response status: ${resp.status}`);
-  //     }
-  //     const blob = await resp.blob();
-  //     console.log('blob', blob);
-  //   } catch (error) {
-  //     console.log('Error Google Img:', error);
-  //   }
-  // }
-
-
   async signInWithGuest() {
     await this.userService.signOutUser();
     await this.userService.updateUserDoc('guest', {isOnline: true});
