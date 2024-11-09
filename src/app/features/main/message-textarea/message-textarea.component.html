@@ -2,7 +2,7 @@
     <span #mentionInsertion contenteditable="false"></span>
     <div class="textarea-and-image-container">
         <div #editableTextarea class="textarea" name="editableTextarea" id="editableTextarea" contenteditable="true" (keydown)="handleTextAreaKeyDown($event)" (keyup)="handleTextAreaKeyUp($event)"></div>
-        <app-deletable-file (deletionEvent)="resetInput()" [fileUrl]="fileUrl" [fileType]="fileType" [fileName]="fileName" [type]="type"></app-deletable-file>
+        <app-deletable-file (deletionEventFromTextArea)="resetInput()" origin="textarea" [fileUrl]="fileUrl" [fileType]="fileType" [fileName]="fileName" [type]="type"></app-deletable-file>
     </div>
     <div class="textarea-container-inside">
         <div class="textarea-symbols-left">

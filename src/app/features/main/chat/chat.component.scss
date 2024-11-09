@@ -35,6 +35,22 @@
     }
 }
 
+.channel-name {
+    @include fontStyle9;
+}
+
+.channel-name-container {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    color: $purple-3;
+}
+
+.small-tag {
+    color: $purple-3;
+    font-size: 20px;
+}
+
 .chat-header-left {
     gap: 10px;
     cursor: pointer;
@@ -57,6 +73,23 @@
 .chat-header-right-span {
     @include fontStyle8;
     margin-right: 10px;
+}
+
+.empty-chat-container {
+    height: 100%;
+    padding: 60px;
+    gap: 13px;
+    @include dFlex($fd: column, $jc: flex-end, $ai: flex-start);
+    flex-wrap: wrap;
+  }
+
+.empty-chat-container-header {
+    @include dFlex($jc: flex-start);
+    gap: 10px;
+}
+
+.empty-chat-container-second-channel-name {
+    color: $purple-3;
 }
 
 @media (max-width: $mainBreakpoint1) {

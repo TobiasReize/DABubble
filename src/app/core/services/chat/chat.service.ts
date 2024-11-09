@@ -460,7 +460,6 @@ export class ChatService {
   }
 
   changeDirectMessageChannel(id: string) {
-    this.directMessagesSignal.set([]);
     const directMessageChannelId = this.getDirectMessageChannelId(id);
     const index = this.directMessageChannels().findIndex((channel) => channel.id === directMessageChannelId);
     if (index !== -1) {
@@ -644,6 +643,23 @@ export class ChatService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  deleteFile(messageId: string, type: string) {
+    const emptyFileData = {
+      fileUrl: '',
+      fileType: '',
+      fileName: ''
+    };
+    if (messageId) {
+      if (type === 'chat') {
+        this.updateChatMessage(messageId, emptyFileData);
+      } else if (type === 'thread') {
+        this.updateThreadReply(messageId, emptyFileData);
+      } else if (type === 'directMessage') {
+        this.updateDirectMessage(messageId, emptyFileData);
+      }
     }
   }
 

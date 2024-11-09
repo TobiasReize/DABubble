@@ -16,7 +16,9 @@ export class DeletableFileComponent {
   @Input() fileName: string = '';
   @Input() type: string = 'chat';
   @Input() messageId: string = '';
-  @Output() deletionEvent = new EventEmitter<string>();
+  @Input() origin: string = 'message';
+  @Output() deletionEventFromTextArea = new EventEmitter<string>();
+  @Output() deletionEventFromMessage = new EventEmitter<string>();
 
   constructor(private chatService: ChatService, private firebaseService: FirebaseService) {}
 
@@ -25,22 +27,12 @@ export class DeletableFileComponent {
   }
 
   deleteFile(messageId: string) {
-    this.firebaseService.deleteFile(this.fileUrl);
-    this.deletionEvent.emit('deletion event');
-    const emptyFileData = {
-      fileUrl: '',
-      fileType: '',
-      fileName: ''
-    };
-    if (messageId) {
-      if (this.type === 'chat') {
-        this.chatService.updateChatMessage(messageId, emptyFileData);
-      } else if (this.type === 'thread') {
-        this.chatService.updateThreadReply(messageId, emptyFileData);
-      } 
+    if (this.origin === 'textarea') {
+      this.firebaseService.deleteFile(this.fileUrl);
+      this.deletionEventFromTextArea.emit('deletion event');
+      this.chatService.deleteFile(messageId, this.type);
+    } else {
+      this.deletionEventFromMessage.emit(this.fileUrl);
     }
-    // else if (this.type === 'directMessage') {
-    //   this.chatService.updateDirectMessage(messageId, emptyFileData);
-    // }
   }
 }
