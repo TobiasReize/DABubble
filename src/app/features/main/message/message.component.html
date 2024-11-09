@@ -64,7 +64,7 @@
                         <button class="icon-btn add-reaction-btn" (click)="toggleSecondaryReactionOptionMenu()">
                             <span class="material-symbols-rounded">add_reaction</span>
                             @if (areSecondaryReactionOptionsOpen) {
-                                <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()"></app-reaction-options>
+                                <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()" class="app-reaction-options-alternative3"></app-reaction-options>
                             }
                         </button>
                     }
@@ -99,7 +99,7 @@
             </div>
         }
         @if (areReactionOptionsOpen) {
-            <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()"></app-reaction-options>
+            <app-reaction-options (newReactionEvent)="addNewReaction($event)" [reactionOptions]="reactionOptions()" [ngClass]="{ 'app-reaction-options-alternative': isMe, 'app-reaction-options-alternative2': !isThreadMessage && !isMe }"></app-reaction-options>
         }
     </div>
     }
