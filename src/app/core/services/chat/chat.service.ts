@@ -457,7 +457,6 @@ export class ChatService {
   }
 
   changeDirectMessageChannel(id: string) {
-    this.directMessagesSignal.set([]);
     const directMessageChannelId = this.getDirectMessageChannelId(id);
     const index = this.directMessageChannels().findIndex((channel) => channel.id === directMessageChannelId);
     if (index !== -1) {
