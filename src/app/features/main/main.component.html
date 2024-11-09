@@ -1,4 +1,4 @@
-<div (click)="closeDropDownMenu()">
+<div (click)="chatService.closeDropDownMenu()">
   <app-header></app-header>
   <div class="main">
     <app-side-nav [ngClass]="{'width100': layoutState().isSideNavOpen && shouldAnimateSideNav(), 'width0': !layoutState().isSideNavOpen && shouldAnimateSideNav(), 'd-none': !layoutState().isSideNavOpen && !shouldAnimateSideNav() }"></app-side-nav>

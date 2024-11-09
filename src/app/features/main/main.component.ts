@@ -87,11 +87,6 @@ export class MainComponent implements OnInit {
     this.layoutService.onResize(window.innerWidth);
   }
 
-  closeDropDownMenu() {
-    const dropDownDiv = document.getElementById('searchResultsDropdown');
-    dropDownDiv?.classList.add('dNone');
-  }
-
   isDesktop() {
     return this.layoutService.isDesktop();
   }

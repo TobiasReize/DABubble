@@ -31,7 +31,8 @@ export class SearchComponentComponent implements OnInit {
   searchQuery: string = '';
   filteredResults: any[] = [];
   filteredChannels: any[] = [];
-  directMessages: string[] = [];
+  directMessages: any[] = [];
+  directMessagesContent: any[] = [];
 
   ngOnInit(): void {
     this.getMessages();
@@ -55,10 +56,11 @@ export class SearchComponentComponent implements OnInit {
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
-      this.directMessages.push(doc.data()['content']);
+      this.directMessages.push(doc.data());
+      this.directMessagesContent.push(doc.data()['content']);
     });
 
-    console.log('direktnachrichten', this.directMessages)
+    console.log('direktnachrichtenDokumente: ', this.directMessages);
   }
 
   filterResults() {
@@ -76,9 +78,7 @@ export class SearchComponentComponent implements OnInit {
 
     // direkt Nachrichten filtern
     const filteredDirectMessages = 
-    this.directMessages.filter((content) => content.toLowerCase().includes(query));
-
-    console.log('directMessages: ', this.directMessages)
+    this.directMessages.filter((message) => message.content.toLowerCase().includes(query))
 
     this.filteredResults = [...filteredUsers, ...filteredChannels, ...filteredDirectMessages];
   }

@@ -10,17 +10,23 @@
   </div>
 
   <!-- drop down menu -->
-  <div id="searchResultsDropdown" *ngIf="filteredResults.length > 0" class=" searchingResults" (click)="sideNavService.stopPropagation($event)">
-    <div *ngFor="let result of filteredResults" class="contactsDiv">
+  <div id="searchResultsDropdown" *ngIf="filteredResults.length > 0" class="dNone searchingResults" (click)="sideNavService.stopPropagation($event)">
+    <div *ngFor="let result of filteredResults" class="dFlexRowFlex-StartCenter width-100" (click)="chatService.closeDropDownMenu()">
       @if(result.avatar) {
-        <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">
-        <span>{{ result.name }}</span>
+        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(chatService.contactIndex, result.userUID, result.avatar)">
+          <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">
+          <span>{{ result.name }}</span>
+        </div>
       } @else if(result.description) {
-        <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
-        <span>{{ result.name }}</span>
+        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id)">
+          <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
+          <span>{{ result.name }}</span>
+        </div>
       }
       @else {
-        <span>{{ result }}</span>
+        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat2(result.userName)">
+          <span>{{ result.content }}</span>
+        </div>
       }
     </div>
   </div>

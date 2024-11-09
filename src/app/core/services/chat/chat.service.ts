@@ -30,6 +30,8 @@ import { LayoutService } from '../layout/layout.service';
 export class ChatService {
   chat: boolean = true;
   contactIndex: number | any = null;
+  currentUser: any;
+  userAvatar: string = "";
   contactUUID: string = '';
   newMessage: boolean = false;
   directMessage: boolean = false;
@@ -454,6 +456,7 @@ export class ChatService {
     this.layoutService.deselectSideNavOnMobile();
     this.layoutService.deselectThread();
     this.layoutService.selectChat();
+    console.log('channel geändert: ', id)
   }
 
   changeDirectMessageChannel(id: string) {
@@ -539,14 +542,37 @@ export class ChatService {
     }
   }
 
-  openChat(id: number): void {
+  openChat(index: number, userUID: string, avatar: string): void {
+    this.currentUser = this.userService.allUsers().find(user => user.userUID === userUID);
+    this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
+    this.userAvatar = avatar;
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
-    this.contactIndex = id;
-    const user = this.userService.allUsers()[this.contactIndex];
-    this.contactUUID = user.userUID;
-    if (user.name === this.userService.currentOnlineUser().name) {
+    this.contactUUID = userUID;
+    if (this.currentUser?.name === this.userService.currentOnlineUser().name) {
+      this.myChatDescription = true;
+      this.chatDescription = false;
+    } else {
+      this.myChatDescription = false;
+      this.chatDescription = true;
+    }
+    this.layoutService.deselectSideNavOnMobile();
+    this.layoutService.deselectThread();
+    this.layoutService.selectDirectMessage();
+    this.changeDirectMessageChannel(this.contactUUID);
+  }
+
+  openChat2(userName: string): void {
+    this.currentUser = this.userService.allUsers().find(user => user.name === userName);
+    this.contactIndex = this.userService.allUsers().findIndex(user => user.name === userName);
+    this.userAvatar = "";
+    this.newMessage = false;
+    this.chat = false;
+    this.directMessage = true;
+    this.contactUUID = this.currentUser.userUID;
+    console.log(this.contactUUID)
+    if (this.currentUser?.name === this.userService.currentOnlineUser().name) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
@@ -619,5 +645,10 @@ export class ChatService {
     } else {
       return false;
     }
+  }
+
+  closeDropDownMenu() {
+    const dropDownDiv = document.getElementById('searchResultsDropdown');
+    dropDownDiv?.classList.add('dNone');
   }
 }
