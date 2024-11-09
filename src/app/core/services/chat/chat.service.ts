@@ -34,7 +34,7 @@ export class ChatService {
   newMessage: boolean = false;
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
-  public isLoadingMessages = signal<boolean>(true);
+  public isLoadingMessages = signal<boolean>(false);
 
   unsubMessages!: Unsubscribe;
   unsubDirectMessages!: Unsubscribe;

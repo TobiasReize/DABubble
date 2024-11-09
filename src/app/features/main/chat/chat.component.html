@@ -26,13 +26,7 @@
         }
     </div>
 </div>
-@if (chatService.isLoadingMessages()) {
-    <div class="height100"></div>
-    <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat"></app-message-textarea>
-} @else if (messages().length > 0) {
-    <app-chat-bottom-container #messageContainer [channel]="channel" [messages]="messages"></app-chat-bottom-container>
-    <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat" [messagesContainerRef]="messageContainer.elementRef.nativeElement"></app-message-textarea>
-} @else {
+@if (messages().length === 0 && !chatService.isLoadingMessages()) {
     <div class="empty-chat-container">
         <div class="empty-chat-container-header">
             <span class="material-symbols-rounded">tag</span>
@@ -45,5 +39,11 @@
          Das ist der Anfang des Channels <span class="channel-name-container"><span class="material-symbols-rounded small-tag">tag</span>{{ channel().name }}</span>.
         </p>
     </div>
+    <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat"></app-message-textarea>
+} @else if (messages().length > 0) {
+    <app-chat-bottom-container #messageContainer [channel]="channel" [messages]="messages"></app-chat-bottom-container>
+    <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat" [messagesContainerRef]="messageContainer.elementRef.nativeElement"></app-message-textarea>
+} @else {
+    <div class="height100"></div>
     <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat"></app-message-textarea>
 }
