@@ -6,6 +6,7 @@ import { MessageTextareaComponent } from '../message-textarea/message-textarea.c
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { Channel } from '../../../core/models/channel.class';
 import { LayoutService } from '../../../core/services/layout/layout.service';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-thread',
@@ -18,7 +19,7 @@ export class ThreadComponent {
   
   channel: Signal<Channel> = this.chatService.currentChannel;
   
-  constructor(private chatService: ChatService, private layoutService: LayoutService) { }
+  constructor(public chatService: ChatService, public layoutService: LayoutService, public userService: UserService) { }
 
   message: Signal<Message> = this.chatService.topThreadMessage;
   replies: Signal<Message[]> = this.chatService.threadReplies;

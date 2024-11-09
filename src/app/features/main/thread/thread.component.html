@@ -1,8 +1,13 @@
 <div class="thread-header">
     <div class="thread-header-left">
         <span class="thread-heading">Thread</span>
-        <span class="material-symbols-rounded channel">tag</span>
-        <div class="channel-name channel">{{ channel().name }}</div>
+        @if (!layoutService.layoutState().isDirectMessageOpen) {
+            <span class="material-symbols-rounded channel">tag</span>
+            <div class="channel-name channel">{{ channel().name }}</div>
+        } @else {
+            <span class="channel">&#64;</span>
+            <div class="channel-name channel">{{ userService.allUsers()[this.chatService.contactIndex].name}} </div>
+        }
     </div>
     <button class="icon-btn" (click)="closeThread()">
         <span class="material-symbols-rounded">close</span>
