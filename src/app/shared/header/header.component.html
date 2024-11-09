@@ -14,8 +14,15 @@
     @if (profilInfo) {
         <div (click)="toggleProfilInfo()" class="profil-info-overlay">
             <div (click)="stopPropagation($event)" class="profil-info">
-                <span (click)="showProfile()">Profil</span>
-                <span (click)="logout()">Log out</span>
+                <div class="dFlexRowCenterCenter width-100 mobile"><div class="rectangle"></div></div>
+                <div (click)="showProfile()" class="dFlexRowCenterCenter width-100 profil-button">
+                    <span class="material-symbols-rounded mobile">account_circle</span>
+                    <span>Profil</span>
+                </div>
+                <div (click)="logout()" class="dFlexRowCenterCenter width-100 profil-button">
+                    <span class="material-symbols-rounded mobile">logout</span>
+                    <span>Log out</span>
+                </div>
             </div>
         </div>
     }
