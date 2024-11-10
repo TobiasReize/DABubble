@@ -188,3 +188,8 @@ textarea {
     color: $error-rosa;
 }
 
+@media (min-width: 769px) {
+    app-members {
+        display: none;
+    }
+}

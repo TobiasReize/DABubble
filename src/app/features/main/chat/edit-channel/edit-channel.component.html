@@ -44,7 +44,8 @@
                     <span class="edit-channel-created-by-name"> {{ currentChannel().createdBy }}</span>
                 </div>
             </div>
+            <app-members [isEditChannel]="true"></app-members>
             <button class="btn btn-prim leave-channel-btn" (click)="leaveChannel()">Channel verlassen</button>
         </div>
-    </div>    
+    </div> 
 </div>

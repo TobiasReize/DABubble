@@ -19,6 +19,7 @@
         left: 16px;
         right: 16px;
         margin: auto;
+        padding: 20px 16px;
     }
 }
 
@@ -47,4 +48,12 @@
             color: $purple-3;
         }
     }
+}
+
+.edit-channel-members {
+    position: static;
+    max-width: unset;
+    box-shadow: unset;
+    border: 1px solid $light-purple;
+    border-radius: 20px;
 }
