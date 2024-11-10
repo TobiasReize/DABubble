@@ -36,7 +36,7 @@
             margin-left: -20px;
         }
     }
-    @media (max-width: $mainBreakpoint1) {
+    @media (max-width: 960px) {
         display: none;
     }
 }
@@ -47,7 +47,7 @@
 }
 
 .channel-name {
-    @media (max-width: $mainBreakpoint1) {
+    @media (max-width: 960px) {
         @include fontStyle19;
     }
 }
@@ -77,6 +77,9 @@
             'GRAD' 200,
         }
     }
+    @media (max-width: 960px) {
+        gap: 5px;
+    }
 }
 
 .chat-header-left, .chat-header-right {
@@ -86,13 +89,13 @@
 .chat-header-right-span {
     @include fontStyle8;
     margin-right: 10px;
-    @media (max-width: $mainBreakpoint1) {
+    @media (max-width: 960px) {
         display: none;
     }
 }
 
 .add-people-btn {
-    @media (max-width: $mainBreakpoint1) {
+    @media (max-width: 960px) {
         background-color: $bg-color;
     }
 }
