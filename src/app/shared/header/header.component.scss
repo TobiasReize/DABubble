@@ -161,6 +161,7 @@ app-search-component {
 
 @media (max-width: 768px) {
     .header-profile-container {
+        gap: 16px;
         h3, span {
             display: block;
             @include fontStyle3;
@@ -190,6 +191,10 @@ app-search-component {
     .header-profile-section {
         min-width: unset;
         justify-content: normal;
+    }
+    .avatar-70 {
+        width: 50px;
+        height: 50px;
     }
 }
 
