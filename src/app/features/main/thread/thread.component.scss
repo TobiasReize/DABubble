@@ -27,7 +27,10 @@
 }
 
 .thread-heading {
-    @include fontStyle6;
+    @include fontStyle9;
+    @media (max-width: 1440px) {
+        @include fontStyle19;
+    }
 }
 
 .messages-container {

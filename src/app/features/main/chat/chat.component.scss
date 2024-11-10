@@ -47,7 +47,7 @@
 }
 
 .channel-name {
-    @media (max-width: 960px) {
+    @media (max-width: 1440px) {
         @include fontStyle19;
     }
 }
@@ -77,7 +77,7 @@
             'GRAD' 200,
         }
     }
-    @media (max-width: 960px) {
+    @media (max-width: 1440px) {
         gap: 5px;
     }
 }
