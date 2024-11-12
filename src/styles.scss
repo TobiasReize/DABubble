@@ -316,6 +316,11 @@ hr {
   height: 100%;
 }
 
+.profil-status-container {
+  position: relative;
+  @include dFlex();
+}
+
 .status-circle {
   position: absolute;
   bottom: 0;

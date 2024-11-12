@@ -8,6 +8,10 @@
     padding-bottom: 20px;
 }
 
+h3 {
+    white-space: nowrap;
+}
+
 .header-left-side {
     width: 100%;
     @include dFlex($jc: flex-start);
@@ -70,6 +74,16 @@
             font-variation-settings: "GRAD" 200;
         }
     }
+}
+
+.header-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    border: 2px solid $bg-color;
 }
 
 .profil-info-overlay {
