@@ -2,7 +2,7 @@
   <app-header></app-header>
   <div class="main">
     <app-side-nav [ngClass]="{'width100': layoutState().isSideNavOpen && shouldAnimateSideNav(), 'width0': !layoutState().isSideNavOpen && shouldAnimateSideNav(), 'd-none': !layoutState().isSideNavOpen && !shouldAnimateSideNav() }"></app-side-nav>
-    <app-new-message *ngIf="chatService.newMessage"></app-new-message>
+    <app-new-message *ngIf="layoutState().isNewMessageOpen"></app-new-message>
     <app-direct-message *ngIf="layoutState().isDirectMessageOpen"></app-direct-message>
     <app-chat *ngIf="layoutState().isChatOpen"></app-chat>
     <app-profile-view-users *ngIf="chatService.profileViewUsersActive"></app-profile-view-users>

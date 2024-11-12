@@ -3,4 +3,5 @@ export interface LayoutStateSignal {
     isThreadOpen: boolean;
     isChatOpen: boolean;
     isDirectMessageOpen: boolean;
+    isNewMessageOpen: boolean;
 }

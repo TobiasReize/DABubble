@@ -25,6 +25,11 @@ export class LayoutService {
     this.selectedCollection.set('directMessageChannels');
   }
 
+  selectNewMessage() {
+    this.selectedCollection.set('newMessages');
+    this.deselectThread();
+  }
+
   selectThread() {
     this.isThreadSelected.set(true);
   }
@@ -46,7 +51,8 @@ export class LayoutService {
   adaptLayoutToDesktop(signal: LayoutStateSignal) {
     if (this.selectedCollection() === 'channels') {
       signal.isChatOpen = true;
-    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;}
+    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;
+    } else if (this.selectedCollection() === 'newMessages') { signal.isNewMessageOpen = true; }
     if (this.isSideNavSelected()) { signal.isSideNavOpen = true; }
     if (this.isThreadSelected()) { signal.isThreadOpen = true; }
   }
@@ -57,7 +63,8 @@ export class LayoutService {
     } else {
       if (this.selectedCollection() === 'channels') {
         signal.isChatOpen = true;
-      } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;}
+      } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;
+      } else if (this.selectedCollection() === 'newMessages') { signal.isNewMessageOpen = true; }
     }
     if (this.isSideNavSelected()) { signal.isSideNavOpen = true; }
   }
@@ -69,7 +76,8 @@ export class LayoutService {
       signal.isThreadOpen = true;
     } else if (this.selectedCollection() === 'channels') {
       signal.isChatOpen = true;
-    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;}
+    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;
+    } else if (this.selectedCollection() === 'newMessages') { signal.isNewMessageOpen = true; }
   }
 
   readonly layoutState = computed(() => {
@@ -77,7 +85,8 @@ export class LayoutService {
       isSideNavOpen: false,
       isThreadOpen: false,
       isChatOpen: false,
-      isDirectMessageOpen: false
+      isDirectMessageOpen: false,
+      isNewMessageOpen: false
     };
     if (this.isDesktop()) {
       this.adaptLayoutToDesktop(signal);

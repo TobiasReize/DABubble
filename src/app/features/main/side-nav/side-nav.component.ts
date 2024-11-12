@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { UserService } from '../../../core/services/user/user.service';
+import { LayoutService } from '../../../core/services/layout/layout.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -18,6 +19,7 @@ export class SideNavComponent {
     public sideNavService: SideNavService,
     public chatService: ChatService,
     public userService: UserService,
+    private layoutService: LayoutService
   ) {}
 
   openChannels(): void {
@@ -33,9 +35,7 @@ export class SideNavComponent {
   }
 
   newMessage(): void {
-    this.chatService.newMessage = true;
-    this.chatService.chat = false;
-    this.chatService.directMessage = false;
+    this.layoutService.selectNewMessage();
   }
 
   selectChannel(id:number) {
