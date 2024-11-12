@@ -1,11 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { UserService } from '../../core/services/user/user.service';
-import { ChatUser } from '../../core/models/user.class';
+import { Component, EventEmitter, inject, Input, input, Output } from '@angular/core';
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
-import { Channel } from '../../core/models/channel.class';
-import { ChatService } from '../../core/services/chat/chat.service';
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { FirebaseService } from '../../core/services/firebase/firebase.service';
+import { ChatUser } from '../../core/models/user.class';
+import { UserService } from '../../core/services/user/user.service';
 
 @Component({
   selector: 'app-filter-name',
@@ -15,24 +11,18 @@ import { FirebaseService } from '../../core/services/firebase/firebase.service';
   styleUrl: './filter-name.component.scss'
 })
 export class FilterNameComponent {
-  userService = inject(UserService);
-  sideNavService = inject(SideNavService);
-  chatService = inject(ChatService);
-  fireBaseService = inject(FirebaseService);
-
-  arrayOfChoosenContacts: ChatUser[] = [];
-  userUIDs: string[] = [];
-  contactsChoosen: boolean = false;
-  notAddedSpecificPeopleToTheChannel: boolean = false;
-  showedAllUsers: boolean = false;
-  showPlaceholder: boolean = true;
-  numberOfChoosenContacts: number = 0;
-  filteredUsers: ChatUser[] = JSON.parse(
-    JSON.stringify(this.userService.allUsers())
-  );
-  selectMembersFromDevspace: boolean = true;
-  channelId: string = '';
-
+  
+  constructor(public sideNavService: SideNavService, public userService: UserService) {}
+  
+  @Input()showedAllUsers: boolean = false;
+  @Input()filteredUsers: ChatUser[] = [];
+  @Input()arrayOfChoosenContacts: ChatUser[] = [];
+  @Input()userUIDs: string[] = [];
+  @Input()contactsChoosen: boolean = false;
+  @Input()notAddedSpecificPeopleToTheChannel: boolean = false;
+  @Input()id: string = "";
+  @Input()showPlaceholder: boolean = true;
+  
   selectUser(index: number, userUID: string) {
     this.removeUser(userUID);
     const selectedUserIndex = this.userService
@@ -44,9 +34,9 @@ export class FilterNameComponent {
     this.contactsChoosen = true;
     this.notAddedSpecificPeopleToTheChannel = false;
     this.showedAllUsers = false;
-    const name = document.getElementById('addName');
+    const name = document.getElementById(this.id);
     this.showPlaceholder = false;
-    this.numberOfChoosenContacts++;
+    this.sideNavService.numberOfChoosenContacts++;
   }
 
   removeUser(userUID: string) {
@@ -56,76 +46,5 @@ export class FilterNameComponent {
     if (index !== -1) {
       this.filteredUsers.splice(index, 1);
     }
-  }
-
-  async createChannel() {
-    let channelName: HTMLInputElement = document.getElementById(
-      'input1'
-    ) as HTMLInputElement;
-    let description: HTMLInputElement = document.getElementById(
-      'input2'
-    ) as HTMLInputElement;
-
-    if (this.selectMembersFromDevspace) {
-      this.addAllMembersFromDevspace();
-    }
-
-    if (this.arrayOfChoosenContacts.length > 0) {
-      this.addSpecificUsersToTheUserUID();
-      console.log('Specific Users added: ', this.userUIDs);
-    }
-
-    let channel = new Channel(
-      this.chatService.contactIndex,
-      channelName.value,
-      description.value,
-      this.userUIDs,
-      this.userService.currentOnlineUser.name
-    );
-
-    this.channelId = doc(
-      collection(this.fireBaseService.firestore, 'channels')
-    ).id;
-
-    this.sideNavService.addChannel(channel);
-
-    await setDoc(
-      doc(this.fireBaseService.firestore, 'channels', this.channelId),
-      {
-        name: channelName.value,
-        description: description.value,
-        createdBy: this.userService.currentOnlineUser.name,
-        userIds: this.userUIDs,
-      }
-    );
-
-    const addPeopleDiv: HTMLElement = document.getElementById(
-      'addPeople'
-    ) as HTMLElement;
-    addPeopleDiv.style.display = 'flex';
-    const createChannelDiv: HTMLElement = document.getElementById(
-      'createChannel'
-    ) as HTMLElement;
-    createChannelDiv.style.display = 'none';
-
-    this.onDiv1Click();
-  }
-
-  addAllMembersFromDevspace() {
-    this.userUIDs = [];
-    this.userService.allUsers().forEach((user) => {
-      this.userUIDs.push(user.userUID);
-    });
-  }
-
-  addSpecificUsersToTheUserUID() {
-    this.userUIDs = [];
-    this.arrayOfChoosenContacts.forEach((user) => {
-      this.userUIDs.push(user.userUID);
-    });
-  }
-
-  onDiv1Click(): void {
-    this.sideNavService.createChannelsDivOpened = false;
   }
 }

@@ -35,6 +35,8 @@ export class MessageTextareaComponent {
   fileUrl: string = '';
   fileName: string = '';
   fileType: string = '';
+  senderId: string = '';
+  receiverId: string = '';
   users: Signal<ChatUser[]> = this.chatService.usersInCurrentChannelWithoutCurrentUser;
   channels: Signal<Channel[]> = this.chatService.channels;
   usersOrChannels: Signal<ChatUser[]> | Signal<Channel[]> = this.users;
@@ -52,11 +54,11 @@ export class MessageTextareaComponent {
     this.saveMessageText();
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
-        this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
+        this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName, this.senderId, this.receiverId);
       } else if (this.type === 'thread') {
-        this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName);
+        this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName, this.senderId, this.receiverId);
       } else {
-        this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
+        this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType, this.fileName, this.senderId, this.receiverId);
       }
       this.messageText = '';
       this.editableTextarea.nativeElement.innerHTML = '';
@@ -65,6 +67,7 @@ export class MessageTextareaComponent {
         this.scrollToBottom();
       }, 1);
     }
+    console.log('users: ', this.users());
   }
 
   resetUploadData() {

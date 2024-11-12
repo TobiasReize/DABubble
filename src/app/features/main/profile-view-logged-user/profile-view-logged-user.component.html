@@ -26,16 +26,12 @@
         <span class="nameCard">{{
           userService.currentOnlineUser().name
         }}</span>
-        <span
-          *ngIf="userService.currentOnlineUser().userUID != '0'"
-          class="edit"
-          (click)="customProfile($event)"
-          >Bearbeiten</span
-        >
+        <span *ngIf="userService.currentOnlineUser().userUID != '0'" class="edit" (click)="customProfile($event)">Bearbeiten</span>
+        <span *ngIf="userService.currentOnlineUser().userUID != '0'" (click)="customProfile($event)" class="material-symbols-rounded profil-edit-icon">edit</span>
       </div>
       <div class="gap15 dFlexRowCenterCenter">
         <img src="assets/img/main/Aktiv.png" />
-        <span class="f400w-20px-gray">Aktiv</span>
+        <span class="f400w-20px-gray online-green">Aktiv</span>
       </div>
     </div>
 
@@ -77,10 +73,10 @@
     <form
       (ngSubmit)="saveNewContactInfos(contactForm)"
       #contactForm="ngForm"
-      class="columnGap16"
+      class="columnGap16 width-100"
     >
       <!-- name -->
-      <div class="columnGap7">
+      <div class="columnGap7 width-100">
         <div class="dFlexRowFlex-StartCenter gap20 width-100">
           <img src="assets/img/main/account_circle.png" alt="" />
           <span class="emailAndName">Vollständiger Name</span>
@@ -97,7 +93,7 @@
         />
       </div>
       <!-- Email Adresse -->
-      <div class="columnGap7">
+      <div class="columnGap7 width-100">
         <div class="dFlexRowFlex-StartCenter gap20 width-100">
           <img src="assets/img/main/mail.png" />
           <span class="emailAndName">E-Mail-Adresse</span>

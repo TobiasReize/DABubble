@@ -13,6 +13,7 @@ export class SideNavService {
   search: boolean = false;
   createChannelsDivOpened: boolean = false;
   contactsOpened: boolean = true;
+  numberOfChoosenContacts: number = 0;
 
   constructor() {}
 
@@ -32,6 +33,8 @@ export class SideNavService {
   stopPropagation(event: MouseEvent): void {
     event.stopPropagation();
   }
+
+  
 
   
 }

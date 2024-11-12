@@ -13,7 +13,7 @@ import { FilterNameComponent } from '../../../../shared/filter-name/filter-name.
 @Component({
   selector: 'app-create-channel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FilterNameComponent],
   templateUrl: './create-channel.component.html',
   styleUrl: './create-channel.component.scss',
 })
@@ -43,11 +43,16 @@ export class CreateChannelComponent {
   filteredUsers: ChatUser[] = JSON.parse(
     JSON.stringify(this.userService.allUsers())
   );
-  numberOfChoosenContacts: number = 0;
   addedUsers: boolean = false;
+  id: string = "addName";
 
-  //mobiler ansatz
   mobile: boolean = false;
+
+  // numberOfChoosenContacts: number = 0;
+
+  // countSelectedUsers() {
+  //   this.numberOfChoosenContacts++;
+  // }
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
@@ -165,31 +170,6 @@ export class CreateChannelComponent {
     }
   }
 
-  selectUser(index: number, userUID: string) {
-    this.removeUser(userUID);
-    const selectedUserIndex = this.userService
-      .allUsers()
-      .findIndex((user) => user.userUID === userUID);
-    const selectedUser = this.userService.allUsers()[selectedUserIndex];
-    this.arrayOfChoosenContacts.push(selectedUser);
-    this.userUIDs.push(selectedUser.userUID);
-    this.contactsChoosen = true;
-    this.notAddedSpecificPeopleToTheChannel = false;
-    this.showedAllUsers = false;
-    const name = document.getElementById('addName');
-    this.showPlaceholder = false;
-    this.numberOfChoosenContacts++;
-  }
-
-  removeUser(userUID: string) {
-    const index = this.filteredUsers.findIndex(
-      (user) => user.userUID === userUID
-    );
-    if (index !== -1) {
-      this.filteredUsers.splice(index, 1);
-    }
-  }
-
   showAllUsers() {
     this.showedAllUsers = true;
   }
@@ -240,7 +220,7 @@ export class CreateChannelComponent {
       .allUsers()
       .findIndex((user) => user.userUID === userUID);
     this.filteredUsers.push(this.userService.allUsers()[i]);
-    this.numberOfChoosenContacts--;
+    this.sideNavService.numberOfChoosenContacts--;
     this.filteredUsers.push();
     if (this.arrayOfChoosenContacts.length === 0) {
       this.addedUsers = false;

@@ -1,0 +1,13 @@
+@import "../../../styles/mixin.scss";
+
+.people {
+    position: absolute;
+    padding: 20px 21px;
+    @include dFlex($fd: column, $jc: normal, $ai: flex-start);
+    gap: 15px;
+    border-radius: 0px 20px 20px 20px;
+    border: 1px solid $light-purple;
+    box-shadow: 0px 2px 10px 0px #00000014;
+    background-color: white;
+    top: -30px;
+  }

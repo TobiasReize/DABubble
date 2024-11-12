@@ -62,7 +62,11 @@
     (click)="sideNavService.stopPropagation($event)"
     (click)="closeWindowWithContacts()"
   >
-    <div (click)="closeDiv('addPeople')" *ngIf="mobile" class="greyDiv cursor-pointer"></div>
+    <div
+      (click)="closeDiv('addPeople')"
+      *ngIf="mobile"
+      class="greyDiv cursor-pointer"
+    ></div>
     <div class="dFlexRowSpaceBetweenCenter">
       <span class="fontStyle9">Leute hinzufügen</span>
       <img
@@ -133,36 +137,32 @@
             <img class="avatar avatar-50" [src]="choosenContact.avatar" />
           </ng-container>
           <!-- Anzahl der gewählten Kontakte -->
-          <span class="contact-count">{{ numberOfChoosenContacts }}</span>
+          <span class="contact-count">{{ sideNavService.numberOfChoosenContacts }}</span>
         </div>
       </div>
 
       <!-- show users in a window down of the input field -->
-      <div class="dFlexRowFlexEndCenter" style="position: relative">
-        @if (showedAllUsers == true) {
-        <div id="results" class="people" (click)="sideNavService.stopPropagation($event)">
-          @for (user of filteredUsers; track user.userUID) {
-          <div class="person" (click)="selectUser($index, user.userUID)">
-            <img
-              class="avatar avatar-50"
-              src="{{ user.avatar }}"
-              alt="{{ user.name }}"
-            />
-            <span class="user-name">{{ user.name }}</span>
-          </div>
-          }
-        </div>
-        }
-        <button
-          (click)="createChannel()"
-          class="btn btn-prim"
-          [disabled]="
-            notAddedSpecificPeopleToTheChannel && arrayOfChoosenContacts.length === 0
-          "
-        >
-          Erstellen
-        </button>
-      </div>
+      <app-filter-name
+        [filteredUsers]="filteredUsers"
+        [showedAllUsers]="showedAllUsers"
+        [arrayOfChoosenContacts]="arrayOfChoosenContacts"
+        [userUIDs]="userUIDs"
+        [contactsChoosen]="contactsChoosen"
+        [notAddedSpecificPeopleToTheChannel]="notAddedSpecificPeopleToTheChannel"
+        [id]="id"
+        [showPlaceholder]="showPlaceholder"
+      ></app-filter-name>
+
+      <button
+        (click)="createChannel()"
+        class="btn btn-prim"
+        [disabled]="
+          notAddedSpecificPeopleToTheChannel &&
+          arrayOfChoosenContacts.length === 0
+        "
+      >
+        Erstellen
+      </button>
     </div>
 
     <!-- show a window, how many users were added -->

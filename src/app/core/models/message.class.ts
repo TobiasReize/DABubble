@@ -13,7 +13,9 @@ export class Message {
         public numberOfReplies: number = 0,
         public fileUrl: string = '',
         public fileType: string = '',
-        public fileName: string = ''
+        public fileName: string = '',
+        public senderId: string = '',
+        public receiverId: string = ''
     ) {}
 
     toJson(): MessageInterface {
@@ -27,7 +29,9 @@ export class Message {
             numberOfReplies: this.numberOfReplies,
             fileUrl: this.fileUrl,
             fileType: this.fileType,
-            fileName: this.fileName
+            fileName: this.fileName,
+            senderId: this.senderId,
+            receiverId: this.receiverId
         }
     }
 }
