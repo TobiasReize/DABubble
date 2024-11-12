@@ -12,6 +12,8 @@
 }
 
 .chat-header {
+    // width: 100%;
+    flex-shrink: 1;
     position: relative;
     @include dFlex($jc: space-between);
     padding: 25px 45px;
@@ -47,6 +49,9 @@
 }
 
 .channel-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     @media (max-width: 1440px) {
         @include fontStyle19;
     }
@@ -65,6 +70,7 @@
 }
 
 .chat-header-left {
+    max-width: calc(100% - 132px);
     gap: 10px;
     cursor: pointer;
     &:hover {
@@ -79,6 +85,9 @@
     }
     @media (max-width: 1440px) {
         gap: 5px;
+    }
+    @media (max-width: 960px) {
+        max-width: calc(100% - 45px);
     }
 }
 

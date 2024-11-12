@@ -1,7 +1,7 @@
 <div class="chat-header">
     <div class="chat-header-left" (click)="toggleEditChannelVisibility()">
         <span class="material-symbols-rounded">tag</span>
-        <div class="channel-name">{{ channel().name }}</div>
+        <div #channelName class="channel-name">{{ channel().name }}</div>
         <span class="material-symbols-rounded">keyboard_arrow_down</span>
     </div>
     <div class="chat-header-right">

@@ -12,6 +12,7 @@
 }
 
 .thread-header {
+    width: 100%;
     position: relative;
     @include dFlex($jc: space-between);
     padding: 35.5px 40px;
@@ -22,8 +23,16 @@
 }
 
 .thread-header-left {
+    max-width: calc(100% - 40px);
     @include dFlex($jc: flex-start);
     gap: 5px;
+    .material-symbols-rounded {
+        min-width: 14px
+    }
+}
+
+.icon-btn {
+    min-width: 40px;
 }
 
 .thread-heading {
@@ -43,6 +52,9 @@
 .channel {
     @include fontStyle0;
     color: $purple-2;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .thread-hr-container {
