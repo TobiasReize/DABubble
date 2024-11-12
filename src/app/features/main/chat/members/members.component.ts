@@ -25,7 +25,11 @@ export class MembersComponent {
   }
 
   openViewProfile(userUID: string) {
+    if (this.chatService.openMembers()) {
+      this.chatService.toggleMembersVisibility();
+    } else {
+      this.chatService.toggleEditChannelVisibility();
+    }
     this.chatService.openViewProfile(userUID);
-    this.closeDialog();
   }
 }
