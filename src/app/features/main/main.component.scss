@@ -25,6 +25,7 @@
 .closeMenu {
   background: rgb(255, 255, 255);
   position: fixed;
+  z-index: 1;
   bottom: 100px;
   left: 0;
   max-height: 347px;

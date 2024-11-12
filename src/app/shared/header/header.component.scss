@@ -8,6 +8,10 @@
     padding-bottom: 20px;
 }
 
+h3 {
+    text-align: right;
+}
+
 .header-left-side {
     width: 100%;
     @include dFlex($jc: flex-start);
@@ -70,6 +74,16 @@
             font-variation-settings: "GRAD" 200;
         }
     }
+}
+
+.header-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    border: 2px solid $bg-color;
 }
 
 .profil-info-overlay {
@@ -151,7 +165,7 @@ app-search-component {
     }
 }
 
-@media (max-width: 880px) {
+@media (max-width: 960px) {
     .header-profile-container {
         h3, span {
             display: none;
@@ -161,6 +175,7 @@ app-search-component {
 
 @media (max-width: 768px) {
     .header-profile-container {
+        gap: 16px;
         h3, span {
             display: block;
             @include fontStyle3;
@@ -190,6 +205,10 @@ app-search-component {
     .header-profile-section {
         min-width: unset;
         justify-content: normal;
+    }
+    .avatar-70 {
+        width: 50px;
+        height: 50px;
     }
 }
 

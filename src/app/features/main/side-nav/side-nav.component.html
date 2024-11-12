@@ -112,8 +112,11 @@
 
       <!-- contacts -->
       <div class="gap13" *ngIf="sideNavService.contactsOpened">
-        <div *ngFor="let user of userService.allUsers(); let i = index" class="contactsDiv" (click)="(chatService.openChat(user.userUID, user.avatar))">
-          <img class="avatar avatar-50" [src]="user.avatar"/>
+        <div *ngFor="let user of userService.allUsers(); let i = index" class="contactsDiv" (click)="(chatService.openChat(i))">
+          <div class="profil-status-container">
+            <img class="avatar avatar-50" [src]="user.avatar"/>
+            <div class="status-circle" [ngClass]="user.isOnline ? 'status-online' : 'status-offline'"></div>
+          </div>
           <span id="{{ i }}">
             @if(userService.currentOnlineUser().name == user.name) {
               {{ userService.allUsers()[i].name + " (Du)" }}

@@ -15,7 +15,7 @@
         @if (usersInCurrentChannel().length > 0) {
             <span class="chat-header-right-span">{{ usersInCurrentChannel().length }}</span>
         }
-        <div class="icon-btn" (click)="openAddPeople()">
+        <div class="icon-btn add-people-btn" (click)="openAddPeople()">
             <span class="material-symbols-rounded">person_add</span>
         </div>
         @if (isAddPeopleDialogVisible()) {
@@ -30,7 +30,7 @@
     <div class="empty-chat-container">
         <div class="empty-chat-container-header">
             <span class="material-symbols-rounded">tag</span>
-            <div class="channel-name">{{ channel().name }}</div>
+            <div class="channel-name-chat">{{ channel().name }}</div>
         </div>
         <p>
         @if(true) {

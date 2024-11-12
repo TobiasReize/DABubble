@@ -3,11 +3,12 @@ import { ChatService } from '../../../../core/services/chat/chat.service';
 import { Channel } from '../../../../core/models/channel.class';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MembersComponent } from '../members/members.component';
 
 @Component({
   selector: 'app-edit-channel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MembersComponent],
   templateUrl: './edit-channel.component.html',
   styleUrl: './edit-channel.component.scss'
 })

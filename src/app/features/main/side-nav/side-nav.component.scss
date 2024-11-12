@@ -54,6 +54,9 @@ $max-search-bar-width: 560px;
 
 .font-size1 {
   @include fontStyle9;
+  @media (max-width: 1440px) {
+    @include fontStyle19;
+  }
 }
 
 .font-size2 {

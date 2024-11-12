@@ -316,6 +316,29 @@ hr {
   height: 100%;
 }
 
+.profil-status-container {
+  position: relative;
+  @include dFlex();
+}
+
+.status-circle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 14px;
+  width: 14px;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.status-online {
+  background-color: $online-green;
+}
+
+.status-offline {
+  background-color: $text-gray;
+}
+
 // Responsive Design:
 @media (max-width: 1968px) {
   .content-wrapper {
@@ -350,5 +373,3 @@ hr {
     max-width: 190px;
   }
 }
-
-

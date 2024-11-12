@@ -16,6 +16,9 @@
     @include dFlex($jc: space-between);
     padding: 25px 45px;
     box-shadow: 0px 2px 10px 0px #00000014;
+    @media (max-width: $mainBreakpoint1) {
+        padding: 10px 16px;
+    }
 }
 
 .chat-header-avatars {
@@ -33,10 +36,20 @@
             margin-left: -20px;
         }
     }
+    @media (max-width: 960px) {
+        display: none;
+    }
+}
+
+.channel-name, .channel-name-chat {
+    @include fontStyle9;
+
 }
 
 .channel-name {
-    @include fontStyle9;
+    @media (max-width: 1440px) {
+        @include fontStyle19;
+    }
 }
 
 .channel-name-container {
@@ -64,6 +77,9 @@
             'GRAD' 200,
         }
     }
+    @media (max-width: 1440px) {
+        gap: 5px;
+    }
 }
 
 .chat-header-left, .chat-header-right {
@@ -73,6 +89,15 @@
 .chat-header-right-span {
     @include fontStyle8;
     margin-right: 10px;
+    @media (max-width: 960px) {
+        display: none;
+    }
+}
+
+.add-people-btn {
+    @media (max-width: 960px) {
+        background-color: $bg-color;
+    }
 }
 
 .empty-chat-container {

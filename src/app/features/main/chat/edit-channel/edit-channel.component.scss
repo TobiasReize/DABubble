@@ -1,18 +1,36 @@
 @import '../../../../../styles/mixin.scss';
 @import '../../../../../styles/styles2.scss';
 
+
+.edit-channel-container {
+    display: grid;
+    max-height: 100%;
+    width: 100%;
+    padding: 12px 16px;
+    overflow-y: auto;
+    @media (max-width: $mainBreakpoint1) {
+        max-height: unset;
+        height: 100%;
+        padding: 0;
+    }
+}
+
 .edit-channel {
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     background-color: white;
-    width: 872px;
+    max-width: 872px;
+    width: 100%;
     min-height: 616px;
     border-radius: 0px 30px 30px 30px;
-    margin: 0 16px;
+    overflow-y: auto;
+    justify-self: center;
     @media (max-width: $mainBreakpoint1) {
+        min-height: unset;
         width: 100%;
         height: 100%;
         border-radius: 0;
         margin: 0;
+        overflow-y: unset;
     }
 }
 
@@ -31,7 +49,7 @@
     gap: 20px;
     padding: 0 40px 40px;
     @media (max-width: $mainBreakpoint1) {
-        padding: 0 16px;
+        padding: 16px;
     }
 }
 
@@ -115,10 +133,11 @@
 .edit-btn-mobile {
     height: 30px;
     width: 30px;
-    border: unset;
-    border-radius: 50%;
     background-color: $bg-color;
     display: none;
+    &:active {
+        color: $purple-3;
+    }
     @media (max-width: $mainBreakpoint1) {
         display: block;
     }
@@ -188,3 +207,8 @@ textarea {
     color: $error-rosa;
 }
 
+@media (min-width: 769px) {
+    app-members {
+        display: none;
+    }
+}

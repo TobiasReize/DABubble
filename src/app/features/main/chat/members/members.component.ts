@@ -1,16 +1,18 @@
-import { Component, Signal } from '@angular/core';
+import { Component, Input, Signal } from '@angular/core';
 import { ChatUser } from '../../../../core/models/user.class';
 import { ChatService } from '../../../../core/services/chat/chat.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-members',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './members.component.html',
   styleUrl: './members.component.scss'
 })
 export class MembersComponent {
   members: Signal<ChatUser[]> = this.chatService.usersInCurrentChannel;
+  @Input('isEditChannel') isEditChannel: boolean = false;
 
   constructor(private chatService: ChatService) { }
 
