@@ -123,6 +123,11 @@ $max-search-bar-width: 560px;
   }
 }
 
+.profil-img-container {
+  position: relative;
+  @include dFlex();
+}
+
 .gap25 {
   max-width: $max-search-bar-width;
   @include flex-gap(25px);
