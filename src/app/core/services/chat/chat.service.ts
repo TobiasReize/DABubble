@@ -547,10 +547,10 @@ export class ChatService {
     }
   }
 
-  openChat(userUID: string, avatar: string): void {
+  openChat(userUID: string): void {
     this.currentUser = this.userService.allUsers().find(user => user.userUID === userUID);
     this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
-    this.userAvatar = avatar;
+    
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
