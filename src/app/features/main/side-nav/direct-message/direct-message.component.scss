@@ -71,25 +71,25 @@ section {
     border-radius: 0;
     padding: 10px 16px;
   }
+}
 
-  div {
-    padding: 4px 8px 4px 8px;
-    gap: 15px;
-    border-radius: 30px;
-    @include dFlex($fd: row, $jc: center, $ai: center);
+.header-content {
+  padding: 4px 8px 4px 8px;
+  gap: 15px;
+  border-radius: 30px;
+  @include dFlex($fd: row, $jc: center, $ai: center);
 
-    &:hover {
-      background-color: rgba(236, 238, 254, 1);
-      transition: 0.2s ease;
-      cursor: pointer;
-    }
+  &:hover {
+    background-color: rgba(236, 238, 254, 1);
+    transition: 0.2s ease;
+    cursor: pointer;
+  }
+  @media (max-width: $mainBreakpoint1) {
+    padding: 4px 8px 4px 0px;
+  }
+  span {
     @media (max-width: $mainBreakpoint1) {
-      padding: 4px 8px 4px 0px;
-    }
-    span {
-      @media (max-width: $mainBreakpoint1) {
-        @include fontStyle19;
-      }
+      @include fontStyle19;
     }
   }
 }

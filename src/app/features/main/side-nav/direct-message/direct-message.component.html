@@ -1,17 +1,16 @@
 <section>
   <div class="div-header">
-    <div
+    <div class="header-content"
       (click)="
         chatService.openViewProfile(
           userService.allUsers()[chatService.contactIndex].userUID
         )
       "
     >
-      <img
-        class="avatar"
-        [src]="userService.allUsers()[chatService.contactIndex].avatar"
-      />
-
+      <div class="profil-status-container">
+        <img class="avatar" [src]="userService.allUsers()[chatService.contactIndex].avatar"/>
+        <div class="status-circle" [ngClass]="userService.allUsers()[chatService.contactIndex]['userUID'] == userService.currentOnlineUser().userUID ? 'status-online' : 'status-offline'"></div>
+      </div>
       <span
         >@if(userService.allUsers()[chatService.contactIndex].name ==
         userService.currentOnlineUser().name) {
