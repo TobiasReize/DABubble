@@ -43,9 +43,9 @@ export class SideNavComponent {
     this.chatService.chat = true;
     const channelElements = document.querySelectorAll('.entwicklerTeam');
     channelElements.forEach(element => {
-      element.classList.remove('channelWasChoosed');
+      element.classList.remove('channelWasChosen');
     });
     const selectedDiv = document.getElementById('channelDivID' + id);
-    selectedDiv!.classList.add('channelWasChoosed');
+    selectedDiv!.classList.add('channelWasChosen');
   }
 }

@@ -1,4 +1,85 @@
-@import "../../../styles/mixin.scss";
+@import '../../../styles/mixin.scss';
+@import '../../../styles/styles2.scss';
+@import '../../../styles/fontStyles.scss';
+@import '../../../styles/gap.scss';
+@import '../../../styles/animations.scss';
+
+:host {
+  width: 100%;
+}
+
+.avatar {
+  margin-left: -20px;
+}
+
+.close {
+  &:hover {
+    background-color: rgba(236, 238, 254, 1);
+    border-radius: 100%;
+  }
+}
+
+.members {
+  @include dFlex($fd: column, $jc: space-between, $ai: flex-start);
+  max-width: 300px;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border-radius: 30px;
+  right: 100px;
+  bottom: 200px;
+  max-height: 250px;
+  overflow-y: auto;
+  gap: 10px;
+
+  @media screen and (max-width: 480px) {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    margin: auto;
+    bottom: 320px;
+  }
+}
+
+.members-heading {
+  width: 100%;
+  text-align: center;
+  @include fontStyle9;
+}
+
+.member {
+  @include dFlex();
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.chosenAvatars {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 10px 3px 10px;
+  gap: 10px;
+  border-radius: 100px;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  max-width: 200px;
+  height: 80%;
+
+  &:hover {
+    background-color: #f3f3f3;
+  }
+}
+
+.dFlex {
+  display: flex;
+}
 
 .people {
     position: absolute;

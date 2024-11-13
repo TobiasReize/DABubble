@@ -9,30 +9,7 @@
         <span class="material-symbols-rounded">tag</span>
         <span>{{ currentChannel().name }}</span>
     </div>
-    <div class="input-container">
-        <input #nameInput type="text" placeholder="Name eingeben" (input)="onInputChange(nameInput)">
-        @if (selectedUser) {
-            <div class="selected-user">
-                <img class="avatar avatar-34" src="{{selectedUser.avatar}}" alt="{{selectedUser.name}}">
-                <div class="selected-user-right">
-                    <span>{{ selectedUser.name }}</span>
-                    <button class="icon-btn" (click)="removeSelectedUser()">
-                        <span class="material-symbols-rounded">close</span>
-                    </button>
-                </div>
-            </div>
-        }
-        @if (!selectedUser && userOptions.length > 0) {
-            <div class="people">
-                @for (user of userOptions; track user.userUID) {
-                    <div class="person" (click)="selectUser($index)">
-                        <img class="avatar avatar-50" src="{{user.avatar}}" alt="{{user.name}}">
-                        <span class="user-name">{{ user.name }}</span>
-                    </div>
-                }
-            </div>
-        }
-    </div>
-    <button class="btn btn-prim" (click)="addPersonToCurrentChannel()" [disabled]="!selectedUser">Hinzufügen</button>
+    <app-filter-name></app-filter-name>
+    <button class="btn btn-prim" (click)="addPersonToCurrentChannel()" [disabled]="chatService.chosenUserUIDs().length === 0">Hinzufügen</button>
 </div>
 <div class="overlayComponent fixed" (click)="closeDialog()"></div>
