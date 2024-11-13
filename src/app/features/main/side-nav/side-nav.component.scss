@@ -48,6 +48,7 @@ $max-search-bar-width: 560px;
 .side-nav-container {
   padding: 32px 30px 32px 30px;
   gap: 25px;
+  height: 100%;
   @include fontStyle2;
   @include dFlex($fd: column, $jc: unset, $ai: center);
 }
@@ -105,6 +106,13 @@ $max-search-bar-width: 560px;
     text-align: left;
     background: rgba(236, 238, 254, 1);
   }
+}
+
+.channels-messages-container {
+  position: relative;
+  overflow: auto;
+  overflow-x: hidden;
+  height: 100%;
 }
 
 .contactsDiv {
