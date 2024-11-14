@@ -37,9 +37,8 @@ export class CreateChannelComponent {
   addedPeopleToTheChannel: string = '';
   selectedUser: object = [];
   showedAllUsers: boolean = false;
-  contactsChoosen: boolean = false;
-  arrayOfChoosenContacts: ChatUser[] = [];
-  showPlaceholder: boolean = true;
+  contactsChosen: boolean = false;
+  arrayOfChosenContacts: ChatUser[] = [];
   filteredUsers: ChatUser[] = JSON.parse(
     JSON.stringify(this.userService.allUsers())
   );
@@ -48,14 +47,9 @@ export class CreateChannelComponent {
 
   mobile: boolean = false;
 
-  // numberOfChoosenContacts: number = 0;
-
-  // countSelectedUsers() {
-  //   this.numberOfChoosenContacts++;
-  // }
-
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
+    this.chatService.updateChosenUserUIDs([]);
   }
 
   async createChannel() {
@@ -70,7 +64,7 @@ export class CreateChannelComponent {
       this.addAllMembersFromDevspace();
     }
 
-    if (this.arrayOfChoosenContacts.length > 0) {
+    if (this.chatService.chosenUserUIDs().length > 0) {
       this.addSpecificUsersToTheUserUID();
       console.log('Specific Users added: ', this.userUIDs);
     }
@@ -95,7 +89,7 @@ export class CreateChannelComponent {
         name: channelName.value,
         description: description.value,
         createdBy: this.userService.currentOnlineUser.name,
-        userIds: this.userUIDs,
+        userUIDs: this.userUIDs,
       }
     );
 
@@ -129,8 +123,8 @@ export class CreateChannelComponent {
 
   addSpecificUsersToTheUserUID() {
     this.userUIDs = [];
-    this.arrayOfChoosenContacts.forEach((user) => {
-      this.userUIDs.push(user.userUID);
+    this.chatService.chosenUserUIDs().forEach((userUID) => {
+      this.userUIDs.push(userUID);
     });
   }
 
@@ -190,41 +184,13 @@ export class CreateChannelComponent {
     user!.style.display = 'none';
   }
 
-  searchUsers() {
-    const input = (
-      document.getElementById('addName') as HTMLInputElement
-    ).value.toLowerCase();
-
-    const filteredUsers = this.userService
-      .allUsers()
-      .filter((user) => user.name.toLowerCase().includes(input));
-
-    this.filteredUsers = filteredUsers;
-  }
-
   closeWindowWithContacts() {
     this.showedAllUsers = false;
     this.addedUsers = false;
   }
 
-  showChoosedUsers() {
+  showChosenUsers() {
     this.addedUsers = !this.addedUsers;
-  }
-
-  deleteUserFromArrayOfChoosenContacts(userUID: string) {
-    const indexOfUser = this.arrayOfChoosenContacts.findIndex(
-      (user) => user.userUID === userUID
-    );
-    this.arrayOfChoosenContacts.splice(indexOfUser, 1);
-    const i = this.userService
-      .allUsers()
-      .findIndex((user) => user.userUID === userUID);
-    this.filteredUsers.push(this.userService.allUsers()[i]);
-    this.sideNavService.numberOfChoosenContacts--;
-    this.filteredUsers.push();
-    if (this.arrayOfChoosenContacts.length === 0) {
-      this.addedUsers = false;
-    }
   }
 
   closeDiv(id: string) {

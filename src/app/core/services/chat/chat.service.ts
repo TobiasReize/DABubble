@@ -106,6 +106,9 @@ export class ChatService {
   private directMessageChannelsSignal = signal<Channel[]>([]);
   readonly directMessageChannels = this.directMessageChannelsSignal.asReadonly();
 
+  private chosenUserUIDsSignal = signal<string[]>([]);
+  readonly chosenUserUIDs = this.chosenUserUIDsSignal.asReadonly();
+
   topThreadMessageId: string = '';
 
   profileViewLoggedUser: boolean = false;
@@ -650,5 +653,9 @@ export class ChatService {
   closeDropDownMenu() {
     const dropDownDiv = document.getElementById('searchResultsDropdown');
     dropDownDiv?.classList.add('dNone');
+  }
+
+  updateChosenUserUIDs(userUIDs: string[]) {
+    this.chosenUserUIDsSignal.set(userUIDs);
   }
 }
