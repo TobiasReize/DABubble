@@ -16,6 +16,8 @@ import {
   query,
   where,
 } from 'firebase/firestore';
+import { Message } from '../../../core/models/message.class';
+import { directMessage } from '../../../core/models/direct-message';
 
 @Component({
   selector: 'app-search-component',
@@ -33,13 +35,10 @@ export class SearchComponentComponent implements OnInit {
   searchQuery: string = '';
   filteredResults: any[] = [];
   filteredChannels: any[] = [];
-
-  
-  
+  messages: directMessage[] = [];
 
   ngOnInit(): void {
     this.getDirectMessages();
-    // this.loadData();
   }
 
   updateSearchQuery(event: Event) {
@@ -51,6 +50,7 @@ export class SearchComponentComponent implements OnInit {
   }
 
   async filterResults() {
+    this.filteredResults = [];
     const query = this.searchQuery.toLowerCase();
 
     const filteredUsers = this.userService
@@ -61,29 +61,17 @@ export class SearchComponentComponent implements OnInit {
       .channels()
       .filter((channel) => channel.name.toLowerCase().includes(query));
 
-    // const filteredDirectMessages = this.messages.filter((message) =>
-    //   message.content.toLowerCase().includes(query)
-    // );
+    const filteredDirectMessages = this.messages.filter((message) =>
+      message.message.toLowerCase().includes(query)
+    );
 
     this.filteredResults = [
       ...filteredUsers,
       ...filteredChannels,
-      // ...filteredDirectMessages,
+      // ...filteredDirectMessages.map((obj) => obj.message)
+      ...filteredDirectMessages,
     ];
   }
-
-  messages = [
-    {
-      id: 'giisfsj42423',
-      userIds: ['id1', 'id2'],
-      message: 'ahoooj'
-    },
-    {
-      id: 'grrrg',
-      userIds: ['id3', 'id4'],
-      message: 'cauko'
-    }
-  ];
 
   async getDirectMessages() {
     const messagesRef = collectionGroup(
@@ -97,6 +85,7 @@ export class SearchComponentComponent implements OnInit {
       this.messages = [];
 
       querySnapshot.forEach(async (doc) => {
+        this.messages = [];
         const docData = doc.data();
 
         const messagesCollectionRef = doc.ref.parent;
@@ -106,18 +95,16 @@ export class SearchComponentComponent implements OnInit {
           const directMessageChannelDoc = await getDoc(
             directMessageChannelsDocRef
           );
-
           const directMessageChannelDocData = directMessageChannelDoc.data();
-
-          const messageObject = {
-            id: directMessageChannelDoc.id,
-            userIds: directMessageChannelDocData!['userIds'],
-            message: docData['content']
-          };
+          const userIds: string[] = directMessageChannelDocData!['userIds'];
+          const otherUserId: string = userIds.find((id) => id !== this.userService.currentOnlineUser().userUID) || '';
+          const messageObject = new directMessage(
+            directMessageChannelDoc.id,
+            otherUserId,
+            docData['content']
+          );
 
           this.messages.push(messageObject);
-          
-          console.log('messageObject ', this.messages)
         }
       });
     });

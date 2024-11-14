@@ -1,7 +1,24 @@
 <section>
     <div class="fade-in">
         <span>Neue Nachricht</span> 
-        <input type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
+        <input type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse" (input)="updateSearchQuery($event)">
+
+        <!-- drop down menu -->
+        <div id="newMessageOnContact" *ngIf="filteredUsers.length > 0" class="dNone searchingResults" (click)="sideNavService.stopPropagation($event)">
+            <div *ngFor="let result of filteredUsers" class="dFlexRowFlex-StartCenter width-100" (click)="chatService.closeDropDownMenu()">
+            @if(result.avatar) {
+                <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userUID)">
+                <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">
+                <span>{{ result }}</span>
+                </div>
+            } @else if(result.description) {
+                <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id)">
+                <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
+                <span>{{ result }}</span>
+                </div>
+            }
+            </div>
+        </div>
     </div>
     <app-message-textarea class="fadeInFromOpacity0"></app-message-textarea>
 </section>

@@ -37,6 +37,7 @@ export class ChatService {
   directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
   public isLoadingMessages = signal<boolean>(false);
+  messageID: number = 0;
 
   unsubMessages!: Unsubscribe;
   unsubDirectMessages!: Unsubscribe;
@@ -550,33 +551,10 @@ export class ChatService {
   openChat(userUID: string): void {
     this.currentUser = this.userService.allUsers().find(user => user.userUID === userUID);
     this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
-    
     this.newMessage = false;
     this.chat = false;
     this.directMessage = true;
     this.contactUUID = userUID;
-    if (this.currentUser?.name === this.userService.currentOnlineUser().name) {
-      this.myChatDescription = true;
-      this.chatDescription = false;
-    } else {
-      this.myChatDescription = false;
-      this.chatDescription = true;
-    }
-    this.layoutService.deselectSideNavOnMobile();
-    this.layoutService.deselectThread();
-    this.layoutService.selectDirectMessage();
-    this.changeDirectMessageChannel(this.contactUUID);
-  }
-
-  openChat2(userName: string): void {
-    this.currentUser = this.userService.allUsers().find(user => user.name === userName);
-    this.contactIndex = this.userService.allUsers().findIndex(user => user.name === userName);
-    this.userAvatar = "";
-    this.newMessage = false;
-    this.chat = false;
-    this.directMessage = true;
-    this.contactUUID = this.currentUser.userUID;
-    console.log('momentalny user: ',this.contactUUID)
     if (this.currentUser?.name === this.userService.currentOnlineUser().name) {
       this.myChatDescription = true;
       this.chatDescription = false;

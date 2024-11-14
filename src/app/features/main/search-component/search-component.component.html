@@ -24,8 +24,8 @@
         </div>
       }
       @else {
-        <div *ngFor="let message of result.messages">
-          <p>{{ message.content }}</p>
+        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userId)">
+          <p>{{ result.message }}</p>
         </div>
       }
     </div>

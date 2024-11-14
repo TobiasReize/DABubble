@@ -68,6 +68,7 @@ export class MessageTextareaComponent {
       }, 1);
     }
     console.log('users: ', this.users());
+    this.chatService.messageID++;
   }
 
   resetUploadData() {
