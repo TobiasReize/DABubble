@@ -42,6 +42,26 @@
   }
 }
 
+.members-chat {
+  @media (min-width: 1501px) {
+    position: fixed;
+    bottom: unset;
+    top: 16px;
+  }
+  @media (min-width: 481px) {
+    min-width: 300px;
+  }
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  margin: auto;
+  top: 440px;
+  bottom: unset;
+  @media (max-width: 344px) {
+    top: 460px;
+  }
+}
+
 .members-heading {
   width: 100%;
   text-align: center;

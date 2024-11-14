@@ -47,6 +47,7 @@
   <div
     *ngIf="addedUsers"
     class="members fadeInFromOpacity0"
+    [ngClass]="{'members-chat': isInChat}"
     (click)="sideNavService.stopPropagation($event)"
     >
     <span class="members-heading">Mitglieder</span>

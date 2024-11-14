@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
 import { ChatUser } from '../../core/models/user.class';
 import { UserService } from '../../core/services/user/user.service';
@@ -23,7 +23,7 @@ export class FilterNameComponent {
   contactsChosen: boolean = false;
   notAddedSpecificPeopleToTheChannel: boolean = false;
   addedUsers: boolean = false;
-  @Output()selectionEvent = new EventEmitter<string>();
+  @Input('isInChat') isInChat: boolean = false;
   
   selectUser(userUID: string) {
     this.removeUser(userUID);

@@ -9,7 +9,7 @@
         <span class="material-symbols-rounded">tag</span>
         <span>{{ currentChannel().name }}</span>
     </div>
-    <app-filter-name></app-filter-name>
+    <app-filter-name class="filter-name" [isInChat]="true"></app-filter-name>
     <button class="btn btn-prim" (click)="addPersonToCurrentChannel()" [disabled]="chatService.chosenUserUIDs().length === 0">Hinzufügen</button>
 </div>
 <div class="overlayComponent fixed" (click)="closeDialog()"></div>
