@@ -356,7 +356,7 @@ export class ChatService {
           channels.push(channel);
         });
         this.channelsSignal.set(channels);
-        if (!this.unsubMessages) {
+        if (!this.unsubMessages && this.channels()[0]) {
           this.currentChannelSignal.set(this.channels()[0]);
           this.unsubMessages = await this.subMessages(this.currentChannel().id);
         } else {
@@ -377,7 +377,7 @@ export class ChatService {
           channels.push(channel);
         });
         this.directMessageChannelsSignal.set(channels);
-        if (!this.unsubDirectMessages) {
+        if (!this.unsubDirectMessages && this.directMessageChannels()[0]) {
           this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[0]);
           this.unsubDirectMessages = this.subDirectMessages(this.currentDirectMessageChannel().id);
         } else {
@@ -460,19 +460,25 @@ export class ChatService {
     if (index !== -1) {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
+    } else {
+      this.directMessagesSignal.set([]);
+      this.isLoadingMessages.set(false);
     }
     this.layoutService.deselectSideNavOnMobile();
     this.layoutService.deselectThread();
     this.layoutService.selectChat();
-    console.log('channel geändert: ', id)
   }
 
   changeDirectMessageChannel(id: string) {
+    this.isLoadingMessages.set(true);
     const directMessageChannelId = this.getDirectMessageChannelId(id);
     const index = this.directMessageChannels().findIndex((channel) => channel.id === directMessageChannelId);
     if (index !== -1) {
       this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[index]);
       this.resubDirectMessageChannel();
+    } else {
+      this.directMessagesSignal.set([]);
+      this.isLoadingMessages.set(false);
     }
   }
 
@@ -554,11 +560,8 @@ export class ChatService {
   openChat(userUID: string): void {
     this.currentUser = this.userService.allUsers().find(user => user.userUID === userUID);
     this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
-    this.newMessage = false;
-    this.chat = false;
-    this.directMessage = true;
     this.contactUUID = userUID;
-    if (this.currentUser?.name === this.userService.currentOnlineUser().name) {
+    if (this.currentUser?.userUID === this.userService.currentOnlineUser().userUID) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
