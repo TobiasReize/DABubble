@@ -5,11 +5,11 @@
   >
 
   <input
-    id="addName"
+    #addName
     class="inputElement"
     placeholder="Name eingeben"
     (click)="showAllUsers()"
-    (keyup)="searchUsers()"
+    (keyup)="searchUsers(addName)"
   />
   <div
     (click)="addedUsers = true"
@@ -28,7 +28,7 @@
   </div>
 
   <div class="dFlexRowFlexEndCenter" style="position: relative">
-    @if (showedAllUsers == true) {
+    @if (showedAllUsers == true && filteredUsers.length > 0) {
     <div id="results" class="people" (click)="sideNavService.stopPropagation($event)">
       @for (user of filteredUsers; track $index) {
       <div class="person" (click)="selectUser(user.userUID)">
