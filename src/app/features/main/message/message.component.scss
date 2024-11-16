@@ -278,6 +278,8 @@ app-emoji-picker {
 }
        
 .small-message {
+    padding-right: 50px;
+    padding-left: 50px;
     .chat-message-menu {
         right: 0px;
     }
@@ -335,22 +337,6 @@ app-emoji-picker {
         padding-right: 50px;
         padding-left: 16px;
         gap: 20px;
-        // .chat-message-menu {
-        //     right: 0px;
-        // }
-        // .chat-message-menu-alternative {
-        //     right: unset;
-        //     left: 24px;
-        // }
-        // &:hover {
-        //     .chat-message-menu {
-        //         right: 12px;
-        //     }
-        //     .chat-message-menu-alternative {
-        //         right: unset;
-        //         left: 12px;
-        //     }
-        // }
     }
     .message-alternative {
         padding-left: 50px;
