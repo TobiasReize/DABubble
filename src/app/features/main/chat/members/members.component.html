@@ -7,12 +7,16 @@
             </button>
         }
     </div>
-    @for (member of members(); track $index) {
-        <div class="person" (click)="openViewProfile(member.userUID)">
-            <img class="avatar avatar-50" src="{{member.avatar}}" alt="{{member.name}}">
-            <span class="user-name">{{ member.name }}</span>
-        </div>
-    }
+
+    <div class="persons-container">
+        @for (member of members(); track $index) {
+            <div class="person" (click)="openViewProfile(member.userUID)">
+                <img class="avatar avatar-50" src="{{member.avatar}}" alt="{{member.name}}">
+                <span class="user-name">{{ member.name }}</span>
+            </div>
+        }
+    </div>
+   
     <div class="add-members-container">
         <button class="add-members-button" (click)="openAddPeople()">
             <span class="material-symbols-rounded">person_add</span>
