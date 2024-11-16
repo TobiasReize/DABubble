@@ -56,13 +56,25 @@ h3 {
 }
 
 .header-profile-section {
-    min-width: $thread-width;
+    max-width: $thread-width;
     @include dFlex($jc: flex-end);
 }
 
 .header-profile-container {
+    width: 100%;
     @include dFlex();
     gap: 20px;
+    padding-left: 20px;
+    h3 {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        @media (max-width: $mainBreakpoint2) {
+            max-width: 200px;
+        }
+        @media (max-width: $mainBreakpoint1) {
+            max-width: 260px;
+        }
+    }
 
     &:hover {
         cursor: pointer;
@@ -142,7 +154,7 @@ app-search-component {
 
 @media (max-width: 1440px) {
     .header-profile-section {
-        min-width: $thread-width-small;
+        max-width: $thread-width-small;
     }
     .header-profile-section h3 {
         @include fontStyle9;
@@ -155,13 +167,6 @@ app-search-component {
     }
     .header-profile-section h2 {
         display: none;
-    }
-}
-
-@media (max-width: 1200px) {
-    .header-profile-section {
-        min-width: unset;
-        padding-left: 16px;
     }
 }
 
@@ -203,7 +208,6 @@ app-search-component {
         min-width: unset;
     }
     .header-profile-section {
-        min-width: unset;
         justify-content: normal;
     }
     .avatar-70 {
