@@ -461,7 +461,7 @@ export class ChatService {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
     } else {
-      this.directMessagesSignal.set([]);
+      this.messagesSignal.set([]);
       this.isLoadingMessages.set(false);
     }
     this.layoutService.deselectSideNavOnMobile();
