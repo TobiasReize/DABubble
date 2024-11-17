@@ -5,11 +5,12 @@ import { ChatService } from '../../core/services/chat/chat.service';
 import { FormsModule } from '@angular/forms';
 import { SearchComponentComponent } from "../../features/main/search-component/search-component.component";
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FormsModule, SearchComponentComponent],
+  imports: [FormsModule, SearchComponentComponent, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
