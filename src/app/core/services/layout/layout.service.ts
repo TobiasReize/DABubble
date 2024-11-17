@@ -27,28 +27,20 @@ export class LayoutService {
 
   selectNewMessage() {
     this.selectedCollection.set('newMessages');
-    this.deselectThread();
+    this.selectThread(false);
   }
 
-  selectThread() {
-    this.isThreadSelected.set(true);
+  selectThread(bool: boolean) {
+    this.isThreadSelected.set(bool);
   }
 
-  deselectThread() {
-    this.isThreadSelected.set(false);
-  }
-
-  selectSideNav() {
-    this.isSideNavSelected.set(true);
-  }
-
-  deselectSideNav() {
-    this.isSideNavSelected.set(false);
+  selectSideNav(bool: boolean) {
+    this.isSideNavSelected.set(bool);
   }
 
   deselectSideNavOnMobile() {
     if (this.isMobile()) {
-      this.deselectSideNav();
+      this.selectSideNav(false);
     }
   }
 

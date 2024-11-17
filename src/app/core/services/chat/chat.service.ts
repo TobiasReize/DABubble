@@ -465,7 +465,7 @@ export class ChatService {
       this.isLoadingMessages.set(false);
     }
     this.layoutService.deselectSideNavOnMobile();
-    this.layoutService.deselectThread();
+    this.layoutService.selectThread(false);
     this.layoutService.selectChat();
   }
 
@@ -569,7 +569,7 @@ export class ChatService {
       this.chatDescription = true;
     }
     this.layoutService.deselectSideNavOnMobile();
-    this.layoutService.deselectThread();
+    this.layoutService.selectThread(false);
     this.layoutService.selectDirectMessage();
     this.changeDirectMessageChannel(this.contactUUID);
   }

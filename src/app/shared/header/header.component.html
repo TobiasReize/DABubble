@@ -1,6 +1,6 @@
 <div class="header-left-side">
     @if (layoutService.isMobile() && !layoutService.layoutState().isSideNavOpen) {
-        <div class="workspace-container" (click)="layoutService.selectSideNav()">
+        <div class="workspace-container" (click)="layoutService.selectSideNav(true)">
             <span class="material-symbols-rounded left-arrow">keyboard_arrow_down</span>
             <div class="workspace-logo-container">
                 <img class="workspace-logo" src="assets/img/main/workspace-logo.svg" alt="workspace logo">
