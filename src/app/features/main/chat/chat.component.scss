@@ -41,6 +41,9 @@
     @media (max-width: 960px) {
         margin-right: 0;
     }
+    @media (max-width: 768px) {
+        display: none;
+    }
 }
 
 .channel-name, .channel-name-chat {
@@ -85,6 +88,9 @@
     }
     @media (max-width: 1440px) {
         gap: 5px;
+    }
+    @media (max-width: 768px) {
+        max-width: calc(100% - 45px);
     }
 }
 
