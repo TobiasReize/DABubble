@@ -14,13 +14,13 @@
     </button>
 </div>
 <div #threadMessagesContainer class="messages-container">
-    <app-message [messageData]="message()" type="thread" [isTopMessage]="true"></app-message>
+    <app-message (messageSelectionEvent)="deselectMessages()" [messageData]="message()" type="thread" [isTopMessage]="true"></app-message>
     <div class="thread-hr-container">
         <span class="replies">{{ replies().length }}&nbsp;Antworten</span>
         <hr>
     </div>
     @for (reply of replies(); track reply.id) {
-        <app-message [messageData]="reply" type="thread"></app-message>
+        <app-message (messageSelectionEvent)="deselectMessages()" [messageData]="reply" type="thread"></app-message>
         <div class="space-between-messages"></div>
     }
 </div>

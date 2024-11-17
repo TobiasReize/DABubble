@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Signal } from '@angular/core';
+import { Component, ElementRef, Input, QueryList, Signal, ViewChildren } from '@angular/core';
 import { MessageComponent } from '../../message/message.component';
 import { Channel } from '../../../../core/models/channel.class';
 import { Message } from '../../../../core/models/message.class';
@@ -14,6 +14,7 @@ export class ChatBottomContainerComponent {
   @Input() type: string = 'chat';
   @Input() channel!: Signal<Channel>;
   @Input() messages!: Signal<Message[]>;
+  @ViewChildren(MessageComponent) messageComponents!: QueryList<MessageComponent>;
   constructor(public elementRef: ElementRef) {}
 
   isSameDay(firstDate: Date, secondDate: Date) {
@@ -49,5 +50,9 @@ export class ChatBottomContainerComponent {
     } else {
       return '';
     }
+  }
+  
+  deselectMessages() {
+    this.messageComponents.forEach(message => message.isHighlightingMessage = false);
   }
 }
