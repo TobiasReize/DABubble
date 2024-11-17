@@ -201,8 +201,16 @@ $max-search-bar-width: 560px;
   height: 48px;
   padding: 8px 24px 8px 24px;
   border-radius: 42px;
-  border: 1px solid rgba(173, 176, 217, 1);
+  border: 1px solid $light-purple;
+  outline: none;
   justify-content: space-between;
+  transition: border 100ms ease-in;
+  &:hover {
+    border: 1px solid $purple-2;
+  }
+  &:focus {
+    border: 1px solid $purple-1;
+  }
 }
 
 @media screen and (max-width: 768px) {

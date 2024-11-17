@@ -80,7 +80,8 @@ h3 {
     width: 100%;
     padding: 20px;
     border-radius: 30px;
-    border: unset;
+    border: 1px solid transparent;
+    outline: none;
 }
 
 .header-profile-section {
