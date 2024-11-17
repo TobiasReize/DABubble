@@ -12,7 +12,7 @@
 }
 
 .chat-header {
-    // width: 100%;
+    min-height: 96px;
     flex-shrink: 1;
     position: relative;
     @include dFlex($jc: space-between);
@@ -20,6 +20,7 @@
     box-shadow: 0px 2px 10px 0px #00000014;
     @media (max-width: $mainBreakpoint1) {
         padding: 10px 16px;
+        min-height: unset;
     }
 }
 
