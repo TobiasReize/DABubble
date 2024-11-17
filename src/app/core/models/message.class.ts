@@ -14,8 +14,6 @@ export class Message {
         public fileUrl: string = '',
         public fileType: string = '',
         public fileName: string = '',
-        public senderId: string = '',
-        public receiverId: string = ''
     ) {}
 
     toJson(): MessageInterface {
@@ -30,8 +28,6 @@ export class Message {
             fileUrl: this.fileUrl,
             fileType: this.fileType,
             fileName: this.fileName,
-            senderId: this.senderId,
-            receiverId: this.receiverId
         }
     }
 }

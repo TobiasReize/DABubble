@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ChatService } from '../chat/chat.service';
 
 interface Channel {
   name: string;
@@ -13,8 +14,9 @@ export class SideNavService {
   search: boolean = false;
   createChannelsDivOpened: boolean = false;
   contactsOpened: boolean = true;
+ 
 
-  constructor() {}
+  constructor(public chatService: ChatService) {}
 
   searchDevSpace() {
     this.search = true;
@@ -32,8 +34,6 @@ export class SideNavService {
   stopPropagation(event: MouseEvent): void {
     event.stopPropagation();
   }
-
-  
 
   
 }

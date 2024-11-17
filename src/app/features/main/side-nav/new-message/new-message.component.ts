@@ -1,4 +1,12 @@
-import { Component, Directive, ElementRef, HostListener, Signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  Signal,
+  ViewChild,
+} from '@angular/core';
 import { MessageTextareaComponent } from '../../message-textarea/message-textarea.component';
 import { CommonModule } from '@angular/common';
 import { SideNavService } from '../../../../core/services/sideNav/side-nav.service';
@@ -24,13 +32,19 @@ export class NewMessageComponent {
   ) {}
   filteredUsers: any[] = [];
   searchQuery: string = '';
-  selectedUserAvatar?: any = "";
-  selectedUser?: any = "";
-  selectedChannel?: any = "";
+  selectedUserAvatar?: any = '';
+  selectedUser?: any = '';
+  selectedChannel?: any = '';
   divForSelectedElement: boolean = false;
 
   @ViewChild('input') inputElement!: ElementRef;
   @ViewChild('textarea') textArea!: ElementRef;
+
+  type: string = 'directMessage';
+
+  changeType(type: string): void {
+    this.type = type;
+  }
 
   updateSearchQuery(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -41,6 +55,9 @@ export class NewMessageComponent {
       this.filterResults();
       dropDown?.classList.remove('dNone');
     }
+    if(this.inputElement.nativeElement.value === "") {
+      dropDown?.classList.add('dNone');
+    }
   }
 
   async filterResults() {
@@ -49,54 +66,64 @@ export class NewMessageComponent {
     let users: ChatUser[] = [];
     let channels: Channel[] = [];
 
-    users = query.startsWith('@') ? this.userService.allUsers().filter(user => user.name.toLowerCase().includes(query.substring(1))) :
-            this.userService.allUsers().filter(user => user.email.toLowerCase().includes(query));
+    users = query.startsWith('@')
+      ? this.userService
+          .allUsers()
+          .filter((user) =>
+            user.name.toLowerCase().includes(query.substring(1))
+          )
+      : this.userService
+          .allUsers()
+          .filter((user) => user.email.toLowerCase().includes(query));
 
-    if(query.startsWith('#')) {
-      channels = this.chatService.channels().filter((channel) => channel.name.toLowerCase().includes(query.substring(1)));
+    if (query.startsWith('#')) {
+      channels = this.chatService
+        .channels()
+        .filter((channel) =>
+          channel.name.toLowerCase().includes(query.substring(1))
+        );
     }
-    
+
     this.filteredUsers = [...users, ...channels];
   }
 
   selectUserOrChannel(id: string) {
-    const selectedUser = this.userService.allUsers()?.find(user => user.userUID === id);
+    const selectedUser = this.userService.allUsers()?.find((user) => user.userUID === id);
     if (selectedUser) {
+      this.chatService.contactUUID = selectedUser.userUID;
       this.selectedUserAvatar = selectedUser.avatar;
       this.selectedUser = selectedUser.name;
+      this.changeType('directMessage');
     } else {
       this.selectedUserAvatar = null;
       this.selectedUser = null;
     }
-  
-    const selectedChannel = this.chatService.channels()?.find(channel => channel.id === id);
+
+    const selectedChannel = this.chatService.channels()?.find((channel) => channel.id === id);
     if (selectedChannel) {
       this.selectedChannel = selectedChannel.name;
-      this.textArea.nativeElement.type = "chat"
-      console.log('type', this.textArea.nativeElement.type)
+      this.changeType('chat');
+      this.chatService.channelID = id;
     } else {
       this.selectedChannel = null;
     }
-  
+
     if (this.inputElement?.nativeElement) {
-      this.inputElement.nativeElement.value = "";
-      this.inputElement.nativeElement.placeholder = "";
+      this.inputElement.nativeElement.value = '';
+      this.inputElement.nativeElement.placeholder = '';
       this.inputElement.nativeElement.disabled = true;
     }
 
-    
-  
     this.divForSelectedElement = !!this.selectedUser || !!this.selectedChannel;
   }
-  
 
   deleteDiv() {
     this.selectedUser = null;
     this.selectedUserAvatar = null;
     this.selectedChannel = null;
     this.inputElement.nativeElement.disabled = false;
-    this.inputElement.nativeElement.placeholder = "An: #channel, oder @jemand oder E-Mail Adresse";
+    this.inputElement.nativeElement.placeholder =
+      'An: #channel, oder @jemand oder E-Mail Adresse';
     this.divForSelectedElement = false;
   }
-  
 }

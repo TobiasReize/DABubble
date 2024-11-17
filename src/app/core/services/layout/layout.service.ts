@@ -2,19 +2,20 @@ import { computed, Injectable, signal } from '@angular/core';
 import { LayoutStateSignal } from '../../models/layout-state-signal.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LayoutService {
-  
   public selectedCollection = signal<string>('channels');
   private isThreadSelected = signal<boolean>(false);
   private isSideNavSelected = signal<boolean>(true);
 
-  constructor() { }
+  constructor() {}
 
   public winWidth = signal<number>(1920);
   public isDesktop = computed(() => this.winWidth() > 1200);
-  public isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() > 768);
+  public isTablet = computed(
+    () => this.winWidth() <= 1200 && this.winWidth() > 768
+  );
   public isMobile = computed(() => this.winWidth() <= 768);
 
   selectChat() {
@@ -26,8 +27,8 @@ export class LayoutService {
   }
 
   selectNewMessage() {
-     this.selectedCollection.set('newMessages');
-    // this.deselectThread();
+    this.selectedCollection.set('newMessages');
+    this.deselectThread();
   }
 
   selectThread() {
@@ -51,10 +52,17 @@ export class LayoutService {
   adaptLayoutToDesktop(signal: LayoutStateSignal) {
     if (this.selectedCollection() === 'channels') {
       signal.isChatOpen = true;
-    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;
-    } else if (this.selectedCollection() === 'newMessages') { signal.isNewMessageOpen = true; }
-    if (this.isSideNavSelected()) { signal.isSideNavOpen = true; }
-    if (this.isThreadSelected()) { signal.isThreadOpen = true; }
+    } else if (this.selectedCollection() === 'directMessageChannels') {
+      signal.isDirectMessageOpen = true;
+    } else if (this.selectedCollection() === 'newMessages') {
+      signal.isNewMessageOpen = true;
+    }
+    if (this.isSideNavSelected()) {
+      signal.isSideNavOpen = true;
+    }
+    if (this.isThreadSelected()) {
+      signal.isThreadOpen = true;
+    }
   }
 
   adaptLayoutToTablet(signal: LayoutStateSignal) {
@@ -63,21 +71,29 @@ export class LayoutService {
     } else {
       if (this.selectedCollection() === 'channels') {
         signal.isChatOpen = true;
-      } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;
-      } else if (this.selectedCollection() === 'newMessages') { signal.isNewMessageOpen = true; }
+      } else if (this.selectedCollection() === 'directMessageChannels') {
+        signal.isDirectMessageOpen = true;
+      } else if (this.selectedCollection() === 'newMessages') {
+        signal.isNewMessageOpen = true;
+      }
     }
-    if (this.isSideNavSelected()) { signal.isSideNavOpen = true; }
+    if (this.isSideNavSelected()) {
+      signal.isSideNavOpen = true;
+    }
   }
 
   adaptLayoutToMobile(signal: LayoutStateSignal) {
-    if (this.isSideNavSelected()) { 
+    if (this.isSideNavSelected()) {
       signal.isSideNavOpen = true;
     } else if (this.isThreadSelected()) {
       signal.isThreadOpen = true;
     } else if (this.selectedCollection() === 'channels') {
       signal.isChatOpen = true;
-    } else if (this.selectedCollection() === 'directMessageChannels') { signal.isDirectMessageOpen = true;
-    } else if (this.selectedCollection() === 'newMessages') { signal.isNewMessageOpen = true; }
+    } else if (this.selectedCollection() === 'directMessageChannels') {
+      signal.isDirectMessageOpen = true;
+    } else if (this.selectedCollection() === 'newMessages') {
+      signal.isNewMessageOpen = true;
+    }
   }
 
   readonly layoutState = computed(() => {
@@ -86,7 +102,7 @@ export class LayoutService {
       isThreadOpen: false,
       isChatOpen: false,
       isDirectMessageOpen: false,
-      isNewMessageOpen: false
+      isNewMessageOpen: false,
     };
     if (this.isDesktop()) {
       this.adaptLayoutToDesktop(signal);
@@ -96,7 +112,7 @@ export class LayoutService {
       this.adaptLayoutToMobile(signal);
     }
     return signal;
-  })
+  });
 
   onResize(width: number) {
     this.winWidth.set(width);

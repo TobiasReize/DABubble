@@ -2,7 +2,7 @@
     <div class="fade-in">
         <span id="newMessageSpan">Neue Nachricht</span> 
         <div class="position-relative">
-            <input #input type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse" (input)="updateSearchQuery($event)">
+            <input #input type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse" (input)="updateSearchQuery($event)" (click)="sideNavService.stopPropagation($event)">
             <div *ngIf="divForSelectedElement" class="dFlexRowCenterCenter gap15 contactsDiv selectedChannelOrUser">
                 <img *ngIf="selectedUserAvatar" src={{selectedUserAvatar}} class="avatar-50 avatar">
                 <span *ngIf="selectedUser">{{ selectedUser }}</span>
@@ -32,7 +32,7 @@
             </div>
         </div>
      </div>
-    <app-message-textarea #textarea class="fadeInFromOpacity0"></app-message-textarea>
+    <app-message-textarea [type]="type" class="fadeInFromOpacity0"></app-message-textarea>
 </section>
 
 

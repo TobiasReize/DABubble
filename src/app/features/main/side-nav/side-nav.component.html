@@ -68,7 +68,7 @@
       <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out divWidth" style="align-items: flex-start;">
         <div class="divWidth dFlexColumn gap25 divWidth" style="overflow: auto; align-items: flex-start;">
           @for (channel of chatService.channels(); track channel.name; let i = $index) {
-            <div id="{{'channelDivID' + i}}" class="entwicklerTeam dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id); selectChannel(i)">
+            <div [ngClass]="{'channelWasChosen': chatService.getSelectedChannelId() === channel.id}" class="entwicklerTeam dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id, i); chatService.selectChannel()">
               <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
               <span>{{channel.name}}</span>
             </div>

@@ -96,7 +96,7 @@ export class SearchComponentComponent implements OnInit {
           );
           const directMessageChannelDocData = directMessageChannelDoc.data();
           const userIds: string[] = directMessageChannelDocData!['userIds'];
-          const otherUserId: string = userIds.find((id) => id !== this.userService.currentOnlineUser().userUID) || '';
+          const otherUserId: string = userIds?.find((id) => id !== this.userService.currentOnlineUser().userUID) || '';
           const messageObject = new directMessage(
             directMessageChannelDoc.id,
             otherUserId,

@@ -11,6 +11,7 @@ import { Channel } from '../../../core/models/channel.class';
 import { ChannelMentionComponent } from './channel-mention/channel-mention.component';
 import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
 import { LayoutService } from '../../../core/services/layout/layout.service';
+import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 
 @Component({
   selector: 'app-message-textarea',
@@ -35,13 +36,13 @@ export class MessageTextareaComponent {
   fileUrl: string = '';
   fileName: string = '';
   fileType: string = '';
-  senderId: string = '';
-  receiverId: string = '';
   users: Signal<ChatUser[]> = this.chatService.usersInCurrentChannelWithoutCurrentUser;
   channels: Signal<Channel[]> = this.chatService.channels;
   usersOrChannels: Signal<ChatUser[]> | Signal<Channel[]> = this.users;
 
-  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private scroller: ViewportScroller, private layoutService: LayoutService) { }
+  constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private scroller: ViewportScroller, private layoutService: LayoutService, 
+    public sideNavService: SideNavService
+  ) { }
 
   ngOnInit() {
     if (this.type === 'thread') {
@@ -51,14 +52,22 @@ export class MessageTextareaComponent {
   }
 
   addMessage() {
+    console.log('type is: ',this.type)
     this.saveMessageText();
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
-        this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName, this.senderId, this.receiverId);
+        console.log('Kanal wurde erstellt!, channelID ist: ', this.chatService.channelID);
+        this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
+        this.chatService.changeChannel(this.chatService.channelID, this.chatService.choosedChannelNumber); 
+        this.layoutService.selectChat()
+        this.chatService.selectChannel()
+
       } else if (this.type === 'thread') {
-        this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName, this.senderId, this.receiverId);
+        console.log('thread')
+        this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName);
       } else {
-        this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType, this.fileName, this.senderId, this.receiverId);
+        this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
+        this.chatService.openChat(this.chatService.contactUUID);
       }
       this.messageText = '';
       this.editableTextarea.nativeElement.innerHTML = '';
@@ -195,6 +204,7 @@ export class MessageTextareaComponent {
 
   saveMessageText() {
     this.messageText = this.editableTextarea.nativeElement.textContent;
+    console.log('this.messageText: ', this.messageText)
   }
 
   insertEmoji(emoji: string) {

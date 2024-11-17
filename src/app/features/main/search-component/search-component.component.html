@@ -18,7 +18,7 @@
           <span>{{ result.name }}</span>
         </div>
       } @else if(result.description) {
-        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id)">
+        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id, chatService.choosedChannelNumber)">
           <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
           <span>{{ result.name }}</span>
         </div>
