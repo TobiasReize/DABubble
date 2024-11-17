@@ -454,7 +454,7 @@ export class ChatService {
     this.unsubDirectMessages = this.subDirectMessages(this.currentDirectMessageChannel().id);
   }
 
-  changeChannel(id: string) {
+  changeChannelWithoutNavigation(id: string) {
     this.isLoadingMessages.set(true);
     const index = this.channels().findIndex((channel) => channel.id === id);
     if (index !== -1) {
@@ -464,6 +464,10 @@ export class ChatService {
       this.messagesSignal.set([]);
       this.isLoadingMessages.set(false);
     }
+  }
+
+  changeChannel(id: string) {
+    this.changeChannelWithoutNavigation(id);
     this.layoutService.deselectSideNavOnMobile();
     this.layoutService.selectThread(false);
     this.layoutService.selectChat();
