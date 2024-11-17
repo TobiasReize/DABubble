@@ -10,7 +10,7 @@
         <h3>{{userService.currentOnlineUser().name}}</h3>
         <div class="profil-status-container">
             <img class="avatar avatar-70" src="{{userService.currentOnlineUser().avatar}}" alt="Dein Avatar">
-            <div class="header-status status-online"></div>
+            <div class="header-status" [ngClass]="userService.currentOnlineUser().isOnline ? 'status-online' : 'status-offline'"></div>
         </div>
         <span class="material-symbols-rounded">keyboard_arrow_down</span>
     </div>
