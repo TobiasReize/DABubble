@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, Input, Signal } from '@angular/core';
+import { Component, computed, ElementRef, Input, Signal, ViewChild } from '@angular/core';
 import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
@@ -36,6 +36,10 @@ export class MessageComponent {
   isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
   fileRemoved: boolean = false;
   deleteFileWhenSavingMessage: boolean = true;
+  isHighlightingMessage: boolean = false;
+  touchMessageTimeout!: ReturnType<typeof setTimeout>;
+  tapDurationInMilliseconds: number = 100;
+  @ViewChild('messageContainer') messageContainer!: ElementRef;
 
   constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private el: ElementRef) {}
 
@@ -171,5 +175,19 @@ export class MessageComponent {
 
   handleDeletionEvent() {
     this.fileRemoved = true;
+  }
+
+  touchMessage() {
+    this.touchMessageTimeout = setTimeout(() => {
+      this.isHighlightingMessage = !this.isHighlightingMessage;
+    }, this.tapDurationInMilliseconds);
+  }
+
+  stopTouchingMessage() {
+    clearTimeout(this.touchMessageTimeout);
+  }
+
+  onTouchMove() {
+    clearTimeout(this.touchMessageTimeout);
   }
 }

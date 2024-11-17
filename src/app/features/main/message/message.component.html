@@ -1,4 +1,4 @@
-<div #messageContainer class="message" [ngClass]="{ 'message-alternative' : isMe, 'thread-message' : isThreadMessage, 'thread-message-alternative' : isMe && isThreadMessage, 'small-message': isSmallMessageWidth(), 'very-small-message': isVerySmallMessageWidth() }">
+<div #messageContainer (touchstart)="touchMessage()" (touchend)="stopTouchingMessage()" (touchmove)="onTouchMove()" class="message" [ngClass]="{ 'message-alternative' : isMe, 'thread-message' : isThreadMessage, 'thread-message-alternative' : isMe && isThreadMessage, 'small-message': isSmallMessageWidth(), 'very-small-message': isVerySmallMessageWidth(), 'touch-message': isHighlightingMessage, 'touch-message-alternative': isHighlightingMessage && isMe, 'touch-small-message': isHighlightingMessage && isSmallMessageWidth() }">
     @if (!isSmallMessageWidth || !(isMessageBeingEdited && isSmallMessageWidth())) {
         <img class="avatar avatar-70" src="{{ messageData.imageName }}" alt="{{messageData.imageName}}">
     }
@@ -71,7 +71,7 @@
             </div>
         }
     </div>
-    <div class="message-menu chat-message-menu" [ngClass]="{ 'chat-message-menu-alternative': isMe }">
+    <div class="message-menu chat-message-menu" [ngClass]="{ 'chat-message-menu-alternative': isMe }" (touchstart)="$event.stopPropagation()">
         @if (!isThreadMessage) {
             <div class="icon-btn" (click)="addNewReaction(menuEmojis()[0])">
                 <img class="reaction-img" src="assets/img/emojis/{{menuEmojis()[0]}}" alt="menu emoji 1">
@@ -104,7 +104,7 @@
     </div>
     }
     @if (isMessageBeingEdited) {
-        <div class="edit-message-container">
+        <div class="edit-message-container" (touchstart)="$event.stopPropagation()">
             <textarea #editMessageContent [(ngModel)]="editMessageText"  name="edit-message-content" id="edit-message-content" class="edit-message-textarea"></textarea>
             <app-deletable-file (deletionEventFromMessage)="handleDeletionEvent()" [fileUrl]="!fileRemoved ? messageData.fileUrl : ''" [fileType]="messageData.fileType" [fileName]="messageData.fileName" [messageId]="messageData.id" [type]="type"></app-deletable-file>
             <div class="edit-message-container-bottom">
