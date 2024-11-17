@@ -22,6 +22,9 @@
         right: 16px;
         margin: auto;
     }
+    @media (max-width: 768px) {
+        padding: 30px 16px;
+    }
 }
 
 .input-container {
@@ -83,11 +86,14 @@ input {
 
 .add-people-channel-name {
     @include dFlex($jc: normal, $ai: normal);
-    gap: 15px;
     span {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         color: $purple-2;
+    }
+    .tag {
+        padding-right: 15px;
+        text-overflow: unset;
     }
 }

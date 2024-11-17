@@ -39,7 +39,7 @@
         }
     }
     @media (max-width: 960px) {
-        display: none;
+        margin-right: 0;
     }
 }
 
@@ -85,9 +85,6 @@
     }
     @media (max-width: 1440px) {
         gap: 5px;
-    }
-    @media (max-width: 960px) {
-        max-width: calc(100% - 45px);
     }
 }
 
