@@ -38,6 +38,10 @@ export class LayoutService {
     this.isThreadSelected.set(false);
   }
 
+  selectSideNav() {
+    this.isSideNavSelected.set(true);
+  }
+
   deselectSideNav() {
     this.isSideNavSelected.set(false);
   }
