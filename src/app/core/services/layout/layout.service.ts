@@ -14,8 +14,8 @@ export class LayoutService {
 
   public winWidth = signal<number>(1920);
   public isDesktop = computed(() => this.winWidth() > 1200);
-  public isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() >= 768);
-  public isMobile = computed(() => this.winWidth() < 768);
+  public isTablet = computed(() => this.winWidth() <= 1200 && this.winWidth() > 768);
+  public isMobile = computed(() => this.winWidth() <= 768);
 
   selectChat() {
     this.selectedCollection.set('channels');

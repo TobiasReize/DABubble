@@ -17,7 +17,7 @@
         position: fixed;
         width: unset;
         max-width: 398px;
-        top: 176px;
+        top: 140px;
         left: 16px;
         right: 16px;
         margin: auto;
@@ -85,6 +85,9 @@ input {
     @include dFlex($jc: normal, $ai: normal);
     gap: 15px;
     span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         color: $purple-2;
     }
 }

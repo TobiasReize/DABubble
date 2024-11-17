@@ -74,7 +74,7 @@ export class CreateChannelComponent {
       channelName.value,
       description.value,
       this.userUIDs,
-      this.userService.currentOnlineUser.name
+      this.userService.currentOnlineUser().name
     );
 
     this.channelId = doc(
@@ -88,7 +88,7 @@ export class CreateChannelComponent {
       {
         name: channelName.value,
         description: description.value,
-        createdBy: this.userService.currentOnlineUser.name,
+        createdBy: this.userService.currentOnlineUser().name,
         userUIDs: this.userUIDs,
       }
     );

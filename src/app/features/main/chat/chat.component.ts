@@ -13,7 +13,7 @@ import { ChatBottomContainerComponent } from './chat-bottom-container/chat-botto
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [MessageTextareaComponent, MessageComponent, AddPeopleComponent, MembersComponent, ChatBottomContainerComponent, SlicePipe],
+  imports: [MessageTextareaComponent, AddPeopleComponent, MembersComponent, ChatBottomContainerComponent, SlicePipe],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })

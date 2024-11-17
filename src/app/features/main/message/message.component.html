@@ -6,7 +6,7 @@
     <div class="main-message-container" [ngClass]="isMe ? 'main-message-container-alternative' : ''">
             <div class="message-header">
                 <span class="user-name">{{ messageData.userName }}</span>
-                <span class="message-posted-at">{{ messageData.postedAt.toLocaleTimeString().slice(0, -3) }}</span>
+                <span class="message-posted-at">{{ messageData.postedAt.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'}) }} Uhr</span>
             </div>
             <div #messageContent class="message-content" [ngClass]="{ 'message-content-alternative': isMe }">{{messageData.content}}</div>
             @if (messageData.fileUrl !== '' && messageData.fileType !== 'application/pdf') {
@@ -21,7 +21,7 @@
                 <div class="bottom-message-container">
                     <div (click)="openThread()" class="number-of-replies">{{ messageData.numberOfReplies }}&nbsp;Antworten</div>
                     @if (messageData.lastReplyAt) {
-                        <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt.toLocaleTimeString().slice(0, -3) }}</div>
+                        <div class="last-reply-at">Letzte Antwort {{ messageData.lastReplyAt.toLocaleTimeString('de-DE', {hour: '2-digit', minute:'2-digit'}) }}</div>
                     }
                 </div>
             }

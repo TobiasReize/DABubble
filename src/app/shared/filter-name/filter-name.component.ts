@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
 import { ChatUser } from '../../core/models/user.class';
 import { UserService } from '../../core/services/user/user.service';
@@ -23,7 +23,12 @@ export class FilterNameComponent {
   contactsChosen: boolean = false;
   notAddedSpecificPeopleToTheChannel: boolean = false;
   addedUsers: boolean = false;
-  @Output()selectionEvent = new EventEmitter<string>();
+  @Input('isInChat') isInChat: boolean = false;
+  @ViewChild('addName') addName!: ElementRef;
+
+  ngAfterViewInit() {
+    this.searchUsers(this.addName.nativeElement);
+  }
   
   selectUser(userUID: string) {
     this.removeUser(userUID);
@@ -51,16 +56,12 @@ export class FilterNameComponent {
     this.showedAllUsers = true;
   }
 
-  searchUsers() {
-    const input = (
-      document.getElementById('addName') as HTMLInputElement
-    ).value.toLowerCase();
-
+  searchUsers(input: HTMLInputElement) {
     const filteredUsers = this.userService
       .allUsers()
-      .filter((user) => user.name.toLowerCase().includes(input));
+      .filter((user) => user.name.toLowerCase().includes(input.value.toLowerCase()));
 
-    this.filteredUsers = filteredUsers;
+    this.filteredUsers = filteredUsers.filter(user => !this.arrayOfChosenContacts.includes(user));
   }
 
   deleteUserFromArrayOfChosenContacts(userUID: string) {

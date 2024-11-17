@@ -14,7 +14,7 @@
 }
 
 .message-img {
-    max-width: 156px;
+    max-width: min(156px, calc(100% - 52px));
 }
 
 .file-name {
