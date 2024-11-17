@@ -653,6 +653,8 @@ export class ChatService {
   closeDropDownMenu() {
     const dropDownDiv = document.getElementById('searchResultsDropdown');
     dropDownDiv?.classList.add('dNone');
+    const dropDownDiv2 = document.getElementById('searchResultsDropdown2');
+    dropDownDiv2?.classList.add('dNone');
   }
 
   updateChosenUserUIDs(userUIDs: string[]) {

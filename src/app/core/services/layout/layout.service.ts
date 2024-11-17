@@ -26,8 +26,8 @@ export class LayoutService {
   }
 
   selectNewMessage() {
-    this.selectedCollection.set('newMessages');
-    this.deselectThread();
+     this.selectedCollection.set('newMessages');
+    // this.deselectThread();
   }
 
   selectThread() {

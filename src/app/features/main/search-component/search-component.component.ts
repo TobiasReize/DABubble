@@ -68,7 +68,6 @@ export class SearchComponentComponent implements OnInit {
     this.filteredResults = [
       ...filteredUsers,
       ...filteredChannels,
-      // ...filteredDirectMessages.map((obj) => obj.message)
       ...filteredDirectMessages,
     ];
   }
@@ -109,42 +108,4 @@ export class SearchComponentComponent implements OnInit {
       });
     });
   }
-
-  // async loadData() {
-  //   const resultsArray = []; // Array, in dem alle Daten gespeichert werden
-
-  //   // 1. Hauptabfrage für die directMessageChannels-Dokumente
-  //   const directMessageChannelsRef = collection(
-  //     this.fireBaseService.firestore,
-  //     'directMessageChannels'
-  //   );
-  //   const directMessageChannelsSnapshot = await getDocs(
-  //     directMessageChannelsRef
-  //   );
-
-  //   // 2. Für jedes directMessageChannels-Dokument die Nachrichten abrufen und zusammenführen
-  //   for (const directDoc of directMessageChannelsSnapshot.docs) {
-  //     const directData = directDoc.data();
-  //     directData['id'] = directDoc.id; // Falls die Dokument-ID gebraucht wird
-
-  //     // 3. Unterkollektion `messages` abrufen
-  //     const messagesRef = collection(directDoc.ref, 'messages');
-  //     const messagesSnapshot = await getDocs(messagesRef);
-
-  //     // 4. Nachrichten in ein Array packen
-  //     const messagesArray = messagesSnapshot.docs.map((messageDoc) => ({
-  //       id: messageDoc.id, // Falls die Nachricht-ID gebraucht wird
-  //       ...messageDoc.data(),
-  //     }));
-
-  //     // 5. Nachrichten dem Hauptdokument hinzufügen
-  //     directData['messages'] = messagesArray;
-
-  //     // 6. Hauptdokument mit Nachrichten in das Ergebnisarray einfügen
-  //     resultsArray.push(directData);
-  //   }
-
-  //   // 7. Ergebnisse speichern, damit sie in der Vorlage verwendet werden können
-  //   return resultsArray;
-  // }
 }
