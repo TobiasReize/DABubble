@@ -48,28 +48,26 @@
 
 .channel-name, .channel-name-chat {
     @include fontStyle9;
-
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .channel-name {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     @media (max-width: 1440px) {
         @include fontStyle19;
     }
 }
 
 .channel-name-container {
-    display: inline-flex;
     align-items: center;
-    vertical-align: middle;
-    color: $purple-3;
+    word-break: break-word;
 }
 
 .small-tag {
     color: $purple-3;
     font-size: 20px;
+    vertical-align: sub;
+    display: inline;
 }
 
 .chat-header-left {
@@ -123,6 +121,7 @@
 .empty-chat-container-header {
     @include dFlex($jc: flex-start);
     gap: 10px;
+    width: 100%;
 }
 
 .empty-chat-container-second-channel-name {

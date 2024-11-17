@@ -36,7 +36,7 @@
         @if(true) {
             Du hast diesen Channel erstellt.
         }
-         Das ist der Anfang des Channels <span class="channel-name-container"><span class="material-symbols-rounded small-tag">tag</span>{{ channel().name }}</span>.
+         Das ist der Anfang des Channels <span class="channel-name-container"><span class="material-symbols-rounded small-tag">tag</span><span class="empty-chat-container-second-channel-name">{{ channel().name }}</span>.</span>
         </p>
     </div>
     <app-message-textarea placeholder="Nachricht an #{{ channel().name }}" type="chat"></app-message-textarea>
