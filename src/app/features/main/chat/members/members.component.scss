@@ -1,6 +1,15 @@
 @import '../../../../../styles/mixin.scss';
 @import '../../../../../styles/styles2.scss';
 
+@import '../../../../../styles/animations.scss';
+
+:host {
+  z-index: 999;
+  animation-name: fadeInFromOpacity0;
+  animation-timing-function: ease-in-out;
+  animation-duration: 0.2s;
+}
+
 .inside {
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     max-width: 398px;
