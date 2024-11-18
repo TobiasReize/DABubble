@@ -4,7 +4,7 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user/user.service';
-import { Auth, createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
 
 @Component({

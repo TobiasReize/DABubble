@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { doc, updateDoc } from 'firebase/firestore';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { UserService } from '../../../core/services/user/user.service';
 

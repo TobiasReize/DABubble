@@ -1,10 +1,6 @@
 import {
   Component,
-  Directive,
   ElementRef,
-  HostListener,
-  Input,
-  Signal,
   ViewChild,
 } from '@angular/core';
 import { MessageTextareaComponent } from '../../message-textarea/message-textarea.component';

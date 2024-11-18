@@ -2,7 +2,6 @@ import { Component, Signal, ViewChild } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { MessageTextareaComponent } from '../message-textarea/message-textarea.component';
 import { Message } from '../../../core/models/message.class';
-import { MessageComponent } from '../message/message.component';
 import { SlicePipe } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
 import { ChatUser } from '../../../core/models/user.class';
