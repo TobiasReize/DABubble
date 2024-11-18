@@ -186,6 +186,24 @@ app-intro {
     }
 }
 
+@media(max-height: 920px) and (min-width: 654px) {
+    .m-btm-32 {
+        margin-bottom: 15px;
+    }
+
+    app-login-header {
+        position: unset !important;
+    }
+
+    .content-window {
+        padding: 24px 16px !important;
+    }
+
+    app-footer {
+        display: none;
+    }
+}
+
 @media(max-width: 654px) and (max-height: 800px) {  //für Bildschirmhöhen < 800px
     app-login-header {
         display: none;

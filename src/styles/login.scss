@@ -168,7 +168,7 @@
 }
 
 // Responsive Design:
-@media(max-width: 654px) or (max-height: 920px) {
+@media(max-width: 654px) {
     .content-wrapper {
         position: unset;
         gap: 12px;
@@ -208,12 +208,6 @@
         padding: 20px 30px;
         font-size: 22px;
         line-height: 30px;
-    }
-}
-
-@media(max-height: 920px) and (min-width: 654px) {
-    .content-window {
-        width: 606px;
     }
 }
 
