@@ -146,7 +146,7 @@ app-intro {
 }
 
 // Responsive Design:
-@media(max-width: 654px) {
+@media(max-width: 654px) or (max-height: 920px) {
     .login-text {
         font-size: 17px;
         line-height: 20.4px;
@@ -197,6 +197,12 @@ app-intro {
 
     .create-account-container {
         gap: 12px;
+    }
+}
+
+@media(max-height: 800px) {
+    app-login-header {
+        display: none;
     }
 }
 
