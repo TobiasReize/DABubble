@@ -5,30 +5,32 @@
       placeholder="Suchen..."
       type="text"
       class="search-input"
-      (keyup)="updateSearchQuery($event)"
+      (input)="updateSearchQuery(searchComponentInput.value)"
     />
     <span class="material-symbols-rounded search-icon">search</span>
   </div>
 
   <!-- drop down menu -->
-  <div id="searchResultsDropdown" *ngIf="filteredResults.length > 0" class="dNone searchingResults" (click)="sideNavService.stopPropagation($event)">
-    <div *ngFor="let result of filteredResults" class="dFlexRowFlex-StartCenter width-100" (click)="chatService.closeDropDownMenu()">
-      @if(result.avatar) {
-        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userUID)">
-          <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">
-          <span>{{ result.name }}</span>
-        </div>
-      } @else if(result.description) {
-        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id)">
-          <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
-          <span>{{ result.name }}</span>
-        </div>
-      }
-      @else if(result.id) {
-        <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userId)">
-          <p>{{ result.message }}</p>
-        </div>
-      }
+  @if (showDropDown && filteredResults.length > 0) {
+    <div id="searchResultsDropdown" #searchResultsDropdown class="searchingResults" (click)="sideNavService.stopPropagation($event)">
+      <div *ngFor="let result of filteredResults" class="dFlexRowFlex-StartCenter width-100" (click)="chatService.closeDropDownMenu()">
+        @if(result.avatar) {
+          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userUID)">
+            <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">
+            <span>{{ result.name }}</span>
+          </div>
+        } @else if(result.description) {
+          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id)">
+            <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
+            <span>{{ result.name }}</span>
+          </div>
+        }
+        @else if(result.id) {
+          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userId)">
+            <p>{{ result.message }}</p>
+          </div>
+        }
+      </div>
     </div>
-  </div>
+  }
 </section>

@@ -1,22 +1,17 @@
-import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild, viewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user/user.service';
-import { ChatUser } from '../../../core/models/user.class';
 import { CommonModule } from '@angular/common';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import {
-  collection,
   collectionGroup,
-  CollectionReference,
   getDoc,
-  getDocs,
   onSnapshot,
   query,
   where,
 } from 'firebase/firestore';
-import { Message } from '../../../core/models/message.class';
 import { directMessage } from '../../../core/models/direct-message';
 
 @Component({
@@ -26,7 +21,7 @@ import { directMessage } from '../../../core/models/direct-message';
   templateUrl: './search-component.component.html',
   styleUrl: './search-component.component.scss',
 })
-export class SearchComponentComponent implements OnInit {
+export class SearchComponentComponent {
   public userService = inject(UserService);
   public sideNavService = inject(SideNavService);
   public chatService = inject(ChatService);
@@ -36,22 +31,27 @@ export class SearchComponentComponent implements OnInit {
   filteredResults: any[] = [];
   filteredChannels: any[] = [];
   messages: directMessage[] = [];
+  showDropDown: boolean = false;
 
   @ViewChild('searchComponentInput') inputRef!: ElementRef;
 
-  ngOnInit(): void {
-    this.getDirectMessages();
+  constructor() {
+    effect(() => {
+      if (this.userService.allUsers().length > 0 || this.chatService.channels().length > 0) {
+        this.getDirectMessages();
+        this.filterResults();
+      }
+    })
   }
 
-  updateSearchQuery(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.searchQuery = inputElement.value;
-    const dropDown = document.getElementById('searchResultsDropdown');
-    dropDown?.classList.remove('dNone');
-    if(this.inputRef.nativeElement.value === "") {
-      dropDown?.classList.add('dNone');
+  updateSearchQuery(value: string) {
+    this.searchQuery = value;
+    this.showDropDown = true;
+    if (value === "") {
+      this.showDropDown = false;
     }
     this.filterResults();
+    console.log(this.showDropDown);
   }
 
   async filterResults() {
