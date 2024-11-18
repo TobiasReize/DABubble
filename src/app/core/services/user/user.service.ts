@@ -38,6 +38,9 @@ export class UserService implements OnDestroy {
       if (currentUser) {
         this.updateUserDoc(currentUser.uid, {isOnline: true});
         this.currentUserUIDSignal.set(currentUser.uid);
+      } else if (sessionStorage.getItem('guestIsOnline')) {
+        this.updateUserDoc('guest', {isOnline: true});
+        this.currentUserUIDSignal.set('0');
       }
     });
   }
@@ -98,6 +101,7 @@ export class UserService implements OnDestroy {
   async signOutUser() {
     if (this.currentUserUID() == '0') {
       await this.updateUserDoc('guest', {isOnline: false});
+      sessionStorage.removeItem('guestIsOnline');
     } else {
       await this.updateUserDoc(this.currentOnlineUser().userUID, {isOnline: false});
     }

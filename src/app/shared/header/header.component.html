@@ -1,9 +1,19 @@
 <div class="header-left-side">
-    <div class="logo-container">
-        <img src="assets/img/logo.svg" alt="logo">
-        <span>DABubble</span>
-    </div>
-    <app-search-component></app-search-component>
+    @if (layoutService.isMobile() && !layoutService.layoutState().isSideNavOpen) {
+        <div class="workspace-container" (click)="layoutService.selectSideNav(true)">
+            <span class="material-symbols-rounded left-arrow">keyboard_arrow_down</span>
+            <div class="workspace-logo-container">
+                <img class="workspace-logo" src="assets/img/main/workspace-logo.svg" alt="workspace logo">
+                <span>Devspace</span>
+            </div>
+        </div>
+    } @else {
+        <div class="logo-container">
+            <img class="app-logo" src="assets/img/logo.svg" alt="app logo">
+            <span>DABubble</span>
+        </div>
+        <app-search-component></app-search-component>
+    }
 </div>
 <div class="header-profile-section">
     <div (click)="toggleProfilInfo()" class="header-profile-container">

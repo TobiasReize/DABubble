@@ -131,6 +131,7 @@ export class LogInComponent implements OnInit {
   async signInWithGuest() {
     await this.userService.signOutUser();
     await this.userService.updateUserDoc('guest', {isOnline: true});
+    sessionStorage.setItem('guestIsOnline', 'true');
     this.userService.currentUserUIDSignal.set('0');
     console.log('Aktueller User:', this.userService.currentOnlineUser());
     this.router.navigateByUrl('main');

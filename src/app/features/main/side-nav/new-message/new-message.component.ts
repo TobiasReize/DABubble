@@ -104,6 +104,7 @@ export class NewMessageComponent {
       this.selectedChannel = selectedChannel.name;
       this.changeType('chat');
       this.chatService.channelID = id;
+      this.chatService.changeChannelWithoutNavigation(selectedChannel.id)
     } else {
       this.selectedChannel = null;
     }

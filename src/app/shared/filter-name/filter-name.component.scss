@@ -8,10 +8,6 @@
   width: 100%;
 }
 
-.avatar {
-  margin-left: -20px;
-}
-
 .close {
   &:hover {
     background-color: rgba(236, 238, 254, 1);
@@ -95,6 +91,10 @@
   &:hover {
     background-color: #f3f3f3;
   }
+
+  .avatar {
+    margin-left: -40px;
+  }
 }
 
 .dFlex {
@@ -113,4 +113,9 @@
     top: -30px;
     overflow-y: auto;
     max-height: 250px;
+  }
+
+  .inputElement {
+    padding: 15px 20px;
+    text-indent: 0px;
   }

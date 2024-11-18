@@ -52,18 +52,14 @@ export class MessageTextareaComponent {
   }
 
   addMessage() {
-    console.log('type is: ',this.type)
     this.saveMessageText();
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
-        console.log('Kanal wurde erstellt!, channelID ist: ', this.chatService.channelID);
         this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
-        this.chatService.changeChannel(this.chatService.channelID, this.chatService.choosedChannelNumber); 
+        this.chatService.changeChannel(this.chatService.channelID); 
         this.layoutService.selectChat()
         this.chatService.selectChannel()
-
       } else if (this.type === 'thread') {
-        console.log('thread')
         this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName);
       } else {
         this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);

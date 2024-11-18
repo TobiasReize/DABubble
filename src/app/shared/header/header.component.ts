@@ -1,4 +1,4 @@
-import { Component, inject, NgModule } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UserService } from '../../core/services/user/user.service';
 import { Router } from '@angular/router';
 import { ChatService } from '../../core/services/chat/chat.service';
@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { SearchComponentComponent } from "../../features/main/search-component/search-component.component";
 import { SideNavService } from '../../core/services/sideNav/side-nav.service';
 import { CommonModule } from '@angular/common';
+import { LayoutService } from '../../core/services/layout/layout.service';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,7 @@ export class HeaderComponent {
   sideNavService = inject(SideNavService);
   profilInfo: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, public layoutService: LayoutService) { }
 
 
   toggleProfilInfo() {

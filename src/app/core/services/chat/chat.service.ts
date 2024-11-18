@@ -117,7 +117,6 @@ export class ChatService {
   customProfile: boolean = false;
   contacts: any = [];
   channelID: string = "";
-  choosedChannelNumber: any = "";
   private selectedChannelId: string | null = null;
 
   private currentMainChatCollectionSignal = computed(() => this.layoutService.selectedCollection());
@@ -194,14 +193,18 @@ export class ChatService {
     );
   }
 
-  getDirectMessageChannelId(userUID: string) {
-    const ids = [this.userService.currentOnlineUser().userUID, userUID];
+  getDirectMessageChannelId(userUID: any) {
+    let ids = [this.userService.currentOnlineUser().userUID, userUID];
+    if(Array.isArray(userUID)) {
+      ids = userUID;
+      console.log('ids: ',ids)
+    }
     const sortedIds = ids.sort();
+    console.log('sortedIds: ',sortedIds)
     return sortedIds[0] + sortedIds[1];
   }
 
  async addDirectMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
-  console.log('contactUUID, ', this.contactUUID)
    await this.addDirectMessageChannel();
    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
    await addDoc(
@@ -364,7 +367,7 @@ export class ChatService {
           this.currentChannelSignal.set(this.channels()[0]);
           this.unsubMessages = await this.subMessages(this.currentChannel().id);
         } else {
-          this.changeChannel(this.currentChannel().id, this.choosedChannelNumber);
+          this.changeChannel(this.currentChannel().id);
         }
         this.getUsersInCurrentChannel();
       }
@@ -462,10 +465,8 @@ export class ChatService {
     return this.selectedChannelId;
   }
 
-  changeChannel(id: string, choosedChannelNumber:any) {
+  changeChannelWithoutNavigation(id: string) {
     this.selectedChannelId = id;
-    this.choosedChannelNumber = choosedChannelNumber;
-    console.log('changeChannel aufgerufen');
     this.isLoadingMessages.set(true);
     const index = this.channels().findIndex((channel) => channel.id === id);
     
@@ -473,26 +474,30 @@ export class ChatService {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
     } else {
-      this.directMessagesSignal.set([]);
+      this.messagesSignal.set([]);
       this.isLoadingMessages.set(false);
     }
+  }
+
+  changeChannel(id: string) {
+    this.changeChannelWithoutNavigation(id);
     this.layoutService.deselectSideNavOnMobile();
-    this.layoutService.deselectThread();
+    this.layoutService.selectThread(false);
     this.layoutService.selectChat();
   }
 
-  changeDirectMessageChannel(id: string) {
+  changeDirectMessageChannel(id: any) {
     this.isLoadingMessages.set(true);
     const directMessageChannelId = this.getDirectMessageChannelId(id);
+    console.log('directMessageChannelId', directMessageChannelId)
     const index = this.directMessageChannels().findIndex((channel) => channel.id === directMessageChannelId);
+    
     if (index !== -1) {
       this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[index]);
       this.resubDirectMessageChannel();
-      console.log('resubDirectMessageChannel')
     } else {
       this.directMessagesSignal.set([]);
       this.isLoadingMessages.set(false);
-      console.log('else')
     }
   }
 
@@ -569,10 +574,22 @@ export class ChatService {
     }
   }
 
-  openChat(userUID: string): void {
+  openChat(userUID: any): void {
+    if(Array.isArray(userUID)){
+      const [user1, user2] = userUID;
+      console.log('user1: ', user1);
+      console.log('user2: ', user2);
+      console.log('userUID je pole stringov:', userUID);
+      if(user1 === user2) {
+        this.contactUUID = user2;
+        console.log('ids are the same!:', user1, '+', user2)
+      }
+    } else {
+    console.log('userUID je string', userUID)
+    this.contactUUID = userUID;
     this.currentUser = this.userService.allUsers().find(user => user.userUID === userUID);
     this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
-    this.contactUUID = userUID;
+    
     if (this.currentUser?.userUID === this.userService.currentOnlineUser().userUID) {
       this.myChatDescription = true;
       this.chatDescription = false;
@@ -581,13 +598,16 @@ export class ChatService {
       this.chatDescription = true;
     }
     this.layoutService.deselectSideNavOnMobile();
-    this.layoutService.deselectThread();
+    this.layoutService.selectThread(false);
     this.layoutService.selectDirectMessage();
-    this.changeDirectMessageChannel(this.contactUUID);
+    
     const channelElements = document.querySelectorAll('.entwicklerTeam');
     channelElements.forEach(element => {
       element.classList.remove('channelWasChosen');
     });
+    this.selectedChannelId = null;
+   }
+   this.changeDirectMessageChannel(userUID);
   }
 
   async getContacts() {

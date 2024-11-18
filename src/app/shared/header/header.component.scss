@@ -24,7 +24,7 @@ h3 {
     @include dFlex($jc: flex-start);
     gap: 16px;
 
-    img {
+    .app-logo {
         height: 70px;
         width: 70px;
     }
@@ -32,6 +32,33 @@ h3 {
     span {
         font-size: 24px;
         font-weight: 700;
+    }
+}
+
+.workspace-container {
+    cursor: pointer;
+    @include dFlex();
+}
+
+.workspace-logo-container {
+    @include dFlex();
+    gap: 10px;
+    span {
+        font-size: 18.22px;
+        font-weight: 700;
+    }
+}
+
+.workspace-logo {
+    height: 50px;
+    width: 50px;
+}
+
+.left-arrow {
+    font-size: 25px;
+    transform: rotate(90deg);
+    &:active {
+        color: $purple-3;
     }
 }
 
@@ -192,7 +219,7 @@ app-search-component {
     }
     .logo-container {
         gap: 11px;
-        img {
+        .app-logo {
             height: 45px;
             width: 45px;
         }
@@ -217,6 +244,9 @@ app-search-component {
     .header-status {
         height: 14px;
         width: 14px;
+    }
+    .header-left-side {
+        gap: 2px;
     }
 }
 

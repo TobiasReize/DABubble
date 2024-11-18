@@ -8,6 +8,7 @@
     #addName
     class="inputElement"
     placeholder="Name eingeben"
+    [placeholder]="layoutService.winWidth() < 380 ? 'Name' : 'Name eingeben'"
     (click)="showAllUsers()"
     (keyup)="searchUsers(addName)"
   />
@@ -52,7 +53,7 @@
     >
     <span class="members-heading">Mitglieder</span>
     @for (user of arrayOfChosenContacts; track $index) {
-      <div class="dFlexRowCenterCenter gap25">
+      <div class="dFlexRowCenterCenter gap10">
         <img
           src="assets/img/main/close (2).png"
           class="cursor-pointer close"

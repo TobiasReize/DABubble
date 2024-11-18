@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user/user.service';
 import { ChatUser } from '../../../core/models/user.class';
@@ -37,6 +37,8 @@ export class SearchComponentComponent implements OnInit {
   filteredChannels: any[] = [];
   messages: directMessage[] = [];
 
+  @ViewChild('searchComponentInput') inputRef!: ElementRef;
+
   ngOnInit(): void {
     this.getDirectMessages();
   }
@@ -46,6 +48,9 @@ export class SearchComponentComponent implements OnInit {
     this.searchQuery = inputElement.value;
     const dropDown = document.getElementById('searchResultsDropdown');
     dropDown?.classList.remove('dNone');
+    if(this.inputRef.nativeElement.value === "") {
+      dropDown?.classList.add('dNone');
+    }
     this.filterResults();
   }
 
@@ -95,11 +100,12 @@ export class SearchComponentComponent implements OnInit {
             directMessageChannelsDocRef
           );
           const directMessageChannelDocData = directMessageChannelDoc.data();
-          const userIds: string[] = directMessageChannelDocData!['userIds'];
-          const otherUserId: string = userIds?.find((id) => id !== this.userService.currentOnlineUser().userUID) || '';
+          const userIds: any = directMessageChannelDocData!['userIds'];
+          // const otherUserId: string = userIds?.find((id) => id !== this.userService.currentOnlineUser().userUID) || '';
           const messageObject = new directMessage(
             directMessageChannelDoc.id,
-            otherUserId,
+            // otherUserId,
+            userIds,
             docData['content']
           );
 

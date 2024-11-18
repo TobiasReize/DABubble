@@ -4,6 +4,7 @@ import { ChatUser } from '../../core/models/user.class';
 import { UserService } from '../../core/services/user/user.service';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../core/services/chat/chat.service';
+import { LayoutService } from '../../core/services/layout/layout.service';
 
 @Component({
   selector: 'app-filter-name',
@@ -14,7 +15,7 @@ import { ChatService } from '../../core/services/chat/chat.service';
 })
 export class FilterNameComponent {
   
-  constructor(public sideNavService: SideNavService, public userService: UserService, public chatService: ChatService) {}
+  constructor(public sideNavService: SideNavService, public userService: UserService, public chatService: ChatService, public layoutService: LayoutService) {}
   
   showedAllUsers: boolean = false;
   filteredUsers: ChatUser[] = [];

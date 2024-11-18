@@ -42,6 +42,9 @@
     text-orientation: mixed;
     @include fontStyle5;
   }
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .purpleHover:hover {

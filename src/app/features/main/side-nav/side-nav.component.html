@@ -7,7 +7,7 @@
   <!-- 1 Section - Devspace Section -->
   <div id="devSpace" class="dFlex">
     <div class="devSpace">
-      <img src="assets/img/main/Workspace logo.svg" />
+      <img src="assets/img/main/workspace-logo.svg" />
       <span class="font-size1">Devspace</span>
     </div>
 
@@ -68,7 +68,7 @@
       <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out divWidth" style="align-items: flex-start;">
         <div class="divWidth dFlexColumn gap25 divWidth" style="overflow: auto; align-items: flex-start;">
           @for (channel of chatService.channels(); track channel.name; let i = $index) {
-            <div [ngClass]="{'channelWasChosen': chatService.getSelectedChannelId() === channel.id}" class="entwicklerTeam dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id, i); chatService.selectChannel()">
+            <div [ngClass]="{'channelWasChosen': chatService.getSelectedChannelId() === channel.id}" class="entwicklerTeam dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id); chatService.selectChannel()">
               <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
               <span>{{channel.name}}</span>
             </div>
