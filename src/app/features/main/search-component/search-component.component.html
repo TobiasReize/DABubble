@@ -2,7 +2,7 @@
   <div class="input-container">
     <input
       #searchComponentInput
-      placeholder="Suchen..."
+      [placeholder]="placeholder"
       type="text"
       class="search-input"
       (input)="updateSearchQuery(searchComponentInput.value)"

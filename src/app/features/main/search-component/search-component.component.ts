@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user/user.service';
 import { CommonModule } from '@angular/common';
@@ -32,6 +32,8 @@ export class SearchComponentComponent {
   filteredChannels: any[] = [];
   messages: directMessage[] = [];
   showDropDown: boolean = false;
+
+  @Input('placeholder') placeholder: string = 'Suchen...';
 
   @ViewChild('searchComponentInput') inputRef!: ElementRef;
 
