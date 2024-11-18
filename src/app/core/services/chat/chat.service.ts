@@ -23,6 +23,7 @@ import { ChannelUserUIDsInterface } from '../../models/channel-user-uids.interfa
 import { ChatUser } from '../../models/user.class';
 import { EmptyMessageFile } from '../../models/empty-message-file.interface';
 import { LayoutService } from '../layout/layout.service';
+import { EventService } from '../event/event.service';
 
 @Injectable({
   providedIn: 'root',
@@ -124,7 +125,8 @@ export class ChatService {
   constructor(
     private firebaseService: FirebaseService,
     private userService: UserService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private eventService: EventService
   ) {
     this.unsubChannels = this.subChannels();
     this.unsubDirectMessageChannels = this.subDirectMessageChannels();
@@ -477,6 +479,7 @@ export class ChatService {
       this.messagesSignal.set([]);
       this.isLoadingMessages.set(false);
     }
+    this.eventService.triggerFocusEvent();
   }
 
   changeChannel(id: string) {
@@ -499,6 +502,7 @@ export class ChatService {
       this.directMessagesSignal.set([]);
       this.isLoadingMessages.set(false);
     }
+    this.eventService.triggerFocusEvent();
   }
 
   leaveChannel() {
