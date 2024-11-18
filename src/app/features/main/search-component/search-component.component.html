@@ -2,6 +2,7 @@
   <div class="input-container">
     <input
       #searchComponentInput
+      [formControl]="searchComponentInputControl"
       [placeholder]="placeholder"
       type="text"
       class="search-input"
@@ -11,22 +12,22 @@
   </div>
 
   <!-- drop down menu -->
-  @if (showDropDown && filteredResults.length > 0) {
+  @if (showDropDown) {
     <div id="searchResultsDropdown" #searchResultsDropdown class="searchingResults" (click)="sideNavService.stopPropagation($event)">
       <div *ngFor="let result of filteredResults" class="dFlexRowFlex-StartCenter width-100" (click)="chatService.closeDropDownMenu()">
         @if(result.avatar) {
-          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userUID)">
+          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userUID); resetInput()">
             <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">
             <span>{{ result.name }}</span>
           </div>
         } @else if(result.description) {
-          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id)">
+          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.changeChannel(result.id); resetInput()">
             <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
             <span>{{ result.name }}</span>
           </div>
         }
         @else if(result.id) {
-          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userId)">
+          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userId); resetInput()">
             <p>{{ result.message }}</p>
           </div>
         }

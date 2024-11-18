@@ -1,5 +1,6 @@
 import { Component, effect, ElementRef, inject, Input, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user/user.service';
 import { CommonModule } from '@angular/common';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
@@ -17,7 +18,7 @@ import { directMessage } from '../../../core/models/direct-message';
 @Component({
   selector: 'app-search-component',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './search-component.component.html',
   styleUrl: './search-component.component.scss',
 })
@@ -32,6 +33,7 @@ export class SearchComponentComponent {
   filteredChannels: any[] = [];
   messages: directMessage[] = [];
   showDropDown: boolean = false;
+  searchComponentInputControl = new FormControl('');
 
   @Input('placeholder') placeholder: string = 'Suchen...';
 
@@ -46,14 +48,21 @@ export class SearchComponentComponent {
     })
   }
 
+  resetInput() {
+    this.searchComponentInputControl.reset();
+    this.showDropDown = false;
+  }
+ 
   updateSearchQuery(value: string) {
     this.searchQuery = value;
-    this.showDropDown = true;
     if (value === "") {
       this.showDropDown = false;
+    } else {
+      this.filterResults();
+      if (this.filteredResults.length > 0) {
+        this.showDropDown = true;
+      }
     }
-    this.filterResults();
-    console.log(this.showDropDown);
   }
 
   async filterResults() {
