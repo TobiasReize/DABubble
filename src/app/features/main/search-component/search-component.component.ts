@@ -58,10 +58,8 @@ export class SearchComponentComponent {
     if (value === "") {
       this.showDropDown = false;
     } else {
+      this.showDropDown = true;
       this.filterResults();
-      if (this.filteredResults.length > 0) {
-        this.showDropDown = true;
-      }
     }
   }
 

@@ -12,7 +12,7 @@
   </div>
 
   <!-- drop down menu -->
-  @if (showDropDown) {
+  @if (showDropDown && filteredResults.length > 0) {
     <div id="searchResultsDropdown" #searchResultsDropdown class="searchingResults" (click)="sideNavService.stopPropagation($event)">
       <div *ngFor="let result of filteredResults" class="dFlexRowFlex-StartCenter width-100" (click)="chatService.closeDropDownMenu()">
         @if(result.avatar) {
