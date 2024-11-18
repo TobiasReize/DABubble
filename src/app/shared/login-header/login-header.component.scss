@@ -37,6 +37,12 @@ header {
     }
 }
 
+@media(max-height: 920px) and (min-width: 654px) {
+    .create-account-container {
+        display: none;
+    }
+}
+
 @media(max-width: 654px) {
     header {
         justify-content: center;

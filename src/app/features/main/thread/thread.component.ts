@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, QueryList, Signal, ViewChildren } from '@angular/core';
 import { Message } from '../../../core/models/message.class';
 import { MessageComponent } from '../message/message.component';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,13 @@ export class ThreadComponent {
   message: Signal<Message> = this.chatService.topThreadMessage;
   replies: Signal<Message[]> = this.chatService.threadReplies;
 
+  @ViewChildren(MessageComponent) messageComponents!: QueryList<MessageComponent>;
+
   closeThread() {
     this.layoutService.selectThread(false);
+  }
+
+  deselectMessages() {
+    this.messageComponents.forEach(message => message.isHighlightingMessage = false);
   }
 }

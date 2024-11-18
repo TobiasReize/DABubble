@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, Input, Signal, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, EventEmitter, Input, Output, Signal, ViewChild } from '@angular/core';
 import { Message } from '../../../core/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../core/services/chat/chat.service';
@@ -40,6 +40,7 @@ export class MessageComponent {
   touchMessageTimeout!: ReturnType<typeof setTimeout>;
   tapDurationInMilliseconds: number = 100;
   @ViewChild('messageContainer') messageContainer!: ElementRef;
+  @Output() messageSelectionEvent = new EventEmitter<string>;
 
   constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private el: ElementRef) {}
 
@@ -179,6 +180,9 @@ export class MessageComponent {
 
   touchMessage() {
     this.touchMessageTimeout = setTimeout(() => {
+      if (!this.isHighlightingMessage) {
+        this.messageSelectionEvent.emit('message selected');
+      }
       this.isHighlightingMessage = !this.isHighlightingMessage;
     }, this.tapDurationInMilliseconds);
   }

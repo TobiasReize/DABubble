@@ -1,6 +1,6 @@
 <div class="header-left-side">
     @if (layoutService.isMobile() && !layoutService.layoutState().isSideNavOpen) {
-        <div class="workspace-container" (click)="layoutService.selectSideNav(true)">
+        <div class="workspace-container fadeInFromOpacity0" (click)="layoutService.selectSideNav(true)">
             <span class="material-symbols-rounded left-arrow">keyboard_arrow_down</span>
             <div class="workspace-logo-container">
                 <img class="workspace-logo" src="assets/img/main/workspace-logo.svg" alt="workspace logo">
@@ -8,7 +8,7 @@
             </div>
         </div>
     } @else {
-        <div class="logo-container">
+        <div class="logo-container fadeInFromOpacity0">
             <img class="app-logo" src="assets/img/logo.svg" alt="app logo">
             <span>DABubble</span>
         </div>
@@ -25,7 +25,7 @@
         <span class="material-symbols-rounded">keyboard_arrow_down</span>
     </div>
     @if (profilInfo) {
-        <div (click)="toggleProfilInfo()" class="profil-info-overlay">
+        <div (click)="toggleProfilInfo()" class="profil-info-overlay fadeInFromOpacity0">
             <div (click)="stopPropagation($event)" class="profil-info">
                 <div class="dFlexRowCenterCenter width-100 mobile"><div class="rectangle"></div></div>
                 <div (click)="showProfile()" class="dFlexRowCenterCenter width-100 profil-button">

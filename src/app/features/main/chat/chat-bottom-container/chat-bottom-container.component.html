@@ -4,7 +4,7 @@
 </div>
 @for (message of messages(); track message.id) {
     <div class="space-between-messages"></div>
-    <app-message [messageData]="message" [type]="type" [attr.id]="'message-' + message.id"></app-message>
+    <app-message (messageSelectionEvent)="deselectMessages()" [messageData]="message" [type]="type" [attr.id]="'message-' + message.id"></app-message>
     @if (messages()[$index + 1] && isAnotherDay(message, messages()[$index + 1])) {
         <div class="space-between-messages"></div>
         <div class="hr-container">

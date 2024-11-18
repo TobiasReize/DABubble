@@ -574,18 +574,15 @@ export class ChatService {
     }
   }
 
-  openChat(userUID: any): void {
+  openChat(userUID: string): void {
     if(Array.isArray(userUID)){
       const [user1, user2] = userUID;
-      console.log('user1: ', user1);
-      console.log('user2: ', user2);
-      console.log('userUID je pole stringov:', userUID);
-      if(user1 === user2) {
+      if(user1 == user2) {
         this.contactUUID = user2;
-        console.log('ids are the same!:', user1, '+', user2)
+        this.currentUser = this.userService.allUsers().find(user => user.userUID == userUID);
+        this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID == userUID);
       }
     } else {
-    console.log('userUID je string', userUID)
     this.contactUUID = userUID;
     this.currentUser = this.userService.allUsers().find(user => user.userUID === userUID);
     this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
