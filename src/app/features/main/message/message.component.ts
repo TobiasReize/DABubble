@@ -26,7 +26,6 @@ export class MessageComponent {
   menuEmojis: Signal<string[]> = this.chatService.lastEmojis;
   reactionOptions: Signal<string[]> = computed(() => ['1f64c.svg', '1f642.svg', '1f680.svg', '1f913.svg', '2705.svg'].filter(emoji => !this.menuEmojis().includes(emoji)));
   replies: Signal<Message[]> = this.chatService.threadReplies;
-  userName: string = this.userService.currentOnlineUser().name;
   isMe: boolean = false;
   isMoreMenuOpen: boolean = false;
   areReactionOptionsOpen: boolean = false;
@@ -42,20 +41,20 @@ export class MessageComponent {
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   @Output() messageSelectionEvent = new EventEmitter<string>;
 
-  constructor(private chatService: ChatService, private userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private el: ElementRef) {}
+  constructor(private chatService: ChatService, public userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private el: ElementRef) {}
 
   ngOnInit() {
     this.isThreadMessage = this.type === 'thread';
   }
 
   ngOnChanges() {
-    this.isMe = this.messageData.userName == this.userName;
+    this.isMe = this.messageData.senderId == this.userService.currentOnlineUser().userUID;
   }
 
   updateMessage() {
     if (this.isThreadMessage && !this.isTopMessage) {
       this.chatService.updateThreadReply(this.messageData.id, this.messageData.toJson());
-    } else if (this.type === 'chat') {
+    } else if (this.type === 'chat' || this.isTopMessage) {
       this.chatService.updateChatMessage(this.messageData.id, this.messageData.toJson());
     } else if (this.type === 'directMessage') {
       this.chatService.updateDirectMessage(this.messageData.id, this.messageData.toJson());
@@ -68,12 +67,13 @@ export class MessageComponent {
   }
 
   didIReact(reaction: Reaction) {
-    return reaction.userNames.find(userName => userName === this.userName) !== undefined;
+    return reaction.userUIDs.includes(this.userService.currentOnlineUser().userUID);
   }
 
   removeReaction(reaction: Reaction) {
-    const i = reaction.userNames.findIndex(el => el === this.userName);
+    const i = reaction.userUIDs.findIndex(el => el === this.userService.currentOnlineUser().userUID);
     if (i !== -1) {
+      reaction.userUIDs.splice(i, 1);
       reaction.userNames.splice(i, 1);
       if (reaction.userNames.length === 0) {
         const index = this.messageData.reactions.findIndex(r => r == reaction);
@@ -83,10 +83,11 @@ export class MessageComponent {
   }
 
   toggleReaction(reaction: Reaction) {
-    if (reaction.userNames.includes(this.userName)) {
+    if (reaction.userNames.includes(this.userService.currentOnlineUser().name)) {
       this.removeReaction(reaction);
     } else {
-      reaction.userNames.push(this.userName);
+      reaction.userUIDs.push(this.userService.currentOnlineUser().userUID);
+      reaction.userNames.push(this.userService.currentOnlineUser().name);
       this.chatService.saveLastEmoji(reaction.emoji);
     }
     this.updateMessage();
@@ -95,7 +96,7 @@ export class MessageComponent {
   addNewReaction(reactionName: string) {
     const index = this.messageData.reactions.findIndex(reaction => reaction.emoji === reactionName);
     if (index === -1) {
-      const reaction = new Reaction(reactionName, [this.userName]);
+      const reaction = new Reaction(reactionName, [this.userService.currentOnlineUser().name], [this.userService.currentOnlineUser().userUID]);
       this.messageData.reactions.push(reaction);
       this.chatService.saveLastEmoji(reaction.emoji);
       this.updateMessage();
@@ -105,8 +106,8 @@ export class MessageComponent {
     this.areReactionOptionsOpen = false;
   }
 
-  filterReactionUserNames(userNames: string[]) {
-    return userNames.filter(el => el !== this.userName);
+  filterReactionUserUIDs(userUIDs: string[]) {
+    return userUIDs.filter(el => el !== this.userService.currentOnlineUser().userUID);
   }
 
   toggleMoreMenu() {

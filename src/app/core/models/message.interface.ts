@@ -9,4 +9,5 @@ export interface MessageInterface {
     fileUrl: string;
     fileType: string;
     fileName: string;
+    senderId: string;
 }

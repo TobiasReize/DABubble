@@ -35,9 +35,9 @@
                             <div class="reaction-bubble">
                                 <img class="reaction-img" src="assets/img/emojis/{{reaction.emoji}}" alt="reaction emoji">
                                 <div>
-                                    @for (user of filterReactionUserNames(reaction.userNames) | slice:0:3; track user) {
-                                        @if (user !== userName) {
-                                            <span class="reaction-bubble-username">{{ user }}</span><br>
+                                    @for (userUID of filterReactionUserUIDs(reaction.userUIDs) | slice:0:3; track userUID) {
+                                        @if (userUID !== userService.currentOnlineUser().userUID) {
+                                            <span class="reaction-bubble-username">{{ reaction.userNames[$index] }}</span><br>
                                         }
                                     }
                                     @if (didIReact(reaction)) {

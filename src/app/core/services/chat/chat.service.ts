@@ -191,7 +191,8 @@ export class ChatService {
         data['numberOfReplies'],
         data['fileUrl'],
         data['fileType'],
-        data['fileName']
+        data['fileName'],
+        data['senderId']
       );
       return message;
     } else {
@@ -690,7 +691,8 @@ export class ChatService {
       0,
       fileUrl,
       fileType,
-      fileName
+      fileName,
+      this.userService.currentOnlineUser().userUID
     );
     return message.toJson();
   }
