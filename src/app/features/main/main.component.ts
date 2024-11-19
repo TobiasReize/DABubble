@@ -14,6 +14,7 @@ import { DirectMessageComponent } from './side-nav/direct-message/direct-message
 import { ProfileViewUsersComponent } from "./profile-view-users/profile-view-users.component";
 import { ProfileViewLoggedUserComponent } from './profile-view-logged-user/profile-view-logged-user.component';
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
+import { UploadErrorComponent } from "./upload-error/upload-error.component";
 
 @Component({
   selector: 'app-main',
@@ -31,6 +32,7 @@ import { FirebaseService } from '../../core/services/firebase/firebase.service';
     DirectMessageComponent,
     ProfileViewUsersComponent,
     ProfileViewLoggedUserComponent,
+    UploadErrorComponent
 ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',

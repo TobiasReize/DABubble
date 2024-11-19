@@ -1,0 +1,20 @@
+<div class="overlayComponent fadeInFromOpacity0">
+    <div class="upload-error">
+        <div class="upload-error-header">
+            <span>Fehler</span>
+            <div class="icon-btn" (click)="closeDialog()">
+                <span class="material-symbols-rounded">close</span>
+            </div>
+        </div>
+        <div class="error-message">
+            @if (errorType() === 'size') {
+                Datei zu groß! Dateigröße&nbsp;<&nbsp;500&nbsp;kB
+            } @else if (errorType() === 'type') {
+                Kein gültiger Dateityp! Bitte&nbsp;JPEG,&nbsp;PNG,&nbsp;SVG, WEBP&nbsp;oder&nbsp;PDF&nbsp;auswählen.
+            } @else {
+                Es ist ein Fehler aufgetreten! Bitte&nbsp;erneut&nbsp;versuchen.
+            }
+        </div>
+        <button class="btn btn-prim" (click)="closeDialog()">OK</button>
+    </div>
+</div>

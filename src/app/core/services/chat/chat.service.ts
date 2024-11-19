@@ -103,6 +103,14 @@ export class ChatService {
   readonly openEmojiPickerForEditing =
     this.openEmojiPickerForEditingSignal.asReadonly();
 
+  private openUploadErrorSignal = signal<boolean>(false);
+  readonly openUploadError =
+    this.openUploadErrorSignal.asReadonly();
+
+  private uploadErrorTypeSignal = signal<string>('');
+  readonly uploadErrorType =
+    this.uploadErrorTypeSignal.asReadonly();
+
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
@@ -509,6 +517,15 @@ export class ChatService {
 
   toggleEmojiPickerForEditingVisibility() {
     this.toggleVisibilitySignal(this.openEmojiPickerForEditingSignal);
+  }
+
+  toggleUploadErrorVisibility() {
+    this.openUploadErrorSignal.set(!this.openUploadErrorSignal())
+  }
+
+  showUploadError(info: string) {
+    this.uploadErrorTypeSignal.set(info);
+    this.toggleUploadErrorVisibility();
   }
 
   resubThread() {

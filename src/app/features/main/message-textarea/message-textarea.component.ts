@@ -31,7 +31,6 @@ export class MessageTextareaComponent {
   @ViewChild('editableTextarea') editableTextarea!: ElementRef;
   @ViewChild('mentionInsertion', { read: ViewContainerRef }) mentionInsertion!: ViewContainerRef;
   @ViewChild('fileInput') fileInput!: ElementRef;
-  uploadInfo: string = '';
   uploadFile: null | 'inProgress' | 'done' = null;
   uploadError: boolean = false;
   fileUrl: string = '';
@@ -84,7 +83,6 @@ export class MessageTextareaComponent {
   }
 
   resetUploadData() {
-    this.uploadInfo = '';
     this.uploadFile = null;
     this.uploadError = false;
     this.fileUrl = '';
@@ -223,7 +221,6 @@ export class MessageTextareaComponent {
   addFile(input: HTMLInputElement) {
     this.uploadFile = 'inProgress';
     this.uploadError = false;
-    this.uploadInfo = '';
     const file = input.files?.item(0);
     if (file) {
       console.log('file', file);
@@ -255,16 +252,8 @@ export class MessageTextareaComponent {
   }
 
   handleUploadError(info: string) {
-    this.uploadError = true;
-    this.uploadFile = 'done';
-    if (info == 'size') {
-      this.uploadInfo = 'Datei zu groß! Dateigröße < 500kB';
-    } else if (info == 'type') {
-      this.uploadInfo = 'Kein gültiger Dateityp! Bitte JPEG, PNG, SVG, WEBP oder PDF auswählen';
-    } else {
-      this.uploadInfo = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
-    }
-    console.log(this.uploadInfo);
+    this.resetInput();
+    this.chatService.showUploadError(info);
   }
 
   scrollToBottom() {
