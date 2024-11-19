@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, Signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, Signal, ViewChild } from '@angular/core';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { Channel } from '../../../../core/models/channel.class';
 import { CommonModule } from '@angular/common';

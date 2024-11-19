@@ -1,58 +1,65 @@
-import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild, viewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, effect, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { FormControl, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user/user.service';
-import { ChatUser } from '../../../core/models/user.class';
 import { CommonModule } from '@angular/common';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import {
-  collection,
   collectionGroup,
-  CollectionReference,
   getDoc,
-  getDocs,
   onSnapshot,
   query,
   where,
 } from 'firebase/firestore';
-import { Message } from '../../../core/models/message.class';
 import { directMessage } from '../../../core/models/direct-message';
 
 @Component({
   selector: 'app-search-component',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './search-component.component.html',
   styleUrl: './search-component.component.scss',
 })
-export class SearchComponentComponent implements OnInit {
+export class SearchComponentComponent {
   public userService = inject(UserService);
   public sideNavService = inject(SideNavService);
   public chatService = inject(ChatService);
   public fireBaseService = inject(FirebaseService);
-
   searchQuery: string = '';
   filteredResults: any[] = [];
   filteredChannels: any[] = [];
   messages: directMessage[] = [];
+  showDropDown: boolean = false;
+  searchComponentInputControl = new FormControl('');
+
+  @Input('placeholder') placeholder: string = 'Suchen...';
 
   @ViewChild('searchComponentInput') inputRef!: ElementRef;
   @ViewChild('dropDownMenu') dropDownMenu!: ElementRef;
 
-  ngOnInit(): void {
-    this.getDirectMessages();
+  constructor() {
+    effect(() => {
+      if (this.userService.allUsers().length > 0 || this.chatService.channels().length > 0) {
+        this.getDirectMessages();
+      }
+    })
   }
 
-  updateSearchQuery(event: Event) {
-    this.dropDownMenu.nativeElement.classList.remove('dNone');
-    // if(this.inputRef.nativeElement.value === "") {
-    //   dropDown?.classList.add('dNone');
-    // }
-    const inputElement = event.target as HTMLInputElement;
-    this.searchQuery = inputElement.value;
-    
-    this.filterResults();
+  resetInput() {
+    this.searchComponentInputControl.reset();
+    this.showDropDown = false;
+  }
+ 
+  updateSearchQuery(value: string) {
+    this.searchQuery = value;
+    if (value === "") {
+      this.showDropDown = false;
+    } else {
+      this.showDropDown = true;
+      this.filterResults();
+    }
   }
 
   async filterResults() {
@@ -101,7 +108,7 @@ export class SearchComponentComponent implements OnInit {
             directMessageChannelsDocRef
           );
           const directMessageChannelDocData = directMessageChannelDoc.data();
-          const userIds: any = directMessageChannelDocData!['userIds'];
+          const userIds: string[] = directMessageChannelDocData!['userIds'];
           // const otherUserId: string = userIds?.find((id) => id !== this.userService.currentOnlineUser().userUID) || '';
           const messageObject = new directMessage(
             directMessageChannelDoc.id,

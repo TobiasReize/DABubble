@@ -1,4 +1,4 @@
-import { Component, ComponentRef, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { ChatService } from '../../../core/services/chat/chat.service';
 

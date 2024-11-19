@@ -76,14 +76,6 @@ h3 {
     right: 45px;
 }
 
-.search-input {
-    width: 100%;
-    padding: 20px;
-    border-radius: 30px;
-    border: 1px solid transparent;
-    outline: none;
-}
-
 .header-profile-section {
     max-width: $thread-width;
     @include dFlex($jc: flex-end);

@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { UserService } from '../../../core/services/user/user.service';
 import { LayoutService } from '../../../core/services/layout/layout.service';
+import { SearchComponentComponent } from "../search-component/search-component.component";
 
 @Component({
   selector: 'app-side-nav',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SearchComponentComponent],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss',
 })

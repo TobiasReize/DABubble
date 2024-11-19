@@ -1,11 +1,11 @@
 export class directMessage {
     id: string;
-    userId: string;
+    userIds: string[];
     message: string;
     
-    constructor(id: string, userId: string, message: string) {
+    constructor(id: string, userIds: string[], message: string) {
         this.id = id;
-        this.userId = userId;
+        this.userIds = userIds;
         this.message = message;
     }
 }

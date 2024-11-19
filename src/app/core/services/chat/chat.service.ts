@@ -1,4 +1,10 @@
-import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  computed,
+  Injectable,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { Message } from '../../models/message.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
@@ -23,6 +29,7 @@ import { ChannelUserUIDsInterface } from '../../models/channel-user-uids.interfa
 import { ChatUser } from '../../models/user.class';
 import { EmptyMessageFile } from '../../models/empty-message-file.interface';
 import { LayoutService } from '../layout/layout.service';
+import { EventService } from '../event/event.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +38,7 @@ export class ChatService {
   chat: boolean = true;
   contactIndex: number | any = null;
   currentUser: any;
-  userAvatar: string = "";
+  userAvatar: string = '';
   contactUUID: string = '';
   newMessage: boolean = false;
   directMessage: boolean = false;
@@ -67,7 +74,8 @@ export class ChatService {
   readonly currentChannel = this.currentChannelSignal.asReadonly();
 
   private currentDirectMessageChannelSignal = signal<Channel>(new Channel());
-  readonly currentDirectMessageChannel = this.currentDirectMessageChannelSignal.asReadonly();
+  readonly currentDirectMessageChannel =
+    this.currentDirectMessageChannelSignal.asReadonly();
 
   private openEditChannelSignal = signal<boolean>(false);
   readonly openEditChannel = this.openEditChannelSignal.asReadonly();
@@ -88,23 +96,32 @@ export class ChatService {
   readonly openEmojiPicker = this.openEmojiPickerSignal.asReadonly();
 
   private openEmojiPickerForThreadSignal = signal<boolean>(false);
-  readonly openEmojiPickerForThread = this.openEmojiPickerForThreadSignal.asReadonly();
+  readonly openEmojiPickerForThread =
+    this.openEmojiPickerForThreadSignal.asReadonly();
 
   private openEmojiPickerForEditingSignal = signal<boolean>(false);
-  readonly openEmojiPickerForEditing = this.openEmojiPickerForEditingSignal.asReadonly();
+  readonly openEmojiPickerForEditing =
+    this.openEmojiPickerForEditingSignal.asReadonly();
 
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
     this.usersInCurrentChannelSignal.asReadonly();
 
-  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> = computed(() => this.usersInCurrentChannel().filter(user => user.userUID !== this.userService.currentOnlineUser().userUID));
-  readonly usersInCurrentChannelWithoutCurrentUser = this.usersInCurrentChannelWithoutCurrentUserSignal;
+  private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> =
+    computed(() =>
+      this.usersInCurrentChannel().filter(
+        (user) => user.userUID !== this.userService.currentOnlineUser().userUID
+      )
+    );
+  readonly usersInCurrentChannelWithoutCurrentUser =
+    this.usersInCurrentChannelWithoutCurrentUserSignal;
 
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
 
   private directMessageChannelsSignal = signal<Channel[]>([]);
-  readonly directMessageChannels = this.directMessageChannelsSignal.asReadonly();
+  readonly directMessageChannels =
+    this.directMessageChannelsSignal.asReadonly();
 
   private chosenUserUIDsSignal = signal<string[]>([]);
   readonly chosenUserUIDs = this.chosenUserUIDsSignal.asReadonly();
@@ -116,15 +133,18 @@ export class ChatService {
   chatDescription: boolean = false;
   customProfile: boolean = false;
   contacts: any = [];
-  channelID: string = "";
+  channelID: string = '';
   private selectedChannelId: string | null = null;
 
-  private currentMainChatCollectionSignal = computed(() => this.layoutService.selectedCollection());
+  private currentMainChatCollectionSignal = computed(() =>
+    this.layoutService.selectedCollection()
+  );
 
   constructor(
     private firebaseService: FirebaseService,
     private userService: UserService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private eventService: EventService
   ) {
     this.unsubChannels = this.subChannels();
     this.unsubDirectMessageChannels = this.subDirectMessageChannels();
@@ -144,7 +164,9 @@ export class ChatService {
     }
   }
 
-  createMessageFromDocumentSnapshot(doc: QueryDocumentSnapshot | DocumentSnapshot) {
+  createMessageFromDocumentSnapshot(
+    doc: QueryDocumentSnapshot | DocumentSnapshot
+  ) {
     const data = doc.data();
     if (data) {
       const reactions = JSON.parse(data['reactions']);
@@ -175,14 +197,30 @@ export class ChatService {
 
   async addDirectMessageChannel() {
     const dmChannelId = this.getDirectMessageChannelId(this.contactUUID);
-    await setDoc(this.firebaseService.getDocRef(dmChannelId, 'directMessageChannels'), {
-      id: dmChannelId,
-      userIds: [this.contactUUID, this.userService.currentOnlineUser().userUID]
-    });
+    await setDoc(
+      this.firebaseService.getDocRef(dmChannelId, 'directMessageChannels'),
+      {
+        id: dmChannelId,
+        userIds: [
+          this.contactUUID,
+          this.userService.currentOnlineUser().userUID,
+        ],
+      }
+    );
   }
 
-  async addChatMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
-    const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
+  async addChatMessage(
+    messageContent: string,
+    fileUrl: string,
+    fileType: string,
+    fileName: string
+  ) {
+    const messageAsJson = this.prepareMessageForDatabase(
+      messageContent,
+      fileUrl,
+      fileType,
+      fileName
+    );
     await addDoc(
       this.firebaseService.getSubcollectionRef(
         this.currentChannel().id,
@@ -194,47 +232,67 @@ export class ChatService {
   }
 
   getDirectMessageChannelId(userUID: any) {
-    let ids = [this.userService.currentOnlineUser().userUID, userUID];
-    if(Array.isArray(userUID)) {
-      ids = userUID;
-      console.log('ids: ',ids)
+    if(userUID.length > 30) {
+      return userUID;
     }
+    let ids = [this.userService.currentOnlineUser().userUID, userUID];
     const sortedIds = ids.sort();
-    console.log('sortedIds: ',sortedIds)
     return sortedIds[0] + sortedIds[1];
   }
 
- async addDirectMessage(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
-   await this.addDirectMessageChannel();
-   const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
-   await addDoc(
-    this.firebaseService.getSubcollectionRef(
-      this.getDirectMessageChannelId(this.contactUUID),
-      'directMessageChannels',
-      'messages'
-    ),
-    messageAsJson
-  );
-  this.changeDirectMessageChannel(this.contactUUID);
- }
+  async addDirectMessage(
+    messageContent: string,
+    fileUrl: string,
+    fileType: string,
+    fileName: string
+  ) {
+    await this.addDirectMessageChannel();
+    const messageAsJson = this.prepareMessageForDatabase(
+      messageContent,
+      fileUrl,
+      fileType,
+      fileName
+    );
+    await addDoc(
+      this.firebaseService.getSubcollectionRef(
+        this.getDirectMessageChannelId(this.contactUUID),
+        'directMessageChannels',
+        'messages'
+      ),
+      messageAsJson
+    );
+    this.changeDirectMessageChannel(this.contactUUID);
+  }
 
- getMainChatChannelId() {
-  return this.currentMainChatCollectionSignal() === 'channels' ? this.currentChannel().id : this.currentDirectMessageChannel().id; 
- }
+  getMainChatChannelId() {
+    return this.currentMainChatCollectionSignal() === 'channels'
+      ? this.currentChannel().id
+      : this.currentDirectMessageChannel().id;
+  }
 
-  async addThreadReply(messageContent: string, fileUrl: string, fileType: string, fileName: string) {
-      const messageAsJson = this.prepareMessageForDatabase(messageContent, fileUrl, fileType, fileName);
-      await addDoc(
-        this.firebaseService.getSubSubcollectionRef(
-          this.currentMainChatCollectionSignal(),
-          this.getMainChatChannelId(),
-          'messages',
-          this.topThreadMessage().id,
-          'thread'
-        ),
-        messageAsJson
-      );
-      await this.increaseNumberOfReplies(this.currentMainChatCollectionSignal());
+  async addThreadReply(
+    messageContent: string,
+    fileUrl: string,
+    fileType: string,
+    fileName: string
+  ) {
+    const messageAsJson = this.prepareMessageForDatabase(
+      messageContent,
+      fileUrl,
+      fileType,
+      fileName
+    );
+    await addDoc(
+      this.firebaseService.getSubSubcollectionRef(
+        this.currentMainChatCollectionSignal(),
+        this.getMainChatChannelId(),
+        'messages',
+        this.topThreadMessage().id,
+        'thread'
+      ),
+      messageAsJson
+    );
+    await this.increaseNumberOfReplies(this.currentMainChatCollectionSignal());
   }
 
   async updateChannel(
@@ -247,7 +305,10 @@ export class ChatService {
     );
   }
 
-  async updateChatMessage(messageId: string, messageObj: any | EmptyMessageFile) {
+  async updateChatMessage(
+    messageId: string,
+    messageObj: any | EmptyMessageFile
+  ) {
     // {...messageObj} must be used due to a bug concerning the database
     await updateDoc(
       this.firebaseService.getDocRefInSubcollection(
@@ -273,7 +334,10 @@ export class ChatService {
     );
   }
 
-  async updateThreadReply(replyId: string, messageObj: MessageInterface | EmptyMessageFile | any) {
+  async updateThreadReply(
+    replyId: string,
+    messageObj: MessageInterface | EmptyMessageFile | any
+  ) {
     await updateDoc(
       this.firebaseService.getDocRefInSubSubcollection(
         'channels',
@@ -343,15 +407,13 @@ export class ChatService {
     return channel;
   }
 
-  createDirectMessageChannelFromQueryDocumentSnapshot(doc: QueryDocumentSnapshot) {
+  createDirectMessageChannelFromQueryDocumentSnapshot(
+    doc: QueryDocumentSnapshot
+  ) {
     const data = doc.data();
-    const channel = new Channel(
-      doc.id,
-      data['userUIDs'],
-    );
+    const channel = new Channel(doc.id, data['userUIDs']);
     return channel;
   }
-
 
   subChannels() {
     return onSnapshot(
@@ -367,7 +429,7 @@ export class ChatService {
           this.currentChannelSignal.set(this.channels()[0]);
           this.unsubMessages = await this.subMessages(this.currentChannel().id);
         } else {
-          this.changeChannel(this.currentChannel().id);
+          this.openChannel(this.currentChannel().id);
         }
         this.getUsersInCurrentChannel();
       }
@@ -380,13 +442,18 @@ export class ChatService {
       (collection) => {
         const channels: Channel[] = [];
         collection.forEach((doc) => {
-          const channel = this.createDirectMessageChannelFromQueryDocumentSnapshot(doc);
+          const channel =
+            this.createDirectMessageChannelFromQueryDocumentSnapshot(doc);
           channels.push(channel);
         });
         this.directMessageChannelsSignal.set(channels);
         if (!this.unsubDirectMessages && this.directMessageChannels()[0]) {
-          this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[0]);
-          this.unsubDirectMessages = this.subDirectMessages(this.currentDirectMessageChannel().id);
+          this.currentDirectMessageChannelSignal.set(
+            this.directMessageChannels()[0]
+          );
+          this.unsubDirectMessages = this.subDirectMessages(
+            this.currentDirectMessageChannel().id
+          );
         } else {
           this.changeDirectMessageChannel(this.contactUUID);
         }
@@ -396,8 +463,19 @@ export class ChatService {
   }
 
   toggleVisibilitySignal(visibilitySignal: WritableSignal<boolean>) {
-    const visibilitySignals = [this.openAddPeopleSignal, this.openEditChannelSignal, this.openMembersSignal, this.openAtSignal, this.openAtForThreadSignal, this.openEmojiPickerSignal, this.openEmojiPickerForThreadSignal, this.openEmojiPickerForEditingSignal];
-    visibilitySignals.forEach(s => s != visibilitySignal ? s.set(false) : null);
+    const visibilitySignals = [
+      this.openAddPeopleSignal,
+      this.openEditChannelSignal,
+      this.openMembersSignal,
+      this.openAtSignal,
+      this.openAtForThreadSignal,
+      this.openEmojiPickerSignal,
+      this.openEmojiPickerForThreadSignal,
+      this.openEmojiPickerForEditingSignal,
+    ];
+    visibilitySignals.forEach((s) =>
+      s != visibilitySignal ? s.set(false) : null
+    );
     visibilitySignal.set(!visibilitySignal());
   }
 
@@ -443,7 +521,9 @@ export class ChatService {
   changeThread(message: Message) {
     this.topThreadMessageId = message.id;
     this.resubThread();
-    this.unsubTopThreadMessage = this.subTopThreadMessage(this.currentMainChatCollectionSignal());
+    this.unsubTopThreadMessage = this.subTopThreadMessage(
+      this.currentMainChatCollectionSignal()
+    );
   }
 
   async resubChannel() {
@@ -458,7 +538,9 @@ export class ChatService {
     if (this.unsubDirectMessages) {
       this.unsubDirectMessages();
     }
-    this.unsubDirectMessages = this.subDirectMessages(this.currentDirectMessageChannel().id);
+    this.unsubDirectMessages = this.subDirectMessages(
+      this.currentDirectMessageChannel().id
+    );
   }
 
   getSelectedChannelId(): string | null {
@@ -469,7 +551,7 @@ export class ChatService {
     this.selectedChannelId = id;
     this.isLoadingMessages.set(true);
     const index = this.channels().findIndex((channel) => channel.id === id);
-    
+
     if (index !== -1) {
       this.currentChannelSignal.set(this.channels()[index]);
       this.resubChannel();
@@ -477,9 +559,10 @@ export class ChatService {
       this.messagesSignal.set([]);
       this.isLoadingMessages.set(false);
     }
+    this.eventService.triggerFocusEvent();
   }
 
-  changeChannel(id: string) {
+  openChannel(id: string) {
     this.changeChannelWithoutNavigation(id);
     this.layoutService.deselectSideNavOnMobile();
     this.layoutService.selectThread(false);
@@ -489,36 +572,50 @@ export class ChatService {
   changeDirectMessageChannel(id: any) {
     this.isLoadingMessages.set(true);
     const directMessageChannelId = this.getDirectMessageChannelId(id);
-    console.log('directMessageChannelId', directMessageChannelId)
-    const index = this.directMessageChannels().findIndex((channel) => channel.id === directMessageChannelId);
-    
+    const index = this.directMessageChannels().findIndex(
+      (channel) => channel.id === directMessageChannelId
+    );
+
     if (index !== -1) {
-      this.currentDirectMessageChannelSignal.set(this.directMessageChannels()[index]);
+      this.currentDirectMessageChannelSignal.set(
+        this.directMessageChannels()[index]
+      );
       this.resubDirectMessageChannel();
     } else {
       this.directMessagesSignal.set([]);
       this.isLoadingMessages.set(false);
     }
+    this.eventService.triggerFocusEvent();
   }
 
   leaveChannel() {
-    if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
-      const newuserUIDs = this.currentChannel().userUIDs.filter(userUID => userUID !== this.userService.currentOnlineUser().userUID);
+    if (
+      this.currentChannel().userUIDs &&
+      this.currentChannel().userUIDs.length > 0
+    ) {
+      const newuserUIDs = this.currentChannel().userUIDs.filter(
+        (userUID) => userUID !== this.userService.currentOnlineUser().userUID
+      );
       this.updateChannel({
-        userUIDs: newuserUIDs
-      })
+        userUIDs: newuserUIDs,
+      });
     }
   }
 
   getUsersInCurrentChannel() {
     const foundUsers: ChatUser[] = [];
-    if (this.currentChannel().userUIDs && this.currentChannel().userUIDs.length > 0) {
-      this.currentChannel().userUIDs.forEach(userUID => {
-        const foundUser = this.userService.allUsers().find(user => userUID === user.userUID);
+    if (
+      this.currentChannel().userUIDs &&
+      this.currentChannel().userUIDs.length > 0
+    ) {
+      this.currentChannel().userUIDs.forEach((userUID) => {
+        const foundUser = this.userService
+          .allUsers()
+          .find((user) => userUID === user.userUID);
         if (foundUser) {
           foundUsers.push(foundUser);
         }
-      })
+      });
     }
     this.usersInCurrentChannelSignal.set(foundUsers);
   }
@@ -526,31 +623,44 @@ export class ChatService {
   async addPersonToCurrentChannel(userUID: string) {
     if (!this.currentChannel().userUIDs.includes(userUID)) {
       await this.updateChannel({
-        userUIDs: [...this.currentChannel().userUIDs, userUID]
-      })
+        userUIDs: [...this.currentChannel().userUIDs, userUID],
+      });
     }
   }
 
   findUserInAllUsers(name: string): ChatUser[] {
-    return this.userService.allUsers().filter(user => user.name.toLowerCase().includes(name.toLowerCase()));
+    return this.userService
+      .allUsers()
+      .filter((user) => user.name.toLowerCase().includes(name.toLowerCase()));
   }
 
   findUsersToAdd(name: string): ChatUser[] {
     const users = this.findUserInAllUsers(name);
-    return users.filter(user => !this.usersInCurrentChannel().includes(user));
+    return users.filter((user) => !this.usersInCurrentChannel().includes(user));
   }
 
   async increaseNumberOfReplies(collection: string) {
     this.topThreadMessage().numberOfReplies++;
     this.topThreadMessage().lastReplyAt = new Date();
     if (collection === 'channels') {
-      this.updateChatMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+      this.updateChatMessage(
+        this.topThreadMessage().id,
+        this.topThreadMessage().toJson()
+      );
     } else {
-      this.updateDirectMessage(this.topThreadMessage().id, this.topThreadMessage().toJson());
+      this.updateDirectMessage(
+        this.topThreadMessage().id,
+        this.topThreadMessage().toJson()
+      );
     }
   }
 
-  prepareMessageForDatabase(messageContent: string, fileUrl: string, fileType: string, fileName: string): MessageInterface {
+  prepareMessageForDatabase(
+    messageContent: string,
+    fileUrl: string,
+    fileType: string,
+    fileName: string
+  ): MessageInterface {
     const message = new Message(
       '',
       this.userService.currentOnlineUser().avatar,
@@ -575,19 +685,35 @@ export class ChatService {
   }
 
   openChat(userUID: string): void {
-    if(Array.isArray(userUID)){
-      const [user1, user2] = userUID;
-      if(user1 == user2) {
-        this.contactUUID = user2;
-        this.currentUser = this.userService.allUsers().find(user => user.userUID == userUID);
-        this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID == userUID);
-      }
+    let stringUserUID: string = "";
+    let arrayUserUID: string[] = [];
+    if(Array.isArray(userUID)) {
+      arrayUserUID = userUID;
+      let onlineUserIndex: number;
+      arrayUserUID.forEach((uid, currentIndex) => {
+        if(uid == this.userService.currentOnlineUser().userUID) {
+          onlineUserIndex = currentIndex;
+          arrayUserUID.forEach((uid, index) => {
+            if(index !== onlineUserIndex) {
+              stringUserUID = uid;
+              console.log('stringUserUID: ', stringUserUID);
+            }
+          });
+        }
+      })
     } else {
-    this.contactUUID = userUID;
-    this.currentUser = this.userService.allUsers().find(user => user.userUID === userUID);
-    this.contactIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
-    
-    if (this.currentUser?.userUID === this.userService.currentOnlineUser().userUID) {
+      stringUserUID = userUID;
+    }
+    this.contactUUID = stringUserUID;
+    this.currentUser = this.userService
+      .allUsers()
+      .find((user) => user.userUID == stringUserUID);
+    this.contactIndex = this.userService
+      .allUsers()
+      .findIndex((user) => user.userUID == stringUserUID);
+    if (
+      this.currentUser?.userUID === this.userService.currentOnlineUser().userUID
+    ) {
       this.myChatDescription = true;
       this.chatDescription = false;
     } else {
@@ -597,14 +723,12 @@ export class ChatService {
     this.layoutService.deselectSideNavOnMobile();
     this.layoutService.selectThread(false);
     this.layoutService.selectDirectMessage();
-    
     const channelElements = document.querySelectorAll('.entwicklerTeam');
-    channelElements.forEach(element => {
+    channelElements.forEach((element) => {
       element.classList.remove('channelWasChosen');
     });
     this.selectedChannelId = null;
-   }
-   this.changeDirectMessageChannel(userUID);
+    this.changeDirectMessageChannel(stringUserUID);
   }
 
   async getContacts() {
@@ -617,7 +741,13 @@ export class ChatService {
 
   subThread() {
     const q = query(
-      this.firebaseService.getSubSubcollectionRef(this.currentMainChatCollectionSignal(), this.getMainChatChannelId(), 'messages', this.topThreadMessageId, 'thread'),
+      this.firebaseService.getSubSubcollectionRef(
+        this.currentMainChatCollectionSignal(),
+        this.getMainChatChannelId(),
+        'messages',
+        this.topThreadMessageId,
+        'thread'
+      ),
       orderBy('postedAt')
     );
     return onSnapshot(q, (snapshot) => {
@@ -632,19 +762,29 @@ export class ChatService {
     });
   }
 
-  subTopThreadMessage(collection: string) { 
-    return onSnapshot(this.firebaseService.getDocRefInSubcollection(this.getMainChatChannelId(), collection, 'messages', this.topThreadMessageId), (doc) => {
-      if (doc) {
+  subTopThreadMessage(collection: string) {
+    return onSnapshot(
+      this.firebaseService.getDocRefInSubcollection(
+        this.getMainChatChannelId(),
+        collection,
+        'messages',
+        this.topThreadMessageId
+      ),
+      (doc) => {
+        if (doc) {
           const message = this.createMessageFromDocumentSnapshot(doc);
           if (message) {
             this.topThreadMessageSignal.set(message);
           }
         }
-    });
+      }
+    );
   }
 
   setContactIndexFromUID(userUID: string) {
-    const userIndex = this.userService.allUsers().findIndex(user => user.userUID === userUID);
+    const userIndex = this.userService
+      .allUsers()
+      .findIndex((user) => user.userUID === userUID);
     if (userIndex !== -1) {
       this.contactIndex = userIndex;
     }
@@ -673,7 +813,7 @@ export class ChatService {
     const emptyFileData = {
       fileUrl: '',
       fileType: '',
-      fileName: ''
+      fileName: '',
     };
     if (messageId) {
       if (type === 'chat') {

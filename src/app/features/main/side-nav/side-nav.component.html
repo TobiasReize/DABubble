@@ -1,6 +1,7 @@
 <div class="side-nav-container">
 <div id="searchMobileDiv">
-    <input id="searchMobileLayout" type="text" placeholder="Gehe zu...">
+    <!-- <input id="searchMobileLayout" type="text" placeholder="Gehe zu..."> -->
+     <app-search-component placeholder="Gehe zu..."></app-search-component>
     <img id="searchImg" src="assets/img/search.png" alt="">
   </div>
   
@@ -68,7 +69,7 @@
       <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out divWidth" style="align-items: flex-start;">
         <div class="divWidth dFlexColumn gap25 divWidth" style="overflow: auto; align-items: flex-start;">
           @for (channel of chatService.channels(); track channel.name; let i = $index) {
-            <div [ngClass]="{'channelWasChosen': chatService.getSelectedChannelId() === channel.id}" class="channel-name-container dFlexRowFlex-StartCenter" (click)="chatService.changeChannel(channel.id); chatService.selectChannel()">
+            <div [ngClass]="{'channelWasChosen': chatService.getSelectedChannelId() === channel.id}" class="channel-name-container dFlexRowFlex-StartCenter" (click)="chatService.openChannel(channel.id); chatService.selectChannel()">
               <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
               <span>{{channel.name}}</span>
             </div>

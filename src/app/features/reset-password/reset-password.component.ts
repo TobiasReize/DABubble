@@ -4,7 +4,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { Router } from '@angular/router';
-import { Auth, getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
+import { Auth, sendPasswordResetEmail } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-reset-password',
