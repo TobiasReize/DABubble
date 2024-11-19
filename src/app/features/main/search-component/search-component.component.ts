@@ -38,19 +38,20 @@ export class SearchComponentComponent implements OnInit {
   messages: directMessage[] = [];
 
   @ViewChild('searchComponentInput') inputRef!: ElementRef;
+  @ViewChild('dropDownMenu') dropDownMenu!: ElementRef;
 
   ngOnInit(): void {
     this.getDirectMessages();
   }
 
   updateSearchQuery(event: Event) {
+    this.dropDownMenu.nativeElement.classList.remove('dNone');
+    // if(this.inputRef.nativeElement.value === "") {
+    //   dropDown?.classList.add('dNone');
+    // }
     const inputElement = event.target as HTMLInputElement;
     this.searchQuery = inputElement.value;
-    const dropDown = document.getElementById('searchResultsDropdown');
-    dropDown?.classList.remove('dNone');
-    if(this.inputRef.nativeElement.value === "") {
-      dropDown?.classList.add('dNone');
-    }
+    
     this.filterResults();
   }
 
