@@ -27,7 +27,7 @@
           </div>
         }
         @else if(result.message) {
-          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChat(result.userIds); resetInput()">
+          <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="chatService.openChatOrChannel(result); resetInput()">
             <p>{{ result.message }}</p>
           </div>
         }

@@ -548,6 +548,7 @@ export class ChatService {
   }
 
   changeChannelWithoutNavigation(id: string) {
+    console.log('changeChannelWithoutNavigation', id)
     this.selectedChannelId = id;
     this.isLoadingMessages.set(true);
     const index = this.channels().findIndex((channel) => channel.id === id);
@@ -684,7 +685,16 @@ export class ChatService {
     }
   }
 
+  openChatOrChannel(result: any) {
+    if(result.id.length > 28) {
+      this.openChat(result.userIds);
+    } else {
+      this.openChannel(result.id);
+    }
+  }
+
   openChat(userUID: string): void {
+    console.log(userUID)
     let stringUserUID: string = "";
     let arrayUserUID: string[] = [];
     if(Array.isArray(userUID)) {
@@ -696,7 +706,6 @@ export class ChatService {
           arrayUserUID.forEach((uid, index) => {
             if(index !== onlineUserIndex) {
               stringUserUID = uid;
-              console.log('stringUserUID: ', stringUserUID);
             }
           });
         }
