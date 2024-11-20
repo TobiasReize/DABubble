@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SideNavService } from '../../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { UserService } from '../../../../core/services/user/user.service';
@@ -44,8 +44,8 @@ export class CreateChannelComponent {
   );
   addedUsers: boolean = false;
   id: string = "addName";
-
   mobile: boolean = false;
+  @ViewChild('input') inputRef!: ElementRef;
 
   onDiv1Click(): void {
     this.sideNavService.createChannelsDivOpened = false;
@@ -149,10 +149,20 @@ export class CreateChannelComponent {
   }
 
   checkInputs() {
+    this.inputRef.nativeElement.classList.remove('channel-exists');
+    this.inputRef.nativeElement.placeholder = "z.B. Kooperationsprojekte";
     if (this.channelName === '') {
       this.inputsAreEmpty = true;
     } else {
       this.inputsAreEmpty = false;
+      this.chatService.channels().forEach(channel => {
+        if(channel.name == this.channelName){
+          this.inputRef.nativeElement.value = "";
+          this.inputRef.nativeElement.classList.add('channel-exists');
+          this.inputRef.nativeElement.placeholder = "Dieser Channel-Name existiert bereits!";
+          this.inputsAreEmpty = true;
+        }
+      });
     }
   }
 

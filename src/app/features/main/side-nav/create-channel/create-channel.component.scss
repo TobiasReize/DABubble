@@ -219,3 +219,9 @@ section {
     justify-content: flex-start;
   }
 }
+
+input.channel-exists::placeholder {
+  color: red;
+  opacity: 1; /* Uistite sa, že placeholder je viditeľný */
+}
+
