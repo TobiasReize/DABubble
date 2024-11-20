@@ -50,6 +50,12 @@
 
 // Responsive Design:
 @media(max-width: 654px) {
+    .content-window {
+        .arrow-back {
+            top: 24px
+        }
+    }
+    
     .register-text {
         font-size: 17px;
         line-height: 20.4px;
@@ -59,6 +65,12 @@
 }
 
 @media(max-width: 450px) {
+    .content-window {
+        .arrow-back {
+            top: 29px
+        }
+    }
+
     .privacy-policy-container {
         margin-bottom: 30px;
 
