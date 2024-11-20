@@ -566,7 +566,6 @@ export class ChatService {
   }
 
   changeChannelWithoutNavigation(id: string) {
-    console.log('changeChannelWithoutNavigation', id)
     this.selectedChannelId = id;
     this.isLoadingMessages.set(true);
     const index = this.channels().findIndex((channel) => channel.id === id);
@@ -713,7 +712,6 @@ export class ChatService {
   }
 
   openChat(userUID: string): void {
-    console.log(userUID)
     let stringUserUID: string = "";
     let arrayUserUID: string[] = [];
     if(Array.isArray(userUID)) {

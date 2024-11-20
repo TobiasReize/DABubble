@@ -78,7 +78,6 @@ export class MessageTextareaComponent {
         this.scrollToBottom();
       }, 1);
     }
-    console.log('users: ', this.users());
     this.chatService.messageID++;
   }
 
@@ -205,7 +204,6 @@ export class MessageTextareaComponent {
 
   saveMessageText() {
     this.messageText = this.editableTextarea.nativeElement.textContent;
-    console.log('this.messageText: ', this.messageText)
   }
 
   insertEmoji(emoji: string) {
@@ -214,7 +212,6 @@ export class MessageTextareaComponent {
   }
 
   isImage(fileType: string) {
-    console.log('image check');
     return fileType === 'image/jpeg' || fileType === 'image/png' || fileType === 'image/svg+xml' || fileType === 'image/webp';
   }
 
@@ -223,7 +220,6 @@ export class MessageTextareaComponent {
     this.uploadError = false;
     const file = input.files?.item(0);
     if (file) {
-      console.log('file', file);
       this.fileName = file.name;
       switch (true) {
         case (!this.isImage(file.type) && file.type != 'application/pdf'):

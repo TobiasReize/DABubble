@@ -2,7 +2,7 @@ import { computed, inject, Injectable, OnDestroy, Signal, signal } from '@angula
 import { doc, onSnapshot, setDoc, Unsubscribe } from '@angular/fire/firestore';
 import { FirebaseService } from '../firebase/firebase.service';
 import { ChatUser } from '../../models/user.class';
-import { Auth, getAuth, signOut, updateEmail, User, user, verifyBeforeUpdateEmail } from '@angular/fire/auth';
+import { Auth, signOut, User, user, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -34,7 +34,6 @@ export class UserService implements OnDestroy {
   constructor() {
     this.unsubUserCol = this.subUserCol();
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
-      console.log('currentUser', currentUser);
       if (currentUser) {
         this.updateUserDoc(currentUser.uid, {isOnline: true});
         this.currentUserUIDSignal.set(currentUser.uid);
@@ -52,16 +51,13 @@ export class UserService implements OnDestroy {
       usersCollection.forEach(user => {
         this.allUsersSignal().push(new ChatUser(user.data()));
       });
-      // console.log('All users', this.allUsers());
     });
   }
 
 
   async addUser(userUID: string, data: object) {
     await setDoc(doc(this.firebaseService.getCollectionRef('users'), userUID), data)
-    .then(
-      (result) => {console.log('User erfolgreich hinzugefügt!')}
-    ).catch(
+    .catch(
       (err) => {console.error('User hinzufügen error:', err)});
   }
 
@@ -70,23 +66,17 @@ export class UserService implements OnDestroy {
     if (this.auth.currentUser) {
       await verifyBeforeUpdateEmail(this.auth.currentUser, data.email)
         .then(() => {
-          console.log('Email updated!');
           this.updateUserDoc(userUID, data);
         })
         .catch((error) => {
           console.log('Email Update Error:', error);
         });
-    } else {
-      console.log('Aktuell kein User eingeloggt!');
     }
   }
 
 
   async updateUserDoc(userUID: string, data = {}) {
     await this.firebaseService.updateDocData('users', userUID, data)
-      .then(() => {
-        console.log('Users-Collection updated');
-      })
       .catch((error) => {
         console.log('Update User Error:', error);
       })
@@ -106,9 +96,7 @@ export class UserService implements OnDestroy {
       await this.updateUserDoc(this.currentOnlineUser().userUID, {isOnline: false});
     }
     await signOut(this.auth)
-      .then(() => {
-        console.log('Sign-out successful');
-      }).catch((error) => {
+      .catch((error) => {
         console.log('Error:', error);
       })
   }
