@@ -391,6 +391,10 @@ app-emoji-picker {
     .message-content {
         @include fontStyle1;
     }
+    .avatar {
+        height: 50px;
+        width: 50px;
+    }
 }
 
 @media (max-width: 360px) {
