@@ -1,5 +1,5 @@
 import { Component, Signal } from '@angular/core';
-import { ChatService } from '../../../core/services/chat/chat.service';
+import { DialogService } from '../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-upload-error',
@@ -10,11 +10,11 @@ import { ChatService } from '../../../core/services/chat/chat.service';
 })
 export class UploadErrorComponent {
 
-  errorType: Signal<string> = this.chatService.uploadErrorType;
+  errorType: Signal<string> = this.dialogService.uploadErrorType;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private dialogService: DialogService) { }
 
   closeDialog() {
-    this.chatService.toggleUploadErrorVisibility();
+    this.dialogService.toggleUploadErrorVisibility();
   }
 }

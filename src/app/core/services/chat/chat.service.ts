@@ -3,15 +3,12 @@ import {
   Injectable,
   Signal,
   signal,
-  WritableSignal,
 } from '@angular/core';
 import { Message } from '../../models/message.class';
 import { MessageInterface } from '../../models/message.interface';
 import {
   addDoc,
   DocumentSnapshot,
-  collection,
-  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -35,16 +32,12 @@ import { EventService } from '../event/event.service';
   providedIn: 'root',
 })
 export class ChatService {
-  chat: boolean = true;
   contactIndex: number | any = null;
   currentUser: any;
   userAvatar: string = '';
   contactUUID: string = '';
-  newMessage: boolean = false;
-  directMessage: boolean = false;
   profileViewUsersActive: boolean = false;
   public isLoadingMessages = signal<boolean>(false);
-  messageID: number = 0;
 
   unsubMessages!: Unsubscribe;
   unsubDirectMessages!: Unsubscribe;
@@ -52,8 +45,6 @@ export class ChatService {
   unsubDirectMessageChannels!: Unsubscribe;
   unsubThread!: Unsubscribe;
   unsubTopThreadMessage!: Unsubscribe;
-
-  private defaultEmojis: string[] = ['2705.svg', '1f64c.svg'];
 
   private messagesSignal = signal<Message[]>([]);
   readonly messages = this.messagesSignal.asReadonly();
@@ -67,49 +58,12 @@ export class ChatService {
   private threadRepliesSignal = signal<Message[]>([]);
   readonly threadReplies = this.threadRepliesSignal.asReadonly();
 
-  private lastEmojisSignal = signal<string[]>(this.defaultEmojis);
-  readonly lastEmojis = this.lastEmojisSignal.asReadonly();
-
   private currentChannelSignal = signal<Channel>(new Channel());
   readonly currentChannel = this.currentChannelSignal.asReadonly();
 
   private currentDirectMessageChannelSignal = signal<Channel>(new Channel());
   readonly currentDirectMessageChannel =
     this.currentDirectMessageChannelSignal.asReadonly();
-
-  private openEditChannelSignal = signal<boolean>(false);
-  readonly openEditChannel = this.openEditChannelSignal.asReadonly();
-
-  private openAddPeopleSignal = signal<boolean>(false);
-  readonly openAddPeople = this.openAddPeopleSignal.asReadonly();
-
-  private openMembersSignal = signal<boolean>(false);
-  readonly openMembers = this.openMembersSignal.asReadonly();
-
-  private openAtSignal = signal<boolean>(false);
-  readonly opentAt = this.openAtSignal.asReadonly();
-
-  private openAtForThreadSignal = signal<boolean>(false);
-  readonly openAtForThread = this.openAtForThreadSignal.asReadonly();
-
-  private openEmojiPickerSignal = signal<boolean>(false);
-  readonly openEmojiPicker = this.openEmojiPickerSignal.asReadonly();
-
-  private openEmojiPickerForThreadSignal = signal<boolean>(false);
-  readonly openEmojiPickerForThread =
-    this.openEmojiPickerForThreadSignal.asReadonly();
-
-  private openEmojiPickerForEditingSignal = signal<boolean>(false);
-  readonly openEmojiPickerForEditing =
-    this.openEmojiPickerForEditingSignal.asReadonly();
-
-  private openUploadErrorSignal = signal<boolean>(false);
-  readonly openUploadError =
-    this.openUploadErrorSignal.asReadonly();
-
-  private uploadErrorTypeSignal = signal<string>('');
-  readonly uploadErrorType =
-    this.uploadErrorTypeSignal.asReadonly();
 
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
   readonly usersInCurrentChannel =
@@ -307,7 +261,6 @@ export class ChatService {
   async updateChannel(
     channelObj: ChannelName | ChannelDescription | ChannelUserUIDsInterface
   ) {
-    // {...channelObj} must be used due to a bug concerning the database
     await updateDoc(
       this.firebaseService.getDocRef(this.currentChannel().id, 'channels'),
       { ...channelObj }
@@ -318,7 +271,6 @@ export class ChatService {
     messageId: string,
     messageObj: any | EmptyMessageFile
   ) {
-    // {...messageObj} must be used due to a bug concerning the database
     await updateDoc(
       this.firebaseService.getDocRefInSubcollection(
         this.currentChannel().id,
@@ -331,7 +283,6 @@ export class ChatService {
   }
 
   async updateDirectMessage(messageId: string, messageObj: any) {
-    // {...messageObj} must be used due to a bug concerning the database
     await updateDoc(
       this.firebaseService.getDocRefInSubcollection(
         this.currentDirectMessageChannel().id,
@@ -469,64 +420,6 @@ export class ChatService {
         this.getUsersInCurrentChannel();
       }
     );
-  }
-
-  toggleVisibilitySignal(visibilitySignal: WritableSignal<boolean>) {
-    const visibilitySignals = [
-      this.openAddPeopleSignal,
-      this.openEditChannelSignal,
-      this.openMembersSignal,
-      this.openAtSignal,
-      this.openAtForThreadSignal,
-      this.openEmojiPickerSignal,
-      this.openEmojiPickerForThreadSignal,
-      this.openEmojiPickerForEditingSignal,
-    ];
-    visibilitySignals.forEach((s) =>
-      s != visibilitySignal ? s.set(false) : null
-    );
-    visibilitySignal.set(!visibilitySignal());
-  }
-
-  toggleEditChannelVisibility() {
-    this.toggleVisibilitySignal(this.openEditChannelSignal);
-  }
-
-  toggleAddPeopleVisibility() {
-    this.toggleVisibilitySignal(this.openAddPeopleSignal);
-  }
-
-  toggleMembersVisibility() {
-    this.toggleVisibilitySignal(this.openMembersSignal);
-  }
-
-  toggleAtVisibility() {
-    this.toggleVisibilitySignal(this.openAtSignal);
-  }
-
-  toggleAtForThreadVisibility() {
-    this.toggleVisibilitySignal(this.openAtForThreadSignal);
-  }
-
-  toggleEmojiPickerVisibility() {
-    this.toggleVisibilitySignal(this.openEmojiPickerSignal);
-  }
-
-  toggleEmojiPickerForThreadVisibility() {
-    this.toggleVisibilitySignal(this.openEmojiPickerForThreadSignal);
-  }
-
-  toggleEmojiPickerForEditingVisibility() {
-    this.toggleVisibilitySignal(this.openEmojiPickerForEditingSignal);
-  }
-
-  toggleUploadErrorVisibility() {
-    this.openUploadErrorSignal.set(!this.openUploadErrorSignal())
-  }
-
-  showUploadError(info: string) {
-    this.uploadErrorTypeSignal.set(info);
-    this.toggleUploadErrorVisibility();
   }
 
   resubThread() {
@@ -696,13 +589,6 @@ export class ChatService {
     return message.toJson();
   }
 
-  saveLastEmoji(emoji: string) {
-    const emojis = this.lastEmojis();
-    if (!emojis.includes(emoji)) {
-      this.lastEmojisSignal.update((values) => [emoji, values[0]]);
-    }
-  }
-
   openChatOrChannel(result: any) {
     if(result.id.length > 28) {
       this.openChat(result.userIds);
@@ -755,14 +641,6 @@ export class ChatService {
     });
     this.selectedChannelId = null;
     this.changeDirectMessageChannel(stringUserUID);
-  }
-
-  async getContacts() {
-    const q = query(collection(this.firebaseService.firestore, 'contacts'));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      this.contacts.push(doc);
-    });
   }
 
   subThread() {
@@ -861,10 +739,5 @@ export class ChatService {
 
   updateChosenUserUIDs(userUIDs: string[]) {
     this.chosenUserUIDsSignal.set(userUIDs);
-  }
-
-  selectChannel() {
-    this.directMessage = false;
-    this.chat = true;
   }
 }

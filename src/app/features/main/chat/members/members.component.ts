@@ -2,6 +2,7 @@ import { Component, Input, Signal } from '@angular/core';
 import { ChatUser } from '../../../../core/models/user.class';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { CommonModule } from '@angular/common';
+import { DialogService } from '../../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-members',
@@ -14,21 +15,21 @@ export class MembersComponent {
   members: Signal<ChatUser[]> = this.chatService.usersInCurrentChannel;
   @Input('isEditChannel') isEditChannel: boolean = false;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private dialogService: DialogService) { }
 
   closeDialog() {
-    this.chatService.toggleMembersVisibility();
+    this.dialogService.toggleMembersVisibility();
   }
 
   openAddPeople() {
-    this.chatService.toggleAddPeopleVisibility();
+    this.dialogService.toggleAddPeopleVisibility();
   }
 
   openViewProfile(userUID: string) {
-    if (this.chatService.openMembers()) {
-      this.chatService.toggleMembersVisibility();
+    if (this.dialogService.openMembers()) {
+      this.dialogService.toggleMembersVisibility();
     } else {
-      this.chatService.toggleEditChannelVisibility();
+      this.dialogService.toggleEditChannelVisibility();
     }
     this.chatService.openViewProfile(userUID);
   }

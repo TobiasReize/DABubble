@@ -8,6 +8,7 @@ import { ChatUser } from '../../../core/models/user.class';
 import { AddPeopleComponent } from './add-people/add-people.component';
 import { MembersComponent } from './members/members.component';
 import { ChatBottomContainerComponent } from './chat-bottom-container/chat-bottom-container.component';
+import { DialogService } from '../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-chat',
@@ -21,21 +22,21 @@ export class ChatComponent {
   userAvatars: string[] = ['avatar0.svg', 'avatar1.svg', 'avatar2.svg', 'avatar3.svg', 'avatar4.svg', 'avatar5.svg'];
   usersInCurrentChannel: Signal<ChatUser[]> = this.chatService.usersInCurrentChannel;
   messages: Signal<Message[]> = this.chatService.messages;
-  isAddPeopleDialogVisible: Signal<boolean> = this.chatService.openAddPeople;
-  isMembersDialogVisible: Signal<boolean> = this.chatService.openMembers;
+  isAddPeopleDialogVisible: Signal<boolean> = this.dialogService.openAddPeople;
+  isMembersDialogVisible: Signal<boolean> = this.dialogService.openMembers;
   @ViewChild('messageContainer') messageContainer!: ChatBottomContainerComponent;
 
-  constructor(public chatService: ChatService) { }
+  constructor(public chatService: ChatService, private dialogService: DialogService) { }
 
   toggleEditChannelVisibility() {
-    this.chatService.toggleEditChannelVisibility();
+    this.dialogService.toggleEditChannelVisibility();
   }
 
   toggleMembersVisibility() {
-    this.chatService.toggleMembersVisibility();
+    this.dialogService.toggleMembersVisibility();
   }
 
   openAddPeople() {
-    this.chatService.toggleAddPeopleVisibility();
+    this.dialogService.toggleAddPeopleVisibility();
   }
 }

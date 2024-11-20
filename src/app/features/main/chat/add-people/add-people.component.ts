@@ -2,6 +2,7 @@ import { Component, Signal } from '@angular/core';
 import { Channel } from '../../../../core/models/channel.class';
 import { ChatService } from '../../../../core/services/chat/chat.service';
 import { FilterNameComponent } from '../../../../shared/filter-name/filter-name.component';
+import { DialogService } from '../../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-add-people',
@@ -13,10 +14,10 @@ import { FilterNameComponent } from '../../../../shared/filter-name/filter-name.
 export class AddPeopleComponent {
   currentChannel: Signal<Channel> = this.chatService.currentChannel;
 
-  constructor(public chatService: ChatService) { }
+  constructor(public chatService: ChatService, private dialogService: DialogService) { }
 
   closeDialog() {
-    this.chatService.toggleAddPeopleVisibility();
+    this.dialogService.toggleAddPeopleVisibility();
     this.chatService.updateChosenUserUIDs([]);
   }
 

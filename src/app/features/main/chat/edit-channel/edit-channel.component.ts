@@ -4,6 +4,7 @@ import { Channel } from '../../../../core/models/channel.class';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MembersComponent } from '../members/members.component';
+import { DialogService } from '../../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-edit-channel',
@@ -22,7 +23,7 @@ export class EditChannelComponent {
   channelDescriptionError: boolean = false;
   @ViewChild('channelDescriptionInput') channelDescriptionInput!: ElementRef;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private dialogService: DialogService) {}
 
   ngAfterViewInit() {
     this.resizeTextArea();
@@ -68,7 +69,7 @@ export class EditChannelComponent {
   }
 
   closeDialog() {
-    this.chatService.toggleEditChannelVisibility();
+    this.dialogService.toggleEditChannelVisibility();
   }
 
   leaveChannel() {
