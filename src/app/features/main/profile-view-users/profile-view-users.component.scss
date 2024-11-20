@@ -73,3 +73,21 @@ section {
     }
   }
 }
+
+// Responsive Design:
+@media(max-width: 560px) {
+  .overlayComponent {
+    padding: 0 16px;
+  }
+  
+  .card {
+    padding: 32px 20px;
+    width: 100%;
+    height: unset;
+    gap: 16px;
+  }
+
+  .nameCard {
+    font-size: 26px;
+  }
+}
