@@ -217,6 +217,7 @@ hr {
   max-width: 1920px;
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   @include dFlex($fd: column, $jc: flex-start);
 }
 

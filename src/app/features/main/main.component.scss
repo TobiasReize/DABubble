@@ -3,6 +3,7 @@
 :host {
   @include dFlex($fd: column, $jc: flex-start, $ai: normal);
   height: 100vh;
+  height: 100svh;
   padding: 0 20px;
   position: relative;
   overflow: hidden;

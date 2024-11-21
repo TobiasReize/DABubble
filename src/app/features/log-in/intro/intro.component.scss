@@ -109,6 +109,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
     
         to {
             transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
+            transform: translateY(calc(-50svh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
             //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und Abstand durch Content-Begrenzung
         }
     }
@@ -122,6 +123,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
     
         to {
             transform: translateY(calc(-50vh + 4px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
+            transform: translateY(calc(-50svh + 4px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + (100vw - 1920px) / 2));
         }
     }
 }
@@ -134,6 +136,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
     
         to {
             transform: translateY(calc(-50vh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + 24px));
+            transform: translateY(calc(-50svh + 75px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + 24px));
             //plus Abstand nach oben und halbe Höhe des finalen Logos     //plus halbe Breite vom finalen logo-container und Abstand nach links
         }
     }
@@ -147,6 +150,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
     
         to {
             transform: translateY(calc(-50vh + 4px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + 24px));
+            transform: translateY(calc(-50svh + 4px + $header-height / 2)) translateX(calc(-50vw + $intro-content-width / 2 + 24px));
         }
     }
 }
@@ -194,6 +198,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
     
         to {
             transform: translateY(calc(-50vh + (100vh - 784px) / 2 + 40px));
+            transform: translateY(calc(-50svh + (100svh - 784px) / 2 + 40px));
             //-50vh + (100vh - Content)/2 + halbe Header-Höhe
         }
     }
@@ -207,6 +212,7 @@ $animation-config: 500ms ease-out 2000ms forwards; //700ms Pause (Verzögerung: 
     
         to {
             transform: translateY(calc(-50vh + (100vh - 813px) / 2 + 40px));
+            transform: translateY(calc(-50svh + (100svh - 813px) / 2 + 40px));
             //-50vh + (100vh - Content)/2 + halbe Header-Höhe
         }
     }

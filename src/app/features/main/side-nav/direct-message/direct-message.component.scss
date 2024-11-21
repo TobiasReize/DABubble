@@ -5,6 +5,7 @@
 section {
   width: 100%;
   height: calc(100vh - 135px);
+  height: calc(100svh - 135px);
   top: 115px;
   left: 406px;
   padding: 0;
@@ -14,6 +15,7 @@ section {
   @include dFlex($fd: column, $jc: space-between, $ai: space-between);
   @media (max-width: $mainBreakpoint1) {
         height: calc(100vh - 80px);
+        height: calc(100svh - 80px);
         border-radius: unset;
         padding-bottom: 30px;
   }

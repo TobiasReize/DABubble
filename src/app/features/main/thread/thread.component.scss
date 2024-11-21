@@ -4,6 +4,7 @@
     background-color: white;
     width: 100%;
     height: calc(100vh - $header-and-bottom-spacing);
+    height: calc(100svh - $header-and-bottom-spacing);
     border-radius: 30px;
     @include dFlex($fd: column, $jc: normal, $ai: normal);
     overflow: hidden;
@@ -90,6 +91,7 @@ app-message-textarea {
 @media (max-width: $mainBreakpoint1) {
     :host {
         height: calc(100vh - 80px);
+        height: calc(100svh - 80px);
         border-radius: unset;
         padding-bottom: 30px;
     }

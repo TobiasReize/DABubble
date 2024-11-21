@@ -202,7 +202,8 @@ section {
 @media screen and (max-width: 768px) {
   #createChannel {
     height: 100vh;
-    width: 100vh;
+    height: 100svh;
+    width: 100vw;
     border-radius: 0;
   }
 

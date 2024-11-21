@@ -22,6 +22,7 @@
 .overlayComponent {
   width: 100vw;
   height: 100vh;
+  height: 100svh;
   @include dFlex($fd: row, $jc: center, $ai: center);
   position: absolute;
   top: 0;

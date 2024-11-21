@@ -32,10 +32,12 @@ $max-search-bar-width: 560px;
   max-width: 366px;
   overflow: hidden;
   height: calc(100vh - $header-and-bottom-spacing);
+  height: calc(100svh - $header-and-bottom-spacing);
   border-radius: 30px;
 
   @media (max-width: 768px) {
     height: calc(100vh - 80px);
+    height: calc(100svh - 80px);
     border-radius: unset;
   }
 
