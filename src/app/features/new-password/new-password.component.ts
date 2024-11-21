@@ -56,12 +56,12 @@ export class NewPasswordComponent implements OnInit {
       } catch (error) {
         this.resetPasswordError = true;
         this.errorMsg = 'Es ist ein Fehler aufgetreten! Bitte erneut versuchen.';
-        console.log('New password rejected!', error);
+        // console.log('New password rejected!', error);
       }
     } catch (error) {
       this.resetPasswordError = true;
       this.errorMsg = 'Aktionscode ist ungültig oder abgelaufen! Bitte erneut versuchen.';
-      console.log('Action code invalid or expired!', error);
+      // console.log('Action code invalid or expired!', error);
     }
   }
 

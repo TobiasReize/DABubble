@@ -87,7 +87,7 @@ export class ChooseAvatarComponent {
 
 
   async uploadImgToStorage(file: File) {
-    const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;   //user-UID ist noch nicht vorhanden! (erst wenn der user registriert wurde)
+    const path = 'profil-images/' + this.userService.newUser.email + '/' + file.name;
     this.uploadInfo = file.name;
     try {
       await this.firebaseService.uploadFileToStorage(file, path);
@@ -96,12 +96,12 @@ export class ChooseAvatarComponent {
       this.uploadFile = 'done';
     } catch (error) {
       this.handleUploadError('else');
-      console.log('Error:', error);
+      // console.log('Error:', error);
     }
   }
 
 
-  registerNewUser() {   //User wird auch direkt in Firebase eingeloggt!
+  registerNewUser() {
     createUserWithEmailAndPassword(this.auth, this.userService.newUser.email, this.userService.newUser.password)
       .then((userCredential) => {
         const user = userCredential.user;

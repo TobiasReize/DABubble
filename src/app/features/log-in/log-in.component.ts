@@ -6,7 +6,7 @@ import { IntroComponent } from './intro/intro.component';
 import { LoginHeaderComponent } from '../../shared/login-header/login-header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
-import { Auth, browserSessionPersistence, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User } from '@angular/fire/auth';
+import { Auth, browserSessionPersistence, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-log-in',
@@ -95,7 +95,7 @@ export class LogInComponent implements OnInit {
     signInWithPopup(this.auth, provider)
       .then(async (result) => {
         const user = result.user;
-        await this.saveGoogleUser(user);  //await, damit der neue User gefunden werden kann und als currentOnlineUser übergeben werden kann!
+        await this.saveGoogleUser(user);
         this.userService.currentUserUIDSignal.set(user.uid);
         await this.userService.updateUserDoc(user.uid, {isOnline: true});
         this.router.navigateByUrl('main');
@@ -119,7 +119,7 @@ export class LogInComponent implements OnInit {
       this.userService.newUser.userUID = user.uid;
       await this.userService.addUser(user.uid, this.userService.newUser.toJSON());
     } else {
-      console.log('Google-User bereits vorhanden!');
+      // console.log('Google-User bereits vorhanden!');
     }
   }
 
