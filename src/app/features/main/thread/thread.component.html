@@ -4,7 +4,7 @@
         @if (layoutService.selectedCollection() === 'channels') {
             <span class="material-symbols-rounded channel">tag</span>
             <div class="channel-name channel">{{ channel().name }}</div>
-        } @else {
+        } @else if (layoutService.selectedCollection() === 'directMessageChannels') {
             <span class="channel">&#64;</span>
             <div class="channel-name channel">{{ userService.allUsers()[this.chatService.contactIndex].name}} </div>
         }
