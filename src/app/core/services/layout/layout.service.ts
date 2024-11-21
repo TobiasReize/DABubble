@@ -89,7 +89,6 @@ export class LayoutService {
       signal.isDirectMessageOpen = true;
     } else if (this.selectedCollection() === 'newMessages') {
       signal.isNewMessageOpen = true;
-      console.log('newMessages')
     }
   }
 

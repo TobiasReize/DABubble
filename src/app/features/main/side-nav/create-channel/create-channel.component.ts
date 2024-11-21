@@ -128,7 +128,6 @@ export class CreateChannelComponent {
   }
 
   addPeople() {
-    console.log('dzigi')
     const section1: HTMLDivElement = document.getElementById(
       'createChannel'
     ) as HTMLDivElement;

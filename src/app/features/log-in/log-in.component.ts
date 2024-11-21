@@ -47,9 +47,6 @@ export class LogInComponent implements OnInit {
 
   setAuthStatePersistence() {
     this.auth.setPersistence(browserSessionPersistence)
-      .then(() => {
-        // console.log('Persistence geändert!');
-      })
       .catch((error) => {
         console.log('Error-Code:', error.code);
         console.log('Error-Message:', error.message);
@@ -118,8 +115,6 @@ export class LogInComponent implements OnInit {
       this.userService.newUser.avatar = 'assets/img/google.svg';
       this.userService.newUser.userUID = user.uid;
       await this.userService.addUser(user.uid, this.userService.newUser.toJSON());
-    } else {
-      // console.log('Google-User bereits vorhanden!');
     }
   }
 
