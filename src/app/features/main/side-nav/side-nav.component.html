@@ -138,11 +138,14 @@
     </div>
     <!-- mobile version button for new message -->
     <div class="dFlexRowFlexEndCenter width-100 mobileVersion">
-      <img
+      <!-- <img
         src="assets/img/main/newMessageButton.svg"
         alt="new message button"
         (click)="newMessage()"
-      />
+      /> -->
+      <div class="icon-btn new-message-btn" (click)="newMessage()">
+        <span class="material-symbols-rounded">edit_square</span>
+      </div>
     </div>
   </div>
 </div>
