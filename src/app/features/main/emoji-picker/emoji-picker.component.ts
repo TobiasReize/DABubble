@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 
 @Component({
   selector: 'app-emoji-picker',
@@ -8,6 +9,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './emoji-picker.component.scss'
 })
 export class EmojiPickerComponent {
+  constructor(public sideNavService: SideNavService){}
   emojis: string[] = [
     '😁','😀','😃','😄','😉','😊','😋','😎','🙂','😚','😪','😴','😌','😛','🤐','😂','🤣','😐','🤔','😮','😬','🤯','😇','🥳'
   ]
