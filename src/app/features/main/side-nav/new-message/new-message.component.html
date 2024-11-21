@@ -13,15 +13,13 @@
         </div>
     </div>
     <!-- drop down menu -->
-     <div id="searchResultsDropdown2" class="height100">
+     <div id="searchResultsDropdown2" class="height100 dNone">
         <div id="newMessageOnContact"  class=" searchingResults" (click)="sideNavService.stopPropagation($event)">
             <div *ngFor="let result of filteredUsers" class="dFlexRowFlex-StartCenter width-100" (click)="chatService.closeDropDownMenu()">
             @if(result.avatar) {
                 <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="selectUserOrChannel(result.userUID)">
                     <img src={{result.avatar}} alt="avatar" class="avatar-50 avatar">
                     <span>{{ result?.name }}</span>
-                    <span>|</span>
-                    <span>{{ result?.email }}</span>
                 </div>
             } @else if(result.description) {
                 <div class="dFlexRowCenterCenter gap15 contactsDiv" (click)="selectUserOrChannel(result.id)">

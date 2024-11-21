@@ -86,10 +86,6 @@ section {
   }
 }
 
-app-message-textarea {
-  padding: 0 71px;
-}
-
 .fade-in {
   @include dFlex($fd: column, $jc: center, $ai: 0);
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);

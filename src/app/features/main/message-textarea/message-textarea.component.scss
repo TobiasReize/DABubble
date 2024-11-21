@@ -1,7 +1,7 @@
 @import '../../../../styles/mixin.scss';
 
 :host {
-    padding: 0 35px;
+    padding: 32px 45px 20px 45px;
     background-color: white;
 }
 
@@ -100,11 +100,5 @@ label {
 @media (max-width: 1440px) {
     app-at, app-emoji-picker {
         left: 0;
-    }
-}
-
-@media (max-width: 768px) {
-    :host {
-        padding: 0 16px;
     }
 }
