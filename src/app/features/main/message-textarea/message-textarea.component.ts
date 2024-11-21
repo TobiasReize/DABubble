@@ -26,6 +26,7 @@ export class MessageTextareaComponent {
   @Input() placeholder: string = 'Nachricht an #';
   @Input() type: string = 'chat';
   @Input() messagesContainerRef!: HTMLElement;
+  @Input() textAreaDisabled = false;
   messageText = '';
   isAtVisible: Signal<boolean> = this.dialogService.opentAt;
   isEmojiPickerVisible: Signal<boolean> = this.dialogService.openEmojiPicker;
@@ -59,6 +60,7 @@ export class MessageTextareaComponent {
   }
 
   addMessage() {
+   if (!this.textAreaDisabled) {
     this.saveMessageText();
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
@@ -78,6 +80,7 @@ export class MessageTextareaComponent {
         this.scrollToBottom();
       }, 1);
     }
+   }
   }
 
   resetUploadData() {
