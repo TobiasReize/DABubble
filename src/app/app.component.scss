@@ -12,6 +12,7 @@
     z-index: 999999;
     padding: 0 16px;
     background-color: $bg-color;
+    text-align: center;
     span {
         @include fontStyle3;
         color: $purple-1;
