@@ -121,5 +121,7 @@
   }
 
   .results-create-channel {
-    max-height: 160px;
+    @media (max-width: 768px) {
+      max-height: 160px;
+    }
   }
