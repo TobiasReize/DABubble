@@ -23,7 +23,6 @@ export class SideNavService {
 
   addChannel(channel: Channel): void {
     this.channels.push(channel);
-    console.log(this.channels);
   }
 
   getChannels(): Channel[] {

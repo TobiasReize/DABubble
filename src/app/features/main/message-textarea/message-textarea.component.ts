@@ -13,6 +13,7 @@ import { DeletableFileComponent } from '../deletable-file/deletable-file.compone
 import { LayoutService } from '../../../core/services/layout/layout.service';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 import { EventService } from '../../../core/services/event/event.service';
+import { DialogService } from '../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-message-textarea',
@@ -26,8 +27,8 @@ export class MessageTextareaComponent {
   @Input() type: string = 'chat';
   @Input() messagesContainerRef!: HTMLElement;
   messageText = '';
-  isAtVisible: Signal<boolean> = this.chatService.opentAt;
-  isEmojiPickerVisible: Signal<boolean> = this.chatService.openEmojiPicker;
+  isAtVisible: Signal<boolean> = this.dialogService.opentAt;
+  isEmojiPickerVisible: Signal<boolean> = this.dialogService.openEmojiPicker;
   @ViewChild('editableTextarea') editableTextarea!: ElementRef;
   @ViewChild('mentionInsertion', { read: ViewContainerRef }) mentionInsertion!: ViewContainerRef;
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -41,7 +42,7 @@ export class MessageTextareaComponent {
   usersOrChannels: Signal<ChatUser[]> | Signal<Channel[]> = this.users;
 
   constructor(private chatService: ChatService, private firebaseService: FirebaseService, private renderer: Renderer2, private eventService: EventService, private layoutService: LayoutService, 
-    public sideNavService: SideNavService
+    public sideNavService: SideNavService, private dialogService: DialogService
   ) { 
     effect(() => {
       if (this.eventService.focusEvent()) {
@@ -52,8 +53,8 @@ export class MessageTextareaComponent {
 
   ngOnInit() {
     if (this.type === 'thread') {
-      this.isAtVisible = this.chatService.openAtForThread;
-      this.isEmojiPickerVisible = this.chatService.openEmojiPickerForThread;
+      this.isAtVisible = this.dialogService.openAtForThread;
+      this.isEmojiPickerVisible = this.dialogService.openEmojiPickerForThread;
     }
   }
 
@@ -64,7 +65,6 @@ export class MessageTextareaComponent {
         this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
         this.chatService.openChannel(this.chatService.channelID); 
         this.layoutService.selectChat()
-        this.chatService.selectChannel()
       } else if (this.type === 'thread') {
         this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName);
       } else {
@@ -78,8 +78,6 @@ export class MessageTextareaComponent {
         this.scrollToBottom();
       }, 1);
     }
-    console.log('users: ', this.users());
-    this.chatService.messageID++;
   }
 
   resetUploadData() {
@@ -152,18 +150,18 @@ export class MessageTextareaComponent {
   toggleAtVisibility() {
     if (this.usersOrChannels().length > 0) {
       if (this.type === 'chat' || this.type === 'directMessage') {
-        this.chatService.toggleAtVisibility();
+        this.dialogService.toggleAtVisibility();
       } else {
-        this.chatService.toggleAtForThreadVisibility();
+        this.dialogService.toggleAtForThreadVisibility();
       }
     }
   }
 
   toggleEmojiPickerVisibility() {
     if (this.type === 'chat' || this.type === 'directMessage') {
-      this.chatService.toggleEmojiPickerVisibility();
+      this.dialogService.toggleEmojiPickerVisibility();
     } else {
-      this.chatService.toggleEmojiPickerForThreadVisibility();
+      this.dialogService.toggleEmojiPickerForThreadVisibility();
     }
   }
 
@@ -205,7 +203,6 @@ export class MessageTextareaComponent {
 
   saveMessageText() {
     this.messageText = this.editableTextarea.nativeElement.textContent;
-    console.log('this.messageText: ', this.messageText)
   }
 
   insertEmoji(emoji: string) {
@@ -214,7 +211,6 @@ export class MessageTextareaComponent {
   }
 
   isImage(fileType: string) {
-    console.log('image check');
     return fileType === 'image/jpeg' || fileType === 'image/png' || fileType === 'image/svg+xml' || fileType === 'image/webp';
   }
 
@@ -223,7 +219,6 @@ export class MessageTextareaComponent {
     this.uploadError = false;
     const file = input.files?.item(0);
     if (file) {
-      console.log('file', file);
       this.fileName = file.name;
       switch (true) {
         case (!this.isImage(file.type) && file.type != 'application/pdf'):
@@ -253,7 +248,7 @@ export class MessageTextareaComponent {
 
   handleUploadError(info: string) {
     this.resetInput();
-    this.chatService.showUploadError(info);
+    this.dialogService.showUploadError(info);
   }
 
   scrollToBottom() {

@@ -35,8 +35,6 @@ export class NewPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.actionCode = this.activeRoute.snapshot.queryParamMap.get('oobCode')!;
     this.mode = this.activeRoute.snapshot.queryParamMap.get('mode')!;
-    console.log('oobCode:', this.actionCode);
-    console.log('mode:', this.mode);
   }
 
 
@@ -52,10 +50,8 @@ export class NewPasswordComponent implements OnInit {
   async handleResetPassword(auth: Auth, actionCode: string) {
     try {
       this.userEmail = await verifyPasswordResetCode(auth, actionCode);
-      console.log('Action code is valid! From:', this.userEmail);
       try {
         await confirmPasswordReset(auth, actionCode, this.newPassword);
-        console.log('New password accepted!', this.newPassword);
         this.goToLogin();
       } catch (error) {
         this.resetPasswordError = true;
@@ -73,8 +69,6 @@ export class NewPasswordComponent implements OnInit {
   async sendActionCode() {
     await applyActionCode(this.auth, this.actionCode)
       .then(() => {
-        console.log('sendActionCode OK');
-        // this.userEmail = 'neue Email...';
         this.goToLogin();
       })
       .catch((error) => console.log('sendActionCode-Error:', error))

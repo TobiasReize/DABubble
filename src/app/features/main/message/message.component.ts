@@ -10,6 +10,7 @@ import { ReactionOptionsComponent } from './reaction-options/reaction-options.co
 import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
 import { LayoutService } from '../../../core/services/layout/layout.service';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
+import { DialogService } from '../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-message',
@@ -23,7 +24,7 @@ export class MessageComponent {
   @Input() type: string = 'chat';
   isThreadMessage: boolean = false;
   @Input() isTopMessage: boolean = false;
-  menuEmojis: Signal<string[]> = this.chatService.lastEmojis;
+  menuEmojis: Signal<string[]> = this.dialogService.lastEmojis;
   reactionOptions: Signal<string[]> = computed(() => ['1f64c.svg', '1f642.svg', '1f680.svg', '1f913.svg', '2705.svg'].filter(emoji => !this.menuEmojis().includes(emoji)));
   replies: Signal<Message[]> = this.chatService.threadReplies;
   isMe: boolean = false;
@@ -32,7 +33,7 @@ export class MessageComponent {
   areSecondaryReactionOptionsOpen: boolean = false;
   isMessageBeingEdited: boolean = false;
   editMessageText: string = '';
-  isEmojiPickerForEditingVisible: Signal<boolean> = this.chatService.openEmojiPickerForEditing;
+  isEmojiPickerForEditingVisible: Signal<boolean> = this.dialogService.openEmojiPickerForEditing;
   fileRemoved: boolean = false;
   deleteFileWhenSavingMessage: boolean = true;
   isHighlightingMessage: boolean = false;
@@ -41,7 +42,7 @@ export class MessageComponent {
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   @Output() messageSelectionEvent = new EventEmitter<string>;
 
-  constructor(private chatService: ChatService, public userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private el: ElementRef) {}
+  constructor(private chatService: ChatService, public userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private dialogService: DialogService, private el: ElementRef) {}
 
   ngOnInit() {
     this.isThreadMessage = this.type === 'thread';
@@ -88,7 +89,7 @@ export class MessageComponent {
     } else {
       reaction.userUIDs.push(this.userService.currentOnlineUser().userUID);
       reaction.userNames.push(this.userService.currentOnlineUser().name);
-      this.chatService.saveLastEmoji(reaction.emoji);
+      this.dialogService.saveLastEmoji(reaction.emoji);
     }
     this.updateMessage();
   }
@@ -98,7 +99,7 @@ export class MessageComponent {
     if (index === -1) {
       const reaction = new Reaction(reactionName, [this.userService.currentOnlineUser().name], [this.userService.currentOnlineUser().userUID]);
       this.messageData.reactions.push(reaction);
-      this.chatService.saveLastEmoji(reaction.emoji);
+      this.dialogService.saveLastEmoji(reaction.emoji);
       this.updateMessage();
     } else {
       this.toggleReaction(this.messageData.reactions[index]);
@@ -161,7 +162,7 @@ export class MessageComponent {
   }
 
   toggleEmojiPickerForEditing() {
-    this.chatService.toggleEmojiPickerForEditingVisibility();
+    this.dialogService.toggleEmojiPickerForEditingVisibility();
   }
 
   insertEmoji(emoji: string) {

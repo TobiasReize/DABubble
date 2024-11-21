@@ -118,6 +118,9 @@
     gap: 13px;
     @include dFlex($fd: column, $jc: flex-end, $ai: flex-start);
     flex-wrap: wrap;
+    @media (max-width: 768px) {
+        padding: 0 16px 45px;
+    }
   }
 
 .empty-chat-container-header {
@@ -128,6 +131,10 @@
 
 .empty-chat-container-second-channel-name {
     color: $purple-3;
+}
+
+.channel-notice {
+    @include fontStyle7;
 }
 
 @media (max-width: $mainBreakpoint1) {

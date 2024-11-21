@@ -66,7 +66,6 @@ export class CreateChannelComponent {
 
     if (this.chatService.chosenUserUIDs().length > 0) {
       this.addSpecificUsersToTheUserUID();
-      console.log('Specific Users added: ', this.userUIDs);
     }
 
     let channel = new Channel(
