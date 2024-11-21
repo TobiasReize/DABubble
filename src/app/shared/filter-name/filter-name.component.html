@@ -30,7 +30,7 @@
 
   <div class="dFlexRowFlexEndCenter" style="position: relative">
     @if (showedAllUsers == true && filteredUsers.length > 0) {
-    <div id="results" class="people" (click)="sideNavService.stopPropagation($event)">
+    <div id="results" class="people" [ngClass]="{'results-create-channel': !isInChat}" (click)="sideNavService.stopPropagation($event)">
       @for (user of filteredUsers; track $index) {
       <div class="person" (click)="selectUser(user.userUID)">
         <img
