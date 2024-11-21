@@ -101,3 +101,12 @@ app-new-message {
   }  
 }
 
+@media (max-width: 768px) {
+  #mainDiv {
+    height: 100%;
+  }
+
+  .main {
+    height: calc(100% - 80px);
+  }
+}

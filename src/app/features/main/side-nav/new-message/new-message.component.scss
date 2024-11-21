@@ -3,6 +3,10 @@
 @import "../../../../../styles/styles2.scss";
 @import "../../../../../styles/gap.scss";
 
+:host {
+  height: 100%;
+}
+
 .height100 {
   display: flex;
   align-items: flex-start;
@@ -68,6 +72,17 @@ section {
       background: rgba(236, 238, 254, 1);
       cursor: pointer;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  section {
+    border-radius: 0;
+    height: 100%;
+  }
+
+  .fade-in {
+    border-radius: 0;
   }
 }
 

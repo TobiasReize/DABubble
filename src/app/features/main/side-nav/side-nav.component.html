@@ -1,10 +1,9 @@
 <div class="side-nav-container">
-<div id="searchMobileDiv">
-    <!-- <input id="searchMobileLayout" type="text" placeholder="Gehe zu..."> -->
-     <app-search-component placeholder="Gehe zu..."></app-search-component>
-    <img id="searchImg" src="assets/img/search.png" alt="">
+  <div id="searchMobileDiv">
+    <app-search-component placeholder="Gehe zu..."></app-search-component>
+    <img id="searchImg" src="assets/img/search.png" alt="" />
   </div>
-  
+
   <!-- 1 Section - Devspace Section -->
   <div id="devSpace" class="dFlex">
     <div class="devSpace">
@@ -19,7 +18,7 @@
 
   <!-- 2 Section -->
   <div class="gap25 divWidth channels-messages-container">
-    <!-- Channels, Entwicklerteam, Channel hinzufügen -->
+    <!-- Channels, Channel hinzufügen -->
     <div class="gap25 dFlex">
       <div class="dFlex channels">
         <div class="dFlex1 cursor-pointer purpleHover" (click)="openChannels()">
@@ -66,14 +65,33 @@
           <span class="material-symbols-rounded">add</span>
         </button>
       </div>
-      <div *ngIf="channelsOpened" class="dFlexColumn gap25 slideIn_Out divWidth" style="align-items: flex-start;">
-        <div class="divWidth dFlexColumn gap25 divWidth" style="overflow: auto; align-items: flex-start;">
-          @for (channel of chatService.channels(); track channel.name; let i = $index) {
-            <div [ngClass]="{'channelWasChosen': chatService.getSelectedChannelId() === channel.id}" class="channel-name-container dFlexRowFlex-StartCenter" (click)="chatService.openChannel(channel.id); chatService.selectChannel()">
-              <span id="tag" class="material-symbols-rounded cursor-pointer">tag</span>
-              <span>{{channel.name}}</span>
-            </div>
-            }
+      <div
+        *ngIf="channelsOpened"
+        class="dFlexColumn gap25 slideIn_Out divWidth"
+        style="align-items: flex-start"
+      >
+        <div
+          class="divWidth dFlexColumn gap25 divWidth"
+          style="overflow: auto; align-items: flex-start"
+        >
+          @for (channel of chatService.channels(); track channel.name; let i =
+          $index) {
+          <div
+            [ngClass]="{
+              channelWasChosen:
+                chatService.getSelectedChannelId() === channel.id
+            }"
+            class="channel-name-container dFlexRowFlex-StartCenter"
+            (click)="
+              chatService.openChannel(channel.id); chatService.selectChannel()
+            "
+          >
+            <span id="tag" class="material-symbols-rounded cursor-pointer"
+              >tag</span
+            >
+            <span>{{ channel.name }}</span>
+          </div>
+          }
         </div>
 
         <div
@@ -93,7 +111,9 @@
     <div id="contacts" class="contactDiv divWidth gap25">
       <!-- Direktnachrichten -->
       <div class="dFlex2 divWidth directMessages purpleHover">
-        <span *ngIf="sideNavService.contactsOpened" class="material-symbols-rounded cursor-pointer"
+        <span
+          *ngIf="sideNavService.contactsOpened"
+          class="material-symbols-rounded cursor-pointer"
           >arrow_drop_down</span
         >
         <img
@@ -113,20 +133,35 @@
 
       <!-- contacts -->
       <div class="gap13" *ngIf="sideNavService.contactsOpened">
-        <div *ngFor="let user of userService.allUsers(); let i = index" class="contactsDiv" (click)="(chatService.openChat(user.userUID))">
+        <div
+          *ngFor="let user of userService.allUsers(); let i = index"
+          class="contactsDiv"
+          (click)="chatService.openChat(user.userUID)"
+        >
           <div class="profil-status-container">
-            <img class="avatar avatar-50" [src]="user.avatar"/>
-            <div class="status-circle" [ngClass]="user.isOnline ? 'status-online' : 'status-offline'"></div>
+            <img class="avatar avatar-50" [src]="user.avatar" />
+            <div
+              class="status-circle"
+              [ngClass]="user.isOnline ? 'status-online' : 'status-offline'"
+            ></div>
           </div>
           <span id="{{ i }}">
             @if(userService.currentOnlineUser().name == user.name) {
-              {{ userService.allUsers()[i].name + " (Du)" }}
+            {{ userService.allUsers()[i].name + " (Du)" }}
             } @else {
-              {{ userService.allUsers()[i].name }}
+            {{ userService.allUsers()[i].name }}
             }
           </span>
         </div>
       </div>
+    </div>
+    <!-- mobile version button for new message -->
+    <div class="dFlexRowFlexEndCenter width-100 mobileVersion">
+      <img
+        src="assets/img/main/newMessageButton.svg"
+        alt="new message button"
+        (click)="newMessage()"
+      />
     </div>
   </div>
 </div>

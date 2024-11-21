@@ -148,7 +148,10 @@ export class CreateChannelComponent {
     }
   }
 
+  channelNameExist: boolean = false;
+
   checkInputs() {
+    this.channelNameExist = false;
     this.inputRef.nativeElement.classList.remove('channel-exists');
     this.inputRef.nativeElement.placeholder = "z.B. Kooperationsprojekte";
     if (this.channelName === '') {
@@ -157,9 +160,7 @@ export class CreateChannelComponent {
       this.inputsAreEmpty = false;
       this.chatService.channels().forEach(channel => {
         if(channel.name == this.channelName){
-          this.inputRef.nativeElement.value = "";
-          this.inputRef.nativeElement.classList.add('channel-exists');
-          this.inputRef.nativeElement.placeholder = "Dieser Channel-Name existiert bereits!";
+          this.channelNameExist = true;
           this.inputsAreEmpty = true;
         }
       });

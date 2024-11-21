@@ -14,7 +14,6 @@ export class SideNavService {
   search: boolean = false;
   createChannelsDivOpened: boolean = false;
   contactsOpened: boolean = true;
- 
 
   constructor(public chatService: ChatService) {}
 

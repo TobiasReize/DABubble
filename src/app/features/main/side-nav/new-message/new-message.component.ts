@@ -1,8 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MessageTextareaComponent } from '../../message-textarea/message-textarea.component';
 import { CommonModule } from '@angular/common';
 import { SideNavService } from '../../../../core/services/sideNav/side-nav.service';
@@ -20,22 +16,38 @@ import { LayoutService } from '../../../../core/services/layout/layout.service';
   styleUrl: './new-message.component.scss',
 })
 export class NewMessageComponent {
+  @ViewChild('input') inputElement!: ElementRef;
+  @ViewChild('textarea') textArea!: ElementRef;
+
+  @HostListener('window:resize')
+  setValuePlaceholder(): void {
+    if (window.innerWidth < 768) {
+      this.inputElement.nativeElement.placeholder =
+        'An: #channel, oder @jemand';
+    } else {
+      this.inputElement.nativeElement.placeholder =
+        'An: #channel, oder @jemand oder E-Mail Adresse';
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // Setze den Platzhalter sofort, wenn die Ansicht fertig ist
+    this.setValuePlaceholder();
+  }
+
   constructor(
     public sideNavService: SideNavService,
     public chatService: ChatService,
     public userService: UserService,
     public layoutService: LayoutService
   ) {}
+  
   filteredUsers: any[] = [];
   searchQuery: string = '';
   selectedUserAvatar?: any = '';
   selectedUser?: any = '';
   selectedChannel?: any = '';
   divForSelectedElement: boolean = false;
-
-  @ViewChild('input') inputElement!: ElementRef;
-  @ViewChild('textarea') textArea!: ElementRef;
-
   type: string = 'directMessage';
 
   changeType(type: string): void {
@@ -51,7 +63,7 @@ export class NewMessageComponent {
       this.filterResults();
       dropDown?.classList.remove('dNone');
     }
-    if(this.inputElement.nativeElement.value === "") {
+    if (this.inputElement.nativeElement.value === '') {
       dropDown?.classList.add('dNone');
     }
   }
@@ -84,7 +96,9 @@ export class NewMessageComponent {
   }
 
   selectUserOrChannel(id: string) {
-    const selectedUser = this.userService.allUsers()?.find((user) => user.userUID === id);
+    const selectedUser = this.userService
+      .allUsers()
+      ?.find((user) => user.userUID === id);
     if (selectedUser) {
       this.chatService.contactUUID = selectedUser.userUID;
       this.selectedUserAvatar = selectedUser.avatar;
@@ -95,12 +109,14 @@ export class NewMessageComponent {
       this.selectedUser = null;
     }
 
-    const selectedChannel = this.chatService.channels()?.find((channel) => channel.id === id);
+    const selectedChannel = this.chatService
+      .channels()
+      ?.find((channel) => channel.id === id);
     if (selectedChannel) {
       this.selectedChannel = selectedChannel.name;
       this.changeType('chat');
       this.chatService.channelID = id;
-      this.chatService.changeChannelWithoutNavigation(selectedChannel.id)
+      this.chatService.changeChannelWithoutNavigation(selectedChannel.id);
     } else {
       this.selectedChannel = null;
     }

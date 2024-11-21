@@ -220,8 +220,7 @@ section {
   }
 }
 
-input.channel-exists::placeholder {
+.warningAboutExistingChannel {
   color: red;
-  opacity: 1; /* Uistite sa, že placeholder je viditeľný */
 }
 

@@ -30,6 +30,9 @@
           (keyup)="checkInputs()"
         />
       </div>
+      <div *ngIf="channelNameExist">
+        <span class="warningAboutExistingChannel">Dieser Channel-Name existiert bereits!</span>
+      </div>
     </div>
     <div class="dFlexColumnCenterFlexStart">
       <div class="fontStyle3">

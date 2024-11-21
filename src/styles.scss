@@ -9,6 +9,10 @@
   color: black;
 }
 
+html, body {
+  height: 100vh;
+}
+
 html {
   scroll-behavior: smooth;
   overflow-y: auto;
@@ -292,6 +296,10 @@ hr {
 
 .dFlexRowCenterCenter {
   @include dFlex($fd: row, $jc: center, $ai: center);
+}
+
+.dFlexRowFlexEndCenter {
+  @include dFlex($fd: row, $jc: flex-end, $ai: center);
 }
 
 .sectionHidden {

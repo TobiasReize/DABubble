@@ -37,7 +37,6 @@ export class SideNavComponent {
 
   newMessage(): void {
     this.layoutService.selectNewMessage();
+    this.layoutService.deselectSideNavOnMobile();
   }
-
-  
 }

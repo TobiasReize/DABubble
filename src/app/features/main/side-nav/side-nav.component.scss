@@ -234,3 +234,13 @@ $max-search-bar-width: 560px;
     line-height: 24.55px;
   }
 }
+
+.mobileVersion {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileVersion {
+    display: flex;
+  }
+}
