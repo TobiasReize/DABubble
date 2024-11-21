@@ -57,7 +57,7 @@ section {
     width: 100%;
   }
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -178,15 +178,6 @@ section {
   align-items: center;
 }
 
-#results {
-  overflow-y: auto;
-  @media screen and (max-width: 480px){
-    top: -750%;
-    width: 80% !important;
-    border-radius: 20px 20px 20px 0px;
-  }
-}
-
 .close {
   &:hover {
     background-color: rgba(236, 238, 254, 1);
@@ -208,7 +199,7 @@ section {
   position: relative;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
   #createChannel {
     height: 100vh;
     width: 100vh;
