@@ -28,12 +28,12 @@ section {
   }
 
   .private-message-notice {
-    @include fontStlye7;
+    @include fontStyle7;
     color: rgba(104, 104, 104, 1);
   }
 
   .link-to-profile {
-    @include fontStlye7;
+    @include fontStyle7;
     color: rgba(83, 90, 241, 1);
 
     &:hover {
@@ -45,6 +45,10 @@ section {
   .avatar-notice {
     height: 100px;
     width: 100px;
+    @media (max-width: 768px) {
+      height: 88px;
+      width: 88px;
+    }
   }
 
   .grayText {
@@ -113,4 +117,7 @@ section {
   height: 100%;
   padding: 60px;
   @include dFlex($fd: row, $jc: undefined, $ai: flex-end);
+  @media (max-width: 768px) {
+    padding: 0 16px 45px;
+  }
 }

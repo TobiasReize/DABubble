@@ -8,7 +8,7 @@
     <app-profile-view-users *ngIf="chatService.profileViewUsersActive"></app-profile-view-users>
     <app-profile-view-logged-user *ngIf="chatService.profileViewLoggedUser"></app-profile-view-logged-user>
     <app-thread [ngClass]="{'width100': layoutState().isThreadOpen && shouldAnimateThread(), 'width0': !layoutState().isThreadOpen && shouldAnimateThread(), 'd-none': !layoutState().isThreadOpen && !shouldAnimateThread() }"></app-thread>
-    <app-upload-error *ngIf="chatService.openUploadError()"></app-upload-error>
+    <app-upload-error *ngIf="dialogService.openUploadError()"></app-upload-error>
   </div>
   <div class="closeMenu purpleHover" (click)="closeSection()" >
     <span *ngIf="sectionIsVisible">Workspace-Menü schließen</span>

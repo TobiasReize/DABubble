@@ -77,13 +77,14 @@ h3 {
 }
 
 .header-profile-section {
+    width: 100%;
     max-width: $thread-width;
     @include dFlex($jc: flex-end);
 }
 
 .header-profile-container {
     width: 100%;
-    @include dFlex();
+    @include dFlex($jc: flex-end);
     gap: 20px;
     padding-left: 20px;
     h3 {
@@ -186,6 +187,10 @@ app-search-component {
     .input-container {
         display: none;
     }
+    .header-profile-section {
+        width: unset;
+        max-width: unset;
+    }
     .header-profile-section h2 {
         display: none;
     }
@@ -229,7 +234,7 @@ app-search-component {
         min-width: unset;
     }
     .header-profile-section {
-        justify-content: normal;
+        width: 100%;
     }
     .avatar-70 {
         width: 50px;

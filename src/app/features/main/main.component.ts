@@ -15,6 +15,7 @@ import { ProfileViewUsersComponent } from "./profile-view-users/profile-view-use
 import { ProfileViewLoggedUserComponent } from './profile-view-logged-user/profile-view-logged-user.component';
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
 import { UploadErrorComponent } from "./upload-error/upload-error.component";
+import { DialogService } from '../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-main',
@@ -40,8 +41,8 @@ import { UploadErrorComponent } from "./upload-error/upload-error.component";
 })
 export class MainComponent implements OnInit {
   layoutState: Signal<any> = this.layoutService.layoutState;
-  isEditChannelVisible: Signal<boolean> = this.chatService.openEditChannel;
-  constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService, private layoutService: LayoutService) {}
+  isEditChannelVisible: Signal<boolean> = this.dialogService.openEditChannel;
+  constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService, private layoutService: LayoutService, public dialogService: DialogService) {}
   sectionIsVisible: boolean = true;
 
   closeSection() {
@@ -69,14 +70,12 @@ export class MainComponent implements OnInit {
     div.classList.remove('sectionDisplayed');
     div.classList.add('sectionHidden');
     this.sectionIsVisible = false;
-    console.log('false');
   }
 
   addSectionDisplayedClass(div: any) {
     div.classList.remove('sectionHidden');
     div.classList.add('sectionDisplayed');
     this.sectionIsVisible = true;
-    console.log('true');
   }
 
   changeImage(imgId: any, newImgSrc: any) {
@@ -85,7 +84,6 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chatService.getContacts();
     this.layoutService.onResize(window.innerWidth);
   }
 

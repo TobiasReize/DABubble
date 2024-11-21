@@ -20,10 +20,8 @@ export class AppComponent {
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
     if (this.userService.currentUserUID() == '0') {
-      console.log('Funktioniert!!!');
       this.userService.updateUserDoc('guest', {isOnline: false});
     } else {
-      console.log('Funktioniert!!!');
       this.userService.updateUserDoc(this.userService.currentOnlineUser().userUID, {isOnline: false});
     }
   }

@@ -59,7 +59,6 @@ export class ChooseAvatarComponent {
     this.uploadInfo = '';
     const file = input.files?.item(0);
     if (file) {
-      console.log('file', file);
       switch (true) {
         case (file.type != 'image/jpeg') && (file.type != 'image/png') && (file.type != 'image/svg+xml') && (file.type != 'image/webp'):
           this.handleUploadError('type');
@@ -95,7 +94,6 @@ export class ChooseAvatarComponent {
       this.profileImgPathSignal.set(this.firebaseService.downloadURL);
       this.profileHTML.nativeElement.src = this.profileImgPath();
       this.uploadFile = 'done';
-      console.log('Current profil img:', this.profileImgPath());
     } catch (error) {
       this.handleUploadError('else');
       console.log('Error:', error);
@@ -107,7 +105,6 @@ export class ChooseAvatarComponent {
     createUserWithEmailAndPassword(this.auth, this.userService.newUser.email, this.userService.newUser.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log('Registrierung erfolgreich!');
         this.userService.newUser.userUID = user.uid;
         this.userService.newUser.avatar = this.profileImgPath();
         this.userService.addUser(user.uid, this.userService.newUser.toJSON());

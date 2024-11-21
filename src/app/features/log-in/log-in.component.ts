@@ -79,7 +79,6 @@ export class LogInComponent implements OnInit {
       .then((userCredential) => {
         const user = userCredential.user;
         this.userService.currentUserUIDSignal.set(user.uid);
-        console.log('Aktueller User:', this.userService.currentOnlineUser());
         this.router.navigateByUrl('main');
       })
       .catch((error) => {
@@ -99,7 +98,6 @@ export class LogInComponent implements OnInit {
         await this.saveGoogleUser(user);  //await, damit der neue User gefunden werden kann und als currentOnlineUser übergeben werden kann!
         this.userService.currentUserUIDSignal.set(user.uid);
         await this.userService.updateUserDoc(user.uid, {isOnline: true});
-        console.log('Aktueller User:', this.userService.currentOnlineUser());
         this.router.navigateByUrl('main');
       }).catch((error) => {
         this.googleLoginError = true;
@@ -114,14 +112,12 @@ export class LogInComponent implements OnInit {
 
   async saveGoogleUser(user: User) {
     let userIndex = this.userService.getUserIndexWithUID(user.uid);
-    console.log('userIndex:', userIndex);
     if (userIndex == -1) {
       this.userService.newUser.name = user.displayName ? user.displayName : 'Google User';
       this.userService.newUser.email = user.email ? user.email : 'Google Mail';
       this.userService.newUser.avatar = 'assets/img/google.svg';
       this.userService.newUser.userUID = user.uid;
       await this.userService.addUser(user.uid, this.userService.newUser.toJSON());
-      console.log('Google-User hinzugefügt!');
     } else {
       console.log('Google-User bereits vorhanden!');
     }
@@ -133,7 +129,6 @@ export class LogInComponent implements OnInit {
     await this.userService.updateUserDoc('guest', {isOnline: true});
     sessionStorage.setItem('guestIsOnline', 'true');
     this.userService.currentUserUIDSignal.set('0');
-    console.log('Aktueller User:', this.userService.currentOnlineUser());
     this.router.navigateByUrl('main');
   }
 
