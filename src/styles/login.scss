@@ -197,7 +197,8 @@
     }
 
     app-footer {
-        display: none;
+        position: unset;
+        margin-bottom: 8px;
     }
 
     .overlay {
