@@ -57,12 +57,20 @@ export class FilterNameComponent {
     this.showedAllUsers = true;
   }
 
+  isUserInCurrentChannel(user: ChatUser) {
+    if (this.isInChat) {
+      return this.chatService.currentChannel().userUIDs.includes(user.userUID);
+    } else {
+      return false;
+    }
+  }
+
   searchUsers(input: HTMLInputElement) {
     const filteredUsers = this.userService
       .allUsers()
       .filter((user) => user.name.toLowerCase().includes(input.value.toLowerCase()));
 
-    this.filteredUsers = filteredUsers.filter(user => !this.arrayOfChosenContacts.includes(user));
+    this.filteredUsers = filteredUsers.filter(user => !this.arrayOfChosenContacts.includes(user) && !this.isUserInCurrentChannel(user));
   }
 
   deleteUserFromArrayOfChosenContacts(userUID: string) {
