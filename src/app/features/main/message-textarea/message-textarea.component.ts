@@ -6,7 +6,7 @@ import { ChatUser } from '../../../core/models/user.class';
 import { MentionComponent } from './mention/mention.component';
 import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
-import { CommonModule, ViewportScroller } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Channel } from '../../../core/models/channel.class';
 import { ChannelMentionComponent } from './channel-mention/channel-mention.component';
 import { DeletableFileComponent } from '../deletable-file/deletable-file.component';
@@ -27,6 +27,7 @@ export class MessageTextareaComponent {
   @Input() type: string = 'chat';
   @Input() messagesContainerRef!: HTMLElement;
   @Input() textAreaDisabled = false;
+  @Input() isNewMessage = false;
   messageText = '';
   isAtVisible: Signal<boolean> = this.dialogService.opentAt;
   isEmojiPickerVisible: Signal<boolean> = this.dialogService.openEmojiPicker;
@@ -48,6 +49,9 @@ export class MessageTextareaComponent {
     effect(() => {
       if (this.eventService.focusEvent()) {
         this.editableTextarea.nativeElement.focus();
+        setTimeout(() => {
+          this.scrollToBottom('auto');
+        }, 0);
       }
     });
   }
@@ -59,26 +63,34 @@ export class MessageTextareaComponent {
     }
   }
 
+  resetAfterAddingMessage() {
+    this.messageText = '';
+    this.editableTextarea.nativeElement.innerHTML = '';
+    this.resetInput();
+    setTimeout(() => {
+      this.scrollToBottom('smooth');
+    }, 1);
+  }
+
   addMessage() {
    if (!this.textAreaDisabled) {
     this.saveMessageText();
     if (this.messageText.length > 0) {
       if (this.type === 'chat') {
         this.chatService.addChatMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
-        this.chatService.openChannel(this.chatService.channelID); 
-        this.layoutService.selectChat()
+        if (this.isNewMessage) {
+          this.chatService.openChannel(this.chatService.channelID);
+          this.layoutService.selectChat()
+        }
       } else if (this.type === 'thread') {
         this.chatService.addThreadReply(this.messageText, this.fileUrl, this.fileType, this.fileName);
       } else {
         this.chatService.addDirectMessage(this.messageText, this.fileUrl, this.fileType, this.fileName);
-        this.chatService.openChat(this.chatService.contactUUID);
+        if (this.isNewMessage) {
+          this.chatService.openChat(this.chatService.contactUUID);
+        }
       }
-      this.messageText = '';
-      this.editableTextarea.nativeElement.innerHTML = '';
-      this.resetInput();
-      setTimeout(() => {
-        this.scrollToBottom();
-      }, 1);
+      this.resetAfterAddingMessage();
     }
    }
   }
@@ -254,11 +266,11 @@ export class MessageTextareaComponent {
     this.dialogService.showUploadError(info);
   }
 
-  scrollToBottom() {
+  scrollToBottom(behavior: 'smooth' | 'auto') {
     if (this.messagesContainerRef) {
       this.messagesContainerRef.scrollTo({
         top: this.messagesContainerRef.scrollHeight,
-        behavior: 'smooth'
+        behavior: behavior
       })
     }
   }
