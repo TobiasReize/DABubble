@@ -206,13 +206,8 @@ app-intro {
     }
 
     app-footer {
-        display: none;
-    }
-}
-
-@media(max-height: 800px) {
-    app-login-header {
-        display: none;
+        position: unset !important;
+        margin-bottom: 8px;
     }
 }
 

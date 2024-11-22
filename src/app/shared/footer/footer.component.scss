@@ -9,3 +9,13 @@
     @include dFlex();
     gap: 16px;
 }
+
+// Responsive Design:
+@media(max-width: 654px) and (max-height: 800px) {
+    footer {
+        .link-style {
+            padding: 4px 8px;
+            font-size: 16px;
+        }
+    }
+}
