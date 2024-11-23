@@ -81,6 +81,8 @@ export class ChatService {
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
 
+  readonly myChannels = computed(() => this.channels().filter(channel => channel.userUIDs.includes(this.userService.currentOnlineUser().userUID)));
+
   private directMessageChannelsSignal = signal<Channel[]>([]);
   readonly directMessageChannels =
     this.directMessageChannelsSignal.asReadonly();
@@ -385,12 +387,15 @@ export class ChatService {
           channels.push(channel);
         });
         this.channelsSignal.set(channels);
-        if (!this.unsubMessages && this.channels()[0]) {
-          this.currentChannelSignal.set(this.channels()[0]);
+        if (!this.unsubMessages && this.myChannels()[0]) {
+          this.currentChannelSignal.set(this.myChannels()[0]);
           this.unsubMessages = await this.subMessages(this.currentChannel().id);
-        } else {
           this.openChannel(this.currentChannel().id);
-        }
+        } else if (!(this.myChannels().length === 0)) {
+          this.openChannel(this.currentChannel().id);
+        } else {
+          this.layoutService.selectNewMessage();
+        } 
         this.getUsersInCurrentChannel();
       }
     );
@@ -510,6 +515,9 @@ export class ChatService {
       this.updateChannel({
         userUIDs: newuserUIDs,
       });
+      if (this.myChannels().length > 1) {
+        this.currentChannelSignal.set(this.myChannels()[0]);
+      }
     }
   }
 
