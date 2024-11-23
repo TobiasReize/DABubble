@@ -14,7 +14,7 @@ import { SearchComponentComponent } from "../search-component/search-component.c
   styleUrl: './side-nav.component.scss',
 })
 export class SideNavComponent {
-  channelsOpened: boolean = false;
+  channelsOpened: boolean = true;
 
   constructor(
     public sideNavService: SideNavService,
@@ -25,6 +25,7 @@ export class SideNavComponent {
 
   openChannels(): void {
     this.channelsOpened = !this.channelsOpened;
+    console.log('ss')
   }
 
   openCreateChannels(): void {
