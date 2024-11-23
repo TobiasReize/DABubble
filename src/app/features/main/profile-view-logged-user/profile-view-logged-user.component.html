@@ -90,6 +90,7 @@
           type="text"
           placeholder="{{ userService.currentOnlineUser().name }}"
           required
+          (onkeyup)="changeName()"
         />
       </div>
       <!-- Email Adresse -->

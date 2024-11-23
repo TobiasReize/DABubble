@@ -46,7 +46,7 @@ export class ChatService {
   unsubThread!: Unsubscribe;
   unsubTopThreadMessage!: Unsubscribe;
 
-  private messagesSignal = signal<Message[]>([]);
+  public messagesSignal = signal<Message[]>([]);
   readonly messages = this.messagesSignal.asReadonly();
 
   private directMessagesSignal = signal<Message[]>([]);
