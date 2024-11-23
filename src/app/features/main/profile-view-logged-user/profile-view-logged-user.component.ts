@@ -52,10 +52,6 @@ export class ProfileViewLoggedUserComponent {
   }
 
   async saveNewContactInfos(ngForm: NgForm): Promise<void> {
-    this.chatService.messagesSignal().forEach(message => {
-      message.userName = ngForm.value.fullname;
-    })
-
     this.changeAllUserNamesFromCurrentUser(this.userService.currentOnlineUser().name, this.userService.currentOnlineUser().userUID, ngForm.value.fullname);
     if (ngForm.submitted && ngForm.form.valid) {
       if (this.data.email == this.userService.currentOnlineUser().email) {
@@ -70,9 +66,5 @@ export class ProfileViewLoggedUserComponent {
         }, 1300);
       }
     }
-  }
-
-  changeName(): void {
-    console.log('hooi')
   }
 }
