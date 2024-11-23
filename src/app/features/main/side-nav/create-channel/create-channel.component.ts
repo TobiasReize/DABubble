@@ -91,6 +91,7 @@ export class CreateChannelComponent {
         userUIDs: this.userUIDs,
       }
     );
+    this.chatService.openChannel(this.channelId);
 
     const addPeopleDiv: HTMLElement = document.getElementById(
       'addPeople'
