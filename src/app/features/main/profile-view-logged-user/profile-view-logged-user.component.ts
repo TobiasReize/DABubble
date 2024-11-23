@@ -15,6 +15,7 @@ import { collectionGroup, getDocs, onSnapshot, query, QuerySnapshot, updateDoc, 
 })
 export class ProfileViewLoggedUserComponent {
   
+  isProfileBeingEdited: boolean = false;
   inputFinished: boolean = false;
   data = {
     name: this.userService.currentOnlineUser().name,
@@ -29,15 +30,15 @@ export class ProfileViewLoggedUserComponent {
 
   onDiv1Click(): void {
     this.chatService.profileViewLoggedUser = false;
-    this.chatService.customProfile = false;
+    this.isProfileBeingEdited = false;
   }
 
   onDiv2Click(event: MouseEvent): void {
     event.stopPropagation();
   }
 
-  customProfile(event: MouseEvent) {
-    this.chatService.customProfile = true;
+  editProfile(event: MouseEvent) {
+    this.isProfileBeingEdited = true;
     this.onDiv2Click(event);
   }
 
@@ -51,6 +52,7 @@ export class ProfileViewLoggedUserComponent {
         this.inputFinished = true;
         setTimeout(() => {
           this.inputFinished = false;
+          this.isProfileBeingEdited = false;
           this.chatService.profileViewLoggedUser = false;
         }, 1300);
       }

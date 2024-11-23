@@ -95,7 +95,6 @@ export class ChatService {
   profileViewLoggedUser: boolean = false;
   myChatDescription: boolean = false;
   chatDescription: boolean = false;
-  customProfile: boolean = false;
   contacts: any = [];
   channelID: string = '';
   private selectedChannelId: string | null = null;
