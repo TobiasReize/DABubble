@@ -516,7 +516,9 @@ export class ChatService {
         userUIDs: newuserUIDs,
       });
       if (this.myChannels().length > 1) {
-        this.currentChannelSignal.set(this.myChannels()[0]);
+        setTimeout(() => {
+          this.openChannel(this.myChannels()[0].id);
+        }, 1);
       }
     }
   }
