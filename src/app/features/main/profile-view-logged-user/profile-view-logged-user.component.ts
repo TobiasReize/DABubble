@@ -41,18 +41,7 @@ export class ProfileViewLoggedUserComponent {
     this.onDiv2Click(event);
   }
 
-  async changeAllUserNamesFromCurrentUser(oldName: string, userUID: string, newName: string): Promise<void> {
-    const userNameRef = collectionGroup(this.fireBaseService.firestore, 'messages');
-    const querySnapshot = await getDocs(query(userNameRef));
-  
-    querySnapshot.forEach(async (doc) => {
-      if(doc.data()['userName'] == oldName && doc.data()['senderId'] == userUID) 
-      await updateDoc(doc.ref, { userName: newName });
-    });
-  }
-
   async saveNewContactInfos(ngForm: NgForm): Promise<void> {
-    this.changeAllUserNamesFromCurrentUser(this.userService.currentOnlineUser().name, this.userService.currentOnlineUser().userUID, ngForm.value.fullname);
     if (ngForm.submitted && ngForm.form.valid) {
       if (this.data.email == this.userService.currentOnlineUser().email) {
         await this.userService.updateUserDoc(this.userService.currentOnlineUser().userUID, this.data);
