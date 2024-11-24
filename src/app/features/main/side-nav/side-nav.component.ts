@@ -16,7 +16,6 @@ import { Channel } from '../../../core/models/channel.class';
 })
 export class SideNavComponent {
   channelsOpened: boolean = true;
-  myChannels: Signal<Channel[]> = this.chatService.myChannels;
 
   constructor(
     public sideNavService: SideNavService,
@@ -27,7 +26,6 @@ export class SideNavComponent {
 
   openChannels(): void {
     this.channelsOpened = !this.channelsOpened;
-    console.log('ss')
   }
 
   openCreateChannels(): void {

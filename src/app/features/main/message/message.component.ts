@@ -41,7 +41,6 @@ export class MessageComponent {
   tapDurationInMilliseconds: number = 100;
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   @Output() messageSelectionEvent = new EventEmitter<string>;
-  timeStamp!: number;
   userName: Signal<string> = computed(() => {
     const name = this.userService.allUsersMap().get(this.messageData.senderId)?.name;
     if (name) {
