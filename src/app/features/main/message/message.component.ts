@@ -41,6 +41,23 @@ export class MessageComponent {
   tapDurationInMilliseconds: number = 100;
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   @Output() messageSelectionEvent = new EventEmitter<string>;
+  timeStamp!: number;
+  userName: Signal<string> = computed(() => {
+    const name = this.userService.allUsersMap().get(this.messageData.senderId)?.name;
+    if (name) {
+      return name;
+    } else {
+      return '';
+    }
+  });
+  userAvatar: Signal<string> = computed(() => {
+    const avatar = this.userService.allUsersMap().get(this.messageData.senderId)?.avatar;
+    if (avatar) {
+      return avatar;
+    } else {
+      return '';
+    }
+  });
 
   constructor(private chatService: ChatService, public userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private dialogService: DialogService, private el: ElementRef) {}
 
@@ -50,14 +67,6 @@ export class MessageComponent {
 
   ngOnChanges() {
     this.isMe = this.messageData.senderId == this.userService.currentOnlineUser().userUID;
-  }
-
-  returnUserName() {
-    return this.userService.allUsers().find(user => user.userUID === this.messageData.senderId)?.name;
-  }
-
-  returnImageName() {
-    return this.userService.allUsers().find(user => user.userUID === this.messageData.senderId)?.avatar;
   }
 
   updateMessage() {
