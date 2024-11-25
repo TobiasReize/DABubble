@@ -26,8 +26,8 @@
         <span class="nameCard">{{
           userService.currentOnlineUser().name
         }}</span>
-        <span *ngIf="userService.currentOnlineUser().userUID != '0'" class="edit" (click)="editProfile($event)">Bearbeiten</span>
-        <span *ngIf="userService.currentOnlineUser().userUID != '0'" (click)="editProfile($event)" class="material-symbols-rounded profil-edit-icon">edit</span>
+        <span *ngIf="userService.currentOnlineUser().userUID != guestUid" class="edit" (click)="editProfile($event)">Bearbeiten</span>
+        <span *ngIf="userService.currentOnlineUser().userUID != guestUid" (click)="editProfile($event)" class="material-symbols-rounded profil-edit-icon">edit</span>
       </div>
       <div class="gap15 dFlexRowCenterCenter">
         <img src="assets/img/main/Aktiv.png" />

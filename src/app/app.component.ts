@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserService } from './core/services/user/user.service';
 import { LayoutService } from './core/services/layout/layout.service';
+import { environment } from '../environments/environment.development';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,8 @@ export class AppComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
-    if (this.userService.currentUserUID() == '0') {
-      this.userService.updateUserDoc('guest', {isOnline: false});
+    if (this.userService.currentUserUID() == environment.guestUid) {
+      this.userService.updateUserDoc(environment.guestUid, {isOnline: false});
     } else {
       this.userService.updateUserDoc(this.userService.currentOnlineUser().userUID, {isOnline: false});
     }

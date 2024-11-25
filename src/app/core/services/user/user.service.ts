@@ -4,6 +4,7 @@ import { FirebaseService } from '../firebase/firebase.service';
 import { ChatUser } from '../../models/user.class';
 import { Auth, signOut, User, user, verifyBeforeUpdateEmail } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,10 @@ export class UserService implements OnDestroy {
   newUser = new ChatUser();
   private allUsersSignal= signal<ChatUser[]>([]);
   readonly allUsers = this.allUsersSignal.asReadonly();
-  unsubUserCol: Unsubscribe;
+  unsubUserCol!: Unsubscribe;
   user$ = user(this.auth);
   userSubscription!: Subscription;
-  currentUserUIDSignal = signal<string>('0');
+  currentUserUIDSignal = signal<string>(environment.guestUid);
   readonly currentUserUID = this.currentUserUIDSignal.asReadonly();
   initialChannelNames: string[] = ['Entwicklerteam', 'Angular'];
   readonly allUsersMap = computed(() => new Map(this.allUsers().map(user => [user.userUID, user])));
@@ -34,15 +35,17 @@ export class UserService implements OnDestroy {
   });
 
 
-  constructor() {
+  constructor() {}
+
+  initUsers() {
     this.unsubUserCol = this.subUserCol();
     this.userSubscription = this.user$.subscribe((currentUser: User | null) => {
       if (currentUser) {
         this.updateUserDoc(currentUser.uid, {isOnline: true});
         this.currentUserUIDSignal.set(currentUser.uid);
       } else if (sessionStorage.getItem('guestIsOnline')) {
-        this.updateUserDoc('guest', {isOnline: true});
-        this.currentUserUIDSignal.set('0');
+        this.updateUserDoc(environment.guestUid, {isOnline: true});
+        this.currentUserUIDSignal.set(environment.guestUid);
         this.addInitialChannels();
       }
     });
@@ -89,8 +92,8 @@ export class UserService implements OnDestroy {
 
 
   async signOutUser() {
-    if (this.currentUserUID() == '0') {
-      await this.updateUserDoc('guest', {isOnline: false});
+    if (this.currentUserUID() == environment.guestUid) {
+      await this.updateUserDoc(environment.guestUid, {isOnline: false});
       sessionStorage.removeItem('guestIsOnline');
     } else {
       await this.updateUserDoc(this.currentOnlineUser().userUID, {isOnline: false});

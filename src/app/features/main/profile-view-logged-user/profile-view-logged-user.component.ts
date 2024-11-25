@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { UserService } from '../../../core/services/user/user.service';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-profile-view-logged-user',
@@ -25,6 +26,7 @@ export class ProfileViewLoggedUserComponent {
     name: this.userService.currentOnlineUser().name,
     email: this.userService.currentOnlineUser().email
   }
+  guestUid: string = environment.guestUid;
   
   constructor(
     public chatService: ChatService,

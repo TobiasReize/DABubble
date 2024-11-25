@@ -16,6 +16,7 @@ import { ProfileViewLoggedUserComponent } from './profile-view-logged-user/profi
 import { FirebaseService } from '../../core/services/firebase/firebase.service';
 import { UploadErrorComponent } from "./upload-error/upload-error.component";
 import { DialogService } from '../../core/services/dialog/dialog.service';
+import { UserService } from '../../core/services/user/user.service';
 
 @Component({
   selector: 'app-main',
@@ -42,7 +43,7 @@ import { DialogService } from '../../core/services/dialog/dialog.service';
 export class MainComponent implements OnInit {
   layoutState: Signal<any> = this.layoutService.layoutState;
   isEditChannelVisible: Signal<boolean> = this.dialogService.openEditChannel;
-  constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService, private layoutService: LayoutService, public dialogService: DialogService) {}
+  constructor(public chatService: ChatService, public sideNavService: SideNavService, public firebaseService: FirebaseService, private layoutService: LayoutService, public dialogService: DialogService, private userService: UserService) {}
   sectionIsVisible: boolean = true;
 
   closeSection() {
@@ -84,6 +85,7 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.initUsers();
     this.layoutService.onResize(window.innerWidth);
   }
 

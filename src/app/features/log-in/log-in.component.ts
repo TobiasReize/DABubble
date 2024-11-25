@@ -7,6 +7,7 @@ import { LoginHeaderComponent } from '../../shared/login-header/login-header.com
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { UserService } from '../../core/services/user/user.service';
 import { Auth, browserSessionPersistence, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User } from '@angular/fire/auth';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-log-in',
@@ -121,9 +122,12 @@ export class LogInComponent implements OnInit {
 
   async signInWithGuest() {
     await this.userService.signOutUser();
-    await this.userService.updateUserDoc('guest', {isOnline: true});
+    this.loginData.email = environment.guestEmail;
+    this.loginData.password = environment.guestPassword;
+    await this.signInUser()
+    await this.userService.updateUserDoc(environment.guestUid, {isOnline: true});
     sessionStorage.setItem('guestIsOnline', 'true');
-    this.userService.currentUserUIDSignal.set('0');
+    this.userService.currentUserUIDSignal.set(environment.guestUid);
     this.router.navigateByUrl('main');
   }
 
