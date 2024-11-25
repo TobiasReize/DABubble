@@ -1,10 +1,9 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
 import { UserService } from '../../../core/services/user/user.service';
-import { collectionGroup, getDocs, onSnapshot, query, QuerySnapshot, updateDoc, where } from 'firebase/firestore';
 
 @Component({
   selector: 'app-profile-view-logged-user',
