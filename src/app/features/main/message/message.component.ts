@@ -41,22 +41,12 @@ export class MessageComponent {
   tapDurationInMilliseconds: number = 100;
   @ViewChild('messageContainer') messageContainer!: ElementRef;
   @Output() messageSelectionEvent = new EventEmitter<string>;
-  userName: Signal<string> = computed(() => {
-    const name = this.userService.allUsersMap().get(this.messageData.senderId)?.name;
-    if (name) {
-      return name;
-    } else {
-      return '';
-    }
-  });
-  userAvatar: Signal<string> = computed(() => {
-    const avatar = this.userService.allUsersMap().get(this.messageData.senderId)?.avatar;
-    if (avatar) {
-      return avatar;
-    } else {
-      return '';
-    }
-  });
+  userName() {
+    return this.userService.allUsersMap().get(this.messageData.senderId)?.name;
+  }
+  userAvatar() {
+    return this.userService.allUsersMap().get(this.messageData.senderId)?.avatar;
+  }
 
   constructor(private chatService: ChatService, public userService: UserService, private layoutService: LayoutService, private firebaseService: FirebaseService, private dialogService: DialogService, private el: ElementRef) {}
 
