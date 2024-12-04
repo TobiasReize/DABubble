@@ -37,7 +37,10 @@ export class LogInComponent implements OnInit {
   constructor(private router: Router, private activeRoute: ActivatedRoute) { }
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    if (this.auth.currentUser) {
+      await this.userService.signOutUser();
+    }
     this.setAuthStatePersistence();
     this.forwardedEmail = this.activeRoute.snapshot.queryParamMap.get('email')!;
     if (this.forwardedEmail) {
@@ -121,7 +124,6 @@ export class LogInComponent implements OnInit {
 
 
   async signInWithGuest() {
-    await this.userService.signOutUser();
     this.loginData.email = environment.guestEmail;
     this.loginData.password = environment.guestPassword;
     await this.signInUser()
