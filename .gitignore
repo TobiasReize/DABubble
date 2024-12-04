@@ -44,10 +44,12 @@ Thumbs.db
 # Environment
 src/environments/environment.development.ts
 src/environments/environment.ts
+environments
 
 # Firebase
 .firebase
 *-debug.log
 .runtimeconfig.json
 
-environments
+src/app/features/privacy-policy/privacy-policy.component.html
+src/app/features/imprint/imprint.component.html
