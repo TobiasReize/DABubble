@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserService } from './core/services/user/user.service';
 import { LayoutService } from './core/services/layout/layout.service';
-import { environment } from '../environments/environment.development';
 
 @Component({
   selector: 'app-root',

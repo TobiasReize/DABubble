@@ -111,7 +111,7 @@ export class ChatService {
   ) {
     this.unsubChannels = this.subChannels();
     this.unsubDirectMessageChannels = this.subDirectMessageChannels();
-    this.unsubThread = this.subThread();
+    // this.unsubThread = this.subThread();
   }
 
   ngOnDestroy() {
