@@ -60,9 +60,9 @@ export class UserService implements OnDestroy {
 
   async addUser(userUID: string, data: object) {
     await setDoc(doc(this.firebaseService.getCollectionRef('users'), userUID), data)
+    .then(() => this.addInitialChannels())
     .catch(
       (err) => {console.error('User hinzufügen error:', err)});
-    this.addInitialChannels();
   }
 
 
@@ -88,7 +88,9 @@ export class UserService implements OnDestroy {
 
 
   async signOutUser() {
-    await this.updateUserDoc(this.currentOnlineUser().userUID, {isOnline: false});
+    if (this.currentOnlineUser().userUID) {
+      await this.updateUserDoc(this.currentOnlineUser().userUID, {isOnline: false});
+    }
     await signOut(this.auth)
       .catch((error) => {
         console.log('Error:', error);
@@ -97,10 +99,13 @@ export class UserService implements OnDestroy {
 
 
   async updateUserIdsInChannel(channelId: string) {
-    await updateDoc(
-      this.firebaseService.getDocRef(channelId, 'channels'), {
-      userUIDs: arrayUnion(this.currentUserUID())
-    });
+    if (this.auth.currentUser) {
+      await updateDoc(
+        this.firebaseService.getDocRef(channelId, 'channels'), {
+        userUIDs: arrayUnion(this.auth.currentUser.uid)
+      });
+    }
+    
   }
 
 
