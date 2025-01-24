@@ -2,7 +2,8 @@
 
 ## DABubble is a chat messenger application. You can send direct messages or create channels and chat in groups. There is also user authentication and you can reply to messages and react with emojis.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.<br/>
+The Google Firebase Firestore database was chosen as the backend.
 
 ## Development server
 
