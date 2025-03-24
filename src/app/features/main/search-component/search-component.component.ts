@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user/user.service';
@@ -6,13 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SideNavService } from '../../../core/services/sideNav/side-nav.service';
 import { ChatService } from '../../../core/services/chat/chat.service';
 import { FirebaseService } from '../../../core/services/firebase/firebase.service';
-import {
-  collectionGroup,
-  getDoc,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore';
+import { collectionGroup, getDoc, onSnapshot, query, Unsubscribe, where } from '@angular/fire/firestore';
 import { directMessage } from '../../../core/models/direct-message';
 
 @Component({
@@ -22,7 +16,7 @@ import { directMessage } from '../../../core/models/direct-message';
   templateUrl: './search-component.component.html',
   styleUrl: './search-component.component.scss',
 })
-export class SearchComponentComponent {
+export class SearchComponentComponent implements OnDestroy {
   public userService = inject(UserService);
   public sideNavService = inject(SideNavService);
   public chatService = inject(ChatService);
@@ -33,18 +27,19 @@ export class SearchComponentComponent {
   messages: directMessage[] = [];
   showDropDown: boolean = false;
   searchComponentInputControl = new FormControl('');
+  unsubMessages!: Unsubscribe;
 
   @Input('placeholder') placeholder: string = 'Suchen...';
-
   @ViewChild('searchComponentInput') inputRef!: ElementRef;
   @ViewChild('dropDownMenu') dropDownMenu!: ElementRef;
 
+
   constructor() {
-    effect(() => {
-      if (this.userService.allUsers().length > 0 || this.chatService.channels().length > 0) {
-        this.getDirectMessages();
-      }
-    })
+    this.unsubMessages = this.getDirectMessages();
+  }
+
+  ngOnDestroy() {
+    this.unsubMessages();
   }
 
   resetInput() {
@@ -85,38 +80,21 @@ export class SearchComponentComponent {
     ];
   }
 
-  async getDirectMessages() {
-    const messagesRef = collectionGroup(
-      this.fireBaseService.firestore,
-      'messages'
-    );
-
+  getDirectMessages() {
+    const messagesRef = collectionGroup(this.fireBaseService.firestore, 'messages');
     const q = query(messagesRef, where('content', '!=', null));
 
-    onSnapshot(q, (querySnapshot) => {
-      this.messages = [];
-
+    return onSnapshot(q, (querySnapshot) => {
       querySnapshot.forEach(async (doc) => {
-        this.messages = [];
         const docData = doc.data();
-
         const messagesCollectionRef = doc.ref.parent;
         const directMessageChannelsDocRef = messagesCollectionRef.parent;
 
         if (directMessageChannelsDocRef) {
-          const directMessageChannelDoc = await getDoc(
-            directMessageChannelsDocRef
-          );
+          const directMessageChannelDoc = await getDoc(directMessageChannelsDocRef);
           const directMessageChannelDocData = directMessageChannelDoc.data();
           const userIds: string[] = directMessageChannelDocData!['userIds'];
-          // const otherUserId: string = userIds?.find((id) => id !== this.userService.currentOnlineUser().userUID) || '';
-          const messageObject = new directMessage(
-            directMessageChannelDoc.id,
-            // otherUserId,
-            userIds,
-            docData['content']
-          );
-
+          const messageObject = new directMessage(directMessageChannelDoc.id, userIds, docData['content']);
           this.messages.push(messageObject);
         }
       });
