@@ -1,4 +1,4 @@
-import { Component, effect, ElementRef, inject, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user/user.service';
