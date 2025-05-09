@@ -62,21 +62,16 @@ export class ChatService {
   readonly currentChannel = this.currentChannelSignal.asReadonly();
 
   private currentDirectMessageChannelSignal = signal<Channel>(new Channel());
-  readonly currentDirectMessageChannel =
-    this.currentDirectMessageChannelSignal.asReadonly();
+  readonly currentDirectMessageChannel = this.currentDirectMessageChannelSignal.asReadonly();
 
   private usersInCurrentChannelSignal = signal<ChatUser[]>([]);
-  readonly usersInCurrentChannel =
-    this.usersInCurrentChannelSignal.asReadonly();
+  readonly usersInCurrentChannel = this.usersInCurrentChannelSignal.asReadonly();
 
   private usersInCurrentChannelWithoutCurrentUserSignal: Signal<ChatUser[]> =
-    computed(() =>
-      this.usersInCurrentChannel().filter(
+    computed(() => this.usersInCurrentChannel().filter(
         (user) => user.userUID !== this.userService.currentOnlineUser().userUID
-      )
-    );
-  readonly usersInCurrentChannelWithoutCurrentUser =
-    this.usersInCurrentChannelWithoutCurrentUserSignal;
+    ));
+  readonly usersInCurrentChannelWithoutCurrentUser = this.usersInCurrentChannelWithoutCurrentUserSignal;
 
   private channelsSignal = signal<Channel[]>([]);
   readonly channels = this.channelsSignal.asReadonly();
@@ -84,14 +79,12 @@ export class ChatService {
   readonly myChannels = computed(() => this.channels().filter(channel => channel.userUIDs.includes(this.userService.currentOnlineUser().userUID)));
 
   private directMessageChannelsSignal = signal<Channel[]>([]);
-  readonly directMessageChannels =
-    this.directMessageChannelsSignal.asReadonly();
+  readonly directMessageChannels = this.directMessageChannelsSignal.asReadonly();
 
   private chosenUserUIDsSignal = signal<string[]>([]);
   readonly chosenUserUIDs = this.chosenUserUIDsSignal.asReadonly();
 
   topThreadMessageId: string = '';
-
   profileViewLoggedUser: boolean = false;
   myChatDescription: boolean = false;
   chatDescription: boolean = false;
@@ -99,9 +92,7 @@ export class ChatService {
   channelID: string = '';
   private selectedChannelId: string | null = null;
 
-  private currentMainChatCollectionSignal = computed(() =>
-    this.layoutService.selectedCollection()
-  );
+  private currentMainChatCollectionSignal = computed(() => this.layoutService.selectedCollection());
 
   constructor(
     private firebaseService: FirebaseService,
@@ -295,14 +286,11 @@ export class ChatService {
     );
   }
 
-  async updateThreadReply(
-    replyId: string,
-    messageObj: MessageInterface | EmptyMessageFile | any
-  ) {
+  async updateThreadReply(replyId: string, messageObj: MessageInterface | EmptyMessageFile | any) {
     await updateDoc(
       this.firebaseService.getDocRefInSubSubcollection(
-        'channels',
-        this.currentChannel().id,
+        this.currentMainChatCollectionSignal(),
+        this.getMainChatChannelId(),
         'messages',
         this.topThreadMessage().id,
         'thread',
